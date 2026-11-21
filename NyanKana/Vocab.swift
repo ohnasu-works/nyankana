@@ -588,7 +588,7 @@ struct VocabSessionView: View {
         case .spell:
             VStack(spacing: 10) {
                 TextField(T("英語で入力", "영어로 입력", "輸入英文"), text: $typed)
-                    .font(.en(22)).textInputAutocapitalization(.never).autocorrectionDisabled().keyboardType(.asciiCapable).focused($focus)
+                    .font(.en(22)).textInputAutocapitalization(.never).autocorrectionDisabled().keyboardType(.default).focused($focus)
                     .padding(12).background(RoundedRectangle(cornerRadius: 14).fill(Color.white).overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.ink, lineWidth: 2.5)))
                     .onSubmit { if judged == nil { judge(w, [w.word, w.reading].map(GameModel.norm).contains(GameModel.norm(typed))) } }
                 if judged == nil {

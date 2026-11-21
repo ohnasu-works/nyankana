@@ -1174,7 +1174,7 @@ struct StudySessionView: View {
             if !(handDictation && judged == nil) {
             TextField(T("聞こえた英文を入力", "들린 영어 문장을 입력", "輸入聽到的英文"), text: $typed)
                 .font(.en(20.s)).foregroundStyle(Color.ink)
-                .textInputAutocapitalization(.never).autocorrectionDisabled().keyboardType(.asciiCapable)
+                .textInputAutocapitalization(.never).autocorrectionDisabled().keyboardType(.default)
                 .focused($focus).disabled(judged != nil)
                 .padding(12.s)
                 .background(RoundedRectangle(cornerRadius: 14.s).fill(Color.white).overlay(RoundedRectangle(cornerRadius: 14.s).stroke(Color.ink, lineWidth: 2.5)))
