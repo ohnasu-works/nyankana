@@ -391,13 +391,12 @@ struct AnswerPanel: View {
     }
 
     private func sentenceWithBlank(_ q: Question) -> some View {
-        var blank = String(repeating: "＿", count: max(2, min(6, q.a.count / 2 + 1)))
-        // English UI shows no translation, so when typing / writing / speaking, the first letter is the hint
-        if q.meaning.isEmpty && m.answerMode != .choice, let c = q.a.first {
-            blank = String(c) + String(repeating: "＿", count: max(2, min(5, q.a.count / 2)))
-        }
-        return (Text(q.pre.isEmpty ? "" : q.pre + " ") + Text(blank).foregroundColor(.popDeep) + Text(Question.sp(q.post)))
-            .font(.en(((q.pre.count + q.post.count) > 40 ? 19 : (q.pre.count + q.post.count) > 26 ? 21 : 25).s * (m.answerMode == .keyboard && !UIScale.isPad ? 0.84 : 1))).foregroundStyle(Color.ink)
+        // one ＿ per kana of the answer when typing (a hint of its length), a short blank otherwise
+        let n = m.answerMode == .choice ? max(2, min(5, q.a.count)) : max(1, min(10, (q.kana ?? q.a).count))
+        let blank = String(repeating: "＿", count: n)
+        let len = q.pre.count + q.post.count
+        return (Text(q.pre) + Text(blank).foregroundColor(.popDeep) + Text(q.post))
+            .font(.en((len > 22 ? 19 : len > 14 ? 21 : 25).s * (m.answerMode == .keyboard && !UIScale.isPad ? 0.84 : 1))).foregroundStyle(Color.ink)
             .lineLimit(4).minimumScaleFactor(0.85)
             .fixedSize(horizontal: false, vertical: true)
             .multilineTextAlignment(.center)
@@ -451,7 +450,7 @@ struct AnswerPanel: View {
                     .font(.en(22.s))
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
-                    .keyboardType(.asciiCapable)   // English keys, never the kana keyboard
+                    .keyboardType(.default)   // the Japanese (kana) keyboard is fine here
                     .submitLabel(.go)
                     .focused($typing)
                     .onSubmit { m.submitTyped(); typing = true }

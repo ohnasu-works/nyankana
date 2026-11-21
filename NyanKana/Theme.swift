@@ -34,7 +34,8 @@ extension Font {
         let size = phone(size)
         return L10n.current == .ja ? .custom(bold ? Fonts.rounded : Fonts.roundedBold, size: size) : .system(size: size, weight: bold ? .heavy : .bold, design: .rounded)
     }
-    static func en(_ size: CGFloat) -> Font { .custom(Fonts.english, size: phone(size)) }
+    /// the language being learned (Japanese): M PLUS Rounded, which also has Latin letters
+    static func en(_ size: CGFloat) -> Font { .custom(Fonts.roundedBold, size: phone(size)) }
 }
 
 // MARK: - Colours (pop palette)

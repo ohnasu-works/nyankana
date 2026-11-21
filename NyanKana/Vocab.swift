@@ -3,19 +3,19 @@ import UIKit
 
 // MARK: - Word data
 
-/// Word course: 中1〜高3 + TOEIC (0 = dictionary only).
+/// Word course: JLPT N5 … N1 (h3 / toeic are not used by にゃんカナ).
 enum VocabLevel: Int, CaseIterable, Identifiable {
     case j1 = 1, j2, j3, h1, h2, h3, toeic
     var id: Int { rawValue }
     var label: String {
         switch self {
-        case .j1: T("中1", "중1", "國一")
-        case .j2: T("中2", "중2", "國二")
-        case .j3: T("中3", "중3", "國三")
-        case .h1: T("高1", "고1", "高一")
-        case .h2: T("高2", "고2", "高二")
-        case .h3: T("高3", "고3", "高三")
-        case .toeic: "TOEIC"
+        case .j1: "N5"
+        case .j2: "N4"
+        case .j3: "N3"
+        case .h1: "N2"
+        case .h2: "N1"
+        case .h3: "N1+"
+        case .toeic: "—"
         }
     }
     var color: Color {
@@ -32,16 +32,20 @@ enum VocabLevel: Int, CaseIterable, Identifiable {
 }
 
 struct VocabWord: Identifiable, Hashable {
-    let id: String          // lowercased word
+    let id: String          // the word as written
     let word: String
     let level: Int
     let pos: String
+    /// meanings: `ja` holds the English meaning (the field name is kept from にゃんグリッシュ)
     let ja: String, ko: String, zh: String
+    /// the reading in hiragana (empty when the word is already written in kana)
     let forms: [String]
+    var reading: String { forms.first ?? word }
     var meaning: String {
         switch L10n.current {
-        case .ja, .ko, .zhHant: T(ja, ko, zh)
-        default: Tr.vocab(word, ja: ja)
+        case .ko: ko
+        case .zhHant: zh
+        default: ja
         }
     }
 }
@@ -51,7 +55,7 @@ enum Vocab {
     static let all: [VocabWord] = VocabRaw.text.split(separator: "\n").compactMap { line in
         let f = line.split(separator: "|", omittingEmptySubsequences: false).map(String.init)
         guard f.count == 7 else { return nil }
-        return VocabWord(id: f[0].lowercased(), word: f[0], level: Int(f[1]) ?? 0, pos: f[2], ja: f[3], ko: f[4], zh: f[5],
+        return VocabWord(id: f[0], word: f[0], level: Int(f[1]) ?? 0, pos: f[2], ja: f[3], ko: f[4], zh: f[5],
                          forms: f[6].split(separator: ",").map(String.init))
     }
     static let byID: [String: VocabWord] = Dictionary(all.map { ($0.id, $0) }, uniquingKeysWith: { a, _ in a })
@@ -74,10 +78,10 @@ enum Vocab {
         return out
     }
 
-    /// game question: Japanese meaning -> pick the English word
+    /// game question: the meaning -> pick the Japanese word
     static func gameQuestion(_ w: VocabWord) -> Question {
         var q = Question.blank(w.ja, "", w.word, "", [w.word] + distractors(for: w, english: true), "vocab")
-        q.ko = w.ko; q.zh = w.zh; q.vocabWord = w.word
+        q.ko = w.ko; q.zh = w.zh; q.vocabWord = w.word; q.kana = w.reading
         return q
     }
 }
@@ -586,10 +590,10 @@ struct VocabSessionView: View {
                 TextField(T("英語で入力", "영어로 입력", "輸入英文"), text: $typed)
                     .font(.en(22)).textInputAutocapitalization(.never).autocorrectionDisabled().keyboardType(.asciiCapable).focused($focus)
                     .padding(12).background(RoundedRectangle(cornerRadius: 14).fill(Color.white).overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.ink, lineWidth: 2.5)))
-                    .onSubmit { if judged == nil { judge(w, typed.trimmingCharacters(in: .whitespaces).lowercased() == w.word.lowercased()) } }
+                    .onSubmit { if judged == nil { judge(w, [w.word, w.reading].map(GameModel.norm).contains(GameModel.norm(typed))) } }
                 if judged == nil {
                     PopButton(title: T("こたえる", "답하기", "作答"), color: .pop, textColor: .white) {
-                        judge(w, typed.trimmingCharacters(in: .whitespaces).lowercased() == w.word.lowercased())
+                        judge(w, [w.word, w.reading].map(GameModel.norm).contains(GameModel.norm(typed)))
                     }
                 } else { nextButton }
             }

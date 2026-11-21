@@ -8,7 +8,7 @@ struct Question: Codable, Hashable, Identifiable {
     enum Kind: String, Codable { case blank, order, sentence }
     var id = UUID()
     var kind: Kind = .blank
-    var jp: String              // meaning (Japanese; ko / zh via `tr`)
+    var jp: String              // meaning in English (ko / zh below)
     var ko: String? = nil
     var zh: String? = nil
     var pre: String = ""
@@ -20,22 +20,27 @@ struct Question: Codable, Hashable, Identifiable {
     var point: String = ""
     /// set for word questions: the meaning comes from the word list (vocab_tr.json), not the shared table
     var vocabWord: String? = nil
+    /// the answer in hiragana (typing / handwriting / speaking accept it)
+    var kana: String? = nil
+    /// position of the word inside its area, 0...999 (stage 1 uses the first words, the last stage all of them)
+    var rank: Int? = nil
+    /// id of the word in the word list (voice "w:<id>", the example "e:<id>")
+    var vid: Int? = nil
 
-    private enum CodingKeys: String, CodingKey { case kind, jp, ko, zh, pre, post, a, choices, words, point }
+    private enum CodingKeys: String, CodingKey { case kind, jp, ko, zh, pre, post, a, choices, words, point, kana, rank, vid }
 
     var meaning: String {
         switch L10n.current {
-        case .ja: jp
-        case .ko: ko ?? Lv1Tr.ko(jp) ?? jp
-        case .zhHant: zh ?? Lv1Tr.zh(jp) ?? jp
-        // English: the "meaning" is a short hint in English that does not give the answer away (tr_en.json)
-        default: vocabWord.map { Tr.vocab($0, ja: jp) } ?? Tr.text(jp)
+        case .ko: ko ?? jp
+        case .zhHant: zh ?? jp
+        // every other language (and the Japanese screen, for checking) shows the English meaning
+        default: jp
         }
     }
     /// the full English sentence (read aloud after answering)
     var full: String {
         switch kind {
-        case .order: words.joined(separator: " ")
+        case .order: words.joined()
         case .sentence: a
         case .blank: Question.join(pre, a, post)
         }
@@ -47,11 +52,10 @@ struct Question: Codable, Hashable, Identifiable {
 
     /// joins pre / answer / post without a space before trailing punctuation ("lives?" not "lives ?")
     static func join(_ pre: String, _ mid: String, _ post: String) -> String {
-        var out = pre.isEmpty ? mid : pre + " " + mid
-        if !post.isEmpty { out += (post.first.map { ",.?!;:".contains($0) } == true ? "" : " ") + post }
-        return out
+        // Japanese has no spaces between words
+        pre + mid + post
     }
-    static func sp(_ post: String) -> String { post.isEmpty ? "" : (post.first.map { ",.?!;:".contains($0) } == true ? post : " " + post) }
+    static func sp(_ post: String) -> String { post }
 
     static func blank(_ jp: String, _ pre: String, _ a: String, _ post: String, _ ch: [String], _ point: String = "") -> Question {
         Question(kind: .blank, jp: jp, pre: pre, post: post, a: a, choices: ch, point: point)
@@ -70,11 +74,6 @@ enum QuestionBank {
 
     static func pools(for area: Area) -> Pools {
         let loaded = ContentLoader.pools(area)
-        if area == .lv1, let ex = loaded {
-            // Lv1: built-in be-verb set + general verbs / past tense from the content file
-            return Pools(single: lv1.single + ex.single, phrase: lv1.phrase + ex.phrase, order: lv1.order + ex.order,
-                         mid: lv1.mid + ex.mid, boss: lv1.boss + ex.boss)
-        }
         return loaded ?? lv1
     }
 
@@ -216,8 +215,20 @@ struct StagePlanner {
     var kind: StageKind { ref.index % 10 == 0 ? (ref.index == ref.area.stageCount ? .boss : .mid) : .normal }
 
     func build() -> [Encounter] {
-        let pools = QuestionBank.pools(for: ref.area)
+        let pools = window(QuestionBank.pools(for: ref.area))
         return dedupe(buildRaw(pools), pools)
+    }
+
+    /// New words arrive stage by stage: stage n of 30 asks the words up to n/30 of the area
+    /// (the last few stages, and the mid / boss stages, use everything learned so far).
+    private func window(_ p: QuestionBank.Pools) -> QuestionBank.Pools {
+        let hi = min(1000, Int(Double(ref.index) / Double(max(1, ref.area.stageCount)) * 1000) + 40)
+        func cut(_ qs: [Question], min n: Int) -> [Question] {
+            let f = qs.filter { ($0.rank ?? 0) <= hi }
+            return f.count >= n ? f : Array(qs.sorted { ($0.rank ?? 0) < ($1.rank ?? 0) }.prefix(max(n, f.count)))
+        }
+        return .init(single: cut(p.single, min: 24), phrase: cut(p.phrase, min: 16), order: cut(p.order, min: 10),
+                     mid: cut(p.mid, min: 8), boss: cut(p.boss, min: 10))
     }
 
     /// The same question must never come back within one stage: repeats are swapped for unused ones of the same kind.

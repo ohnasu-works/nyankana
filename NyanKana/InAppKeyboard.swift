@@ -1,61 +1,80 @@
 import SwiftUI
 
-/// English keyboard built into the answer panel (iPhone).
+/// Hiragana keyboard built into the answer panel (the 50-sound table).
 /// The system keyboard covered half the screen and squeezed the game into a strip.
+/// Katakana answers are typed in hiragana too (answers are compared kana-blind).
 struct InAppKeyboard: View {
     @Binding var text: String
     var submit: () -> Void
-    @State private var shift = false
 
-    private let rows = ["qwertyuiop", "asdfghjkl", "zxcvbnm"]
+    /// columns of the table, read left to right (あ か さ … わ), five rows (a i u e o)
+    private static let columns: [[String]] = [
+        ["あ", "い", "う", "え", "お"], ["か", "き", "く", "け", "こ"], ["さ", "し", "す", "せ", "そ"],
+        ["た", "ち", "つ", "て", "と"], ["な", "に", "ぬ", "ね", "の"], ["は", "ひ", "ふ", "へ", "ほ"],
+        ["ま", "み", "む", "め", "も"], ["や", "", "ゆ", "", "よ"], ["ら", "り", "る", "れ", "ろ"],
+        ["わ", "", "を", "", "ん"],
+    ]
 
     var body: some View {
         GeometryReader { g in
-            let gap: CGFloat = 5
+            let gap: CGFloat = 4
             let keyW = (g.size.width - gap * 9) / 10
-            let keyH: CGFloat = 39
-            VStack(spacing: 6) {
-                row(rows[0], keyW, keyH, gap)
-                row(rows[1], keyW, keyH, gap)
-                HStack(spacing: gap) {
-                    special(Image(systemName: shift ? "shift.fill" : "shift"), w: keyW * 1.35, h: keyH) { shift.toggle() }
-                    ForEach(Array(rows[2]), id: \.self) { c in letter(c, keyW, keyH) }
-                    special(Image(systemName: "delete.left"), w: keyW * 1.35, h: keyH) {
-                        if !text.isEmpty { text.removeLast() }
+            let keyH: CGFloat = 30
+            VStack(spacing: gap) {
+                ForEach(0..<5, id: \.self) { r in
+                    HStack(spacing: gap) {
+                        ForEach(0..<10, id: \.self) { c in
+                            let s = Self.columns[c][r]
+                            if s.isEmpty { Color.clear.frame(width: keyW, height: keyH) } else { letter(s, keyW, keyH) }
+                        }
                     }
                 }
                 HStack(spacing: gap) {
-                    symbol("'", keyW, keyH)
-                    symbol(",", keyW, keyH)
-                    key(Text("space").font(.en(15)), w: keyW * 5 + gap * 4, h: keyH, fill: .white) { text += " " }
-                    symbol(".", keyW, keyH)
-                    symbol("?", keyW, keyH)
-                    symbol("-", keyW, keyH)
+                    special(Text("゛゜").font(.en(16)), w: keyW * 2 + gap, h: keyH) { mark() }
+                    special(Text("小").font(.en(16)), w: keyW * 1.5, h: keyH) { small() }
+                    symbol("ー", keyW * 1.5, keyH)
+                    symbol("、", keyW, keyH)
+                    symbol("。", keyW, keyH)
+                    symbol("？", keyW, keyH)
+                    special(Image(systemName: "delete.left").font(.system(size: 16, weight: .bold)), w: keyW * 2 + gap, h: keyH) {
+                        if !text.isEmpty { text.removeLast() }
+                    }
                 }
             }
             .frame(width: g.size.width)
         }
-        .frame(height: 39 * 4 + 6 * 3)
+        .frame(height: 30 * 6 + 4 * 5)
     }
 
-    private func row(_ s: String, _ w: CGFloat, _ h: CGFloat, _ gap: CGFloat) -> some View {
-        HStack(spacing: gap) { ForEach(Array(s), id: \.self) { c in letter(c, w, h) } }
-    }
+    // ゛ / ゜ on the last kana: か→が, は→ば→ぱ→は
+    private static let marks: [Character: Character] = {
+        var m: [Character: Character] = [:]
+        let plain = Array("かきくけこさしすせそたちつてとはひふへほう")
+        let voiced = Array("がぎぐげござじずぜぞだぢづでどばびぶべぼゔ")
+        for (a, b) in zip(plain, voiced) { m[a] = b }
+        let half = Array("ぱぴぷぺぽ")
+        for (i, b) in Array("ばびぶべぼ").enumerated() { m[b] = half[i]; m[half[i]] = Array("はひふへほ")[i] }
+        for (a, b) in zip(voiced, plain) where m[a] == nil { m[a] = b }
+        return m
+    }()
+    private static let smalls: [Character: Character] = {
+        var m: [Character: Character] = [:]
+        for (a, b) in zip(Array("あいうえおつやゆよわ"), Array("ぁぃぅぇぉっゃゅょゎ")) { m[a] = b; m[b] = a }
+        return m
+    }()
+    private func mark() { if let c = text.last, let n = Self.marks[c] { text.removeLast(); text.append(n) } }
+    private func small() { if let c = text.last, let n = Self.smalls[c] { text.removeLast(); text.append(n) } }
 
-    private func letter(_ c: Character, _ w: CGFloat, _ h: CGFloat) -> some View {
-        let s = shift ? String(c).uppercased() : String(c)
-        return key(Text(s).font(.en(20)), w: w, h: h, fill: .white) {
-            text += s
-            shift = false
-        }
+    private func letter(_ s: String, _ w: CGFloat, _ h: CGFloat) -> some View {
+        key(Text(s).font(.en(18)), w: w, h: h, fill: .white) { text += s }
     }
 
     private func symbol(_ s: String, _ w: CGFloat, _ h: CGFloat) -> some View {
-        key(Text(s).font(.en(20)), w: w, h: h, fill: Color(hex: 0xEDEAF6)) { text += s }
+        key(Text(s).font(.en(18)), w: w, h: h, fill: Color(hex: 0xEDEAF6)) { text += s }
     }
 
-    private func special(_ icon: Image, w: CGFloat, h: CGFloat, _ action: @escaping () -> Void) -> some View {
-        key(icon.font(.system(size: 17, weight: .bold)), w: w, h: h, fill: Color(hex: 0xEDEAF6), action)
+    private func special<L: View>(_ label: L, w: CGFloat, h: CGFloat, _ action: @escaping () -> Void) -> some View {
+        key(label, w: w, h: h, fill: Color(hex: 0xEDEAF6), action)
     }
 
     private func key<L: View>(_ label: L, w: CGFloat, h: CGFloat, fill: Color, _ action: @escaping () -> Void) -> some View {
@@ -65,8 +84,8 @@ struct InAppKeyboard: View {
         } label: {
             label.foregroundStyle(Color.ink)
                 .frame(width: w, height: h)
-                .background(RoundedRectangle(cornerRadius: 8).fill(fill).overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.ink, lineWidth: 1.5)))
+                .background(RoundedRectangle(cornerRadius: 7).fill(fill).overlay(RoundedRectangle(cornerRadius: 7).stroke(Color.ink, lineWidth: 1.5)))
         }
-        .buttonStyle(PressStyle(radius: 8, depth: 2))
+        .buttonStyle(PressStyle(radius: 7, depth: 2))
     }
 }

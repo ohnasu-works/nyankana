@@ -585,23 +585,15 @@ final class GameModel: ObservableObject {
         guard let q = target?.question, !heard.isEmpty else { return }
         // the mic did not catch it (hardly any of the words came through): say it again, no penalty
         if q.kind == .order || voiceFullSentence {
-            let want = Set(Self.norm(q.full).split(separator: " ").map(String.init))
-            let got = Self.norm(heard).split(separator: " ").map(String.init)
-            let hit = got.filter { want.contains($0) }.count
-            if Double(hit) < Double(max(1, want.count)) * 0.5 { voiceRetry(); return }
-        }
-        if q.kind == .order { submit(heard); return }
-        if voiceFullSentence {
-            // the whole sentence must be said: most of its words, in order, including the answer
-            let want = Self.norm(q.full).split(separator: " ").map(String.init)
-            let got = Self.norm(heard).split(separator: " ").map(String.init)
-            var j = 0, hit = 0
-            for w in got where j < want.count { if w == want[j] { hit += 1; j += 1 } else if let k = want[j...].firstIndex(of: w) { hit += 1; j = k + 1 } }
-            let answerSaid = Self.norm(heard).contains(Self.norm(q.a))
-            submit(answerSaid && Double(hit) >= Double(want.count) * 0.8 ? q.a : heard)
+            // the mic did not catch it (hardly anything came through): say it again, no penalty
+            if Self.overlap(q.full, heard) < 0.4 { voiceRetry(); return }
+            // the whole sentence must be said: most of it, in order, including the answer
+            let answerSaid = Self.norm(heard).contains(Self.norm(q.a)) || (q.kana.map { Self.norm(heard).contains(Self.norm($0)) } ?? false)
+            if q.kind == .order { submit(Self.overlap(q.full, heard) >= 0.8 ? q.full : heard); return }
+            submit(answerSaid && Self.overlap(q.full, heard) >= 0.8 ? q.a : heard)
             return
         }
-        let said = choices.filter { !gone.contains($0) && SpeechMatch.contains(heard, $0) }.sorted { $0.count > $1.count }
+        let said = choices.filter { c in !gone.contains(c) && (Self.norm(heard).contains(Self.norm(c)) || (c == q.a && q.kana.map { Self.norm(heard).contains(Self.norm($0)) } == true)) }.sorted { $0.count > $1.count }
         if let c = said.first(where: { Self.norm($0) == Self.norm(q.a) }) ?? said.first { submit(c) }
         else { voiceRetry() }      // none of the choices was heard: not a wrong answer, just say it again
     }
@@ -620,7 +612,8 @@ final class GameModel: ObservableObject {
     private func submit(_ answer: String) {
         guard let q = target?.question else { return }
         let want = q.kind == .order ? q.full : q.a
-        let ok = autoOK || Self.norm(answer) == Self.norm(want)
+        let got = Self.norm(answer)
+        let ok = autoOK || got == Self.norm(want) || (q.kind != .order && q.kana.map { got == Self.norm($0) } == true)
         // easy: a wrong button disappears, so beginners can still find the answer and learn it
         if !ok, ref.difficulty == .easy, choices.count - gone.count > 2, choices.contains(answer) { gone.insert(answer) }
         resolve(correct: ok)
@@ -628,14 +621,27 @@ final class GameModel: ObservableObject {
 
     /// about how long the recorded voice takes to read a sentence (so the next voice does not cut it off)
     static func readTime(_ s: String) -> Double {
-        let words = s.split(separator: " ").count
-        return min(4.0, 0.7 + Double(words) * 0.36)
+        // Japanese: about 8 characters a second
+        return min(4.0, 0.7 + Double(s.count) * 0.12)
     }
 
+    /// letters and digits only, no spaces, katakana turned into hiragana
     static func norm(_ s: String) -> String {
-        let t = s.lowercased().replacingOccurrences(of: "’", with: "'")
-        let kept = t.unicodeScalars.filter { CharacterSet.letters.contains($0) || CharacterSet.decimalDigits.contains($0) || $0 == "'" || $0 == " " }
-        return String(String.UnicodeScalarView(kept)).split(separator: " ").joined(separator: " ")
+        let t = s.lowercased()
+        let kana = t.applyingTransform(.hiraganaToKatakana, reverse: true) ?? t
+        let kept = kana.unicodeScalars.filter { (CharacterSet.letters.contains($0) || CharacterSet.decimalDigits.contains($0) || $0 == "ー") }
+        return String(String.UnicodeScalarView(kept))
+    }
+    /// how much of `want` (in order) is in `heard`: 0...1 (Japanese has no spaces, so it goes by characters)
+    static func overlap(_ want: String, _ heard: String) -> Double {
+        let w = Array(norm(want)), h = Array(norm(heard))
+        guard !w.isEmpty, !h.isEmpty else { return 0 }
+        var dp = Array(repeating: 0, count: h.count + 1)
+        for a in w {
+            var prev = 0
+            for j in 1...h.count { let cur = dp[j]; dp[j] = a == h[j - 1] ? prev + 1 : max(dp[j], dp[j - 1]); prev = cur }
+        }
+        return Double(dp[h.count]) / Double(w.count)
     }
 
     // developer buttons
