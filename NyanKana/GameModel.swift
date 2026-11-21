@@ -336,13 +336,13 @@ final class GameModel: ObservableObject {
     /// The stage's own enemies come first, then the area's six, then the classic Gobbles — no repeats within a stage.
     private var zakoQueue: [String] = []
     private func refillZako() {
-        let own = StageFoes.exclusive(ref.area, ref.index).shuffled()
-        let area = AreaFoes.images(ref.area).shuffled()
+        // にゃんカナ: the chapter's つくもがみ / ごとうち (EnemyTable); the old stage-only enemies are not used
+        let own: [String] = []
+        let area = EnemyTable.monsters(ref.area).shuffled()
         var q: [String] = []
         // own enemies early: 1st, 2nd (this difficulty's own) and 4th appearance
         var a = area
         if own.count > 0 { q.append(own[0]) }
-        if let sp = StageFoes.special(ref.area, ref.index, ref.difficulty) { q.append(sp) }
         if !a.isEmpty { q.append(a.removeFirst()) }
         if own.count > 1 { q.append(own[1]) }
         q += a
@@ -356,16 +356,7 @@ final class GameModel: ObservableObject {
     }
 
     /// Gobbles that fit this area's mood (cute ones first, creepier-cute ones later)
-    private var gobblePool: [String] {
-        let g = (0..<16).map { String(format: "gob_%02d", $0) }, a = (0..<8).map { "kimo_a\($0)" }, b = (0..<8).map { "kimo_b\($0)" }
-        switch ref.area {
-        case .lv1: return g
-        case .lv2: return g + b
-        case .lv3: return b + g
-        case .lv4: return b + a
-        default: return a + b + g
-        }
-    }
+    private var gobblePool: [String] { EnemyTable.moji(ref.area) }
     private func rollShiny() -> Bool { Int.random(in: 0..<40) == 0 }
     /// small enemies that throw something first: none on EASY, some on NORMAL (from area 2), more on HARD
     private func rollShooter() -> Bool {

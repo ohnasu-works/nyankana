@@ -427,7 +427,7 @@ struct ZukanEntry: Identifiable {
         GameEvents.kidnappers.map { ZukanEntry(id: $0, name: AreaFoes.names[$0] ?? "", area: T("人を|さらう", "사람을 납치함", "會綁架人")) }
         + GameEvents.possessed.map { p in ZukanEntry(id: p.monster, name: p.monsterName, area: T("取り憑かれた|町の人", "빙의된 마을 사람", "被附身的居民"), freed: p.normal,
             lines: (p.talk + [p.turn, p.freed]).map { ZukanLine(label: "", en: $0.en, sub: $0.sub, voice: nil) }) }
-    static func area(_ a: Area) -> [ZukanEntry] { AreaFoes.images(a).map { ZukanEntry(id: $0, name: AreaFoes.names[$0] ?? "", area: a.name, hint: a.levelLabel) } }
+    static func area(_ a: Area) -> [ZukanEntry] { ((a.rawValue <= 3 ? EnemyTable.moji(a) : []) + EnemyTable.monsters(a)).map { ZukanEntry(id: $0, name: AreaFoes.names[$0] ?? "", area: a.name, hint: a.levelLabel) } }
     static func stage(_ id: String) -> ZukanEntry? {
         guard let i = StageFoes.byID[id] else { return nil }
         return ZukanEntry(id: i.id, name: i.en, area: i.area.levelLabel + " " + i.area.name + "  ST.\(i.stage)",

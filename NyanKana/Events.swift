@@ -21,6 +21,7 @@ enum AreaFoes {
         for (i, s) in GameEvents.rareNames.enumerated() { d[GameEvents.rares[i]] = s }
         for (i, s) in ["Octo Thief", "Cart Grabber", "Bat Case"].enumerated() { d["kidnap_\(i)"] = s }
         for (i, p) in GameEvents.possessed.enumerated() { d["poss_\(i + 3)"] = p.monsterName }
+        for (k, v) in EnemyTable.info { d[k] = v.name }
         return d
     }()
 }
