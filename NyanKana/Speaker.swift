@@ -36,8 +36,8 @@ final class Speaker: NSObject {
         liveSynth.speak(copy(u))
     }
     private lazy var enVoice: AVSpeechSynthesisVoice? = {
-        let all = AVSpeechSynthesisVoice.speechVoices().filter { $0.language == "en-US" }
-        return all.first { $0.quality == .premium } ?? all.first { $0.quality == .enhanced } ?? AVSpeechSynthesisVoice(language: "en-US")
+        let all = AVSpeechSynthesisVoice.speechVoices().filter { $0.language == "ja-JP" }
+        return all.first { $0.quality == .premium } ?? all.first { $0.quality == .enhanced } ?? AVSpeechSynthesisVoice(language: "ja-JP")
     }()
     private var token = 0
     /// Rendering the line first and then playing it starts a beat late on iPad, so there the
@@ -105,7 +105,7 @@ final class Speaker: NSObject {
     /// Load the voice and the speech engine once at launch, so the first line in a game does not stutter.
     func warmUp() {
         _ = enVoice
-        let u = AVSpeechUtterance(string: "Hi")
+        let u = AVSpeechUtterance(string: "はい")
         u.voice = enVoice
         let collector = VoiceCollector(target: AudioManager.shared.engineFormat) { _ in }
         synth.write(u, toBufferCallback: VoiceCollector.handler(collector))
@@ -118,8 +118,8 @@ final class Speaker: NSObject {
     private lazy var manVoice: AVSpeechSynthesisVoice? = pick(.male)
     private lazy var womanVoice: AVSpeechSynthesisVoice? = pick(.female)
     private func pick(_ g: AVSpeechSynthesisVoiceGender) -> AVSpeechSynthesisVoice? {
-        let all = AVSpeechSynthesisVoice.speechVoices().filter { $0.language.hasPrefix("en-") && $0.gender == g }
-        let us = all.filter { $0.language == "en-US" }
+        let all = AVSpeechSynthesisVoice.speechVoices().filter { $0.language.hasPrefix("ja") && $0.gender == g }
+        let us = all.filter { $0.language == "ja-JP" }
         let pool = us.isEmpty ? all : us
         return pool.first { $0.quality == .premium } ?? pool.first { $0.quality == .enhanced } ?? pool.first
     }
@@ -260,19 +260,20 @@ nonisolated final class VoiceCollector: @unchecked Sendable {
 
 // MARK: - Recorded voices (Google Chirp 3 HD, made beforehand)
 
-/// voice.pack holds the clips (Opus in CAF) one after another; voice.idx lists "key offset length".
-/// key = first 16 hex of SHA1("f|text" or "m|text"). Missing lines fall back to the system voice.
+/// voice0.pack … voice3.pack hold the clips (Opus in CAF) one after another; voice.idx lists "key pack offset length".
+/// key = first 16 hex of SHA1("f|text" or "m|text"). Text keys: the word (kanji and kana), the example sentence,
+/// and "w:<id>" / "e:<id>". Missing lines fall back to the system voice.
 nonisolated enum RecordedVoice {
-    private static let packURL = Bundle.main.url(forResource: "voice", withExtension: "pack")
-    private static let index: [String: (offset: UInt64, length: Int)] = {
+    private static let packURLs: [URL?] = (0..<4).map { Bundle.main.url(forResource: "voice\($0)", withExtension: "pack") }
+    private static let index: [String: (pack: Int, offset: UInt64, length: Int)] = {
         guard let url = Bundle.main.url(forResource: "voice", withExtension: "idx"),
               let text = try? String(contentsOf: url, encoding: .utf8) else { return [:] }
-        var out: [String: (UInt64, Int)] = [:]
-        out.reserveCapacity(10000)
+        var out: [String: (Int, UInt64, Int)] = [:]
+        out.reserveCapacity(100_000)
         for line in text.split(separator: "\n") {
             let f = line.split(separator: " ")
-            guard f.count == 3, let o = UInt64(f[1]), let l = Int(f[2]) else { continue }
-            out[String(f[0])] = (o, l)
+            guard f.count == 4, let p = Int(f[1]), let o = UInt64(f[2]), let l = Int(f[3]) else { continue }
+            out[String(f[0])] = (p, o, l)
         }
         return out
     }()
@@ -285,7 +286,8 @@ nonisolated enum RecordedVoice {
     @MainActor static func buffer(_ text: String, _ g: Speaker.Gender) -> AVAudioPCMBuffer? { buffer(text, role: g.rawValue) }
     /// the clip in the engine format, or nil ("f" woman, "m" man, "n" narrator)
     @MainActor static func buffer(_ text: String, role: String) -> AVAudioPCMBuffer? {
-        guard let e = index[key(role, text)], let packURL, let h = try? FileHandle(forReadingFrom: packURL) else { return nil }
+        guard let e = index[key(role, text)], e.pack < packURLs.count, let packURL = packURLs[e.pack],
+              let h = try? FileHandle(forReadingFrom: packURL) else { return nil }
         defer { try? h.close() }
         guard (try? h.seek(toOffset: e.offset)) != nil, let data = try? h.read(upToCount: e.length), data.count == e.length else { return nil }
         let tmp = FileManager.default.temporaryDirectory.appendingPathComponent("v-\(UUID().uuidString).caf")

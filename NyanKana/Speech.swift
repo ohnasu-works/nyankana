@@ -15,7 +15,7 @@ final class SpeechCoach: ObservableObject {
     @Published private(set) var state: State = .idle
     @Published private(set) var heard = ""
 
-    private let recognizer = SFSpeechRecognizer(locale: Locale(identifier: "en-US"))
+    private let recognizer = SFSpeechRecognizer(locale: Locale(identifier: "ja-JP"))
     private var engine: AVAudioEngine?
     private var request: SFSpeechAudioBufferRecognitionRequest?
     private var task: SFSpeechRecognitionTask?

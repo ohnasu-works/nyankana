@@ -113,7 +113,7 @@ struct HandwritingPad: View {
     nonisolated static func readText(_ cg: CGImage) -> String {
         let req = VNRecognizeTextRequest()
         req.recognitionLevel = .accurate
-        req.recognitionLanguages = ["en-US"]
+        req.recognitionLanguages = ["ja-JP"]
         req.usesLanguageCorrection = false        // read what was written, typos included
         try? VNImageRequestHandler(cgImage: cg).perform([req])
         // lines top to bottom
