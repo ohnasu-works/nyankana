@@ -1,7 +1,7 @@
 # keep only the app source and the project
 /*
-!/Nyanglish/
-!/Nyanglish.xcodeproj/
+!/NyanKana/
+!/NyanKana.xcodeproj/
 !/.gitignore
 xcuserdata/
 .DS_Store

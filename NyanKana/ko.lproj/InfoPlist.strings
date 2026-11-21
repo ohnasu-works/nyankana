@@ -1,0 +1,4 @@
+CFBundleDisplayName = "냥글리시";
+NSMicrophoneUsageDescription = "말한 영어를 알아듣고 채점하기 위해 마이크를 사용합니다.";
+NSSpeechRecognitionUsageDescription = "말한 영어를 알아듣고 채점하기 위해 음성 인식을 사용합니다.";
+NSUserTrackingUsageDescription = "무료판에서 회원님에게 맞는 광고를 표시하기 위해 사용합니다. 허용하지 않아도 모든 기능을 쓸 수 있습니다.";

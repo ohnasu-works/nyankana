@@ -1,0 +1,866 @@
+{
+ "Japanese": {
+  "en": "language of Japan",
+  "es": "japonés (idioma)",
+  "pt": "japonês (idioma)",
+  "vi": "tiếng Nhật"
+ },
+ "admit": {
+  "en": "accept as true"
+ },
+ "again": {
+  "en": "one more time"
+ },
+ "aim": {
+  "en": "purpose; target"
+ },
+ "apple": {
+  "en": "red or green fruit"
+ },
+ "assessment": {
+  "en": "judgment of quality"
+ },
+ "assign": {
+  "en": "give out as a task"
+ },
+ "atom": {
+  "en": "tiniest unit of an element"
+ },
+ "average": {
+  "en": "typical middle value"
+ },
+ "bacteria": {
+  "en": "tiny living germs"
+ },
+ "banana": {
+  "en": "long yellow fruit"
+ },
+ "basketball": {
+  "en": "sport with a hoop"
+ },
+ "battery": {
+  "en": "stores electric power"
+ },
+ "blackboard": {
+  "en": "board for chalk"
+ },
+ "butterfly": {
+  "en": "insect with colorful wings"
+ },
+ "calendar": {
+  "en": "chart of days and months"
+ },
+ "camera": {
+  "en": "takes photos"
+ },
+ "carrot": {
+  "en": "orange root vegetable"
+ },
+ "cell": {
+  "en": "smallest unit of life"
+ },
+ "change": {
+  "en": "make different"
+ },
+ "choice": {
+  "en": "act of picking"
+ },
+ "chopsticks": {
+  "en": "two sticks for eating"
+ },
+ "complicated": {
+  "en": "hard to understand"
+ },
+ "cow": {
+  "en": "farm animal giving milk"
+ },
+ "coworker": {
+  "en": "person you work with"
+ },
+ "cross": {
+  "en": "go to the other side"
+ },
+ "cushion": {
+  "en": "soft pillow for a seat"
+ },
+ "cute": {
+  "en": "sweet and charming"
+ },
+ "defeat": {
+  "en": "beat in a fight"
+ },
+ "device": {
+  "en": "machine or gadget"
+ },
+ "drum": {
+  "en": "instrument you hit"
+ },
+ "duplicate": {
+  "en": "exact copy"
+ },
+ "earthquake": {
+  "en": "shaking of the ground"
+ },
+ "eight": {
+  "en": "8"
+ },
+ "elect": {
+  "en": "choose by voting"
+ },
+ "elevator": {
+  "en": "lift between floors"
+ },
+ "eleven": {
+  "en": "11"
+ },
+ "enough": {
+  "en": "as much as needed"
+ },
+ "equation": {
+  "en": "math statement with ="
+ },
+ "eraser": {
+  "en": "rubs out pencil marks"
+ },
+ "evaluate": {
+  "en": "judge the value of"
+ },
+ "evaluation": {
+  "en": "judgment of value"
+ },
+ "everything": {
+  "en": "all things"
+ },
+ "exact": {
+  "en": "precisely correct"
+ },
+ "fascinate": {
+  "en": "strongly attract"
+ },
+ "feature": {
+  "en": "typical quality"
+ },
+ "five": {
+  "en": "5"
+ },
+ "flaw": {
+  "en": "defect; weak point"
+ },
+ "focus": {
+  "en": "concentrate"
+ },
+ "fork": {
+  "en": "tool with prongs for eating"
+ },
+ "fossil": {
+  "en": "ancient remains in rock"
+ },
+ "found": {
+  "en": "establish; set up"
+ },
+ "four": {
+  "en": "4"
+ },
+ "fun": {
+  "en": "enjoyment"
+ },
+ "genuine": {
+  "en": "real; not fake"
+ },
+ "goal": {
+  "en": "aim; target"
+ },
+ "grammar": {
+  "en": "rules of a language"
+ },
+ "grape": {
+  "en": "small fruit for wine"
+ },
+ "gratitude": {
+  "en": "thankfulness"
+ },
+ "guarantee": {
+  "en": "promise for sure"
+ },
+ "guitar": {
+  "en": "six-string instrument"
+ },
+ "habit": {
+  "en": "thing you do regularly"
+ },
+ "hamburger": {
+  "en": "beef patty in a bun"
+ },
+ "handle": {
+  "en": "deal with"
+ },
+ "happen": {
+  "en": "take place"
+ },
+ "hat": {
+  "en": "cap worn on the head"
+ },
+ "headquarters": {
+  "en": "main office"
+ },
+ "help": {
+  "en": "assist"
+ },
+ "hinder": {
+  "en": "get in the way of"
+ },
+ "hire": {
+  "en": "employ"
+ },
+ "homework": {
+  "en": "school tasks done at home"
+ },
+ "hot dog": {
+  "en": "sausage in a bun"
+ },
+ "huge": {
+  "en": "very big"
+ },
+ "hundred": {
+  "en": "100"
+ },
+ "ice": {
+  "en": "frozen water"
+ },
+ "illness": {
+  "en": "sickness; disease"
+ },
+ "in spite of": {
+  "en": "regardless of; despite"
+ },
+ "include": {
+  "en": "contain as a part"
+ },
+ "instance": {
+  "en": "example; case"
+ },
+ "instant": {
+  "en": "immediate"
+ },
+ "institute": {
+  "en": "research organization"
+ },
+ "intense": {
+  "en": "very strong"
+ },
+ "invoice": {
+  "en": "bill for payment"
+ },
+ "irritate": {
+  "en": "annoy"
+ },
+ "judge": {
+  "en": "decide; form an opinion"
+ },
+ "kid": {
+  "en": "child"
+ },
+ "koala": {
+  "en": "Australian tree animal"
+ },
+ "laboratory": {
+  "en": "room for experiments"
+ },
+ "lack": {
+  "en": "shortage; absence"
+ },
+ "lady": {
+  "en": "woman (polite)",
+  "es": "dama, señora",
+  "pt": "dama, senhora",
+  "vi": "quý cô, phụ nữ"
+ },
+ "large": {
+  "en": "big"
+ },
+ "leave": {
+  "en": "depart"
+ },
+ "lemon": {
+  "en": "sour yellow fruit"
+ },
+ "liberty": {
+  "en": "freedom"
+ },
+ "link": {
+  "en": "connection"
+ },
+ "lion": {
+  "en": "king of beasts"
+ },
+ "loyal": {
+  "en": "faithful"
+ },
+ "loyalty": {
+  "en": "faithfulness"
+ },
+ "mad": {
+  "en": "angry"
+ },
+ "magnificent": {
+  "en": "grand; splendid"
+ },
+ "medicine": {
+  "en": "drug that treats illness"
+ },
+ "meeting": {
+  "en": "gathering to discuss"
+ },
+ "mistake": {
+  "en": "error",
+  "es": "error",
+  "pt": "erro",
+  "vi": "lỗi, sai lầm"
+ },
+ "modern": {
+  "en": "of the present time"
+ },
+ "mostly": {
+  "en": "mainly"
+ },
+ "motive": {
+  "en": "reason for doing"
+ },
+ "movie": {
+  "en": "film"
+ },
+ "must": {
+  "en": "have to"
+ },
+ "mystery": {
+  "en": "puzzle; something unknown"
+ },
+ "natto": {
+  "en": "sticky fermented soybeans"
+ },
+ "nearly": {
+  "en": "almost"
+ },
+ "newspaper": {
+  "en": "daily printed news"
+ },
+ "nine": {
+  "en": "9"
+ },
+ "notebook": {
+  "en": "book for writing notes"
+ },
+ "notify": {
+  "en": "inform"
+ },
+ "obey": {
+  "en": "follow orders"
+ },
+ "obligation": {
+  "en": "duty"
+ },
+ "obtain": {
+  "en": "get; acquire"
+ },
+ "obvious": {
+  "en": "clear; easy to see"
+ },
+ "one": {
+  "en": "1"
+ },
+ "onion": {
+  "en": "bulb vegetable that makes you cry"
+ },
+ "opinion": {
+  "en": "view; belief"
+ },
+ "opportunity": {
+  "en": "chance"
+ },
+ "opposite": {
+  "en": "completely different; contrary"
+ },
+ "ordinary": {
+  "en": "normal; usual"
+ },
+ "outcome": {
+  "en": "result"
+ },
+ "particularly": {
+  "en": "especially"
+ },
+ "party": {
+  "en": "celebration with friends"
+ },
+ "peach": {
+  "en": "soft fuzzy fruit"
+ },
+ "pencil": {
+  "en": "writing tool with lead"
+ },
+ "people": {
+  "en": "persons; humans"
+ },
+ "permit": {
+  "en": "allow"
+ },
+ "phone": {
+  "en": "device for calls"
+ },
+ "piano": {
+  "en": "keyboard instrument"
+ },
+ "pilot": {
+  "en": "person who flies planes"
+ },
+ "pizza": {
+  "en": "Italian flat pie with cheese"
+ },
+ "place": {
+  "en": "location; spot"
+ },
+ "planet": {
+  "en": "world circling a star"
+ },
+ "point": {
+  "en": "score; mark",
+  "es": "punto",
+  "pt": "ponto",
+  "vi": "điểm"
+ },
+ "polite": {
+  "en": "well-mannered"
+ },
+ "power": {
+  "en": "strength; force"
+ },
+ "prejudice": {
+  "en": "unfair bias"
+ },
+ "pretty": {
+  "en": "lovely; attractive",
+  "es": "bonito, lindo",
+  "pt": "bonito, lindo",
+  "vi": "dễ thương, xinh"
+ },
+ "previous": {
+  "en": "earlier; before"
+ },
+ "printer": {
+  "en": "machine that puts text on paper"
+ },
+ "prison": {
+  "en": "jail"
+ },
+ "prize": {
+  "en": "award"
+ },
+ "problem": {
+  "en": "trouble; difficulty"
+ },
+ "profit": {
+  "en": "money gained"
+ },
+ "proof": {
+  "en": "evidence"
+ },
+ "proportion": {
+  "en": "ratio; part of a whole"
+ },
+ "protect": {
+  "en": "keep safe"
+ },
+ "protection": {
+  "en": "keeping safe"
+ },
+ "pumpkin": {
+  "en": "big orange squash"
+ },
+ "punishment": {
+  "en": "penalty"
+ },
+ "puppy": {
+  "en": "young dog"
+ },
+ "qualification": {
+  "en": "skill or certificate needed"
+ },
+ "quantity": {
+  "en": "amount"
+ },
+ "question": {
+  "en": "something you ask"
+ },
+ "quick": {
+  "en": "fast"
+ },
+ "quote": {
+  "en": "repeat someone's words"
+ },
+ "racket": {
+  "en": "bat for tennis"
+ },
+ "rainbow": {
+  "en": "colored arc in the sky"
+ },
+ "regard": {
+  "en": "consider; view as"
+ },
+ "region": {
+  "en": "area; district"
+ },
+ "registration": {
+  "en": "official signing up"
+ },
+ "relevant": {
+  "en": "related; connected"
+ },
+ "rely": {
+  "en": "depend"
+ },
+ "reporter": {
+  "en": "journalist"
+ },
+ "representative": {
+  "en": "person acting for others"
+ },
+ "require": {
+  "en": "need"
+ },
+ "reservation": {
+  "en": "booking"
+ },
+ "resident": {
+  "en": "person living somewhere"
+ },
+ "respond": {
+  "en": "reply; react"
+ },
+ "response": {
+  "en": "reply; reaction"
+ },
+ "responsibility": {
+  "en": "duty; being in charge"
+ },
+ "restrict": {
+  "en": "limit"
+ },
+ "restriction": {
+  "en": "limit; rule against"
+ },
+ "result": {
+  "en": "outcome"
+ },
+ "ridiculous": {
+  "en": "silly; absurd"
+ },
+ "risk": {
+  "en": "danger; chance of loss"
+ },
+ "room": {
+  "en": "space in a house"
+ },
+ "rule": {
+  "en": "regulation"
+ },
+ "sacred": {
+  "en": "holy"
+ },
+ "sandwich": {
+  "en": "food between bread slices"
+ },
+ "satisfy": {
+  "en": "please; fulfill"
+ },
+ "scared": {
+  "en": "afraid"
+ },
+ "select": {
+  "en": "choose"
+ },
+ "selection": {
+  "en": "choosing; picks",
+  "es": "selección",
+  "pt": "seleção",
+  "vi": "sự lựa chọn"
+ },
+ "server": {
+  "en": "computer that serves data"
+ },
+ "seven": {
+  "en": "7"
+ },
+ "severe": {
+  "en": "harsh; serious"
+ },
+ "shell": {
+  "en": "hard cover of a sea creature"
+ },
+ "short": {
+  "en": "not long"
+ },
+ "shortage": {
+  "en": "lack; too little"
+ },
+ "show": {
+  "en": "let someone see"
+ },
+ "shut": {
+  "en": "close"
+ },
+ "sick": {
+  "en": "ill"
+ },
+ "significance": {
+  "en": "importance"
+ },
+ "signify": {
+  "en": "mean; indicate"
+ },
+ "simple": {
+  "en": "easy; plain"
+ },
+ "sincerely": {
+  "en": "honestly; from the heart"
+ },
+ "situation": {
+  "en": "circumstances"
+ },
+ "six": {
+  "en": "6"
+ },
+ "slight": {
+  "en": "small; minor"
+ },
+ "slowly": {
+  "en": "not quickly",
+  "es": "lentamente",
+  "pt": "devagar, lentamente",
+  "vi": "chậm rãi"
+ },
+ "smart": {
+  "en": "clever"
+ },
+ "sock": {
+  "en": "cloth worn on the foot"
+ },
+ "solve": {
+  "en": "find the answer to"
+ },
+ "somebody": {
+  "en": "someone; a person"
+ },
+ "sometimes": {
+  "en": "now and then"
+ },
+ "specialist": {
+  "en": "expert"
+ },
+ "specific": {
+  "en": "particular; concrete"
+ },
+ "split": {
+  "en": "divide"
+ },
+ "spoon": {
+  "en": "tool for eating soup"
+ },
+ "standard": {
+  "en": "level used as a norm"
+ },
+ "start": {
+  "en": "begin"
+ },
+ "still": {
+  "en": "even now; yet",
+  "es": "todavía",
+  "pt": "ainda",
+  "vi": "vẫn còn"
+ },
+ "store": {
+  "en": "shop"
+ },
+ "story": {
+  "en": "tale"
+ },
+ "strange": {
+  "en": "odd; unusual"
+ },
+ "strawberry": {
+  "en": "red berry with seeds"
+ },
+ "strength": {
+  "en": "power; force"
+ },
+ "strike": {
+  "en": "hit"
+ },
+ "student": {
+  "en": "learner at school"
+ },
+ "sufficient": {
+  "en": "adequate"
+ },
+ "suggest": {
+  "en": "propose"
+ },
+ "suit": {
+  "en": "formal jacket and pants"
+ },
+ "supervise": {
+  "en": "oversee"
+ },
+ "supporter": {
+  "en": "fan; backer"
+ },
+ "surgery": {
+  "en": "medical operation"
+ },
+ "surprise": {
+  "en": "astonish"
+ },
+ "switch": {
+  "en": "button that turns on/off"
+ },
+ "talk": {
+  "en": "speak"
+ },
+ "target": {
+  "en": "aim; goal"
+ },
+ "ten": {
+  "en": "10"
+ },
+ "terrible": {
+  "en": "awful"
+ },
+ "thorough": {
+  "en": "complete; careful"
+ },
+ "though": {
+  "en": "even if; despite that"
+ },
+ "thought": {
+  "en": "idea"
+ },
+ "thousand": {
+  "en": "1,000"
+ },
+ "three": {
+  "en": "3"
+ },
+ "thrive": {
+  "en": "grow well; prosper"
+ },
+ "throw": {
+  "en": "toss"
+ },
+ "today": {
+  "en": "this day"
+ },
+ "tomato": {
+  "en": "red salad fruit"
+ },
+ "toothbrush": {
+  "en": "brush for your teeth"
+ },
+ "totally": {
+  "en": "completely"
+ },
+ "towel": {
+  "en": "cloth for drying"
+ },
+ "trainee": {
+  "en": "person in training"
+ },
+ "trip": {
+  "en": "journey"
+ },
+ "true": {
+  "en": "correct; real"
+ },
+ "truly": {
+  "en": "really"
+ },
+ "twelve": {
+  "en": "12"
+ },
+ "twenty": {
+  "en": "20"
+ },
+ "two": {
+  "en": "2"
+ },
+ "typhoon": {
+  "en": "tropical storm"
+ },
+ "umbrella": {
+  "en": "keeps rain off you"
+ },
+ "under": {
+  "en": "below"
+ },
+ "understand": {
+  "en": "get the meaning of"
+ },
+ "uniform": {
+  "en": "clothes everyone in a group wears"
+ },
+ "unique": {
+  "en": "one of a kind"
+ },
+ "university": {
+  "en": "college"
+ },
+ "until": {
+  "en": "up to (a time)"
+ },
+ "useful": {
+  "en": "helpful"
+ },
+ "valuable": {
+  "en": "worth a lot"
+ },
+ "version": {
+  "en": "edition; form"
+ },
+ "victory": {
+  "en": "win"
+ },
+ "violin": {
+  "en": "string instrument with a bow"
+ },
+ "voice": {
+  "en": "sound you speak with"
+ },
+ "water bottle": {
+  "en": "container for drinks"
+ },
+ "watermelon": {
+  "en": "big green fruit, red inside"
+ },
+ "wealthy": {
+  "en": "rich"
+ },
+ "whole": {
+  "en": "entire"
+ },
+ "wide": {
+  "en": "broad"
+ },
+ "wolf": {
+  "en": "wild dog that howls"
+ },
+ "wonderful": {
+  "en": "amazing; great"
+ },
+ "worldwide": {
+  "en": "global"
+ },
+ "yard": {
+  "en": "garden around a house"
+ },
+ "zero": {
+  "en": "0; nothing"
+ }
+}

@@ -1,0 +1,4 @@
+CFBundleDisplayName = "Nyanglish";
+NSMicrophoneUsageDescription = "Dùng micro để nghe và chấm điểm tiếng Anh bạn nói.";
+NSSpeechRecognitionUsageDescription = "Dùng nhận dạng giọng nói để nghe và chấm điểm tiếng Anh bạn nói.";
+NSUserTrackingUsageDescription = "Dùng để hiển thị quảng cáo phù hợp với bạn trong bản miễn phí. Không cho phép thì vẫn dùng được mọi tính năng.";

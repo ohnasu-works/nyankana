@@ -1,0 +1,4 @@
+CFBundleDisplayName = "Nyanglish";
+NSMicrophoneUsageDescription = "Uses the microphone to listen to and score the English you speak.";
+NSSpeechRecognitionUsageDescription = "Uses speech recognition to listen to and score the English you speak.";
+NSUserTrackingUsageDescription = "Used to show ads that suit you in the free version. Every feature works even if you don't allow it.";

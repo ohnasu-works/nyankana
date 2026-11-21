@@ -1,0 +1,4 @@
+CFBundleDisplayName = "にゃんグリッシュ";
+NSMicrophoneUsageDescription = "話した英語を聞き取って採点するためにマイクを使います。";
+NSSpeechRecognitionUsageDescription = "話した英語を聞き取って採点するために音声認識を使います。";
+NSUserTrackingUsageDescription = "無料版で、あなたに合った広告を表示するために使います。許可しなくてもすべての機能を使えます。";
