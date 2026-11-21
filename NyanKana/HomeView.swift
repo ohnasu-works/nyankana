@@ -73,12 +73,12 @@ struct HomeView: View {
 
     // MARK: logo
 
-    /// Japanese: the kana logo. Every other language: the same logo in English letters ("Nyanglish"),
-    /// with the name / a short tagline in that language on the little blue tag.
+    /// The kana logo in every language (it is the language being learned),
+    /// with "NyanKana" / a short tagline in that language on the little blue tag.
     private var logo: some View {
-        let ja = L10n.current == .ja
-        let word = ja ? "にゃんグリッシュ" : "Nyanglish"
-        let size: CGFloat = (UIScale.isPad ? 50 : 34) * (ja ? 1 : 1.12)
+        let ja = true
+        let word = "にゃんカナ"
+        let size: CGFloat = (UIScale.isPad ? 56 : 40)
         return ZStack(alignment: .bottomTrailing) {
             HStack(spacing: ja ? -2 : 0) {
                 ForEach(Array(word.enumerated()), id: \.offset) { i, ch in
@@ -88,7 +88,7 @@ struct HomeView: View {
                 }
             }
             .rotationEffect(.degrees(-3))
-            Text(ja ? "Nyanglish" : logoTag)
+            Text(L10n.current == .ja ? "NyanKana" : logoTag)
                 .font([.ko, .zhHant, .vi].contains(L10n.current) ? .ui(13.s) : .en(13.s)).foregroundStyle(.white)
                 .padding(.horizontal, 10).padding(.vertical, 3)
                 .fixedSize()
@@ -102,12 +102,12 @@ struct HomeView: View {
     /// the tag under the English-letter logo
     private var logoTag: String {
         switch L10n.current {
-        case .ko: "냥글리시"
-        case .zhHant: "喵格利許"
-        case .vi: "Học tiếng Anh"
-        case .es: "Aprende inglés"
-        case .ptBR: "Aprenda inglês"
-        default: "English Quest"
+        case .ko: "냥카나 · 일본어 여행"
+        case .zhHant: "喵假名 · 日語之旅"
+        case .vi: "Học tiếng Nhật"
+        case .es: "Aprende japonés"
+        case .ptBR: "Aprenda japonês"
+        default: "NyanKana · Japanese Journey"
         }
     }
 
