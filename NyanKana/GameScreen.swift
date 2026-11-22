@@ -47,7 +47,8 @@ struct GameScreen: View {
             }
             if m.paused { pauseMenu }
             if case .story(let kind) = m.phase {
-                StoryView(lines: m.storyLines(kind), background: StoryBank.background(m.ref, kind)) { m.storyDone(kind) }
+                // にゃんカナ: the travel story (novel scenes); the old English scenes are not shown
+                NovelView(scenes: NovelBank.scenes(m.ref, kind)) { m.storyDone(kind) }
                     .transition(.opacity)
             }
             if m.phase == .result {
