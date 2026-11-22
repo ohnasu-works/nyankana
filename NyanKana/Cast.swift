@@ -22,7 +22,8 @@ struct Cast: Codable, Hashable {
 
     private var info: CastInfo { Cast.table[id] ?? Cast.table["nyan"]! }
     var name: String { info.name }
-    var image: String { Cast.outfitImage[id] ?? info.image }
+    /// costumes for ソラ / ユイ are not drawn yet, so the travel clothes are always shown
+    var image: String { (id == "ken" || id == "rin") ? info.image : (Cast.outfitImage[id] ?? info.image) }
     /// costume picture per kid ("ken" -> "ken_uniform"), set by `Outfit.sync`
     static var outfitImage: [String: String] = [:]
     var leftSide: Bool { info.left }
@@ -33,9 +34,10 @@ struct Cast: Codable, Hashable {
 
     static let table: [String: CastInfo] = {
         var t: [String: CastInfo] = [
-            "ken": .init(name: "Ken", image: "ken_full", left: true, voice: .init(pitch: 0.85, rate: 0.95)),
-            "rin": .init(name: "Rin", image: "rin_full", scale: 0.81,   // the top of Rin's head at Ken's eye level
-                       voice: .init(pitch: 1.2, rate: 0.95)),
+            // にゃんカナ: the partner ソラ (id "ken") or ユイ (id "rin"); the ids are kept from にゃんグリッシュ
+            "ken": .init(name: L10n.current == .ja ? "ソラ" : "Sora", image: "sora_full", left: true, voice: .init(pitch: 0.9, rate: 0.95)),
+            "rin": .init(name: L10n.current == .ja ? "ユイ" : "Yui", image: "yui_full", scale: 0.97,
+                       voice: .init(pitch: 1.15, rate: 0.95)),
             "nyan": .init(name: "Nyan", image: "nyan", left: true, scale: 0.45, voice: .init(pitch: 1.6, rate: 1.05)),
         ]
         for b in BossProfile.bosses {

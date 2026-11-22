@@ -194,7 +194,7 @@ struct ClosetView: View {
         HStack(spacing: 10.s) {
             ForEach(Outfit.kids, id: \.self) { k in
                 Button { AudioManager.shared.se(.tap); kid = k } label: {
-                    Text(k == "ken" ? "Ken" : "Rin").font(.en(18.s))
+                    Text(Cast(k).name).font(.en(18.s))
                         .foregroundStyle(kid == k ? Color.white : Color.ink)
                         .frame(maxWidth: .infinity, minHeight: 40.s)
                         .background(Capsule().fill(kid == k ? (k == "ken" ? Color.mintDeep : Color.popDeep) : Color.white)
