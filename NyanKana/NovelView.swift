@@ -163,7 +163,7 @@ struct NovelView: View {
                     Image(Traveler.partnerCast.image).resizable().scaledToFit().frame(maxHeight: .infinity).padding(.top, 20)
                         .transition(.opacity)
                 } else if who == "nyan" {
-                    Image("nyan").resizable().scaledToFit().frame(height: 150).padding(.bottom, 6)
+                    Image(current?.tip == true ? "nk_nyan_tip" : "nk_nyan").resizable().scaledToFit().frame(height: 210).padding(.bottom, 6)
                         .transition(.opacity)
                 }
             }
