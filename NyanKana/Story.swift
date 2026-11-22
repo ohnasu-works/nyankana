@@ -9,12 +9,11 @@ struct StoryLine: Codable, Hashable {
     var zh: String? = nil
     /// subtitle in the UI language (Japanese is the fallback)
     var sub: String {
+        // にゃんカナ: `en` is the Japanese line on screen, `ja` the English subtitle
         switch L10n.current {
-        case .ja: ja
         case .ko: ko ?? ja.replacingOccurrences(of: "|", with: "")
         case .zhHant: zh ?? ja.replacingOccurrences(of: "|", with: "")
-        case .en: ""          // the spoken English line is already on screen
-        default: Tr.text(ja)
+        default: ja.replacingOccurrences(of: "|", with: "")
         }
     }
     init(_ who: Cast, _ en: String, _ ja: String, _ ko: String? = nil, _ zh: String? = nil) {

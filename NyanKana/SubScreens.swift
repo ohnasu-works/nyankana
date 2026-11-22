@@ -368,7 +368,7 @@ struct ZukanLine {
     var sub: String
     var voice: Speaker.Voice?
     static func of(_ p: BossProfile) -> [ZukanLine] {
-        func sub(_ l: BossProfile.L4) -> String { L10n.current == .en ? "" : T(jp(l.ja), l.ko, l.zh) }
+        func sub(_ l: BossProfile.L4) -> String { L10n.current == .ko ? l.ko : L10n.current == .zhHant ? l.zh : l.ja }
         return [
             ZukanLine(label: T("登場", "등장", "登場"), en: p.intro.en, sub: sub(p.intro), voice: p.voice),
             ZukanLine(label: T("ピンチ", "위기", "危機"), en: p.half.en, sub: sub(p.half), voice: p.voice),
