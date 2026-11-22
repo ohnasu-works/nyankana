@@ -325,9 +325,9 @@ struct NovelView: View {
     private func settle() {
         while pos < steps.count {
             switch steps[pos] {
-            case .scene(let bg): background = bg; still = nil; pos += 1
+            case .scene(let bg): if !bg.isEmpty { background = bg }; still = nil; pos += 1
             case .line(let l) where l.t == "bg": background = l.img ?? background; still = nil; pos += 1
-            case .line(let l) where l.t == "still": withAnimation { still = l.img }; pos += 1
+            case .line(let l) where l.t == "still": withAnimation { still = l.img.map { $0.replacingOccurrences(of: "{P}", with: Traveler.isSora ? "ソラ" : "ユイ") } }; pos += 1
             default: return
             }
         }
