@@ -119,6 +119,10 @@ struct NovelView: View {
     @State private var nameField = ""
     @State private var autoToken = 0
     @State private var finished = false
+    @State private var slow = AppState.shared.settings.slowVoice
+    @State private var lastSaid: NovelLine?
+    @State private var metPartner = UserDefaults.standard.bool(forKey: "nyankana.metPartner")
+    @State private var metNyan = UserDefaults.standard.bool(forKey: "nyankana.metNyan")
 
     private var current: NovelLine? {
         guard pos < steps.count, case .line(let l) = steps[pos] else { return nil }
@@ -127,116 +131,185 @@ struct NovelView: View {
 
     var body: some View {
         GeometryReader { g in
-            ZStack {
-                Color.black.ignoresSafeArea()
-                VStack(spacing: 0) {
-                    stage.frame(width: g.size.width, height: min(g.size.height * 0.58, g.size.width * 9 / 16 * (g.size.width > g.size.height ? 1.6 : 1)))
-                        .clipped()
-                    textBox.frame(maxHeight: .infinity)
+            let boxH = max(170, g.size.height * 0.25)
+            ZStack(alignment: .bottom) {
+                backdrop(g)
+                if still == nil { cast(g, boxH: boxH) }
+                if let l = current, l.t == "choice", let opts = l.options {
+                    choices(opts, in: l).padding(.bottom, boxH + 12)
                 }
-                .contentShape(Rectangle())
-                .onTapGesture { if current?.t != "choice" { advance() } }
+                textBox.frame(height: boxH)
                 controls
                 if setup { setupPanel }
             }
+            .frame(width: g.size.width, height: g.size.height)
+            .contentShape(Rectangle())
+            .onTapGesture { if current?.t != "choice" { advance() } }
         }
+        .ignoresSafeArea()
         .onAppear(perform: start)
         .sheet(isPresented: $showLog) { logSheet }
     }
 
-    // MARK: picture
+    // MARK: picture (fills the whole screen in portrait too: the middle of the wide picture)
 
-    private var stage: some View {
-        ZStack(alignment: .bottom) {
+    @ViewBuilder private func backdrop(_ g: GeometryProxy) -> some View {
+        ZStack {
+            Color.black
             if let img = UIImage(named: background) {
                 Image(uiImage: img).resizable().scaledToFill()
+                    .frame(width: g.size.width, height: g.size.height).clipped()
             } else {
                 LinearGradient(colors: [Color(hex: 0x2B3A67), Color(hex: 0xE9A9B8)], startPoint: .top, endPoint: .bottom)
-                Text(background).font(.ui(13)).foregroundStyle(.white.opacity(0.75)).padding(8)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             }
             if let s = still, let img = UIImage(named: s) {
-                Image(uiImage: img).resizable().scaledToFill().transition(.opacity)
+                // a key scene: blurred copy behind, the whole picture on top
+                Image(uiImage: img).resizable().scaledToFill()
+                    .frame(width: g.size.width, height: g.size.height).clipped()
+                    .blur(radius: 22).overlay(Color.black.opacity(0.25))
+                Image(uiImage: img).resizable().scaledToFit()
+                    .frame(maxWidth: g.size.width - 24, maxHeight: g.size.height * 0.62)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .shadow(color: .black.opacity(0.45), radius: 12, y: 6)
+                    .frame(maxHeight: .infinity, alignment: .center)
+                    .padding(.bottom, g.size.height * 0.18)
+                    .transition(.opacity)
             }
-            if let who = current?.who, still == nil {
-                if who == "partner" {
-                    Image(Traveler.partnerCast.image).resizable().scaledToFit().frame(maxHeight: .infinity).padding(.top, 20)
-                        .transition(.opacity)
-                } else if who == "nyan" {
-                    Image(current?.tip == true ? "nk_nyan_tip" : "nk_nyan").resizable().scaledToFit().frame(height: 210).padding(.bottom, 6)
-                        .transition(.opacity)
-                }
-            }
+            LinearGradient(colors: [.clear, .black.opacity(0.55)], startPoint: .center, endPoint: .bottom)
         }
-        .animation(.easeInOut(duration: 0.25), value: current)
+        .frame(width: g.size.width, height: g.size.height)
+        .animation(.easeInOut(duration: 0.3), value: still)
     }
 
-    // MARK: words
+    /// ソラ / ユイ on the left and Nyan on the right are always there once met; the one speaking stands out.
+    @ViewBuilder private func cast(_ g: GeometryProxy, boxH: CGFloat) -> some View {
+        let who = current?.who
+        HStack(alignment: .bottom, spacing: 0) {
+            if metPartner {
+                Image(partnerFace).resizable().scaledToFit()
+                    .frame(maxWidth: g.size.width * 0.62, maxHeight: g.size.height * 0.6)
+                    .brightness(who == "partner" ? 0 : -0.22)
+                    .scaleEffect(who == "partner" ? 1.03 : 1, anchor: .bottom)
+                    .offset(y: who == "partner" ? -6 : 0)
+            }
+            Spacer(minLength: 0)
+            if metNyan {
+                Image(nyanFace).resizable().scaledToFit()
+                    .frame(maxWidth: g.size.width * 0.4, maxHeight: g.size.height * 0.32)
+                    .brightness(who == "nyan" ? 0 : -0.22)
+                    .scaleEffect(who == "nyan" ? 1.06 : 1, anchor: .bottom)
+                    .offset(y: who == "nyan" ? -8 : 0)
+            }
+        }
+        .padding(.horizontal, 6)
+        .padding(.bottom, boxH - 18)
+        .animation(.spring(response: 0.3, dampingFraction: 0.6), value: current)
+    }
+
+    /// a face for the line: the words give the feeling (！ happy, ！？ surprised, …… sad or thinking)
+    private func mood(_ text: String) -> String {
+        if text.contains("!?") || text.contains("！？") || text.contains("えっ") || text.contains("うわ") { return "surprised" }
+        if text.contains("ごめん") || text.contains("さびし") || text.contains("泣") { return "sad" }
+        if text.hasPrefix("……") || text.contains("かな") || text.hasSuffix("？") { return "think" }
+        if text.contains("！") || text.contains("!") || text.contains("うれし") || text.contains("よかった") { return "smile" }
+        return "full"
+    }
+    private var partnerFace: String {
+        let base = Traveler.isSora ? "sora" : "yui"
+        guard let l = current, l.who == "partner", let t = l.ja else { return base + "_full" }
+        return base + "_" + mood(t)
+    }
+    private var nyanFace: String {
+        guard let l = current, l.who == "nyan", let t = l.ja else { return "nk_nyan" }
+        if l.tip == true { return "nk_nyan_tip" }
+        switch mood(t) {
+        case "surprised": return "nk_nyan_surprised"
+        case "sad": return "nk_nyan_sad"
+        case "think": return "nk_nyan_think"
+        case "smile": return "nk_nyan_joy"
+        default: return t.contains("オレ") ? "nk_nyan_proud" : "nk_nyan"
+        }
+    }
+
+    // MARK: words (over the picture)
+
+    private func choices(_ opts: [NovelOption], in l: NovelLine) -> some View {
+        VStack(spacing: 10) {
+            ForEach(opts, id: \.self) { o in
+                Button { pick(o, in: l) } label: {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(Traveler.fill(o.ja)).font(.en(20)).foregroundStyle(Color.ink)
+                        Text(Traveler.fill(sub(o.en, o.ko, o.zh))).font(.ui(12, bold: false)).foregroundStyle(Color.ink.opacity(0.6))
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 16).padding(.vertical, 10)
+                    .background(RoundedRectangle(cornerRadius: 14).fill(.white).overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.ink, lineWidth: 2)))
+                }
+                .buttonStyle(PressStyle(radius: 14, depth: 3))
+            }
+        }
+        .padding(.horizontal, 18)
+        .frame(maxWidth: 560)
+    }
 
     private var textBox: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: 8) {
             if let l = current {
-                if l.t == "choice", let opts = l.options {
-                    ForEach(opts, id: \.self) { o in
-                        Button { pick(o, in: l) } label: {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(Traveler.fill(o.ja)).font(.en(20)).foregroundStyle(Color.ink)
-                                Text(Traveler.fill(sub(o.en, o.ko, o.zh))).font(.ui(12, bold: false)).foregroundStyle(Color.ink.opacity(0.6))
-                            }
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding(.horizontal, 16).padding(.vertical, 10)
-                            .background(RoundedRectangle(cornerRadius: 14).fill(.white).overlay(RoundedRectangle(cornerRadius: 14).stroke(Color.ink, lineWidth: 2)))
+                // a choice: the question stays in the box (the previous line), the answers float above
+                let shown: NovelLine? = l.t == "choice" ? lastSaid : l
+                if let shown {
+                    HStack(spacing: 8) {
+                        if let n = speakerName(shown) {
+                            Text(n).font(.ui(15)).foregroundStyle(.white)
+                                .padding(.horizontal, 12).padding(.vertical, 4)
+                                .background(Capsule().fill(shown.who == "nyan" ? Color.orange : shown.who == "partner" ? Color.sky : Color.gray))
                         }
-                        .buttonStyle(PressStyle(radius: 14, depth: 3))
+                        if shown.tip == true {
+                            Label(T("ニャンのミニ講座", "냥의 미니 강좌", "喵的迷你講座"), systemImage: "lightbulb.fill")
+                                .font(.ui(12)).foregroundStyle(Color.orange)
+                        }
                     }
-                } else {
-                    if let n = speakerName(l) {
-                        Text(n).font(.ui(15)).foregroundStyle(.white)
-                            .padding(.horizontal, 12).padding(.vertical, 4)
-                            .background(Capsule().fill(l.who == "nyan" ? Color.orange : l.who == "partner" ? Color.sky : Color.gray))
-                    }
-                    if l.tip == true {
-                        Label(T("ニャンのミニ講座", "냥의 미니 강좌", "喵的迷你講座"), systemImage: "lightbulb.fill")
-                            .font(.ui(12)).foregroundStyle(Color.orange)
-                    }
-                    Text(Traveler.fill(l.ja ?? "")).font(.en(l.t == "nar" ? 20 : 22))
-                        .foregroundStyle(l.t == "nar" ? Color.white.opacity(0.92) : .white)
+                    Text(Traveler.fill(shown.ja ?? "")).font(.en(shown.t == "nar" ? 20 : 22))
+                        .foregroundStyle(shown.t == "nar" ? Color.white.opacity(0.9) : .white)
                         .fixedSize(horizontal: false, vertical: true)
-                    Text(Traveler.fill(sub(l.en, l.ko, l.zh))).font(.ui(14, bold: false))
-                        .foregroundStyle(.white.opacity(0.65))
+                    Text(Traveler.fill(sub(shown.en, shown.ko, shown.zh))).font(.ui(14, bold: false))
+                        .foregroundStyle(.white.opacity(0.7))
                         .fixedSize(horizontal: false, vertical: true)
-                    Spacer(minLength: 0)
+                }
+                Spacer(minLength: 0)
+                if l.t != "choice" {
                     HStack { Spacer(); Image(systemName: "chevron.down").foregroundStyle(.white.opacity(0.5)) }
                 }
             }
         }
-        .padding(18)
+        .padding(.horizontal, 20).padding(.top, 16).padding(.bottom, 30)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(l_tipBackground)
-    }
-
-    private var l_tipBackground: some View {
-        LinearGradient(colors: [Color(hex: 0x1D2240), Color(hex: 0x10142A)], startPoint: .top, endPoint: .bottom)
+        .background(RoundedRectangle(cornerRadius: 22).fill(Color.black.opacity(0.66)).padding(.horizontal, 8).padding(.bottom, 8))
     }
 
     private var controls: some View {
         VStack {
             HStack(spacing: 8) {
                 Spacer()
+                pill(slow ? "🐢 ON" : "🐢") {
+                    slow.toggle()
+                    AppState.shared.settings.slowVoice = slow
+                    speakCurrent()
+                }
                 pill(auto ? "AUTO ●" : "AUTO") { auto.toggle(); if auto { scheduleAuto() } }
                 pill("LOG") { showLog = true }
                 pill("SKIP") { finish() }
             }
-            .padding(.horizontal, 12).padding(.top, 8)
+            .padding(.horizontal, 12).padding(.top, 54)
             Spacer()
         }
     }
 
     private func pill(_ s: String, _ action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Text(s).font(.ui(12)).foregroundStyle(.white)
-                .padding(.horizontal, 12).padding(.vertical, 6)
-                .background(Capsule().fill(.black.opacity(0.45)))
+            Text(s).font(.ui(13)).foregroundStyle(.white)
+                .padding(.horizontal, 13).padding(.vertical, 7)
+                .background(Capsule().fill(.black.opacity(0.5)))
         }
     }
 
@@ -358,6 +431,11 @@ struct NovelView: View {
     }
 
     private func speakCurrent() {
+        if let l = current, l.t != "choice" {
+            lastSaid = l
+            if l.who == "partner", !metPartner { metPartner = true; UserDefaults.standard.set(true, forKey: "nyankana.metPartner") }
+            if l.who == "nyan", !metNyan { metNyan = true; UserDefaults.standard.set(true, forKey: "nyankana.metNyan") }
+        }
         guard !setup, let l = current, l.t != "choice", let ja = l.ja else { return }
         let text = Traveler.fill(ja)
         switch l.who {
