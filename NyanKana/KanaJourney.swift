@@ -131,13 +131,13 @@ enum KJStory {
 
 struct KanaJourneyView: View {
     @EnvironmentObject var app: AppState
-    enum Step: Equatable { case setup, opening, learn(Int), quiz, signs, phrases(Int), phraseQuiz, ending, clear }
+    enum Step: Equatable { case setup, opening, learn(Int), battle, signs, phrases(Int), phraseQuiz, ending, clear }
     @State private var step: Step = KJ.onboarded ? .opening : .setup
     @State private var won: Set<String> = []          // letters taken back (shown on the signs)
 
     var body: some View {
         ZStack {
-            KJBackdrop(dim: step == .opening || step == .signs || step == .ending ? 0.05 : 0.45)
+            KJBackdrop(dim: step == .opening || step == .signs || step == .ending ? 0.05 : step == .battle ? 0.2 : 0.45)
             Group {
                 switch step {
                 case .setup:
@@ -145,10 +145,10 @@ struct KanaJourneyView: View {
                 case .opening:
                     KJStoryView(lines: KJStory.opening) { go(.learn(0)) }
                 case .learn(let i):
-                    KJLearnCard(letter: KJData.aRow[i], index: i) { go(i + 1 < KJData.aRow.count ? .learn(i + 1) : .quiz) }
+                    KJLearnCard(letter: KJData.aRow[i], index: i) { go(i + 1 < KJData.aRow.count ? .learn(i + 1) : .battle) }
                         .id(i)
-                case .quiz:
-                    KJLetterQuiz(won: $won) { go(.signs) }
+                case .battle:
+                    KJBattleView(won: $won) { go(.signs) }
                 case .signs:
                     VStack(spacing: 0) {
                         KJSignBoard(won: Set(KJData.aRow.map(\.kana))).padding(.top, 70.s)
@@ -196,8 +196,8 @@ struct KanaJourneyView: View {
         switch step {
         case .setup: return .opening
         case .opening: return .learn(0)
-        case .learn: return .quiz
-        case .quiz: won = Set(KJData.aRow.map(\.kana)); return .signs
+        case .learn: return .battle
+        case .battle: won = Set(KJData.aRow.map(\.kana)); return .signs
         case .signs: return .phrases(0)
         case .phrases: return .phraseQuiz
         case .phraseQuiz: return .ending
