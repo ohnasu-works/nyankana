@@ -111,7 +111,7 @@ enum KJStory {
         KJLine(who: .narr, ja: "ある あさ、にほんじゅうの もじが きえた。", en: "One morning, every letter in Japan vanished.", zh: "某天早上，日本所有的文字都消失了。", ko: "어느 날 아침, 일본의 모든 글자가 사라졌다."),
         KJLine(who: .sora, face: "sora_surprised", ja: "あれ？ かんばんに じが ない！", en: "Huh? The sign has no letters!", zh: "咦？招牌上沒有字！", ko: "어? 간판에 글자가 없어!"),
         KJLine(who: .nyan, face: "nk_nyan_proud", ja: "こんにちは！ ぼくは ニャン です。", en: "Hello! I'm Nyan.", zh: "你好！我是喵。", ko: "안녕하세요! 나는 냥이에요.", pose: true),
-        KJLine(who: .sora, face: "sora_think", ja: "…ふつうの あいさつ だね。", en: "…That's just a normal hello.", zh: "……只是普通的打招呼嘛。", ko: "…그냥 평범한 인사네."),
+        KJLine(who: .sora, face: "sora_tsukkomi", ja: "…ふつうの あいさつ だね。", en: "…That's just a normal hello.", zh: "……只是普通的打招呼嘛。", ko: "…그냥 평범한 인사네."),
         KJLine(who: .nyan, face: "nk_nyan_tip", ja: "ようかいが もじを たべたんだ。", en: "The yokai ate the letters.", zh: "是妖怪把文字吃掉了。", ko: "요괴가 글자를 먹어 버렸어."),
         KJLine(who: .nyan, face: "nk_nyan_joy", ja: "いっしょに とりもどそう！", en: "Let's get them back together!", zh: "一起把它們找回來吧！", ko: "같이 되찾자!", pose: true),
     ]
