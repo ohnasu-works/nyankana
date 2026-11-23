@@ -1,4 +1,4 @@
-CFBundleDisplayName = "喵格利許";
-NSMicrophoneUsageDescription = "為了聽取並評分你說的英文，需要使用麥克風。";
-NSSpeechRecognitionUsageDescription = "為了聽取並評分你說的英文，需要使用語音辨識。";
+CFBundleDisplayName = "NyanKana";
+NSMicrophoneUsageDescription = "為了聽取並評分你說的日文，需要使用麥克風。";
+NSSpeechRecognitionUsageDescription = "為了聽取並評分你說的日文，需要使用語音辨識。";
 NSUserTrackingUsageDescription = "用於在免費版中顯示適合你的廣告。不允許也能使用所有功能。";
