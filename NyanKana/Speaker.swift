@@ -264,7 +264,7 @@ nonisolated final class VoiceCollector: @unchecked Sendable {
 /// key = first 16 hex of SHA1("f|text" or "m|text"). Text keys: the word (kanji and kana), the example sentence,
 /// and "w:<id>" / "e:<id>". Missing lines fall back to the system voice.
 nonisolated enum RecordedVoice {
-    private static let packURLs: [URL?] = (0..<4).map { Bundle.main.url(forResource: "voice\($0)", withExtension: "pack") }
+    private static let packURLs: [URL?] = (0..<5).map { Bundle.main.url(forResource: "voice\($0)", withExtension: "pack") }
     private static let index: [String: (pack: Int, offset: UInt64, length: Int)] = {
         guard let url = Bundle.main.url(forResource: "voice", withExtension: "idx"),
               let text = try? String(contentsOf: url, encoding: .utf8) else { return [:] }

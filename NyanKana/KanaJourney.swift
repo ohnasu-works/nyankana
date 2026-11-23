@@ -21,6 +21,30 @@ enum KJ {
     static func t(_ en: String, _ zh: String, _ ko: String) -> String {
         switch lang { case "zh": zh; case "ko": ko; default: en }
     }
+    /// the learner's language with the Japanese underneath (second line)
+    static func both(_ en: String, _ zh: String, _ ko: String) -> String {
+        guard let j = ja[en] else { return t(en, zh, ko) }
+        return t(en, zh, ko) + "\n" + j
+    }
+    static let ja: [String: String] = [
+        "What's your name?": "なまえは？", "Your name": "なまえ",
+        "You'll learn to say it in Japanese today.": "きょう にほんごで いえるように なります",
+        "Why are you learning Japanese?": "どうして にほんごを まなぶ？",
+        "Anime & manga": "アニメ・まんが", "Travel": "りょこう", "Work or school": "しごと・がっこう", "JLPT": "にほんごのうりょくしけん",
+        "How much do you know?": "どのくらい しってる？", "I'm brand new": "はじめて", "I know some hiragana": "ひらがなを すこし しってる",
+        "Here's the plan": "がくしゅうの よてい",
+        "letters in your first 3 minutes": "もじを さいしょの 3ぷんで", "days to read all 46 hiragana": "にちで ひらがな46もじ ぜんぶ",
+        "phrases you can say today": "フレーズを きょう いえる", "Let's go!": "しゅっぱつ！",
+        "Tap the letter to hear it": "もじを タップすると きこえます", "Next": "つぎへ",
+        "Listen and tap the letter": "きいて もじを えらぼう",
+        "Useful phrase": "つかえる フレーズ", "Say it out loud with Nyan!": "ニャンと いっしょに こえに だそう！",
+        "What do you say?": "なんと いう？",
+        "You meet someone in the afternoon.": "ひるに だれかに あいました。",
+        "Someone gives you a present.": "プレゼントを もらいました。",
+        "Tell someone your name.": "じぶんの なまえを いいます。",
+        "5 / 46 hiragana": "ひらがな 5 / 46", "3 phrases": "フレーズ 3つ", "3 signs back in town": "かんばん 3まい ふっかつ",
+        "Play again": "もういちど", "Home": "ホームへ", "Redo first setup": "さいしょの せってい から",
+    ]
 }
 
 struct KJLetter {
@@ -29,21 +53,22 @@ struct KJLetter {
     var en: String      // a picture to remember it by
     var zh: String      // the kanji it came from
     var ko: String      // the hangul with the same sound
+    var ja: String = "" // the same aid in Japanese (shown underneath)
     var aid: String { KJ.t(en, zh, ko) }
 }
 
 enum KJData {
     static let aRow: [KJLetter] = [
         KJLetter(kana: "あ", romaji: "a", en: "A cross with a big swirl — you shout \"Ah!\" when you see it.",
-                 zh: "來自漢字「安」的草書。安 → あ", ko: "소리는 「아」. あ = 아"),
+                 zh: "來自漢字「安」的草書。安 → あ", ko: "소리는 「아」. あ = 아", ja: "十字と 大きな うずまき。見たら「あ！」"),
         KJLetter(kana: "い", romaji: "i", en: "Two little lines side by side, like two eels: \"ee\".",
-                 zh: "來自漢字「以」的草書。以 → い", ko: "소리는 「이」. い = 이"),
+                 zh: "來自漢字「以」的草書。以 → い", ko: "소리는 「이」. い = 이", ja: "2本の 線が ならんで「いー」"),
         KJLetter(kana: "う", romaji: "u", en: "A mouth saying \"ooh\" with a small hat on top.",
-                 zh: "來自漢字「宇」的上半部。宇 → う", ko: "소리는 「우」. う = 우"),
+                 zh: "來自漢字「宇」的上半部。宇 → う", ko: "소리는 「우」. う = 우", ja: "「うー」と いう口に 小さな ぼうし"),
         KJLetter(kana: "え", romaji: "e", en: "A bird with a feather on its head asking \"eh?\"",
-                 zh: "來自漢字「衣」的草書。衣 → え", ko: "소리는 「에」. え = 에"),
+                 zh: "來自漢字「衣」的草書。衣 → え", ko: "소리는 「에」. え = 에", ja: "頭に はねの ある 鳥が「え？」"),
         KJLetter(kana: "お", romaji: "o", en: "A golfer swinging — the ball flies off: \"Oh!\"",
-                 zh: "來自漢字「於」的草書。於 → お", ko: "소리는 「오」. お = 오"),
+                 zh: "來自漢字「於」的草書。於 → お", ko: "소리는 「오」. お = 오", ja: "ゴルフの スイングで ボールが とんで「お！」"),
     ]
 
     /// the signs in town that come back as letters are won
@@ -148,6 +173,15 @@ struct KanaJourneyView: View {
                 HStack {
                     BackChip { Speaker.shared.stop(); app.go(.home) }
                     Spacer()
+                    if step != .setup && step != .clear {
+                        Button { Speaker.shared.stop(); go(nextStep) } label: {
+                            Image(systemName: "forward.end.fill").font(.system(size: 15.s, weight: .bold)).foregroundStyle(Color.ink)
+                                .padding(.horizontal, 12.s).padding(.vertical, 9.s)
+                                .background(Capsule().fill(Color.white).overlay(Capsule().stroke(Color.ink, lineWidth: 3)))
+                        }
+                        .buttonStyle(PressStyle(radius: 30, depth: 3))
+                        .padding(.top, UIScale.isPad ? 30 : 0)
+                    }
                     KJSlowButton()
                 }
                 .padding(.horizontal, 14.s).padding(.top, 6.s)
@@ -155,6 +189,20 @@ struct KanaJourneyView: View {
             }
         }
         .onAppear { AudioManager.shared.playBGM(.area(.lv1)) }
+    }
+
+    /// where the skip button jumps to (testing: never get stuck)
+    private var nextStep: Step {
+        switch step {
+        case .setup: return .opening
+        case .opening: return .learn(0)
+        case .learn: return .quiz
+        case .quiz: won = Set(KJData.aRow.map(\.kana)); return .signs
+        case .signs: return .phrases(0)
+        case .phrases: return .phraseQuiz
+        case .phraseQuiz: return .ending
+        case .ending, .clear: return .clear
+        }
     }
 
     private func go(_ s: Step) {
@@ -206,37 +254,37 @@ struct KJSetupView: View {
                 VStack(spacing: 14.s) {
                     switch page {
                     case 0:
-                        title("Choose your language")
+                        title("Choose your language\nことばを えらんでね")
                         choice("English", "en"); choice("中文（繁體）", "zh"); choice("한국어", "ko")
                     case 1:
-                        title(KJ.t("What's your name?", "你叫什麼名字？", "이름이 뭐예요?"))
+                        title(KJ.both("What's your name?", "你叫什麼名字？", "이름이 뭐예요?"))
                         TextField(KJ.t("Your name", "你的名字", "이름"), text: $name)
                             .font(.ui(22.s)).multilineTextAlignment(.center)
                             .padding(12.s)
                             .background(RoundedRectangle(cornerRadius: 14.s).fill(Color.white).overlay(RoundedRectangle(cornerRadius: 14.s).stroke(Color.ink, lineWidth: 3)))
                             .textInputAutocapitalization(.words).autocorrectionDisabled()
-                        Text(KJ.t("You'll learn to say it in Japanese today.", "今天就能用日語說出來。", "오늘 일본어로 말할 수 있게 돼요."))
+                        Text(KJ.both("You'll learn to say it in Japanese today.", "今天就能用日語說出來。", "오늘 일본어로 말할 수 있게 돼요."))
                             .font(.ui(14.s, bold: false)).foregroundStyle(Color.ink.opacity(0.7))
-                        PopButton(title: "OK", color: .mint) {
+                        KJButton(title: "OK", color: .mint) {
                             KJ.name = name.trimmingCharacters(in: .whitespaces); next()
                         }
                         .disabled(name.trimmingCharacters(in: .whitespaces).isEmpty)
                     case 2:
-                        title(KJ.t("Why are you learning Japanese?", "為什麼學日語？", "왜 일본어를 배우나요?"))
-                        reason(KJ.t("Anime & manga", "動漫", "애니·만화"))
-                        reason(KJ.t("Travel", "旅行", "여행"))
-                        reason(KJ.t("Work or school", "工作・學校", "일·학교"))
-                        reason(KJ.t("JLPT", "日語檢定 JLPT", "JLPT 시험"))
+                        title(KJ.both("Why are you learning Japanese?", "為什麼學日語？", "왜 일본어를 배우나요?"))
+                        reason(KJ.both("Anime & manga", "動漫", "애니·만화"))
+                        reason(KJ.both("Travel", "旅行", "여행"))
+                        reason(KJ.both("Work or school", "工作・學校", "일·학교"))
+                        reason(KJ.both("JLPT", "日語檢定 JLPT", "JLPT 시험"))
                     case 3:
-                        title(KJ.t("How much do you know?", "你會多少？", "얼마나 알아요?"))
-                        PopButton(title: KJ.t("I'm brand new", "完全不會", "처음이에요"), color: .white) { level = 0; next() }
-                        PopButton(title: KJ.t("I know some hiragana", "會一點平假名", "히라가나 조금 알아요"), color: .white) { level = 1; next() }
+                        title(KJ.both("How much do you know?", "你會多少？", "얼마나 알아요?"))
+                        KJButton(title: KJ.both("I'm brand new", "完全不會", "처음이에요"), color: .white) { level = 0; next() }
+                        KJButton(title: KJ.both("I know some hiragana", "會一點平假名", "히라가나 조금 알아요"), color: .white) { level = 1; next() }
                     default:
-                        title(KJ.t("Here's the plan", "學習計畫", "이렇게 배워요"))
-                        promise("5", KJ.t("letters in your first 3 minutes", "個假名，3分鐘內學會", "글자를 처음 3분 안에"))
-                        promise("7", KJ.t("days to read all 46 hiragana", "天讀懂全部46個平假名", "일이면 히라가나 46자를 전부"))
-                        promise("3", KJ.t("phrases you can say today", "句今天就能說的話", "문장을 오늘 바로 말해요"))
-                        PopButton(title: KJ.t("Let's go!", "出發！", "출발!"), color: .pop, textColor: .white) {
+                        title(KJ.both("Here's the plan", "學習計畫", "이렇게 배워요"))
+                        promise("5", KJ.both("letters in your first 3 minutes", "個假名，3分鐘內學會", "글자를 처음 3분 안에"))
+                        promise("7", KJ.both("days to read all 46 hiragana", "天讀懂全部46個平假名", "일이면 히라가나 46자를 전부"))
+                        promise("3", KJ.both("phrases you can say today", "句今天就能說的話", "문장을 오늘 바로 말해요"))
+                        KJButton(title: KJ.both("Let's go!", "出發！", "출발!"), color: .pop, textColor: .white) {
                             KJ.onboarded = true; done()
                         }
                     }
@@ -252,10 +300,10 @@ struct KJSetupView: View {
         Text(s).font(.ui(20.s)).foregroundStyle(Color.ink).multilineTextAlignment(.center)
     }
     private func choice(_ label: String, _ code: String) -> some View {
-        PopButton(title: label, color: .white) { KJ.lang = code; next() }
+        KJButton(title: label, color: .white) { KJ.lang = code; next() }
     }
     private func reason(_ label: String) -> some View {
-        PopButton(title: label, color: .white) { next() }
+        KJButton(title: label, color: .white) { next() }
     }
     private func promise(_ n: String, _ s: String) -> some View {
         HStack(spacing: 12.s) {
@@ -394,9 +442,11 @@ struct KJLearnCard: View {
                     Text(letter.romaji).font(.display(30.s)).foregroundStyle(Color.popDeep)
                     Text(letter.aid).font(.ui(17.s)).foregroundStyle(Color.ink)
                         .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                    Text(letter.ja).font(.ui(14.s, bold: false)).foregroundStyle(Color.ink.opacity(0.6))
+                        .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
                     HStack(spacing: 6.s) {
                         Image(systemName: "speaker.wave.2.fill")
-                        Text(KJ.t("Tap the letter to hear it", "點一下假名聽發音", "글자를 누르면 소리가 나요"))
+                        Text(KJ.both("Tap the letter to hear it", "點一下假名聽發音", "글자를 누르면 소리가 나요"))
                     }
                     .font(.ui(13.s, bold: false)).foregroundStyle(Color.ink.opacity(0.6))
                 }
@@ -408,7 +458,7 @@ struct KJLearnCard: View {
                 Spacer()
             }
             .padding(.horizontal, 22.s)
-            PopButton(title: KJ.t("Next", "下一個", "다음"), color: .mint) { next() }
+            KJButton(title: KJ.both("Next", "下一個", "다음"), color: .mint) { next() }
                 .padding(.horizontal, 22.s)
             Spacer(minLength: 20.s)
         }
@@ -434,7 +484,7 @@ struct KJLetterQuiz: View {
         VStack(spacing: 16.s) {
             Spacer(minLength: 64.s)
             KJSignBoard(won: won)
-            Text(KJ.t("Listen and tap the letter", "聽發音，選出假名", "듣고 글자를 고르세요"))
+            Text(KJ.both("Listen and tap the letter", "聽發音，選出假名", "듣고 글자를 고르세요"))
                 .font(.ui(18.s)).foregroundStyle(Color.ink)
             Button { play() } label: {
                 Image(systemName: "speaker.wave.3.fill").font(.system(size: 40.s, weight: .bold)).foregroundStyle(.white)
@@ -562,7 +612,7 @@ struct KJPhraseCard: View {
                     .buttonStyle(.plain)
                     Text(phrase.romaji).font(.display(18.s)).foregroundStyle(Color.popDeep)
                     Text(phrase.meaning).font(.ui(20.s)).foregroundStyle(Color.ink)
-                    Text(KJ.t("Say it out loud with Nyan!", "跟著喵一起大聲說！", "냥이랑 같이 소리 내서 말해 봐요!"))
+                    Text(KJ.both("Say it out loud with Nyan!", "跟著喵一起大聲說！", "냥이랑 같이 소리 내서 말해 봐요!"))
                         .font(.ui(13.s, bold: false)).foregroundStyle(Color.ink.opacity(0.6))
                 }
                 .frame(maxWidth: .infinity)
@@ -573,7 +623,7 @@ struct KJPhraseCard: View {
                 Image("nk_nyan_wave").resizable().scaledToFit().frame(height: 120.s).modifier(Bob())
             }
             .padding(.horizontal, 22.s)
-            PopButton(title: KJ.t("Next", "下一個", "다음"), color: .mint) { next() }
+            KJButton(title: KJ.both("Next", "下一個", "다음"), color: .mint) { next() }
                 .padding(.horizontal, 22.s)
             Spacer(minLength: 20.s)
         }
@@ -588,9 +638,9 @@ struct KJPhraseQuiz: View {
     @State private var choices: [String] = []
     private let phrases = KJData.phrases()
     private var situations: [String] {
-        [KJ.t("You meet someone in the afternoon.", "下午遇到別人時。", "낮에 누군가를 만났어요."),
-         KJ.t("Someone gives you a present.", "別人送你禮物時。", "누군가 선물을 줬어요."),
-         KJ.t("Tell someone your name.", "告訴別人你的名字。", "내 이름을 말해요.")]
+        [KJ.both("You meet someone in the afternoon.", "下午遇到別人時。", "낮에 누군가를 만났어요."),
+         KJ.both("Someone gives you a present.", "別人送你禮物時。", "누군가 선물을 줬어요."),
+         KJ.both("Tell someone your name.", "告訴別人你的名字。", "내 이름을 말해요.")]
     }
 
     var body: some View {
@@ -602,7 +652,7 @@ struct KJPhraseQuiz: View {
                     .multilineTextAlignment(.center).frame(maxWidth: .infinity)
             }
             .padding(.horizontal, 22.s)
-            Text(KJ.t("What do you say?", "該怎麼說？", "뭐라고 말할까요?")).font(.ui(16.s)).foregroundStyle(Color.ink)
+            Text(KJ.both("What do you say?", "該怎麼說？", "뭐라고 말할까요?")).font(.ui(16.s)).foregroundStyle(Color.ink)
             VStack(spacing: 12.s) {
                 ForEach(choices, id: \.self) { c in
                     PopButton(title: c, color: color(c)) { answer(c) }
@@ -645,15 +695,15 @@ struct KJClearView: View {
             Image("nk_nyan_joy").resizable().scaledToFit().frame(height: 160.s).modifier(Bob())
             PaperCard {
                 VStack(spacing: 10.s) {
-                    row("あいうえお", KJ.t("5 / 46 hiragana", "平假名 5 / 46", "히라가나 5 / 46"))
-                    row("こんにちは", KJ.t("3 phrases", "3 句", "표현 3개"))
-                    row("うえ・いえ・あお", KJ.t("3 signs back in town", "找回 3 塊招牌", "간판 3개 되찾음"))
+                    row("あいうえお", KJ.both("5 / 46 hiragana", "平假名 5 / 46", "히라가나 5 / 46"))
+                    row("こんにちは", KJ.both("3 phrases", "3 句", "표현 3개"))
+                    row("うえ・いえ・あお", KJ.both("3 signs back in town", "找回 3 塊招牌", "간판 3개 되찾음"))
                 }
             }
             .padding(.horizontal, 22.s)
-            PopButton(title: KJ.t("Play again", "再玩一次", "다시 하기"), color: .sun) { again() }.padding(.horizontal, 22.s)
-            PopButton(title: KJ.t("Home", "回首頁", "홈으로"), color: .white) { home() }.padding(.horizontal, 22.s)
-            Button(KJ.t("Redo first setup", "重新設定", "처음 설정 다시")) { redoSetup() }
+            KJButton(title: KJ.both("Play again", "再玩一次", "다시 하기"), color: .sun) { again() }.padding(.horizontal, 22.s)
+            KJButton(title: KJ.both("Home", "回首頁", "홈으로"), color: .white) { home() }.padding(.horizontal, 22.s)
+            Button(KJ.both("Redo first setup", "重新設定", "처음 설정 다시")) { redoSetup() }
                 .font(.ui(13.s, bold: false)).foregroundStyle(Color.ink.opacity(0.6))
             Spacer()
         }
@@ -665,5 +715,30 @@ struct KJClearView: View {
             Spacer()
             Text(b).font(.ui(14.s, bold: false)).foregroundStyle(Color.ink.opacity(0.7))
         }
+    }
+}
+
+/// chunky button whose label may have a second (Japanese) line
+struct KJButton: View {
+    var title: String
+    var color: Color = .sun
+    var textColor: Color = .ink
+    var action: () -> Void
+    var body: some View {
+        let parts = title.split(separator: "\n", maxSplits: 1).map(String.init)
+        Button(action: action) {
+            VStack(spacing: 1.s) {
+                Text(parts[0]).font(.ui(18.s)).lineLimit(1).minimumScaleFactor(0.5)
+                if parts.count > 1 {
+                    Text(parts[1]).font(.ui(12.s, bold: false)).opacity(0.75).lineLimit(1).minimumScaleFactor(0.5)
+                }
+            }
+            .foregroundStyle(textColor)
+            .padding(.horizontal, 10)
+            .frame(maxWidth: .infinity, minHeight: 56.s)
+            .background(RoundedRectangle(cornerRadius: 16.s, style: .continuous).fill(color))
+            .overlay(RoundedRectangle(cornerRadius: 16.s, style: .continuous).stroke(Color.ink, lineWidth: 3))
+        }
+        .buttonStyle(PressStyle(radius: 16.s, depth: 5))
     }
 }
