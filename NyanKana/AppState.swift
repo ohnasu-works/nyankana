@@ -4,7 +4,7 @@ import Combine
 // MARK: - Navigation
 
 enum Screen: Equatable {
-    case home, map, study, zukan, record, closet, settings
+    case home, map, study, zukan, record, closet, settings, kana
     case game(StageRef)
 }
 

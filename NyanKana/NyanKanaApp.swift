@@ -40,6 +40,7 @@ struct RootView: View {
             case .record:    RecordView().geometryGroup().transition(.move(edge: .trailing))
             case .closet:    ClosetView().geometryGroup().transition(.move(edge: .trailing))
             case .settings:  SettingsView().geometryGroup().transition(.move(edge: .trailing))
+            case .kana:      KanaJourneyView().transition(.opacity)
             case .game(let stage): GameScreen(stage: stage).id(stage).transition(.opacity)
             }
             // new costumes / TOEIC unlock, celebrated once when back from a game or study

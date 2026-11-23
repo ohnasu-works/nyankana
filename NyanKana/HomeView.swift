@@ -123,7 +123,7 @@ struct HomeView: View {
     // MARK: tiles
 
     private func gameTile(_ w: CGFloat) -> some View {
-        PopTile(label: L("home.game"), sub: "GAME", labelSize: fit(L("home.game"), w)) { app.go(.map) } content: {
+        PopTile(label: L("home.game"), sub: "GAME", labelSize: fit(L("home.game"), w)) { app.go(.kana) } content: {
             ZStack {
                 Sunburst(a: Color(hex: 0xFF8FC0), b: Color(hex: 0xFF6AA8), center: .init(x: 0.5, y: 0.55), rays: 16)
                 StarBurst().fill(Color(hex: 0xFFF3A8)).frame(width: 150.s, height: 150.s).opacity(0.85)
