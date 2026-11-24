@@ -192,10 +192,30 @@ struct KJStageView: View {
     var next: () -> Void
     var map: () -> Void
     enum Step: Equatable { case pre, learn(Int), game, clearFx, post, result }
-    @State private var step: Step = .pre
-    @State private var stars = 0
-    @State private var score = 0
-    @State private var won: [String] = []
+    @State private var step: Step
+    @State private var stars: Int
+    @State private var score: Int
+    @State private var won: [String]
+
+    /// `resume`: back from the もじレスキュー boss battle — carry on with the clear effect
+    init(stage: KJC1.Stage, resume: KanaRescue.Outcome? = nil, next: @escaping () -> Void, map: @escaping () -> Void) {
+        self.stage = stage
+        self.next = next
+        self.map = map
+        if let r = resume, r.stageID == stage.id, r.cleared {
+            KJC1.setStars(stage.id, r.stars)
+            KJC1.setBest(stage.id, r.score)
+            _step = State(initialValue: .clearFx)
+            _stars = State(initialValue: r.stars)
+            _score = State(initialValue: r.score)
+            _won = State(initialValue: r.won)
+        } else {
+            _step = State(initialValue: .pre)
+            _stars = State(initialValue: 0)
+            _score = State(initialValue: 0)
+            _won = State(initialValue: [])
+        }
+    }
 
     var body: some View {
         ZStack {
@@ -268,6 +288,9 @@ struct KJStageView: View {
             KJListenEvent { s, sc in finish(s, sc, []) }
         case .mini:
             MiniGameView(kind: stage.mini ?? .karuta, stage: stage) { s, sc, w in finish(s, sc, w) }
+        case .boss:
+            // the chapter boss: the original もじレスキュー battle
+            KJRescueLauncher(stage: stage)
         default:
             KJBattleView(stage: stage) { s, sc, w in finish(s, sc, w) }
         }
@@ -580,5 +603,32 @@ struct KJListenEvent: View {
                 finished(stars, right * 200)
             }
         }
+    }
+}
+
+/// a short "the boss is coming" moment, then the もじレスキュー battle screen
+struct KJRescueLauncher: View {
+    let stage: KJC1.Stage
+    @State private var shown = false
+    @State private var left = false
+    var body: some View {
+        VStack(spacing: 16.s) {
+            Spacer()
+            Image("boss_kyubi").resizable().scaledToFit().frame(height: 220.s)
+                .scaleEffect(shown ? 1 : 0.3).opacity(shown ? 1 : 0)
+            RibbonTitle(text: "BOSS BATTLE!", color: .danger, size: 26)
+            Text(KJ.both("Answer with the letters you learned!", "用學過的假名回答！", "배운 글자로 대답해요!"))
+                .font(.ui(15.s)).foregroundStyle(Color.ink).multilineTextAlignment(.center)
+                .padding(.horizontal, 14.s).padding(.vertical, 6.s)
+                .background(Capsule().fill(Color.white.opacity(0.9)))
+            Spacer()
+        }
+        .onAppear {
+            guard !shown else { return }
+            AudioManager.shared.se(.bossAppear)
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.55)) { shown = true }
+            later(1.8) { if !left { KanaRescue.start(stage) } }
+        }
+        .onDisappear { left = true }
     }
 }

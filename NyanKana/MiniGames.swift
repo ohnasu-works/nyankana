@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import Combine
 
 // MARK: - ミニゲーム（設計書 22）
 // 共通の枠：タイトル → 3・2・1・GO → プレイ → そこまで！ → 評価（S/A/B/C と ★）。

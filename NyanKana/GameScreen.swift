@@ -251,7 +251,9 @@ struct GameScreen: View {
                     }
                     PopButton(title: L("game.resume"), color: .mint) { AudioManager.shared.se(.tap); m.paused = false }
                     PopButton(title: L("game.retry"), color: .white) { AudioManager.shared.se(.tap); m.restart() }
-                    PopButton(title: L("game.quit"), color: Color(hex: 0xFFB3CF)) { app.goStageList() }
+                    PopButton(title: L("game.quit"), color: Color(hex: 0xFFB3CF)) {
+                        if KanaRescue.active { KanaRescue.quit() } else { app.goStageList() }
+                    }
                 }
             }
             .frame(maxWidth: 360.s)

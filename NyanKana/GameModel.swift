@@ -104,6 +104,7 @@ final class GameModel: ObservableObject {
     /// story lines are picked once per stage (the short scenes are random)
     private var storyCache: [Bool: [StoryLine]] = [:]
     func storyLines(_ k: StoryKind) -> [StoryLine] {
+        if KanaRescue.active { return [] }   // にゃんカナ tells its own story around the battle
         if let c = storyCache[k == .intro] { return c }
         let l = StoryBank.lines(ref, k)
         storyCache[k == .intro] = l
@@ -231,7 +232,7 @@ final class GameModel: ObservableObject {
             after(0.5) { self.say(title, long: true) }
         }
         let stageKind = StagePlanner(ref: ref).kind
-        AudioManager.shared.playBGM(.area(ref.area))       // the boss theme starts with the boss's entrance
+        AudioManager.shared.playBGM(KanaRescue.active ? .track("mg_zako") : .area(ref.area))       // the boss theme starts with the boss's entrance
         after(0.5) { self.walkThenNext() }
     }
 
@@ -379,6 +380,7 @@ final class GameModel: ObservableObject {
     }
     /// the quick quiz: a word of this level (meaning -> English)
     private func quickQuestion() -> Question {
+        if let s = KanaRescue.session { return (s.pools.phrase + s.pools.single).randomElement() ?? QuestionBank.lv1.single[0] }
         let lv = min(6, ref.area.rawValue)
         let lo = max(1, lv - 1)
         if let w = Vocab.all.filter({ $0.level >= lo && $0.level <= lv && !askedWords.contains($0.id) }).randomElement() {
@@ -392,6 +394,7 @@ final class GameModel: ObservableObject {
     private var askedWords = Set<String>()
     private var planKeys = Set<String>()
     private func wordOr(_ q: Question) -> Question {
+        if KanaRescue.active { return q }
         guard Double.random(in: 0..<1) < ref.difficulty.vocabRate else { return q }
         let lv = min(6, ref.area.rawValue)
         // words near this area's grade only (no 中1 words like "April" in the last area on HARD):

@@ -151,7 +151,20 @@ struct KJLine {
 struct KanaJourneyView: View {
     @EnvironmentObject var app: AppState
     enum Screen: Equatable { case setup, map, stage(Int) }
-    @State private var screen: Screen = KJ.onboarded ? .map : .setup
+    @State private var screen: Screen
+    /// back from the もじレスキュー boss battle
+    @State private var resume: KanaRescue.Outcome?
+
+    init() {
+        let r = KanaRescue.outcome
+        KanaRescue.outcome = nil
+        _resume = State(initialValue: r)
+        if let r, r.cleared {
+            _screen = State(initialValue: .stage(r.stageID))
+        } else {
+            _screen = State(initialValue: KJ.onboarded ? .map : .setup)
+        }
+    }
 
     var body: some View {
         ZStack {
@@ -171,7 +184,7 @@ struct KanaJourneyView: View {
                           home: { Speaker.shared.stop(); app.go(.home) },
                           redoSetup: { KJ.onboarded = false; go(.setup) })
             case .stage(let n):
-                KJStageView(stage: KJC1.stage(n),
+                KJStageView(stage: KJC1.stage(n), resume: resume,
                             next: { go(KJC1.next(after: n).map { .stage($0) } ?? .map) },
                             map: { Speaker.shared.stop(); go(.map) })
                     .id(n)
@@ -182,6 +195,7 @@ struct KanaJourneyView: View {
     }
 
     private func go(_ s: Screen) {
+        resume = nil
         withAnimation(.easeInOut(duration: 0.3)) { screen = s }
     }
 }

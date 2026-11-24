@@ -73,6 +73,8 @@ enum QuestionBank {
     struct Pools { var single: [Question]; var phrase: [Question]; var order: [Question]; var mid: [Question]; var boss: [Question] }
 
     static func pools(for area: Area) -> Pools {
+        // にゃんカナ's boss battle asks the chapter's kana and words
+        if let s = KanaRescue.session { return s.pools }
         let loaded = ContentLoader.pools(area)
         return loaded ?? lv1
     }

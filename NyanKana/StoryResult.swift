@@ -206,6 +206,14 @@ struct ResultView: View {
             }
             .frame(maxWidth: 460.s)
             VStack(spacing: (tight ? 8 : 10).s) {
+                if KanaRescue.active {
+                    // にゃんカナ: back to the journey (clear effect → story → result there)
+                    PopButton(title: m.cleared ? L("res.next") : L("res.retry"), color: .pop, textColor: .white) {
+                        AudioManager.shared.se(.tap)
+                        if m.cleared { KanaRescue.finish(stars: m.stars, score: m.score, cleared: true) } else { m.restart() }
+                    }
+                    PopButton(title: L("res.map"), color: .sky) { KanaRescue.quit() }
+                } else {
                 if m.cleared, let next = m.nextStage {
                     PopButton(title: L("res.next"), color: .pop, textColor: .white) { AdManager.shared.roundFinished(); app.go(.game(next)) }
                 }
@@ -216,6 +224,7 @@ struct ResultView: View {
                 HStack(spacing: 10.s) {
                     PopButton(title: L("res.map"), color: .sky) { AdManager.shared.roundFinished(); app.goStageList() }
                     PopButton(title: L("common.home"), color: .sun) { AdManager.shared.roundFinished(); app.go(.home) }
+                }
                 }
             }
             .frame(maxWidth: 460.s)
