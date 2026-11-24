@@ -102,6 +102,18 @@ final class Speaker: NSObject {
         later(1.5) { if !got.isSet && t == Speaker.shared.token { Speaker.directOnly = true; u.volume = vol; Speaker.shared.synth.stopSpeaking(at: .immediate); Speaker.shared.speakLive(u) } }
     }
 
+    /// a line recorded for one speaker (にゃんカナ: "n" narrator, "y" Nyan, "s" Sora, or a side character's id).
+    /// Falls back to the normal voice when the clip is missing.
+    func sayRole(_ text: String, role: String) {
+        let s = AppState.shared.settings
+        guard s.voiceOn, !text.isEmpty else { return }
+        if let b = RecordedVoice.buffer(text, role: role) {
+            stop()
+            if AudioManager.shared.playVoiceChecked(b, volume: Float(s.voiceVolume), rate: s.slowVoice ? 0.75 : 1) { return }
+        }
+        say(text, gender: role == "s" ? .male : .female)
+    }
+
     /// Load the voice and the speech engine once at launch, so the first line in a game does not stutter.
     func warmUp() {
         _ = enVoice
@@ -264,7 +276,7 @@ nonisolated final class VoiceCollector: @unchecked Sendable {
 /// key = first 16 hex of SHA1("f|text" or "m|text"). Text keys: the word (kanji and kana), the example sentence,
 /// and "w:<id>" / "e:<id>". Missing lines fall back to the system voice.
 nonisolated enum RecordedVoice {
-    private static let packURLs: [URL?] = (0..<6).map { Bundle.main.url(forResource: "voice\($0)", withExtension: "pack") }
+    private static let packURLs: [URL?] = (0..<7).map { Bundle.main.url(forResource: "voice\($0)", withExtension: "pack") }
     private static let index: [String: (pack: Int, offset: UInt64, length: Int)] = {
         guard let url = Bundle.main.url(forResource: "voice", withExtension: "idx"),
               let text = try? String(contentsOf: url, encoding: .utf8) else { return [:] }
