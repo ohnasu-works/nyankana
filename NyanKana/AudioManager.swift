@@ -27,6 +27,9 @@ final class AudioManager {
         case studyOK = "se_st_ok", studyNG = "se_st_ng", studyClear = "se_st_clear", studyCombo = "se_st_combo"
         // items (new set)
         case itemGet = "item_get", timeStop = "time_stop", heal = "heal", bomb = "bomb"
+        // mini-games (synthesized)
+        case mgSlap = "se_mg_slap", mgSplash = "se_mg_splash", mgReel = "se_mg_reel", mgBrush = "se_mg_brush", mgStamp = "se_mg_stamp"
+        case mgCount = "se_mg_count", mgGo = "se_mg_go", mgWhoosh = "se_mg_whoosh", mgBloop = "se_mg_bloop"
 
         var isNew: Bool { !rawValue.hasPrefix("se_") }
         static var newSet: [SE] { allCases.filter(\.isNew) }

@@ -172,7 +172,7 @@ struct KanaJourneyView: View {
                           redoSetup: { KJ.onboarded = false; go(.setup) })
             case .stage(let n):
                 KJStageView(stage: KJC1.stage(n),
-                            next: { go(KJC1.stages.contains { $0.id == n + 1 } ? .stage(n + 1) : .map) },
+                            next: { go(KJC1.next(after: n).map { .stage($0) } ?? .map) },
                             map: { Speaker.shared.stop(); go(.map) })
                     .id(n)
             }

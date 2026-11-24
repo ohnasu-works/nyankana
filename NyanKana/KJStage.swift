@@ -4,7 +4,7 @@ import SwiftUI
 // 設計：00_企画/にゃんカナ_ゲーム設計書_v1.md の 21-5。セリフは KJC1Lines.swift（自動生成）。
 
 enum KJC1 {
-    enum Kind { case battle, mid, talk, listen, boss }
+    enum Kind { case battle, mid, talk, listen, boss, mini }
 
     struct Stage: Identifiable {
         var id: Int
@@ -20,6 +20,7 @@ enum KJC1 {
         var goal = 20                 // minions to beat
         var fog = false               // stage 11: the letters fade in the mist
         var tonbi = false             // stage 9: a kite flies over (tap it for a bonus)
+        var mini: MGKind? = nil       // a mini-game stage (MiniGames.swift)
         var place: String { KJ.t(en, zh, ko) }
         var pre: [KJLine] { KJC1.lines[id]?.pre ?? [] }
         var post: [KJLine] { KJC1.lines[id]?.post ?? [] }
@@ -35,8 +36,12 @@ enum KJC1 {
     static let stages: [Stage] = [
         Stage(id: 1, ja: "あさくさ・かみなりもん", en: "Asakusa · Kaminarimon", zh: "淺草・雷門", ko: "아사쿠사・가미나리몬",
               bg: "旅01_浅草_雷門", kind: .battle, newKana: A, known: A, words: ["あお", "いえ", "うえ"], goal: 18),
+        Stage(id: 101, ja: "しょどう どうじょう", en: "Tracing Dojo", zh: "描字道場", ko: "따라 쓰기 도장",
+              bg: "bg_mg_dojo", kind: .mini, known: A, mini: .nazori),
         Stage(id: 2, ja: "あさくさ・なかみせ", en: "Asakusa · Nakamise", zh: "淺草・仲見世", ko: "아사쿠사・나카미세",
               bg: "旅01_浅草_仲見世通り", kind: .battle, newKana: K, known: A + K, words: ["かお", "あかい", "こえ", "あお", "いえ"], goal: 20),
+        Stage(id: 102, ja: "かるた たいかい", en: "Karuta Battle", zh: "歌留多大賽", ko: "카루타 대회",
+              bg: "bg_mg_karuta", kind: .mini, known: A + K, mini: .karuta),
         Stage(id: 3, ja: "しぶや", en: "Shibuya", zh: "澀谷", ko: "시부야",
               bg: "bg_c1_shibuya", kind: .battle, known: A + K, words: ["かお", "あかい", "こえ", "あお", "いえ", "うえ"], goal: 25),
         Stage(id: 4, ja: "とうきょうタワー", en: "Tokyo Tower", zh: "東京鐵塔", ko: "도쿄 타워",
@@ -51,6 +56,8 @@ enum KJC1 {
               bg: "bg_c1_daibutsu", kind: .battle, newKana: N, known: all, words: ["ねこ", "いぬ", "さかな", "たこ", "かさ"], goal: 22),
         Stage(id: 9, ja: "えのしま", en: "Enoshima", zh: "江之島", ko: "에노시마",
               bg: "bg_c1_enoshima", kind: .battle, known: all, words: ["さかな", "ねこ", "いぬ", "すし", "たこ", "て"], goal: 25, tonbi: true),
+        Stage(id: 103, ja: "えのしま・もじつり", en: "Enoshima · Fishing", zh: "江之島・釣魚", ko: "에노시마・낚시",
+              bg: "bg_c1_enoshima", kind: .mini, known: all, mini: .tsuri),
         Stage(id: 10, ja: "にっこう・とうしょうぐう", en: "Nikko · Toshogu", zh: "日光東照宮", ko: "닛코 도쇼구",
               bg: "旅01_日光東照宮", kind: .listen),
         Stage(id: 11, ja: "なす・せっしょうせき", en: "Nasu · Killing Stone", zh: "那須・殺生石", ko: "나스・살생석",
@@ -71,7 +78,19 @@ enum KJC1 {
     static func setBest(_ id: Int, _ s: Int) {
         if s > best(id) { UserDefaults.standard.set(s, forKey: "kj.c1.b\(id)") }
     }
-    static func unlocked(_ id: Int) -> Bool { id == 1 || stars(id - 1) > 0 }
+    /// open when the stage before it (in map order) has a star
+    static func unlocked(_ id: Int) -> Bool {
+        guard let i = stages.firstIndex(where: { $0.id == id }) else { return false }
+        // (a stage already cleared — or one further along — stays open, so saves from before new stages were added keep working)
+        return i == 0 || stars(stages[i - 1].id) > 0 || stages[i...].contains { stars($0.id) > 0 }
+    }
+    /// the stage after this one on the map
+    static func next(after id: Int) -> Int? {
+        guard let i = stages.firstIndex(where: { $0.id == id }), i + 1 < stages.count else { return nil }
+        return stages[i + 1].id
+    }
+    /// 1, 2, 3… in map order (shown as "1-n")
+    static func number(_ id: Int) -> Int { (stages.firstIndex { $0.id == id } ?? 0) + 1 }
 }
 
 // MARK: - the chapter map (one screen, no scrolling)
@@ -131,6 +150,7 @@ struct KJMapView: View {
         let stars = KJC1.stars(s.id)
         let special = s.kind == .mid || s.kind == .boss
         let event = s.kind == .talk || s.kind == .listen
+        let mini = s.kind == .mini
         return Button {
             guard open else { AudioManager.shared.se(.wrong, volume: 0.5); return }
             AudioManager.shared.se(.decide)
@@ -138,14 +158,16 @@ struct KJMapView: View {
         } label: {
             VStack(spacing: 2.s) {
                 ZStack {
-                    Circle().fill(!open ? Color.white.opacity(0.6) : special ? Color.danger : event ? Color.grape : Color.sun)
+                    Circle().fill(!open ? Color.white.opacity(0.6) : special ? Color.danger : event ? Color.grape : mini ? Color.mint : Color.sun)
                         .overlay(Circle().stroke(Color.ink, lineWidth: 3))
                         .frame(width: 58.s, height: 58.s)
                     if open {
                         if special {
                             Image(s.kind == .boss ? "boss_kyubi" : "mid_karakasa").resizable().scaledToFit().frame(width: 46.s, height: 46.s)
+                        } else if let m = s.mini {
+                            Text(m == .karuta ? "🎴" : m == .tsuri ? "🎣" : "🖌️").font(.system(size: 28.s))
                         } else {
-                            Text("\(s.id)").font(.display(24.s)).foregroundStyle(Color.ink)
+                            Text("\(KJC1.number(s.id))").font(.display(24.s)).foregroundStyle(Color.ink)
                         }
                     } else {
                         Image(systemName: "lock.fill").font(.system(size: 20.s, weight: .bold)).foregroundStyle(Color.ink.opacity(0.5))
@@ -181,7 +203,11 @@ struct KJStageView: View {
             Group {
                 switch step {
                 case .pre:
-                    KJStoryView(lines: stage.pre) { afterPre() }
+                    if stage.pre.isEmpty {
+                        Color.clear.onAppear { afterPre() }
+                    } else {
+                        KJStoryView(lines: stage.pre) { afterPre() }
+                    }
                 case .learn(let i):
                     if let l = KJData.letter(stage.newKana[i]) {
                         KJLearnCard(letter: l, index: i, count: stage.newKana.count) {
@@ -194,7 +220,11 @@ struct KJStageView: View {
                 case .clearFx:
                     KJClearFx(stage: stage, won: won) { go(.post) }
                 case .post:
-                    KJStoryView(lines: stage.post) { go(.result) }
+                    if stage.post.isEmpty {
+                        Color.clear.onAppear { go(.result) }
+                    } else {
+                        KJStoryView(lines: stage.post) { go(.result) }
+                    }
                 case .result:
                     KJResultView(stage: stage, stars: stars, score: score, won: won,
                                  next: next, retry: { go(.game) }, map: map)
@@ -236,6 +266,8 @@ struct KJStageView: View {
             KJTalkEvent { s, sc in finish(s, sc, ["こんにちは", "わたしは〇〇です"]) }
         case .listen:
             KJListenEvent { s, sc in finish(s, sc, []) }
+        case .mini:
+            MiniGameView(kind: stage.mini ?? .karuta, stage: stage) { s, sc, w in finish(s, sc, w) }
         default:
             KJBattleView(stage: stage) { s, sc, w in finish(s, sc, w) }
         }
@@ -255,7 +287,9 @@ struct KJStageView: View {
         switch step {
         case .pre: afterPre()
         case .learn: go(.game)
-        case .game: finish(max(1, stars), score, stage.newKana)
+        case .game:
+            if stage.kind == .mini { AudioManager.shared.playBGM(.area(.lv1)) }
+            finish(max(1, stars), score, stage.newKana)
         case .clearFx: go(.post)
         case .post: go(.result)
         case .result: break
@@ -327,7 +361,7 @@ struct KJResultView: View {
     var body: some View {
         VStack(spacing: 14.s) {
             Spacer(minLength: 70.s)
-            RibbonTitle(text: "1-\(stage.id) CLEAR!")
+            RibbonTitle(text: "1-\(KJC1.number(stage.id)) CLEAR!")
             Text(stage.place).font(.ui(16.s)).foregroundStyle(Color.ink)
             Image(stars == 3 ? "nk_nyan_joy" : "nk_nyan_proud").resizable().scaledToFit().frame(height: 140.s).modifier(Bob())
             PaperCard {

@@ -470,7 +470,8 @@ struct KJBattleView: View {
             b.tick(1.0 / 30)
         }
         .onAppear {
-            AudioManager.shared.playBGM(.area(.lv1))
+            // the minion battle has its own track; the boss part switches to the boss music
+            AudioManager.shared.playBGM(.track("mg_zako"))
         }
     }
 
