@@ -63,6 +63,8 @@ final class KJBattle: ObservableObject {
     private var lastKana = ""
     private var tonbiClock: Double = 0
     private var hitsAtLastWord = 0
+    /// a new target is already on its way (stops the game loop from picking a second one = the "feint" bug)
+    private var pickPending = false
 
     var hasBoss: Bool { st.kind == .mid || st.kind == .boss }
     var bossImage: String { st.kind == .boss ? "boss_kyubi" : "mid_karakasa" }
@@ -86,6 +88,7 @@ final class KJBattle: ObservableObject {
 
     func start() {
         phase = .waves
+        pickPending = false
         for i in 0..<3 { spawn(slot: i) }
         pickTarget()
     }
@@ -104,7 +107,7 @@ final class KJBattle: ObservableObject {
     private var diveSpeed: CGFloat {
         // seconds to fall from the top to the town: 7.5 s at first, 4.5 s at the end; half speed in fever
         let secs = 7.5 - 3.0 * Double(min(hits, goal)) / Double(max(goal, 1))
-        return CGFloat(1 / secs) * (fever > 0 ? 0.5 : 1) * (ask == .read ? 0.7 : 1)
+        return CGFloat(1 / secs) * (fever > 0 ? 0.5 : 1) * (ask == .read ? 0.5 : 1)
     }
 
     private func tickWaves(_ dt: Double) {
@@ -122,7 +125,7 @@ final class KJBattle: ObservableObject {
             let used = Set(foes.filter { !$0.dying }.map { slotOf($0.x) })
             if let free = [0, 1, 2].first(where: { !used.contains($0) }) { spawn(slot: free) }
         }
-        if targetID == nil, foes.contains(where: { !$0.dying }) { pickTarget() }
+        if targetID == nil, !pickPending, foes.contains(where: { !$0.dying }) { pickTarget() }
     }
 
     private func tickTonbi(_ dt: Double) {
@@ -171,6 +174,7 @@ final class KJBattle: ObservableObject {
     }
 
     private func pickTarget() {
+        pickPending = false
         let alive = foes.filter { !$0.dying }
         guard !alive.isEmpty else { targetID = nil; return }
         // never the same letter twice in a row (when there is a choice); new letters first
@@ -201,8 +205,12 @@ final class KJBattle: ObservableObject {
         }
     }
 
-    func tap(_ foe: Foe) {
-        guard phase == .waves, !foe.dying, let t = target else { return }
+    private var lastTap: (id: UUID, at: Double)?
+    func tap(_ seen: Foe) {
+        // the gesture reports every finger move: act once per touch, on the minion as it is now
+        if let l = lastTap, l.id == seen.id, time - l.at < 0.5 { return }
+        lastTap = (seen.id, time)
+        guard phase == .waves, let foe = foes.first(where: { $0.id == seen.id }), !foe.dying, let t = target else { return }
         if ask == .read {
             // in "read" mode the answer is a sound button, not a minion
             if foe.id != t.id { wrong(foe) }
@@ -236,6 +244,7 @@ final class KJBattle: ObservableObject {
         if combo > 0, combo % 8 == 0 { startFever() }
         let id = foe.id
         targetID = nil
+        pickPending = true
         later(0.45) { self.foes.removeAll { $0.id == id } }
         later(0.9) { self.pops.removeAll { $0.id == pop.id } }
         if hits >= goal {
@@ -263,6 +272,7 @@ final class KJBattle: ObservableObject {
     private func eaten(_ foe: Foe) {
         foes.removeAll { $0.id == foe.id }
         targetID = nil
+        pickPending = true
         combo = 0; misses += 1
         hurt()
         if phase == .waves { later(0.6) { if self.phase == .waves { self.pickTarget() } } }
@@ -493,8 +503,7 @@ struct KJBattleView: View {
                 let isTarget = f.id == b.targetID
                 let bob = sin(t * 2 + f.phase) * 6
                 let glow = isTarget && b.ask == .read
-                Button { b.tap(f) } label: {
-                    VStack(spacing: -10.s) {
+                VStack(spacing: -10.s) {
                         Text(f.kana).font(.custom(Fonts.rounded, size: 34.s)).foregroundStyle(Color.ink)
                             .opacity(isTarget ? 1 : b.fogAlpha)
                             .frame(width: 56.s, height: 56.s)
@@ -509,8 +518,9 @@ struct KJBattleView: View {
                     .rotationEffect(.degrees(f.shake ? 12 : 0))
                     .animation(.easeOut(duration: 0.35), value: f.dying)
                     .animation(.default.repeatCount(3, autoreverses: true).speed(5), value: f.shake)
-                }
-                .buttonStyle(.plain)
+                    .contentShape(Rectangle())
+                    // react on touch-down: the minion keeps moving, so a normal button often missed the tap
+                    .gesture(DragGesture(minimumDistance: 0).onChanged { _ in b.tap(f) })
                 .position(x: size.width * f.x, y: top + (bottom - top) * f.y + (isTarget ? 0 : bob))
                 if f.dying {
                     StarBurst().fill(Color.sun).frame(width: 110.s, height: 110.s)
@@ -519,10 +529,9 @@ struct KJBattleView: View {
                 }
             }
             if b.tonbiOn {
-                Button { b.tapTonbi() } label: {
-                    Image("npc_tonbi").resizable().scaledToFit().frame(width: 110.s, height: 90.s)
-                }
-                .buttonStyle(.plain)
+                Image("npc_tonbi").resizable().scaledToFit().frame(width: 110.s, height: 90.s)
+                    .contentShape(Rectangle())
+                    .gesture(DragGesture(minimumDistance: 0).onChanged { _ in b.tapTonbi() })
                 .position(x: size.width * b.tonbiX, y: size.height * 0.16 + sin(t * 3) * 14)
             }
             ForEach(b.pops) { p in
