@@ -45,7 +45,7 @@ struct RootView: View {
             }
             // new costumes / TOEIC unlock, celebrated once when back from a game or study
             if !rewards.isEmpty {
-                RewardView(rewards: rewards, graduated: rewards.contains(.outfit(.hero))) {
+                RewardView(rewards: rewards, graduated: rewards.contains(.outfit(.aloha))) {
                     RewardCenter.mark(rewards)
                     withAnimation { rewards = [] }
                     later(0.4) { checkInvite() }

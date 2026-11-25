@@ -214,8 +214,8 @@ struct RewardView: View {
             switch r {
             case .outfit(let o):
                 HStack(alignment: .bottom, spacing: -10.s) {
-                    Image(o.image("ken")).resizable().scaledToFit().frame(height: 210.s)
-                    Image(o.image("rin")).resizable().scaledToFit().frame(height: 170.s)
+                    Image(o.image("sora")).resizable().scaledToFit().frame(height: 210.s)
+                    Image(o.image("nyan")).resizable().scaledToFit().frame(height: 150.s)
                 }
                 Text(jp(T("新しい服", "새 옷", "新衣服"))).font(.ui(13.s)).foregroundStyle(Color.ink.opacity(0.6))
                 Text(jp(o.name)).font(.display(24.s)).foregroundStyle(Color.ink)

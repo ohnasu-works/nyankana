@@ -19,7 +19,6 @@ struct HomeView: View {
             let unit = min(tileW * 1.25, rest / 2.3)
             let h1 = unit * 1.3, h2 = unit * 1.0
             ZStack {
-                Dots(color: .white.opacity(0.3), gap: 22, radius: 2.6).ignoresSafeArea()
                 VStack(spacing: gap) {
                     Spacer(minLength: 0)
                     if !app.isPremium {
@@ -43,7 +42,14 @@ struct HomeView: View {
             }
             .frame(width: geo.size.width, height: geo.size.height)
         }
-        .background(Sunburst(center: .init(x: 0.5, y: 0.2)).ignoresSafeArea())
+        // にゃんカナ: the title art (Sora and Nyan on their journey) behind everything
+        .background(
+            ZStack {
+                KJBackdrop(bg: "title_keyart", dim: 0)
+                LinearGradient(colors: [.clear, Color.white.opacity(0.25), Color.white.opacity(0.55)], startPoint: .top, endPoint: .bottom)
+            }
+            .ignoresSafeArea()
+        )
         .onAppear {
             AudioManager.shared.playBGM(.home)
             DispatchQueue.main.async { MapPicture.warmUp() }   // so the map is ready when GAME is tapped
@@ -127,13 +133,13 @@ struct HomeView: View {
             ZStack {
                 Sunburst(a: Color(hex: 0xFF8FC0), b: Color(hex: 0xFF6AA8), center: .init(x: 0.5, y: 0.55), rays: 16)
                 StarBurst().fill(Color(hex: 0xFFF3A8)).frame(width: 150.s, height: 150.s).opacity(0.85)
-                // the kids in the clothes chosen in the closet; a little apart so Ken's arm is not hidden
+                // Sora and Nyan in the clothes chosen in the closet
                 GeometryReader { g in
                     let h = g.size.height
                     HStack(alignment: .bottom, spacing: -h * 0.16) {
-                        Image(Outfit.wearing("ken", app).image("ken")).resizable().scaledToFit().frame(height: h)
+                        Image(Outfit.wearing("sora", app).image("sora")).resizable().scaledToFit().frame(height: h)
                             .rotationEffect(.degrees(-3), anchor: .bottom)
-                        Image(Outfit.wearing("rin", app).image("rin")).resizable().scaledToFit().frame(height: h * 0.82)
+                        Image(Outfit.wearing("nyan", app).image("nyan")).resizable().scaledToFit().frame(height: h * 0.7)
                             .rotationEffect(.degrees(3), anchor: .bottom)
                     }
                     .frame(width: g.size.width, height: h, alignment: .bottom)
@@ -149,9 +155,10 @@ struct HomeView: View {
                 LinearGradient(colors: [Color(hex: 0x5FE0B6), Color.mintDeep], startPoint: .topLeading, endPoint: .bottomTrailing)
                 Dots()
                 GeometryReader { g in
-                    OutlinedText("A", font: .custom(Fonts.display, size: 44.s), fill: .sun, width: 3, shadow: 2).rotationEffect(.degrees(-12)).position(x: g.size.width * 0.17, y: g.size.height * 0.14)
-                    OutlinedText("b", font: .custom(Fonts.display, size: 40.s), fill: Color(hex: 0xFF8FC0), width: 3, shadow: 2).rotationEffect(.degrees(10)).position(x: g.size.width * 0.15, y: g.size.height * 0.34)
-                    OutlinedText("C", font: .custom(Fonts.display, size: 40.s), fill: Color(hex: 0xBFE9FF), width: 3, shadow: 2).rotationEffect(.degrees(6)).position(x: g.size.width * 0.19, y: g.size.height * 0.54)
+                    // the three kinds of Japanese letters
+                    OutlinedText("あ", font: .custom(Fonts.rounded, size: 40.s), fill: .sun, width: 3, shadow: 2).rotationEffect(.degrees(-12)).position(x: g.size.width * 0.17, y: g.size.height * 0.14)
+                    OutlinedText("カ", font: .custom(Fonts.rounded, size: 36.s), fill: Color(hex: 0xFF8FC0), width: 3, shadow: 2).rotationEffect(.degrees(10)).position(x: g.size.width * 0.15, y: g.size.height * 0.34)
+                    OutlinedText("日", font: .custom(Fonts.rounded, size: 36.s), fill: Color(hex: 0xBFE9FF), width: 3, shadow: 2).rotationEffect(.degrees(6)).position(x: g.size.width * 0.19, y: g.size.height * 0.54)
                     Image("nyan").resizable().scaledToFit().frame(width: g.size.width * 0.66).rotationEffect(.degrees(6))
                         .modifier(LonelyLook(mood: Absence.mood(app), size: g.size.width * 0.66))
                         .position(x: g.size.width * 0.6, y: g.size.height * 0.4).hop(5, period: 0.7)
@@ -166,9 +173,9 @@ struct HomeView: View {
                 LinearGradient(colors: [Color(hex: 0x8BE07A), Color(hex: 0x4CBF5A)], startPoint: .topLeading, endPoint: .bottomTrailing)
                 Dots()
                 GeometryReader { g in
-                    Image("gob_07").resizable().scaledToFit().frame(height: g.size.height * 0.4).position(x: g.size.width * 0.28, y: g.size.height * 0.3).bob()
-                    Image("gob_09").resizable().scaledToFit().frame(height: g.size.height * 0.44).position(x: g.size.width * 0.74, y: g.size.height * 0.3).bob(delay: 0.5)
-                    Image("gob_06").resizable().scaledToFit().frame(height: g.size.height * 0.3).position(x: g.size.width * 0.52, y: g.size.height * 0.5).bob(delay: 1)
+                    Image("nk_003").resizable().scaledToFit().frame(height: g.size.height * 0.4).position(x: g.size.width * 0.28, y: g.size.height * 0.3).bob()
+                    Image("nk_007").resizable().scaledToFit().frame(height: g.size.height * 0.44).position(x: g.size.width * 0.74, y: g.size.height * 0.3).bob(delay: 0.5)
+                    Image("nk_012").resizable().scaledToFit().frame(height: g.size.height * 0.3).position(x: g.size.width * 0.52, y: g.size.height * 0.5).bob(delay: 1)
                 }
             }
         }
