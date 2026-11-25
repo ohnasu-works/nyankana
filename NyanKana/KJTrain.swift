@@ -5,9 +5,9 @@ import Combine
 // かきとり／ならべかえ／リスニング／にがて音／にがて復習／60びょう／JLPT N5 もんだい／JLPT N5 もし
 
 enum KJTrainMode: String, CaseIterable, Identifiable {
-    case dictation, order, listening, sounds, review, flash, jlpt, mock
+    case dictation, order, listening, speak, sounds, review, flash, jlpt, mock
     var id: String { rawValue }
-    static let training: [KJTrainMode] = [.dictation, .order, .listening, .sounds, .review, .flash]
+    static let training: [KJTrainMode] = [.dictation, .order, .listening, .speak, .sounds, .review, .flash]
     static let exams: [KJTrainMode] = [.jlpt, .mock]
 
     var ja: String {
@@ -15,6 +15,7 @@ enum KJTrainMode: String, CaseIterable, Identifiable {
         case .dictation: "かきとり"
         case .order: "ならべかえ"
         case .listening: "リスニング"
+        case .speak: "はつおん"
         case .sounds: "にがて音"
         case .review: "にがて ふくしゅう"
         case .flash: "60びょう チャレンジ"
@@ -27,6 +28,7 @@ enum KJTrainMode: String, CaseIterable, Identifiable {
         case .dictation: KJ.t("Hear a word, spell it in kana", "聽單字，用假名拼出來", "듣고 가나로 쓰기")
         case .order: KJ.t("Put the words in the right order", "把詞語排成正確的句子", "단어를 바른 순서로")
         case .listening: KJ.t("Hear a sentence, pick its meaning", "聽句子，選意思", "문장을 듣고 뜻 고르기")
+        case .speak: KJ.t("Say it out loud — is it understood?", "唸出來，聽得懂嗎？", "소리 내어 말해요 — 통할까?")
         case .sounds: KJ.t("Long vowels, small っ, きゃ/きや…", "長音、促音、拗音……", "장음·촉음·요음 구별")
         case .review: KJ.t("The letters and words you missed", "再練習答錯的字和詞", "틀린 글자와 단어 복습")
         case .flash: KJ.t("How many in 60 seconds?", "60秒能答幾題？", "60초에 몇 문제?")
@@ -39,6 +41,7 @@ enum KJTrainMode: String, CaseIterable, Identifiable {
         case .dictation: "pencil.and.scribble"
         case .order: "square.grid.3x1.below.line.grid.1x2"
         case .listening: "ear.fill"
+        case .speak: "mic.fill"
         case .sounds: "mouth.fill"
         case .review: "arrow.counterclockwise.circle.fill"
         case .flash: "bolt.fill"
@@ -51,6 +54,7 @@ enum KJTrainMode: String, CaseIterable, Identifiable {
         case .dictation: Color(hex: 0xFFD1E3)
         case .order: Color(hex: 0xFFE9A8)
         case .listening: Color(hex: 0xBFE6FF)
+        case .speak: Color(hex: 0xFFF0B3)
         case .sounds: Color(hex: 0xD9F7E3)
         case .review: Color(hex: 0xE6DCFF)
         case .flash: Color(hex: 0xFFD8B8)
@@ -58,7 +62,7 @@ enum KJTrainMode: String, CaseIterable, Identifiable {
         case .mock: Color(hex: 0xFFE0E0)
         }
     }
-    var bgm: String { switch self { case .flash, .review: "study_a"; case .dictation, .listening, .sounds: "study_c"; case .order: "study_b"; case .jlpt, .mock: "study_jlpt" } }
+    var bgm: String { switch self { case .flash, .review: "study_a"; case .dictation, .listening, .sounds, .speak: "study_c"; case .order: "study_b"; case .jlpt, .mock: "study_jlpt" } }
 
     // records
     var best: Int { UserDefaults.standard.integer(forKey: "kj.train.best.\(rawValue)") }
@@ -82,6 +86,7 @@ struct KJTQ: Identifiable {
     var want: [String] = []
     var explain = ""
     var key = ""                // for にがて
+    var speak = false           // はつおん: answer by voice
 }
 
 struct KJTrainView: View {
@@ -123,6 +128,7 @@ struct KJTrainView: View {
             }
         }
         .onAppear { start() }
+        .onDisappear { SpeechCoach.shared.cancel() }
         .onReceive(clock) { _ in tick() }
     }
 
@@ -169,7 +175,7 @@ struct KJTrainView: View {
             }
             .padding(.horizontal, 16.s)
             Spacer(minLength: 0)
-            if q.tiles.isEmpty { choices(q) } else { tiles(q) }
+            if q.speak { mic(q) } else if q.tiles.isEmpty { choices(q) } else { tiles(q) }
             Spacer(minLength: 8.s)
         }
     }
@@ -228,6 +234,76 @@ struct KJTrainView: View {
         }
     }
 
+    @ObservedObject private var coach = SpeechCoach.shared
+    @State private var heard = ""
+
+    private func mic(_ q: KJTQ) -> some View {
+        VStack(spacing: 12.s) {
+            if !heard.isEmpty || coach.state == .listening {
+                Text(coach.state == .listening ? (coach.heard.isEmpty ? "…" : coach.heard) : "「\(heard)」")
+                    .font(.ui(16.s)).foregroundStyle(.white).multilineTextAlignment(.center)
+            }
+            if coach.state == .denied || coach.state == .unavailable {
+                Text(KJ.t("Allow the microphone and speech recognition in Settings.", "請在設定中允許麥克風和語音辨識。", "설정에서 마이크와 음성 인식을 허용해 주세요."))
+                    .font(.ui(13.s)).foregroundStyle(.white).multilineTextAlignment(.center)
+                KJButton(title: KJ.both("Skip", "略過", "건너뛰기"), color: .white) { judge(false, q) }
+            }
+            Button {
+                guard picked == nil else { return }
+                if coach.state == .listening { coach.stop(); return }
+                heard = ""
+                coach.start { text in
+                    heard = text
+                    guard picked == nil else { return }
+                    picked = 0
+                    judge(Self.sameSound(text, q.audio), q)
+                }
+            } label: {
+                Image(systemName: coach.state == .listening ? "stop.fill" : "mic.fill").font(.system(size: 34.s, weight: .bold)).foregroundStyle(.white)
+                    .frame(width: 96.s, height: 96.s)
+                    .background(Circle().fill(coach.state == .listening ? Color.danger : Color.pop).overlay(Circle().stroke(Color.ink, lineWidth: 3)))
+            }
+            .buttonStyle(PressStyle(radius: 48.s, depth: 4))
+            Text(coach.state == .listening ? KJ.t("Listening… say it now", "聆聽中……請說", "듣고 있어요… 말해요") : KJ.t("Tap and say it", "點一下再說", "누르고 말해요"))
+                .font(.ui(13.s)).foregroundStyle(.white)
+        }
+    }
+
+    /// heard vs wanted, compared by their sounds (romaji), so kanji in what was heard still counts
+    static func sameSound(_ heard: String, _ want: String) -> Bool {
+        let a = romaji(heard), b = romaji(want)
+        guard !a.isEmpty, !b.isEmpty else { return false }
+        if a.contains(b) { return true }
+        let d = levenshtein(Array(a), Array(b))
+        return Double(d) / Double(max(b.count, 1)) <= 0.25
+    }
+
+    static func romaji(_ s: String) -> String {
+        let cf = s as CFString
+        let tok = CFStringTokenizerCreate(nil, cf, CFRangeMake(0, CFStringGetLength(cf)), kCFStringTokenizerUnitWord, Locale(identifier: "ja") as CFLocale)
+        var out = ""
+        var t = CFStringTokenizerAdvanceToNextToken(tok)
+        while !t.isEmpty {
+            if let l = CFStringTokenizerCopyCurrentTokenAttribute(tok, kCFStringTokenizerAttributeLatinTranscription) as? String { out += l }
+            t = CFStringTokenizerAdvanceToNextToken(tok)
+        }
+        return out.lowercased().filter { $0.isLetter }
+    }
+
+    static func levenshtein(_ a: [Character], _ b: [Character]) -> Int {
+        if a.isEmpty { return b.count }
+        if b.isEmpty { return a.count }
+        var prev = Array(0...b.count)
+        for i in 1...a.count {
+            var cur = [i] + Array(repeating: 0, count: b.count)
+            for j in 1...b.count {
+                cur[j] = min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] == b[j - 1] ? 0 : 1))
+            }
+            prev = cur
+        }
+        return prev[b.count]
+    }
+
     private func tile(_ t: String, on: Bool) -> some View {
         Text(t).font(.custom(Fonts.rounded, size: 22.s)).foregroundStyle(Color.ink)
             .lineLimit(1).minimumScaleFactor(0.5)
@@ -272,7 +348,7 @@ struct KJTrainView: View {
     }
 
     private func present() {
-        picked = nil; built = []
+        picked = nil; built = []; heard = ""
         if let a = q?.audio, !a.isEmpty { later(0.35) { Speaker.shared.say(a) } }
     }
 
@@ -361,6 +437,15 @@ struct KJTrainView: View {
                 return KJTQ(head: KJ.both("What does it mean?", "是什麼意思？", "무슨 뜻이에요?"), prompt: "", audio: s.spoken,
                             choices: ch, answer: ch.firstIndex(of: s.meaning) ?? 0, explain: s.ja)
             }
+        case .speak:
+            // words first, then short sentences
+            let ws = words.filter { $0.ja.count >= 2 && $0.ja.count <= 5 }.shuffled().prefix(6).map { w in
+                KJTQ(head: KJ.both("Say this word", "唸這個詞", "이 단어를 말해요"), prompt: w.ja, note: "\(w.emoji) \(w.meaning)", audio: w.ja, explain: w.ja, key: w.ja, speak: true)
+            }
+            let ss = sentences.filter { $0.level <= 2 }.shuffled().prefix(4).map { s in
+                KJTQ(head: KJ.both("Say this sentence", "唸這個句子", "이 문장을 말해요"), prompt: s.ja, note: s.meaning, audio: s.spoken, explain: s.ja, speak: true)
+            }
+            return ws + ss
         case .sounds:
             return KJStudyData.pairs.shuffled().prefix(10).map { p in
                 let say = Bool.random() ? p.a : p.b
