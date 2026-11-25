@@ -35,7 +35,7 @@ struct RootView: View {
             // (without it, the map's labels and pictures flew in from their own starting points)
             case .home:      HomeView().transition(.opacity)
             case .map:       StageMapView().geometryGroup().transition(.move(edge: .trailing))
-            case .study:     StudyHomeView().geometryGroup().transition(.move(edge: .trailing))
+            case .study:     KJStudyView { app.go(.home) }.geometryGroup().transition(.move(edge: .trailing))
             case .zukan:     ZukanView().geometryGroup().transition(.move(edge: .trailing))
             case .record:    RecordView().geometryGroup().transition(.move(edge: .trailing))
             case .closet:    ClosetView().geometryGroup().transition(.move(edge: .trailing))

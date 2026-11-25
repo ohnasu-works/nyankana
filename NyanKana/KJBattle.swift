@@ -67,7 +67,7 @@ final class KJBattle: ObservableObject {
     private var pickPending = false
 
     var hasBoss: Bool { st.kind == .mid || st.kind == .boss }
-    var bossImage: String { st.kind == .boss ? "boss_kyubi" : "mid_karakasa" }
+    var bossImage: String { st.bossImage }
     var target: Foe? { foes.first { $0.id == targetID } }
     /// the roman-letter hint: always on the first stage's first half, then only for the new letters early on
     var hintVisible: Bool {

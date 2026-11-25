@@ -21,9 +21,12 @@ enum KJC1 {
         var fog = false               // stage 11: the letters fade in the mist
         var tonbi = false             // stage 9: a kite flies over (tap it for a bonus)
         var mini: MGKind? = nil       // a mini-game stage (MiniGames.swift)
+        var chapter = 1               // 1 関東 … 7 九州・沖縄 (chapters 2-7: KJChapters.swift)
+        var foe: String? = nil        // the mid-boss / boss picture
         var place: String { KJ.t(en, zh, ko) }
-        var pre: [KJLine] { KJC1.lines[id]?.pre ?? [] }
-        var post: [KJLine] { KJC1.lines[id]?.post ?? [] }
+        var pre: [KJLine] { (KJC1.lines[id] ?? KJC1.lines2[id])?.pre ?? [] }
+        var post: [KJLine] { (KJC1.lines[id] ?? KJC1.lines2[id])?.post ?? [] }
+        var bossImage: String { foe ?? (kind == .boss ? "boss_kyubi" : "mid_karakasa") }
     }
 
     static let A = ["あ", "い", "う", "え", "お"]
@@ -33,7 +36,9 @@ enum KJC1 {
     static let N = ["な", "に", "ぬ", "ね", "の"]
     static let all = A + K + S + T + N
 
-    static let stages: [Stage] = [
+    static let stages: [Stage] = stages1 + stages2
+    static func stages(in chapter: Int) -> [Stage] { stages.filter { $0.chapter == chapter } }
+    static let stages1: [Stage] = [
         Stage(id: 1, ja: "あさくさ・かみなりもん", en: "Asakusa · Kaminarimon", zh: "淺草・雷門", ko: "아사쿠사・가미나리몬",
               bg: "旅01_浅草_雷門", kind: .battle, newKana: A, known: A, words: ["あお", "いえ", "うえ"], goal: 18),
         Stage(id: 101, ja: "しょどう どうじょう", en: "Tracing Dojo", zh: "描字道場", ko: "따라 쓰기 도장",
@@ -90,7 +95,16 @@ enum KJC1 {
         return stages[i + 1].id
     }
     /// 1, 2, 3… in map order (shown as "1-n")
-    static func number(_ id: Int) -> Int { (stages.firstIndex { $0.id == id } ?? 0) + 1 }
+    static func number(_ id: Int) -> Int {
+        let ch = stage(id).chapter
+        return (stages(in: ch).firstIndex { $0.id == id } ?? 0) + 1
+    }
+    /// "2-5" style label
+    static func label(_ id: Int) -> String { "\(stage(id).chapter)-\(number(id))" }
+    static func chapterName(_ ch: Int) -> String {
+        guard let n = chapterNames[ch] else { return "" }
+        return KJ.t(n.en, n.zh, n.ko)
+    }
 }
 
 // MARK: - the chapter map (one screen, no scrolling)
@@ -100,10 +114,17 @@ struct KJMapView: View {
     var home: () -> Void
     var redoSetup: () -> Void
     var playground: () -> Void = {}
+    /// which chapter's course is shown (starts on the furthest one that is open)
+    @State private var chapter: Int = KJC1.stages.last { KJC1.unlocked($0.id) }?.chapter ?? 1
+
+    private var course: [KJC1.Stage] { KJC1.stages(in: chapter) }
+    private var chapterBG: String {
+        ["旅01_隅田川の桜並木_夕方", "bg_c2_sendai", "bg_c3_otaru", "bg_c4_shirakawa", "bg_c5_inari", "bg_c6_miyajima", "bg_c7_okinawa"][max(0, min(6, chapter - 1))]
+    }
 
     var body: some View {
         ZStack {
-            KJBackdrop(bg: "旅01_隅田川の桜並木_夕方", dim: 0.35)
+            KJBackdrop(bg: chapterBG, dim: 0.35)
             VStack(spacing: 10.s) {
                 HStack {
                     BackChip { home() }
@@ -124,23 +145,31 @@ struct KJMapView: View {
                     KJSlowButton()
                 }
                 .padding(.horizontal, 14.s).padding(.top, 6.s)
-                RibbonTitle(text: "だい1しょう  かんとう", size: 22)
-                Text(KJ.t("Chapter 1 · Kanto", "第1章・關東", "제1장・간토")).font(.ui(14.s)).foregroundStyle(Color.ink)
+                // the chapter: ◀ だい2しょう とうほく ▶
+                HStack(spacing: 10.s) {
+                    chapterArrow(-1)
+                    VStack(spacing: 2.s) {
+                        RibbonTitle(text: "だい\(chapter)しょう  \(KJC1.chapterNames[chapter]?.ja ?? "")", size: 20)
+                        Text(KJ.t("Chapter \(chapter) · \(KJC1.chapterName(chapter))", "第\(chapter)章・\(KJC1.chapterName(chapter))", "제\(chapter)장・\(KJC1.chapterName(chapter))"))
+                            .font(.ui(13.s)).foregroundStyle(.white).shadow(color: .black.opacity(0.6), radius: 2)
+                    }
+                    chapterArrow(1)
+                }
                 GeometryReader { g in
                     let cols = 3
-                    let rows = Int((Double(KJC1.stages.count) / Double(cols)).rounded(.up))
+                    let rows = Int((Double(course.count) / Double(cols)).rounded(.up))
                     let w = g.size.width / CGFloat(cols), h = g.size.height / CGFloat(rows)
                     ZStack {
                         // the road between the stages (zigzag)
                         Path { p in
-                            for (i, s) in KJC1.stages.enumerated() {
+                            for (i, s) in course.enumerated() {
                                 let pt = point(i, cols: cols, w: w, h: h)
                                 if i == 0 { p.move(to: pt) } else { p.addLine(to: pt) }
                                 _ = s
                             }
                         }
                         .stroke(Color.white.opacity(0.9), style: StrokeStyle(lineWidth: 8.s, lineCap: .round, dash: [2, 14.s]))
-                        ForEach(Array(KJC1.stages.enumerated()), id: \.offset) { i, s in
+                        ForEach(Array(course.enumerated()), id: \.offset) { i, s in
                             node(s).position(point(i, cols: cols, w: w, h: h))
                         }
                     }
@@ -151,6 +180,22 @@ struct KJMapView: View {
                     .padding(.bottom, 8.s)
             }
         }
+    }
+
+    private func chapterArrow(_ d: Int) -> some View {
+        let n = chapter + d
+        let ok = (1...7).contains(n)
+        return Button {
+            guard ok else { return }
+            AudioManager.shared.se(.tap)
+            withAnimation(.easeInOut(duration: 0.25)) { chapter = n }
+        } label: {
+            Image(systemName: d < 0 ? "chevron.left.circle.fill" : "chevron.right.circle.fill")
+                .font(.system(size: 30.s, weight: .bold))
+                .foregroundStyle(ok ? Color.sun : Color.white.opacity(0.3))
+                .background(Circle().fill(Color.ink).padding(3.s))
+        }
+        .disabled(!ok)
     }
 
     private func point(_ i: Int, cols: Int, w: CGFloat, h: CGFloat) -> CGPoint {
@@ -177,7 +222,7 @@ struct KJMapView: View {
                         .frame(width: 58.s, height: 58.s)
                     if open {
                         if special {
-                            Image(s.kind == .boss ? "boss_kyubi" : "mid_karakasa").resizable().scaledToFit().frame(width: 46.s, height: 46.s)
+                            Image(s.bossImage).resizable().scaledToFit().frame(width: 46.s, height: 46.s)
                         } else if let m = s.mini {
                             Text(m.icon).font(.system(size: 28.s))
                         } else {
@@ -398,7 +443,7 @@ struct KJResultView: View {
     var body: some View {
         VStack(spacing: 14.s) {
             Spacer(minLength: 70.s)
-            RibbonTitle(text: "1-\(KJC1.number(stage.id)) CLEAR!")
+            RibbonTitle(text: "\(KJC1.label(stage.id)) CLEAR!")
             Text(stage.place).font(.ui(16.s)).foregroundStyle(Color.ink)
             Image(stars == 3 ? "nk_nyan_joy" : "nk_nyan_proud").resizable().scaledToFit().frame(height: 140.s).modifier(Bob())
             PaperCard {
@@ -628,7 +673,7 @@ struct KJRescueLauncher: View {
     var body: some View {
         VStack(spacing: 16.s) {
             Spacer()
-            Image("boss_kyubi").resizable().scaledToFit().frame(height: 220.s)
+            Image(stage.bossImage).resizable().scaledToFit().frame(height: 220.s)
                 .scaleEffect(shown ? 1 : 0.3).opacity(shown ? 1 : 0)
             RibbonTitle(text: "BOSS BATTLE!", color: .danger, size: 26)
             Text(KJ.both("Answer with the letters you learned!", "用學過的假名回答！", "배운 글자로 대답해요!"))

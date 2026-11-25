@@ -1,0 +1,231 @@
+import SwiftUI
+
+// MARK: - まなぶ（勉強モード）たたき台
+// もじひょう（文字の表・覚え方）／れんしゅう（えらんだ文字で なぞり・しょどう・かるた・めくり）／ことば（絵と音）
+
+struct KJStudyView: View {
+    var back: () -> Void
+    enum Tab: String, CaseIterable { case chart, practice, words }
+    @State private var tab: Tab = .chart
+    @State private var detail: KJLetter?
+    @State private var playing: (kind: MGKind, letters: [String])?
+    @State private var group = 0
+
+    /// the letter groups in the order the journey teaches them
+    static let groups: [(title: String, letters: [String])] = {
+        KJC1.stages.filter { !$0.newKana.isEmpty }.map { s in
+            let l = s.newKana
+            return ("\(l.first ?? "")〜\(l.last ?? "")", l)
+        }
+    }()
+
+    var body: some View {
+        ZStack {
+            if let p = playing {
+                MiniGameView(kind: p.kind, stage: KJC1.Stage(id: 950, ja: p.kind.title, en: p.kind.sub, zh: p.kind.sub, ko: p.kind.sub,
+                                                              bg: p.kind.bg, kind: .mini, known: p.letters, mini: p.kind)) { _, _, _ in
+                    AudioManager.shared.playBGM(.study)
+                    withAnimation { playing = nil }
+                }
+                .transition(.opacity)
+            } else {
+                main.transition(.opacity)
+            }
+        }
+        .onAppear { AudioManager.shared.playBGM(.study) }
+        .sheet(item: Binding(get: { detail.map { KJLetterBox(l: $0) } }, set: { detail = $0?.l })) { box in
+            KJLetterSheet(l: box.l).presentationDetents([.medium])
+        }
+    }
+
+    private var main: some View {
+        ZStack {
+            KJBackdrop(bg: "bg_mg_dojo", dim: 0.45)
+            VStack(spacing: 10.s) {
+                HStack {
+                    BackChip { back() }
+                    Spacer()
+                    KJSlowButton()
+                }
+                .padding(.horizontal, 14.s).padding(.top, 6.s)
+                RibbonTitle(text: "まなぶ", color: .grape, size: 24)
+                HStack(spacing: 8.s) {
+                    ForEach(Tab.allCases, id: \.self) { t in
+                        Button {
+                            AudioManager.shared.se(.tap)
+                            tab = t
+                        } label: {
+                            Text(title(t)).font(.custom(Fonts.rounded, size: 14.s))
+                                .foregroundStyle(tab == t ? Color.white : Color.ink)
+                                .padding(.horizontal, 14.s).padding(.vertical, 7.s)
+                                .background(Capsule().fill(tab == t ? Color.grape : Color.white).overlay(Capsule().stroke(Color.ink, lineWidth: 2.5)))
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                switch tab {
+                case .chart: chart
+                case .practice: practice
+                case .words: wordList
+                }
+            }
+        }
+    }
+
+    private func title(_ t: Tab) -> String {
+        switch t {
+        case .chart: "もじひょう"
+        case .practice: "れんしゅう"
+        case .words: "ことば"
+        }
+    }
+
+    // MARK: the letter chart
+
+    private var chart: some View {
+        ScrollView {
+            VStack(alignment: .leading, spacing: 14.s) {
+                ForEach(Array(Self.groups.enumerated()), id: \.offset) { _, g in
+                    VStack(alignment: .leading, spacing: 6.s) {
+                        Text(g.title).font(.custom(Fonts.rounded, size: 13.s)).foregroundStyle(.white)
+                            .padding(.horizontal, 10.s).padding(.vertical, 2.s)
+                            .background(Capsule().fill(Color.ink.opacity(0.6)))
+                        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6.s), count: 6), spacing: 6.s) {
+                            ForEach(g.letters, id: \.self) { k in
+                                Button {
+                                    Speaker.shared.say(k)
+                                    detail = KJData.letter(k)
+                                } label: {
+                                    VStack(spacing: 0) {
+                                        Text(k).font(.custom(Fonts.rounded, size: k.count > 1 ? 20.s : 26.s)).foregroundStyle(Color.ink)
+                                            .lineLimit(1).minimumScaleFactor(0.6)
+                                        Text(KJData.romaji(k)).font(.ui(10.s, bold: false)).foregroundStyle(Color.ink.opacity(0.6))
+                                    }
+                                    .frame(maxWidth: .infinity).frame(height: 52.s)
+                                    .background(RoundedRectangle(cornerRadius: 10.s).fill(Color.white.opacity(0.93)).overlay(RoundedRectangle(cornerRadius: 10.s).stroke(Color.ink, lineWidth: 2)))
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                    }
+                }
+            }
+            .padding(.horizontal, 16.s).padding(.bottom, 24.s)
+        }
+    }
+
+    // MARK: practice with the letters you choose
+
+    private var practice: some View {
+        ScrollView {
+            VStack(spacing: 12.s) {
+                Text(KJ.t("Choose letters", "選擇文字", "글자를 골라요")).font(.ui(14.s)).foregroundStyle(.white)
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 6.s) {
+                        ForEach(Array(Self.groups.enumerated()), id: \.offset) { i, g in
+                            Button {
+                                AudioManager.shared.se(.tap)
+                                group = i
+                            } label: {
+                                Text(g.title).font(.custom(Fonts.rounded, size: 14.s))
+                                    .foregroundStyle(group == i ? Color.white : Color.ink)
+                                    .padding(.horizontal, 12.s).padding(.vertical, 8.s)
+                                    .background(Capsule().fill(group == i ? Color.pop : Color.white).overlay(Capsule().stroke(Color.ink, lineWidth: 2)))
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    .padding(.horizontal, 16.s)
+                }
+                let picked = Self.groups[safe: group]?.letters ?? KJC1.A
+                Text(picked.joined(separator: " ")).font(.custom(Fonts.rounded, size: 26.s)).foregroundStyle(.white)
+                    .shadow(color: .black.opacity(0.6), radius: 2)
+                LazyVGrid(columns: [GridItem(.flexible(), spacing: 12.s), GridItem(.flexible(), spacing: 12.s)], spacing: 12.s) {
+                    practiceCard(.nazori, KJ.t("Trace", "描寫", "따라 쓰기"), picked)
+                    practiceCard(.shodo, KJ.t("Write from memory", "默寫", "기억해서 쓰기"), picked)
+                    practiceCard(.karuta, KJ.t("Listen & tap", "聽音找字", "듣고 찾기"), picked)
+                    practiceCard(.mekuri, KJ.t("Match the sounds", "配對讀音", "소리 짝짓기"), picked)
+                }
+                .padding(.horizontal, 16.s)
+            }
+            .padding(.bottom, 24.s)
+        }
+    }
+
+    private func practiceCard(_ k: MGKind, _ label: String, _ letters: [String]) -> some View {
+        Button {
+            AudioManager.shared.se(.decide)
+            // a few more letters so every game has enough to choose from
+            var ls = letters
+            if ls.count < 8, let i = Self.groups.firstIndex(where: { $0.letters == letters }), i > 0 {
+                ls += Self.groups[i - 1].letters
+            }
+            withAnimation { playing = (k, ls) }
+        } label: {
+            VStack(spacing: 4.s) {
+                Text(k.icon).font(.system(size: 34.s))
+                Text(label).font(.custom(Fonts.rounded, size: 14.s)).foregroundStyle(Color.ink)
+                    .lineLimit(1).minimumScaleFactor(0.6)
+            }
+            .frame(maxWidth: .infinity).padding(.vertical, 14.s)
+            .background(RoundedRectangle(cornerRadius: 16.s).fill(Color.white.opacity(0.94)).overlay(RoundedRectangle(cornerRadius: 16.s).stroke(Color.ink, lineWidth: 3)))
+        }
+        .buttonStyle(PressStyle(radius: 16.s, depth: 4))
+    }
+
+    // MARK: words with pictures
+
+    private var wordList: some View {
+        ScrollView {
+            LazyVGrid(columns: [GridItem(.flexible(), spacing: 8.s), GridItem(.flexible(), spacing: 8.s)], spacing: 8.s) {
+                ForEach(KJData.words, id: \.ja) { w in
+                    Button { Speaker.shared.say(w.ja) } label: {
+                        HStack(spacing: 8.s) {
+                            Text(w.emoji).font(.system(size: 28.s))
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text(w.ja).font(.custom(Fonts.rounded, size: 17.s)).foregroundStyle(Color.ink)
+                                    .lineLimit(1).minimumScaleFactor(0.6)
+                                Text(w.meaning).font(.ui(11.s, bold: false)).foregroundStyle(Color.ink.opacity(0.65)).lineLimit(1)
+                            }
+                            Spacer(minLength: 0)
+                        }
+                        .padding(8.s)
+                        .background(RoundedRectangle(cornerRadius: 12.s).fill(Color.white.opacity(0.93)).overlay(RoundedRectangle(cornerRadius: 12.s).stroke(Color.ink, lineWidth: 2)))
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            .padding(.horizontal, 16.s).padding(.bottom, 24.s)
+        }
+    }
+}
+
+/// Identifiable wrapper so a letter can drive a sheet
+struct KJLetterBox: Identifiable {
+    let l: KJLetter
+    var id: String { l.kana }
+}
+
+struct KJLetterSheet: View {
+    let l: KJLetter
+    var body: some View {
+        VStack(spacing: 12.s) {
+            Text(l.kana).font(.custom(Fonts.rounded, size: 96.s)).foregroundStyle(Color.ink)
+                .lineLimit(1).minimumScaleFactor(0.5)
+            Text(l.romaji).font(.display(26.s)).foregroundStyle(Color.popDeep)
+            Text(l.aid).font(.ui(16.s)).foregroundStyle(Color.ink).multilineTextAlignment(.center).padding(.horizontal, 24.s)
+            if !l.ja.isEmpty {
+                Text(l.ja).font(.ui(13.s, bold: false)).foregroundStyle(Color.ink.opacity(0.6)).multilineTextAlignment(.center)
+            }
+            Button {
+                Speaker.shared.say(l.kana)
+            } label: {
+                Label(KJ.t("Listen", "聽", "듣기"), systemImage: "speaker.wave.3.fill")
+                    .font(.ui(16.s)).foregroundStyle(.white)
+                    .padding(.horizontal, 22.s).padding(.vertical, 10.s)
+                    .background(Capsule().fill(Color.sky))
+            }
+        }
+        .padding(.top, 20.s)
+    }
+}

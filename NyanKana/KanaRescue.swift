@@ -28,12 +28,15 @@ enum KanaRescue {
     static var active: Bool { session != nil }
 
     /// the battle: the area-1 boss stage on NORMAL (zako, packs, the mid boss again, the boss's entrance, the boss)
-    static func ref() -> StageRef { StageRef(area: .lv1, index: Area.lv1.stageCount, difficulty: .normal) }
+    static func ref(_ chapter: Int = 1) -> StageRef {
+        let a = KJC1.bossArea[chapter] ?? .lv1
+        return StageRef(area: a, index: a.stageCount, difficulty: .normal)
+    }
 
     @MainActor static func start(_ stage: KJC1.Stage) {
         session = Session(stageID: stage.id, pools: pools(stage))
         outcome = nil
-        AppState.shared.go(.game(ref()))
+        AppState.shared.go(.game(ref(stage.chapter)))
     }
 
     @MainActor static func finish(stars: Int, score: Int, cleared: Bool) {

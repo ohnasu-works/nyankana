@@ -59,7 +59,8 @@ struct KJLetter {
 }
 
 enum KJData {
-    static let letters: [KJLetter] = [
+    static let letters: [KJLetter] = letters1 + letters2
+    static let letters1: [KJLetter] = [
         KJLetter(kana: "あ", romaji: "a", en: "A cross with a big swirl — you shout \"Ah!\" when you see it.", zh: "來自漢字「安」。安 → あ", ko: "소리는 「아」. あ = 아", ja: "十字と 大きな うずまき。見たら「あ！」"),
         KJLetter(kana: "い", romaji: "i", en: "Two little lines side by side, like two eels: \"ee\".", zh: "來自漢字「以」。以 → い", ko: "소리는 「이」. い = 이", ja: "2本の 線が ならんで「いー」"),
         KJLetter(kana: "う", romaji: "u", en: "A mouth saying \"ooh\" with a small hat on top.", zh: "來自漢字「宇」。宇 → う", ko: "소리는 「우」. う = 우", ja: "「うー」と いう口に 小さな ぼうし"),
@@ -93,7 +94,8 @@ enum KJData {
         var ja: String; var emoji: String; var en: String; var zh: String; var ko: String
         var meaning: String { KJ.t(en, zh, ko) }
     }
-    static let words: [Word] = [
+    static let words: [Word] = words1 + words2
+    static let words1: [Word] = [
         Word(ja: "あお", emoji: "🔵", en: "blue", zh: "藍色", ko: "파랑"),
         Word(ja: "いえ", emoji: "🏠", en: "house", zh: "家", ko: "집"),
         Word(ja: "うえ", emoji: "⬆️", en: "up", zh: "上面", ko: "위"),
@@ -113,7 +115,8 @@ enum KJData {
     static func word(_ w: String) -> Word? { words.first { $0.ja == w } }
 
     /// letters that look alike: when both are known, they are mixed in on purpose
-    static let lookAlike: [[String]] = [["あ", "お"], ["き", "さ", "ち"], ["ぬ", "め"], ["ね", "れ", "わ"], ["い", "こ"], ["し", "つ"], ["た", "な"], ["て", "と"]]
+    static let lookAlike: [[String]] = lookAlike1 + lookAlike2
+    static let lookAlike1: [[String]] = [["あ", "お"], ["き", "さ", "ち"], ["ぬ", "め"], ["ね", "れ", "わ"], ["い", "こ"], ["し", "つ"], ["た", "な"], ["て", "と"]]
 }
 
 // MARK: story lines

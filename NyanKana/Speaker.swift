@@ -51,7 +51,9 @@ final class Speaker: NSObject {
 
     /// - gender: which recorded (Google) voice to use. Plain lines with no character voice use the
     ///   female one; character voices (pitch changed) always use the system voice.
-    func say(_ text: String, voice v: Voice? = nil, slow: Bool? = nil, gender: Gender? = nil) {
+    func say(_ raw: String, voice v: Voice? = nil, slow: Bool? = nil, gender: Gender? = nil) {
+        // a lone kanji is read by its usual reading (日 → にち), not guessed by the speech engine
+        let text = KJData.readings[raw] ?? raw
         let voice = v ?? .normal
         let s = AppState.shared.settings
         guard s.voiceOn, !text.isEmpty else { return }
