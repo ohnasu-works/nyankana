@@ -289,9 +289,8 @@ final class KJBattle: ObservableObject {
         combo = 0; misses += 1
         score = max(0, score - 30)
         AudioManager.shared.se(.wrong, volume: 0.7)
-        // tapping everything fast does not work: a short freeze, and the second miss on the same letter costs a heart
-        locked = true
-        later(1.0) { self.locked = false }
+        // no freeze (fast players keep their tempo), but tapping everything does not work:
+        // the second miss on the same letter costs a heart
         wrongOnTarget += 1
         if wrongOnTarget >= 2 { wrongOnTarget = 0; hurt(); if phase == .lost { return } }
         if let i = foes.firstIndex(where: { $0.id == foe.id }) {
