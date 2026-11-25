@@ -43,6 +43,8 @@ final class Speaker: NSObject {
     /// Rendering the line first and then playing it starts a beat late on iPad, so there the
     /// system speaks directly. Also switched on for good once rendering fails on a device.
     static var directOnly = UIScale.isPad
+    /// にゃんカナ: never use the system (iPhone) voice
+    static let recordedOnly = true
 
     override private init() {
         super.init()
@@ -75,6 +77,14 @@ final class Speaker: NSObject {
             let g = gender ?? .female
             if let b = RecordedVoice.buffer(text, g), AudioManager.shared.playVoiceChecked(b, volume: vol, rate: isSlow ? 0.75 : 1) { return }
         }
+        // にゃんカナ: only recorded (Google) voices — the other recording, or nothing; never the iPhone voice
+        for r in ["f", "m", "n"] {
+            if let b = RecordedVoice.buffer(text, role: r), AudioManager.shared.playVoiceChecked(b, volume: vol, rate: isSlow ? 0.75 : 1) { return }
+        }
+        #if DEBUG
+        print("[voice] missing:", text)
+        #endif
+        if Speaker.recordedOnly { return }
         let u = AVSpeechUtterance(string: text)
         u.voice = enVoice
         if gender == .male { u.voice = manVoice ?? enVoice; if manVoice == nil { u.pitchMultiplier = 0.8 } }
@@ -157,6 +167,14 @@ final class Speaker: NSObject {
             let wait = Double(b.frameLength) / b.format.sampleRate
             Task { @MainActor in
                 try? await Task.sleep(nanoseconds: UInt64((wait + gap) * 1_000_000_000))
+                Speaker.shared.playLine(lines, i + 1, t, gap, done)
+            }
+            return
+        }
+        if Speaker.recordedOnly {
+            // no recording: skip the line (never the iPhone voice), keep the timing
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: UInt64((max(1.0, Double(text.count) * 0.12) + gap) * 1_000_000_000))
                 Speaker.shared.playLine(lines, i + 1, t, gap, done)
             }
             return
@@ -278,7 +296,7 @@ nonisolated final class VoiceCollector: @unchecked Sendable {
 /// key = first 16 hex of SHA1("f|text" or "m|text"). Text keys: the word (kanji and kana), the example sentence,
 /// and "w:<id>" / "e:<id>". Missing lines fall back to the system voice.
 nonisolated enum RecordedVoice {
-    private static let packURLs: [URL?] = (0..<8).map { Bundle.main.url(forResource: "voice\($0)", withExtension: "pack") }
+    private static let packURLs: [URL?] = (0..<10).map { Bundle.main.url(forResource: "voice\($0)", withExtension: "pack") }
     private static let index: [String: (pack: Int, offset: UInt64, length: Int)] = {
         guard let url = Bundle.main.url(forResource: "voice", withExtension: "idx"),
               let text = try? String(contentsOf: url, encoding: .utf8) else { return [:] }

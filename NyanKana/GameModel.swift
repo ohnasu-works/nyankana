@@ -1201,8 +1201,8 @@ final class GameModel: ObservableObject {
             }
         }
         let line: EventLine = grad
-            ? .init(en: "Silence... A world without words is a quiet world.", ja: "しずかに…|言葉のない|世界こそ、|やすらぎの|世界だ。", ko: "조용히… 말이 없는 세상이야말로 평온한 세상이다.", zh: "安靜……沒有語言的世界，才是平靜的世界。")
-            : .init(en: "So... you made it this far.", ja: "ほう…|ここまで|来たか。", ko: "호오… 여기까지 왔나.", zh: "哦……你們竟然走到這裡了。")
+            ? .init(en: "しずかに…　もじの ない せかいこそ、やすらぎの せかいだ。", ja: "しずかに…|言葉のない|世界こそ、|やすらぎの|世界だ。", ko: "조용히… 말이 없는 세상이야말로 평온한 세상이다.", zh: "安靜……沒有語言的世界，才是平靜的世界。")
+            : .init(en: "ほう…　ここまで きたか。", ja: "ほう…|ここまで|来たか。", ko: "호오… 여기까지 왔나.", zh: "哦……你們竟然走到這裡了。")
         after(grad ? 1.6 : 1.0, scaled: false) {
             self.showEvent(.init(image: self.ref.area.boss.image, line: line, tone: .evil), for: grad ? 3.4 : 2.6)
             Speaker.shared.say(line.en, voice: self.ref.area.boss.voice)
