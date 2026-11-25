@@ -85,7 +85,8 @@ struct GameScreen: View {
                 .frame(height: 44.s)
                 .animation(.easeInOut(duration: 0.2), value: m.talk)
                 HStack(alignment: .bottom, spacing: 8.s) {
-                    itemTray
+                    // 13. にゃんカナ's boss battle has no items
+                    if !KanaRescue.active { itemTray }
                     Spacer(minLength: 0)
                     if m.foes.count > 1 { targetChips }
                 }

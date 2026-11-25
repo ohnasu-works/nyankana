@@ -317,11 +317,13 @@ struct KJLessonView: View {
         guard let q else { return }
         switch q {
         case .listen(let k), .review(let k):
-            choices = ([k] + Array(mgDecoys(k, pool + stage.newKana).filter { $0 != k }.prefix(3))).uniqued().shuffled()
+            choices = ([k] + fourDecoys(k)).shuffled()
             later(0.35) { Speaker.shared.say(k) }
         case .read(let k):
-            let rs = mgDecoys(k, pool).map { KJData.romaji($0) }.filter { $0 != KJData.romaji(k) && !$0.isEmpty }
-            choices = ([KJData.romaji(k)] + Array(rs.uniqued().prefix(3))).uniqued().shuffled()
+            let r = KJData.romaji(k)
+            var rs = fourDecoys(k).map { KJData.romaji($0) }.filter { $0 != r && !$0.isEmpty }.uniqued()
+            for x in KJData.letters.map(\.romaji).shuffled() where rs.count < 3 && x != r && !rs.contains(x) { rs.append(x) }
+            choices = ([r] + rs.prefix(3)).shuffled()
         case .trace(let k):
             glyph = MGGlyph.make(k)
             later(0.3) { Speaker.shared.say(k) }
@@ -331,6 +333,13 @@ struct KJLessonView: View {
             pad = keys.uniqued().shuffled()
             later(0.35) { Speaker.shared.say(w) }
         }
+    }
+
+    /// always three wrong choices (look-alikes first, then anything else the player has met)
+    private func fourDecoys(_ k: String) -> [String] {
+        var out = mgDecoys(k, (pool + stage.newKana).uniqued()).filter { $0 != k }.uniqued()
+        for x in (KJC1.all + KJData.letters.map(\.kana)).uniqued().shuffled() where out.count < 3 && x != k && !out.contains(x) { out.append(x) }
+        return Array(out.prefix(3))
     }
 
     private func choose(_ c: String, answer: String) {

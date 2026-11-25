@@ -32,6 +32,7 @@ struct MGScroller: View {
 @MainActor func mgSpeak(_ a: MGAsk?) {
     switch a {
     case .sound(let k)?, .word(let k)?: later(0.2) { Speaker.shared.say(k) }
+    case .chain(let w, 0)?: later(0.2) { Speaker.shared.say(w) }
     default: break
     }
 }
@@ -54,6 +55,7 @@ struct MGDash: View {
     @State private var scroll: CGFloat = 0
     @State private var t: Double = 0
     @State private var hop = false
+    @State private var dash: Double = 0          // seconds of dash left
     @State private var token = 0
     @State private var clock = Timer.publish(every: 1.0 / 30, on: .main, in: .common).autoconnect()
 
@@ -83,8 +85,22 @@ struct MGDash: View {
                         .position(x: w * r.x, y: h * laneY[l] - 6.s)
                     }
                 }
+                if dash > 0 {
+                    // speed lines
+                    ForEach(0..<9, id: \.self) { i in
+                        Capsule().fill(Color.white.opacity(0.75))
+                            .frame(width: CGFloat(60 + (i * 37) % 90).s, height: 4.s)
+                            .position(x: w * CGFloat(1.2 - (Double(i) * 0.37 + t * 3).truncatingRemainder(dividingBy: 1.2)) - 40.s,
+                                      y: h * (0.5 + CGFloat(i) * 0.05))
+                    }
+                    .allowsHitTesting(false)
+                    Text("DASH!").font(.display(28.s)).foregroundStyle(Color.sun)
+                        .shadow(color: .black.opacity(0.6), radius: 0, x: 2, y: 2)
+                        .position(x: w * nyanX + 30.s, y: h * laneY[lane] - 80.s)
+                }
                 Image("nk_nyan_hero").resizable().scaledToFit().frame(height: 96.s)
-                    .offset(y: hop ? -30.s : CGFloat(abs(sin(t * 12))) * -6.s)
+                    .rotationEffect(.degrees(dash > 0 ? 12 : 0))
+                    .offset(y: hop ? -30.s : CGFloat(abs(sin(t * (dash > 0 ? 20 : 12)))) * -6.s)
                     .position(x: w * nyanX, y: h * laneY[lane])
                     .animation(.spring(response: 0.22, dampingFraction: 0.6), value: lane)
             }
@@ -105,7 +121,7 @@ struct MGDash: View {
         .onAppear { reset() }
     }
 
-    private var speed: CGFloat { min(0.5, 0.24 + 0.012 * CGFloat(ctx.hits)) }
+    private var speed: CGFloat { min(0.5, 0.24 + 0.012 * CGFloat(ctx.hits)) * (dash > 0 ? 1.9 : 1) }
 
     private func move(_ l: Int) {
         let n = max(0, min(2, l))
@@ -120,18 +136,23 @@ struct MGDash: View {
     }
 
     /// a new row of three gates, one of them is the answer
-    private func spawn() {
-        guard ctx.running, let a = letters.randomElement() else { return }
-        var ks = Array(mgDecoys(a, letters).prefix(4).shuffled().prefix(2)) + [a]
+    /// a new row of gates; `keep`: the same question goes on (a word chain, or a miss inside one)
+    private func spawn(keep: Bool = false) {
+        guard ctx.running else { return }
+        if !keep || ask == nil, let k = letters.randomElement() {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) { ask = MGAsk.pick(k, hits: ctx.hits) }
+            mgSpeak(ask)
+        }
+        guard let a = ask?.answer, !a.isEmpty else { return }
+        var ks = Array(mgDecoys(a, letters).filter { $0 != a }.prefix(4).shuffled().prefix(2)) + [a]
         ks.shuffle()
         rows.append(Row(kanas: ks, x: 1.15))
-        withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) { ask = MGAsk.pick(a, hits: ctx.hits) }
-        mgSpeak(ask)
     }
 
     private func step() {
         t += 1.0 / 30
         guard ctx.running else { return }
+        dash = max(0, dash - 1.0 / 30)
         scroll += speed * 600 / 30
         for i in rows.indices {
             rows[i].x -= speed / 30
@@ -140,14 +161,18 @@ struct MGDash: View {
                 let ok = rows[i].kanas[lane] == ask?.answer
                 if ok {
                     AudioManager.shared.se(.kira)
+                    AudioManager.shared.se(.mgWhoosh, volume: 0.7)
+                    dash = 1.2 + min(1.5, Double(ctx.combo) * 0.15)   // the longer the combo, the longer the dash
                     hop = true
                     later(0.25) { hop = false }
                     ctx.good(100, at: CGPoint(x: nyanX, y: laneY[lane] - 0.1), word: rows[i].kanas[lane])
                 } else {
                     ctx.bad(at: CGPoint(x: nyanX, y: laneY[lane] - 0.1))
                 }
+                var keep = false
+                if ok { keep = mgChain(&ask, ctx: ctx) == .next } else if case .chain? = ask { keep = true }
                 let my = token
-                later(0.5) { if my == token { spawn() } }
+                later(0.5) { if my == token { spawn(keep: keep) } }
             }
         }
         rows.removeAll { $0.x < -0.2 }
@@ -196,7 +221,7 @@ struct MGTaiko: View {
                 ForEach(notes) { n in
                     Text(n.kana).font(.custom(Fonts.rounded, size: 30.s)).foregroundStyle(.white)
                         .frame(width: 62.s, height: 62.s)
-                        .background(Circle().fill(n.kana == ask?.answer ? Color.danger : Color.sky).overlay(Circle().stroke(Color.white, lineWidth: 4)))
+                        .background(Circle().fill(Color.sky).overlay(Circle().stroke(Color.white, lineWidth: 4)))
                         .scaleEffect(n.hit ? 1.6 : 1)
                         .opacity(n.hit ? 0 : 1)
                         .animation(.easeOut(duration: 0.2), value: n.hit)
@@ -275,7 +300,11 @@ struct MGTaiko: View {
             flashOK = true
             later(0.15) { flashOK = false }
             sinceAsk += 1
-            if sinceAsk >= 5 { newAsk() }
+            switch mgChain(&ask, ctx: ctx) {
+            case .next: break
+            case .done: newAsk()
+            case .none: if sinceAsk >= 5 { newAsk() }
+            }
         } else {
             AudioManager.shared.se(.mgKa)
             ctx.bad(at: CGPoint(x: zoneX, y: laneY - 0.09), shakeIt: near != nil)
@@ -704,9 +733,10 @@ struct MGKingyo: View {
                             .padding(4.s).background(Circle().fill(Color.white.opacity(0.85)))
                     }
                     .scaleEffect(f.caught != nil ? 1 - CGFloat(f.caught!) * 0.6 : 1)
-                    .position(pos)
-                    .contentShape(Circle().scale(0.8))
+                    .frame(width: 110.s, height: 110.s)
+                    .contentShape(Circle())
                     .onTapGesture { scoop(f, at: pos, size: g.size) }
+                    .position(pos)
                 }
                 if let r = ripple {
                     Circle().stroke(Color.white, lineWidth: 4).frame(width: 90.s, height: 90.s)

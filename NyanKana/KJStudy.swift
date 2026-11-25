@@ -33,8 +33,17 @@ struct KJStudyView: View {
             }
         }
         .onAppear { AudioManager.shared.playBGM(.study) }
-        .sheet(item: Binding(get: { detail.map { KJLetterBox(l: $0) } }, set: { detail = $0?.l })) { box in
-            KJLetterSheet(l: box.l).presentationDetents([.medium])
+        // the letter card: always the same size, closes with ✕ or a tap outside
+        .overlay {
+            if let l = detail {
+                ZStack {
+                    Color.black.opacity(0.45).ignoresSafeArea()
+                        .onTapGesture { withAnimation(.easeOut(duration: 0.2)) { detail = nil } }
+                    KJLetterSheet(l: l) { withAnimation(.easeOut(duration: 0.2)) { detail = nil } }
+                        .padding(.horizontal, 24.s)
+                        .transition(.scale(scale: 0.9).combined(with: .opacity))
+                }
+            }
         }
     }
 
@@ -90,11 +99,11 @@ struct KJStudyView: View {
                         Text(g.title).font(.custom(Fonts.rounded, size: 13.s)).foregroundStyle(.white)
                             .padding(.horizontal, 10.s).padding(.vertical, 2.s)
                             .background(Capsule().fill(Color.ink.opacity(0.6)))
-                        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6.s), count: 6), spacing: 6.s) {
+                        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6.s), count: 5), spacing: 6.s) {
                             ForEach(g.letters, id: \.self) { k in
                                 Button {
                                     Speaker.shared.say(k)
-                                    detail = KJData.letter(k)
+                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.75)) { detail = KJData.letter(k) }
                                 } label: {
                                     VStack(spacing: 0) {
                                         Text(k).font(.custom(Fonts.rounded, size: k.count > 1 ? 20.s : 26.s)).foregroundStyle(Color.ink)
@@ -208,8 +217,18 @@ struct KJLetterBox: Identifiable {
 
 struct KJLetterSheet: View {
     let l: KJLetter
+    var close: () -> Void = {}
     var body: some View {
         VStack(spacing: 12.s) {
+            HStack {
+                Spacer()
+                Button(action: close) {
+                    Image(systemName: "xmark").font(.system(size: 18.s, weight: .black)).foregroundStyle(Color.ink)
+                        .frame(width: 40.s, height: 40.s)
+                        .background(Circle().fill(Color.white).overlay(Circle().stroke(Color.ink, lineWidth: 2.5)))
+                }
+                .buttonStyle(.plain)
+            }
             Text(l.kana).font(.custom(Fonts.rounded, size: 96.s)).foregroundStyle(Color.ink)
                 .lineLimit(1).minimumScaleFactor(0.5)
             Text(l.romaji).font(.display(26.s)).foregroundStyle(Color.popDeep)
@@ -226,6 +245,9 @@ struct KJLetterSheet: View {
                     .background(Capsule().fill(Color.sky))
             }
         }
-        .padding(.top, 20.s)
+        .padding(16.s)
+        .padding(.bottom, 8.s)
+        .frame(maxWidth: 420.s)
+        .background(RoundedRectangle(cornerRadius: 26.s).fill(Color(hex: 0xFFFBF2)).overlay(RoundedRectangle(cornerRadius: 26.s).stroke(Color.ink, lineWidth: 3)))
     }
 }

@@ -30,6 +30,8 @@ final class KJBattle: ObservableObject {
     @Published var foes: [Foe] = []
     @Published var targetID: UUID?
     @Published var ask: Ask = .listen
+    /// ⑨ the glowing minion was tapped in "read" mode: point at the answer buttons
+    @Published var readHint = false
     @Published var readChoices: [String] = []
     @Published var hearts = 3
     @Published var score = 0
@@ -213,7 +215,11 @@ final class KJBattle: ObservableObject {
         guard phase == .waves, let foe = foes.first(where: { $0.id == seen.id }), !foe.dying, let t = target else { return }
         if ask == .read {
             // in "read" mode the answer is a sound button, not a minion
-            if foe.id != t.id { wrong(foe) }
+            if foe.id != t.id { wrong(foe) } else {
+                AudioManager.shared.se(.tap)
+                readHint = true
+                later(1.4) { self.readHint = false }
+            }
             return
         }
         if foe.kana == t.kana { defeat(foe) } else { wrong(foe) }
@@ -617,6 +623,13 @@ struct KJBattleView: View {
                 Image(b.combo >= 5 ? "nk_nyan_joy" : "nk_nyan_proud").resizable().scaledToFit().frame(height: 74.s)
                 VStack(spacing: 6.s) {
                     if b.ask == .read && b.phase == .waves {
+                        if b.readHint {
+                            Text(KJ.both("↓ Choose how it sounds", "↓ 選擇讀音", "↓ 읽는 법을 골라요"))
+                                .font(.ui(14.s)).foregroundStyle(.white)
+                                .padding(.horizontal, 10.s).padding(.vertical, 4.s)
+                                .background(Capsule().fill(Color.popDeep))
+                                .modifier(Bob())
+                        }
                         HStack(spacing: 8.s) {
                             ForEach(b.readChoices, id: \.self) { r in
                                 Button { b.read(r) } label: {

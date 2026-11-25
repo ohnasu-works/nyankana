@@ -10,17 +10,45 @@ enum MGAsk: Equatable {
     case sound(String)
     case romaji(String)
     case word(String)
+    /// 18. れんさ: the letters of a word, one after another (index = the letter to find now)
+    case chain(String, Int)
 
     var answer: String {
         switch self {
         case .sound(let k), .romaji(let k), .word(let k): k
+        case .chain(let w, let i): Self.units(w)[safe: i] ?? ""
         }
     }
 
-    /// sound first while the player is new, then a mix
+    static func units(_ w: String) -> [String] { w.map(String.init) }
+
+    /// words the current game can chain (every letter is one the game uses); set by MiniGameView
+    static var chainWords: [String] = []
+
+    /// sound first while the player is new, then a mix — and now and then a whole word to chain
     static func pick(_ k: String, hits: Int) -> MGAsk {
-        hits < 3 || Bool.random() ? .sound(k) : .romaji(k)
+        if hits >= 3, let w = chainWords.randomElement(), Double.random(in: 0...1) < 0.3 { return .chain(w, 0) }
+        return hits < 3 || Bool.random() ? .sound(k) : .romaji(k)
     }
+}
+
+enum MGChainStep { case next, done, none }
+
+/// after a right answer: move on inside a word chain (bonus when the word is done)
+@MainActor func mgChain(_ ask: inout MGAsk?, ctx: MGCtx) -> MGChainStep {
+    guard case .chain(let w, let i)? = ask else { return .none }
+    if i + 1 < MGAsk.units(w).count {
+        withAnimation(.spring(response: 0.25, dampingFraction: 0.6)) { ask = .chain(w, i + 1) }
+        ctx.pop(KJ.t("Chain \(i + 1)!", "連鎖 \(i + 1)！", "연쇄 \(i + 1)!"), at: CGPoint(x: 0.5, y: 0.36), color: .grape)
+        AudioManager.shared.se(.studyCombo, volume: 0.8)
+        return .next
+    }
+    ctx.score += 300
+    if !ctx.won.contains(w) { ctx.won.append(w) }
+    ctx.pop(KJ.t("Word! +300", "完成詞語！+300", "단어 완성! +300"), at: CGPoint(x: 0.5, y: 0.36), color: .sunDeep)
+    AudioManager.shared.se(.clear, volume: 0.7)
+    Speaker.shared.say(w)
+    return .done
 }
 
 /// the question bubble shared by the games
@@ -47,6 +75,29 @@ struct MGPrompt: View {
                     })
                 }
                 .buttonStyle(.plain)
+            case .chain(let w, let i)?:
+                let word = KJData.word(w)
+                Button { Speaker.shared.say(w) } label: {
+                    VStack(spacing: 4.s) {
+                        HStack(spacing: 6.s) {
+                            Text(word?.emoji ?? "🔤").font(.system(size: 28.s))
+                            Text(word?.meaning ?? "").font(.ui(14.s)).foregroundStyle(Color.ink)
+                        }
+                        HStack(spacing: 4.s) {
+                            ForEach(Array(MGAsk.units(w).enumerated()), id: \.offset) { j, u in
+                                Text(j < i ? u : j == i ? KJData.romaji(u) : "・")
+                                    .font(j < i ? Font.custom(Fonts.rounded, size: 22.s) : Font.display(18.s))
+                                    .foregroundStyle(j < i ? Color.white : Color.ink)
+                                    .frame(minWidth: 38.s, minHeight: 38.s)
+                                    .background(RoundedRectangle(cornerRadius: 8.s).fill(j < i ? Color.mintDeep : j == i ? Color.sun : Color.white)
+                                        .overlay(RoundedRectangle(cornerRadius: 8.s).stroke(Color.ink, lineWidth: 2)))
+                            }
+                        }
+                    }
+                    .padding(10.s)
+                    .background(RoundedRectangle(cornerRadius: 16.s).fill(Color.white).overlay(RoundedRectangle(cornerRadius: 16.s).stroke(Color.ink, lineWidth: 3)))
+                }
+                .buttonStyle(.plain)
             case nil:
                 EmptyView()
             }
@@ -54,8 +105,14 @@ struct MGPrompt: View {
                 .padding(.horizontal, 8.s).padding(.vertical, 2.s)
                 .background(Capsule().fill(Color.white.opacity(0.85)))
         }
-        .id(ask?.answer ?? "")
+        .id(chainID ?? ask?.answer ?? "")
         .transition(.scale.combined(with: .opacity))
+    }
+
+    /// a chain keeps one bubble for the whole word (it only fills in)
+    private var chainID: String? {
+        if case .chain(let w, _)? = ask { return "chain-" + w }
+        return nil
     }
 
     private var caption: String {
@@ -63,6 +120,7 @@ struct MGPrompt: View {
         case .sound?: KJ.t("Which one?", "哪一個？", "어느 것?")
         case .romaji?: KJ.t("Find this sound!", "找這個音！", "이 소리를 찾아요!")
         case .word?: KJ.t("Find this word!", "找這個詞！", "이 단어를 찾아요!")
+        case .chain?: KJ.t("Chain the word, letter by letter!", "照順序連成詞語！", "순서대로 단어를 이어요!")
         case nil: ""
         }
     }
@@ -218,8 +276,12 @@ struct MGChochin: View {
             slots[i]?.hit = true
             ctx.good(100, at: CGPoint(x: 0.5, y: 0.5), word: a)
             later(0.35) { if slots[i]?.id == m.id { slots[i] = nil } }
-            // a new letter every few hits keeps it fresh
-            if ctx.hits % 3 == 0 { newAsk() }
+            // a new letter every few hits keeps it fresh (a word chain goes on to its next letter)
+            switch mgChain(&ask, ctx: ctx) {
+            case .next: break
+            case .done: newAsk()
+            case .none: if ctx.hits % 3 == 0 { newAsk() }
+            }
         } else {
             AudioManager.shared.se(.mgPokon, volume: 0.5)
             slots[i]?.wrong.toggle()
@@ -541,17 +603,18 @@ struct MGNinja: View {
     private func launch() {
         guard size.width > 0, let a = ask?.answer else { return }
         waves += 1
-        let n = min(4, 1 + Int.random(in: 0...1) + ctx.hits / 6)
+        let n = min(3, 1 + Int.random(in: 0...1) + ctx.hits / 8)
         var ks = Array(mgDecoys(a, letters).prefix(5).shuffled().prefix(n))
         if !targets.contains(where: { $0.kana == a }) && (waves % 2 == 1 || Bool.random()) {
             ks[Int.random(in: 0..<ks.count)] = a
         }
         let w = size.width, h = size.height
         for (i, k) in ks.enumerated() {
-            let x = w * (0.2 + 0.6 * (CGFloat(i) + 0.5) / CGFloat(ks.count)) + CGFloat.random(in: -20...20)
-            let peak = h * CGFloat.random(in: 0.38...0.55)
+            // each target in its own column, flying fairly straight up, peaks at different heights
+            let x = w * (0.18 + 0.64 * (CGFloat(i) + 0.5) / CGFloat(ks.count))
+            let peak = h * (0.36 + 0.09 * CGFloat(i % 3)) + CGFloat.random(in: -10...10)
             let vy = -sqrt(2 * gravity * (h + r.s - peak))
-            let vx = (w * 0.5 - x) * CGFloat.random(in: 0.2...0.6)
+            let vx = (w * 0.5 - x) * CGFloat.random(in: 0.05...0.15)
             targets.append(Target(kana: k, p: CGPoint(x: x, y: h + r.s), v: CGVector(dx: vx, dy: vy), spin: Double.random(in: -200...200)))
         }
         AudioManager.shared.se(.mgWhoosh, volume: 0.45)
@@ -563,7 +626,8 @@ struct MGNinja: View {
         trail.removeAll { now - $0.t > 0.18 }
         if ctx.running {
             nextWave -= Double(dt)
-            if nextWave <= 0 {
+            // a new wave only when the sky is nearly clear (no pile of overlapping targets)
+            if nextWave <= 0 && targets.count <= 1 {
                 launch()
                 nextWave = max(0.9, 1.6 - 0.03 * Double(ctx.hits))
             }
@@ -616,7 +680,11 @@ struct MGNinja: View {
         // high up = harder = more points
         let high = Int(max(0, 1 - t.p.y / max(size.height, 1)) * 100)
         ctx.good(100 + high, at: CGPoint(x: t.p.x / max(size.width, 1), y: t.p.y / max(size.height, 1) - 0.05), word: t.kana)
-        if ctx.hits % 2 == 0 { newAsk() }
+        switch mgChain(&ask, ctx: ctx) {
+        case .next: nextWave = min(nextWave, 0.3)
+        case .done: newAsk()
+        case .none: if ctx.hits % 2 == 0 { newAsk() }
+        }
     }
 
     /// distance from c to the segment a–b

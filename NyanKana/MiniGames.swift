@@ -230,7 +230,7 @@ enum MGKind: String, CaseIterable {
     func reset(total: Double?, target: Int) {
         score = 0; combo = 0; maxCombo = 0; hits = 0; misses = 0; fever = false
         self.total = total ?? 0; timeLeft = total ?? 0; self.target = target
-        pops = []; won = []; running = false; round += 1
+        pops = []; won = []; running = false; bonus = false; round += 1
     }
 
     @discardableResult
@@ -240,6 +240,11 @@ enum MGKind: String, CaseIterable {
         let gain = (base + min(combo, 20) * 10) * (fever ? 2 : 1)
         score += gain
         pop("+\(gain)", at: p, color: fever ? .sunDeep : .popDeep)
+        if hits == target && !bonus && running && total > 0 {
+            bonus = true
+            AudioManager.shared.se(.clear)
+            pop(KJ.t("CLEAR! Bonus time!", "過關！獎勵時間！", "클리어! 보너스 타임!"), at: CGPoint(x: 0.5, y: 0.42), color: .sunDeep)
+        }
         if combo == 8 && !fever {
             fever = true
             AudioManager.shared.se(.fever)
@@ -280,13 +285,18 @@ enum MGKind: String, CaseIterable {
         return "C"
     }
     /// at least one star, so a weak run never blocks the journey
+    /// no star (= try again) when hardly anything was right
+    var passed: Bool { hits >= max(2, target / 3) }
     var stars: Int {
+        guard passed else { return 0 }
         switch grade {
         case "S": 3
         case "A": 2
         default: 1
         }
     }
+    /// 12. reached the goal: the rest of the clock is bonus time
+    @Published var bonus = false
 
     func finish() {
         guard running else { return }
@@ -364,7 +374,12 @@ struct MiniGameView: View {
                 if ctx.fever { feverFrame(g.size) }
                 if ctx.flash { Color.red.opacity(0.22).ignoresSafeArea().allowsHitTesting(false) }
                 if phase != .title && phase != .result {
-                    VStack { hud; Spacer() }.padding(.top, 54.s)
+                    VStack(spacing: 6.s) {
+                        hud
+                        if ctx.bonus && phase == .play { bonusBar }
+                        Spacer()
+                    }
+                    .padding(.top, 54.s)
                 }
                 ForEach(ctx.pops) { p in
                     OutlinedText(p.text, font: .display(26.s), fill: p.color == .ink ? .white : p.color, width: 3, shadow: 0)
@@ -376,6 +391,11 @@ struct MiniGameView: View {
             }
         }
         .onAppear {
+            // words this game can chain letter by letter (only games that bring the answer to you use chains)
+            let chainable: Set<MGKind> = [.chochin, .yuki, .ninja, .yabusame, .taiko, .dash]
+            let ls = Set(letters)
+            MGAsk.chainWords = chainable.contains(kind)
+                ? stage.words.filter { w in w.count >= 2 && w.allSatisfy { ls.contains(String($0)) } } : []
             AudioManager.shared.playBGM(.track(kind.bgm))
             ctx.endRequested = { endGame() }
             ctx.reset(total: kind.duration, target: kind.target)
@@ -458,6 +478,26 @@ struct MiniGameView: View {
 
     // MARK: parts
 
+    /// after the goal: BONUS TIME, and a button to stop whenever you like
+    private var bonusBar: some View {
+        HStack(spacing: 10.s) {
+            Text("⭐ BONUS TIME").font(.display(16.s)).foregroundStyle(Color.sunDeep)
+                .padding(.horizontal, 12.s).padding(.vertical, 5.s)
+                .background(Capsule().fill(Color.white).overlay(Capsule().stroke(Color.sunDeep, lineWidth: 3)))
+                .modifier(Bob())
+            Button {
+                AudioManager.shared.se(.decide)
+                ctx.finish()
+            } label: {
+                Text(KJ.both("Finish", "結束", "끝내기")).font(.ui(14.s)).foregroundStyle(.white)
+                    .padding(.horizontal, 14.s).padding(.vertical, 6.s)
+                    .background(Capsule().fill(Color.pop).overlay(Capsule().stroke(Color.ink, lineWidth: 2.5)))
+            }
+            .buttonStyle(.plain)
+        }
+        .transition(.scale.combined(with: .opacity))
+    }
+
     private var hud: some View {
         VStack(spacing: 6.s) {
             HStack {
@@ -533,8 +573,10 @@ struct MiniGameView: View {
                 .allowsHitTesting(false)
             VStack(spacing: 14.s) {
                 Image(kind.hero).resizable().scaledToFit().frame(height: 190.s).modifier(Bob())
-                OutlinedText(kind.title, font: .custom(Fonts.rounded, size: 40.s), fill: .sun, width: 5, shadow: 4)
-                    .lineLimit(1).minimumScaleFactor(0.5)
+                // sized so the whole name always fits on one line
+                OutlinedText(kind.title, font: .custom(Fonts.rounded, size: min(40.s, (size.width - 60.s) / CGFloat(max(kind.title.count, 1)) * 1.05)),
+                             fill: .sun, width: 5, shadow: 4)
+                    .fixedSize()
                 RibbonTitle(text: kind.sub, color: .sky, size: 20)
                 PaperCard {
                     Text(kind.howTo).font(.ui(15.s)).foregroundStyle(Color.ink).multilineTextAlignment(.center)
@@ -544,6 +586,7 @@ struct MiniGameView: View {
                 .padding(.horizontal, 30.s)
                 Text("TAP!").font(.display(18.s)).foregroundStyle(.white).opacity(0.85)
             }
+            .frame(width: size.width)
             .offset(x: titleIn ? 0 : -size.width * 1.2)
             .rotationEffect(.degrees(titleIn ? 0 : -12))
         }
@@ -608,11 +651,22 @@ struct MiniGameView: View {
                         Label("\(ctx.misses)", systemImage: "xmark.circle")
                     }
                     .font(.ui(15.s)).foregroundStyle(Color.ink.opacity(0.75))
-                    KJButton(title: KJ.both("Next", "下一步", "다음"), color: .pop, textColor: .white) {
-                        AudioManager.shared.playBGM(.area(.lv1))
-                        finished(ctx.stars, ctx.score, ctx.won)
+                    if ctx.passed {
+                        KJButton(title: KJ.both("Next", "下一步", "다음"), color: .pop, textColor: .white) {
+                            AudioManager.shared.playBGM(.area(.lv1))
+                            finished(ctx.stars, ctx.score, ctx.won)
+                        }
+                        KJButton(title: KJ.both("Play again", "再玩一次", "다시 하기"), color: .sun) { retry() }
+                    } else {
+                        // 11. not enough right answers: no moving on
+                        Text(KJ.both("Almost! Get \(max(2, kind.target / 3)) right to clear.", "差一點！答對 \(max(2, kind.target / 3)) 題就過關。", "아깝다! \(max(2, kind.target / 3))개 맞히면 클리어."))
+                            .font(.ui(14.s)).foregroundStyle(Color.danger).multilineTextAlignment(.center)
+                        KJButton(title: KJ.both("Try again", "再挑戰", "다시 도전"), color: .pop, textColor: .white) { retry() }
+                        KJButton(title: KJ.both("Quit", "離開", "그만두기"), color: .white) {
+                            AudioManager.shared.playBGM(.area(.lv1))
+                            finished(0, ctx.score, [])
+                        }
                     }
-                    KJButton(title: KJ.both("Play again", "再玩一次", "다시 하기"), color: .sun) { retry() }
                 }
                 .frame(maxWidth: .infinity)
             }

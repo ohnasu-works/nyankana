@@ -1054,6 +1054,7 @@ final class GameModel: ObservableObject {
 
     private var itemsInFlight = 0
     private func gain(_ k: ItemKind) {
+        if KanaRescue.active { return }
         // items still flying to the tray already own an empty slot
         guard items.filter({ $0 == nil }).count > itemsInFlight else {
             if k == .heart && lives < maxLives { lives += 1; AudioManager.shared.se(.heal); flashOnce(.heal); say("LIFE UP!") } else { say(L("game.itemFull")) }

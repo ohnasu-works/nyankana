@@ -121,7 +121,7 @@ enum KJC1 {
     }
 }
 
-// MARK: - the chapter map (one screen, no scrolling)
+// MARK: - the chapter map (にゃんグリッシュ style: a scrolling road)
 
 struct KJMapView: View {
     var play: (Int) -> Void
@@ -169,29 +169,145 @@ struct KJMapView: View {
                     }
                     chapterArrow(1)
                 }
+                // ⑥ the course, like にゃんグリッシュ: a winding road of stepping stones, scrolled to the next stage
                 GeometryReader { g in
-                    let cols = course.count > 15 ? 4 : 3
-                    let rows = Int((Double(course.count) / Double(cols)).rounded(.up))
-                    let w = g.size.width / CGFloat(cols), h = g.size.height / CGFloat(rows)
-                    ZStack {
-                        // the road between the stages (zigzag)
-                        Path { p in
-                            for (i, s) in course.enumerated() {
-                                let pt = point(i, cols: cols, w: w, h: h)
-                                if i == 0 { p.move(to: pt) } else { p.addLine(to: pt) }
-                                _ = s
-                            }
+                    ScrollViewReader { proxy in
+                        ScrollView(showsIndicators: false) {
+                            courseView(width: min(g.size.width, 620))
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 16.s)
                         }
-                        .stroke(Color.white.opacity(0.9), style: StrokeStyle(lineWidth: 8.s, lineCap: .round, dash: [2, 14.s]))
-                        ForEach(Array(course.enumerated()), id: \.offset) { i, s in
-                            node(s).scaleEffect(course.count > 15 ? 0.78 : 1).position(point(i, cols: cols, w: w, h: h))
-                        }
+                        .onAppear { scrollToNext(proxy) }
+                        .onChange(of: chapter) { _, _ in scrollToNext(proxy) }
                     }
                 }
-                .padding(.horizontal, 6.s)
                 Button(KJ.both("Redo first setup", "重新設定", "처음 설정 다시")) { redoSetup() }
-                    .font(.ui(12.s, bold: false)).foregroundStyle(Color.ink.opacity(0.6))
+                    .font(.ui(12.s, bold: false)).foregroundStyle(.white.opacity(0.8))
                     .padding(.bottom, 8.s)
+            }
+        }
+    }
+
+    /// the stage to play next in this chapter (the first open one without a star)
+    private var nextID: Int? { course.first { KJC1.unlocked($0.id) && KJC1.stars($0.id) == 0 }?.id }
+
+    private func scrollToNext(_ proxy: ScrollViewProxy) {
+        guard let n = nextID else { return }
+        DispatchQueue.main.async { proxy.scrollTo(n, anchor: .top) }
+    }
+
+    private var roadColor: Color {
+        [Color(hex: 0xFFE4EE), Color(hex: 0xFFF1C9), Color(hex: 0xCFF3FF), Color(hex: 0xE4F6C6), Color(hex: 0xFFE0D0), Color(hex: 0xE6DCFF), Color(hex: 0xD6F5EC)][max(0, min(6, chapter - 1))]
+    }
+
+    /// a snake, four stones a row (each row a little wavy)
+    private func layout(_ w: CGFloat) -> [CGPoint] {
+        let m: CGFloat = 50.s, inner = w - m * 2
+        return course.indices.map { k in
+            let row = k / 4, col = k % 4, c = row % 2 == 0 ? col : 3 - col
+            return CGPoint(x: m + CGFloat(c) * inner / 3, y: CGFloat(row) * 128.s + 60.s + (col % 2 == 0 ? 0 : 16.s))
+        }
+    }
+
+    private func courseView(width w: CGFloat) -> some View {
+        let pts = layout(w)
+        let h = (pts.map(\.y).max() ?? 0) + 90.s
+        return ZStack(alignment: .topLeading) {
+            Canvas { ctx, _ in
+                guard pts.count > 1 else { return }
+                var road = Path()
+                road.move(to: pts[0])
+                for i in 1..<pts.count {
+                    let p0 = pts[max(0, i - 2)], p1 = pts[i - 1], p2 = pts[i], p3 = pts[min(pts.count - 1, i + 1)]
+                    let c1 = CGPoint(x: p1.x + (p2.x - p0.x) / 6, y: p1.y + (p2.y - p0.y) / 6)
+                    let c2 = CGPoint(x: p2.x - (p3.x - p1.x) / 6, y: p2.y - (p3.y - p1.y) / 6)
+                    road.addCurve(to: p2, control1: c1, control2: c2)
+                }
+                ctx.stroke(road, with: .color(Color.ink), style: StrokeStyle(lineWidth: 30.s, lineCap: .round, lineJoin: .round))
+                ctx.stroke(road, with: .color(roadColor), style: StrokeStyle(lineWidth: 22.s, lineCap: .round, lineJoin: .round))
+                ctx.stroke(road, with: .color(Color.ink.opacity(0.25)), style: StrokeStyle(lineWidth: 3, lineCap: .round, dash: [8, 10]))
+            }
+            .frame(width: w, height: h)
+            ForEach(Array(course.enumerated()), id: \.offset) { i, s in
+                stone(s).position(pts[i])
+            }
+            // scroll anchors a little above each stone
+            ForEach(Array(course.enumerated()), id: \.offset) { i, s in
+                Color.clear.frame(width: 1, height: 1)
+                    .offset(x: pts[i].x, y: max(0, pts[i].y - 100.s))
+                    .id(s.id)
+            }
+        }
+        .frame(width: w, height: h)
+    }
+
+    @ViewBuilder private func stone(_ s: KJC1.Stage) -> some View {
+        let open = KJC1.unlocked(s.id)
+        let stars = KJC1.stars(s.id)
+        let isBoss = s.kind == .boss, isMid = s.kind == .mid
+        let isNext = s.id == nextID
+        let size: CGFloat = (isBoss ? 84 : isMid ? 72 : 58).s
+        let fill: Color = !open ? Color(hex: 0xD9D4EA)
+            : isBoss ? Color(hex: 0xFF8FC0) : isMid ? Color(hex: 0xC3A6FF)
+            : s.kind == .mini ? Color(hex: 0xA8EBD3) : (s.kind == .talk || s.kind == .listen) ? Color(hex: 0xBFD9FF)
+            : stars > 0 ? Color.sun : Color.white
+        Button {
+            guard open else { AudioManager.shared.se(.wrong, volume: 0.5); return }
+            AudioManager.shared.se(.decide)
+            play(s.id)
+        } label: {
+            ZStack {
+                Circle().fill(Color.ink).offset(y: 5).frame(width: size, height: size)
+                Circle().fill(fill).overlay(Circle().stroke(Color.ink, lineWidth: 4)).frame(width: size, height: size)
+                if isBoss || isMid {
+                    Image(s.bossImage).resizable().scaledToFit().frame(width: size * 0.92, height: size * 0.92)
+                        .saturation(open ? 1 : 0).opacity(open ? 1 : 0.6).offset(y: -6.s)
+                } else if !open {
+                    Image(systemName: "lock.fill").font(.system(size: 20.s, weight: .bold)).foregroundStyle(Color.ink.opacity(0.45))
+                } else if let m = s.mini {
+                    Text(m.icon).font(.system(size: 28.s))
+                } else if s.kind == .talk || s.kind == .listen {
+                    Text(s.kind == .talk ? "💬" : "👂").font(.system(size: 26.s))
+                } else if s.kind == .battle {
+                    Text("⚔️").font(.system(size: 26.s))
+                } else {
+                    Text("\(KJC1.number(s.id))").font(.display(24.s)).foregroundStyle(Color.ink)
+                }
+                if isNext {
+                    Circle().stroke(Color.popDeep, style: StrokeStyle(lineWidth: 4, dash: [6, 5]))
+                        .frame(width: size + 14, height: size + 14)
+                        .modifier(Spin())
+                }
+            }
+            .frame(width: size + 16, height: size + 16)
+        }
+        .buttonStyle(.plain)
+        .overlay(alignment: .bottom) {
+            VStack(spacing: 1) {
+                if isBoss {
+                    Text("BOSS").font(.display(11.s)).foregroundStyle(.white)
+                        .padding(.horizontal, 7).background(Capsule().fill(Color.popDeep).overlay(Capsule().stroke(Color.ink, lineWidth: 2)))
+                } else if s.kind == .lesson, let a = s.newKana.first, let b = s.newKana.last {
+                    // what the lesson teaches
+                    Text(a == b ? a : "\(a)〜\(b)").font(.custom(Fonts.rounded, size: 11.s)).foregroundStyle(Color.ink)
+                        .padding(.horizontal, 6).background(Capsule().fill(Color.white).overlay(Capsule().stroke(Color.ink, lineWidth: 1.5)))
+                }
+                if stars > 0 {
+                    HStack(spacing: 0) {
+                        ForEach(0..<3, id: \.self) { k in
+                            Image(systemName: "star.fill").font(.system(size: 11.s, weight: .black))
+                                .foregroundStyle(k < stars ? Color.sunDeep : Color.ink.opacity(0.2))
+                        }
+                    }
+                    .padding(.horizontal, 4).background(Capsule().fill(Color.white.opacity(0.9)))
+                }
+            }
+            .offset(y: 18.s)
+        }
+        .overlay(alignment: .top) {
+            if isNext {
+                Image("nyan").resizable().scaledToFit().frame(width: 40.s)
+                    .offset(y: -30.s).hop(6, period: 0.45)
             }
         }
     }
@@ -212,50 +328,6 @@ struct KJMapView: View {
         .disabled(!ok)
     }
 
-    private func point(_ i: Int, cols: Int, w: CGFloat, h: CGFloat) -> CGPoint {
-        let r = i / cols
-        let c = r % 2 == 0 ? i % cols : cols - 1 - i % cols
-        return CGPoint(x: w * (CGFloat(c) + 0.5), y: h * (CGFloat(r) + 0.5))
-    }
-
-    private func node(_ s: KJC1.Stage) -> some View {
-        let open = KJC1.unlocked(s.id)
-        let stars = KJC1.stars(s.id)
-        let special = s.kind == .mid || s.kind == .boss
-        let event = s.kind == .talk || s.kind == .listen
-        let mini = s.kind == .mini
-        return Button {
-            guard open else { AudioManager.shared.se(.wrong, volume: 0.5); return }
-            AudioManager.shared.se(.decide)
-            play(s.id)
-        } label: {
-            VStack(spacing: 2.s) {
-                ZStack {
-                    Circle().fill(!open ? Color.white.opacity(0.6) : special ? Color.danger : event ? Color.grape : mini ? Color.mint : Color.sun)
-                        .overlay(Circle().stroke(Color.ink, lineWidth: 3))
-                        .frame(width: 58.s, height: 58.s)
-                    if open {
-                        if special {
-                            Image(s.bossImage).resizable().scaledToFit().frame(width: 46.s, height: 46.s)
-                        } else if let m = s.mini {
-                            Text(m.icon).font(.system(size: 28.s))
-                        } else {
-                            Text("\(KJC1.number(s.id))").font(.display(24.s)).foregroundStyle(Color.ink)
-                        }
-                    } else {
-                        Image(systemName: "lock.fill").font(.system(size: 20.s, weight: .bold)).foregroundStyle(Color.ink.opacity(0.5))
-                    }
-                }
-                Text(s.ja).font(.ui(11.s)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.6)
-                    .padding(.horizontal, 6.s).padding(.vertical, 1.s)
-                    .background(Capsule().fill(Color.white.opacity(0.85)))
-                Text(String(repeating: "★", count: stars) + String(repeating: "☆", count: 3 - stars))
-                    .font(.ui(11.s)).foregroundStyle(stars > 0 ? Color.sunDeep : Color.ink.opacity(0.3))
-            }
-            .frame(width: 110.s)
-        }
-        .buttonStyle(.plain)
-    }
 }
 
 // MARK: - one stage: short story → new letters → game → clear → short story → result
@@ -383,7 +455,8 @@ struct KJStageView: View {
         stars = s; score = sc; won = w
         KJC1.setStars(stage.id, s)
         KJC1.setBest(stage.id, sc)
-        go(.clearFx)
+        // no star: straight to the result (try again / map), no clear effect and no story
+        go(s > 0 ? .clearFx : .result)
     }
 
     /// testing: never get stuck
@@ -465,9 +538,9 @@ struct KJResultView: View {
     var body: some View {
         VStack(spacing: 14.s) {
             Spacer(minLength: 70.s)
-            RibbonTitle(text: "\(KJC1.label(stage.id)) CLEAR!")
+            RibbonTitle(text: stars > 0 ? "\(KJC1.label(stage.id)) CLEAR!" : "\(KJC1.label(stage.id))  ざんねん…", color: stars > 0 ? .pop : .sky)
             Text(stage.place).font(.ui(16.s)).foregroundStyle(Color.ink)
-            Image(stars == 3 ? "nk_nyan_joy" : "nk_nyan_proud").resizable().scaledToFit().frame(height: 140.s).modifier(Bob())
+            Image(stars == 3 ? "nk_nyan_joy" : stars == 0 ? "nk_nyan_cry" : "nk_nyan_proud").resizable().scaledToFit().frame(height: 140.s).modifier(Bob())
             PaperCard {
                 VStack(spacing: 8.s) {
                     Text(String(repeating: "★", count: stars) + String(repeating: "☆", count: 3 - stars))
@@ -478,7 +551,9 @@ struct KJResultView: View {
                 .frame(maxWidth: .infinity)
             }
             .padding(.horizontal, 30.s)
-            KJButton(title: KJ.both("Next", "下一關", "다음"), color: .pop, textColor: .white) { next() }.padding(.horizontal, 30.s)
+            if stars > 0 || KJC1.stars(stage.id) > 0 {
+                KJButton(title: KJ.both("Next", "下一關", "다음"), color: .pop, textColor: .white) { next() }.padding(.horizontal, 30.s)
+            }
             HStack(spacing: 10.s) {
                 KJButton(title: KJ.both("Play again", "再玩一次", "다시 하기"), color: .sun) { retry() }
                 KJButton(title: KJ.both("Map", "地圖", "지도"), color: .white) { map() }
@@ -519,7 +594,8 @@ struct KJTalkEvent: View {
                 nameCard
             } else if let cur = qs[safe: q] {
                 Image(cur.face).resizable().scaledToFit().frame(height: 170.s).modifier(Bob())
-                Text(cur.npc).font(.ui(20.s)).foregroundStyle(Color.ink)
+                // 20. the shop keeper's words show only after you answer (otherwise the answer is right there)
+                Text(picked == nil ? "…？" : cur.npc).font(.ui(20.s)).foregroundStyle(Color.ink)
                     .padding(.horizontal, 14.s).padding(.vertical, 6.s)
                     .background(Capsule().fill(Color.white).overlay(Capsule().stroke(Color.ink, lineWidth: 3)))
                 PaperCard {

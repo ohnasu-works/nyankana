@@ -417,7 +417,11 @@ struct MGYuki: View {
             kids[i]?.hit = true
             ctx.good(100, at: at, word: k.kana)
             later(0.4) { if kids[i]?.id == k.id { kids[i] = nil } }
-            if ctx.hits % 3 == 0 { newAsk() }
+            switch mgChain(&ask, ctx: ctx) {
+            case .next: break
+            case .done: newAsk()
+            case .none: if ctx.hits % 3 == 0 { newAsk() }
+            }
         } else {
             // the kid throws one back!
             AudioManager.shared.se(.mgPoof, volume: 0.5)
@@ -704,7 +708,11 @@ struct MGYabusame: View {
         if tg.kana == a {
             targets[i].hit = true
             ctx.good(100 + Int(max(0, tg.x - riderX) * 100), at: at, word: a)
-            if ctx.hits % 2 == 0 { newAsk() }
+            switch mgChain(&ask, ctx: ctx) {
+            case .next: break
+            case .done: newAsk()
+            case .none: if ctx.hits % 2 == 0 { newAsk() }
+            }
         } else {
             ctx.bad(at: at)
         }
