@@ -5,11 +5,12 @@ import SwiftUI
 
 struct KJStudyView: View {
     var back: () -> Void
-    enum Tab: String, CaseIterable { case chart, practice, words }
+    enum Tab: String, CaseIterable { case chart, practice, words, train, exam }
     @State private var tab: Tab = .chart
     @State private var detail: KJLetter?
     @State private var playing: (kind: MGKind, letters: [String])?
     @State private var group = 0
+    @State private var train: KJTrainMode?
 
     /// the letter groups in the order the journey teaches them
     static let groups: [(title: String, letters: [String])] = {
@@ -21,7 +22,13 @@ struct KJStudyView: View {
 
     var body: some View {
         ZStack {
-            if let p = playing {
+            if let t = train {
+                KJTrainView(mode: t) {
+                    AudioManager.shared.playBGM(.study)
+                    withAnimation { train = nil }
+                }
+                .transition(.move(edge: .trailing))
+            } else if let p = playing {
                 MiniGameView(kind: p.kind, stage: KJC1.Stage(id: 950, ja: p.kind.title, en: p.kind.sub, zh: p.kind.sub, ko: p.kind.sub,
                                                               bg: p.kind.bg, kind: .mini, known: p.letters, mini: p.kind)) { _, _, _ in
                     AudioManager.shared.playBGM(.study)
@@ -66,7 +73,8 @@ struct KJStudyView: View {
                 }
                 .padding(.horizontal, 14.s).padding(.top, 6.s)
                 RibbonTitle(text: "まなぶ", color: .grape, size: 24)
-                HStack(spacing: 8.s) {
+                // five tabs: two rows so every name fits on a phone
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6.s), count: 3), spacing: 6.s) {
                     ForEach(Tab.allCases, id: \.self) { t in
                         Button {
                             AudioManager.shared.se(.tap)
@@ -74,16 +82,21 @@ struct KJStudyView: View {
                         } label: {
                             Text(title(t)).font(.custom(Fonts.rounded, size: 14.s))
                                 .foregroundStyle(tab == t ? Color.white : Color.ink)
-                                .padding(.horizontal, 14.s).padding(.vertical, 7.s)
+                                .lineLimit(1).minimumScaleFactor(0.7)
+                                .frame(maxWidth: .infinity)
+                                .padding(.horizontal, 6.s).padding(.vertical, 7.s)
                                 .background(Capsule().fill(tab == t ? Color.grape : Color.white).overlay(Capsule().stroke(Color.ink, lineWidth: 2.5)))
                         }
                         .buttonStyle(.plain)
                     }
                 }
+                .padding(.horizontal, 16.s)
                 switch tab {
                 case .chart: chart
                 case .practice: practice
                 case .words: wordList
+                case .train: KJTrainMenu(modes: KJTrainMode.training) { m in withAnimation { train = m } }
+                case .exam: KJTrainMenu(modes: KJTrainMode.exams) { m in withAnimation { train = m } }
                 }
             }
         }
@@ -94,6 +107,8 @@ struct KJStudyView: View {
         case .chart: "もじひょう"
         case .practice: "れんしゅう"
         case .words: "ことば"
+        case .train: "トレーニング"
+        case .exam: "しけん"
         }
     }
 
