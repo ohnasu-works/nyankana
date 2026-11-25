@@ -512,11 +512,15 @@ struct KJTrainView: View {
 /// the menu of training modes and exams (a tab of まなぶ)
 struct KJTrainMenu: View {
     let modes: [KJTrainMode]
+    var header: AnyView? = nil
     var open: (KJTrainMode) -> Void
     var body: some View {
         ScrollView {
             VStack(spacing: 10.s) {
+                if let header { header }
                 if modes == KJTrainMode.training {
+                    Text(KJ.t("Words & sentences", "單字與句子", "단어와 문장")).font(.ui(14.s)).foregroundStyle(.white)
+                        .padding(.top, header == nil ? 0 : 8.s)
                     Text(KJ.t("Correct answers so far: ", "累計答對：", "지금까지 정답: ") + "\(KJTrainMode.totalCorrect)")
                         .font(.ui(13.s)).foregroundStyle(.white)
                 }

@@ -5,7 +5,7 @@ import SwiftUI
 
 struct KJStudyView: View {
     var back: () -> Void
-    enum Tab: String, CaseIterable { case chart, practice, words, train, exam }
+    enum Tab: String, CaseIterable { case chart, words, train, exam }
     @State private var tab: Tab = .chart
     @State private var detail: KJLetter?
     @State private var playing: (kind: MGKind, letters: [String])?
@@ -73,8 +73,8 @@ struct KJStudyView: View {
                 }
                 .padding(.horizontal, 14.s).padding(.top, 6.s)
                 RibbonTitle(text: "まなぶ", color: .grape, size: 24)
-                // five tabs: two rows so every name fits on a phone
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6.s), count: 3), spacing: 6.s) {
+                // four tabs in one row
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6.s), count: 4), spacing: 6.s) {
                     ForEach(Tab.allCases, id: \.self) { t in
                         Button {
                             AudioManager.shared.se(.tap)
@@ -93,9 +93,8 @@ struct KJStudyView: View {
                 .padding(.horizontal, 16.s)
                 switch tab {
                 case .chart: chart
-                case .practice: practice
                 case .words: wordList
-                case .train: KJTrainMenu(modes: KJTrainMode.training) { m in withAnimation { train = m } }
+                case .train: KJTrainMenu(modes: KJTrainMode.training, header: AnyView(practice)) { m in withAnimation { train = m } }
                 case .exam: KJTrainMenu(modes: KJTrainMode.exams) { m in withAnimation { train = m } }
                 }
             }
@@ -105,7 +104,6 @@ struct KJStudyView: View {
     private func title(_ t: Tab) -> String {
         switch t {
         case .chart: "もじひょう"
-        case .practice: "れんしゅう"
         case .words: "ことば"
         case .train: "トレーニング"
         case .exam: "しけん"
@@ -148,10 +146,10 @@ struct KJStudyView: View {
 
     // MARK: practice with the letters you choose
 
+    /// letter practice, shown at the top of the training tab
     private var practice: some View {
-        ScrollView {
             VStack(spacing: 12.s) {
-                Text(KJ.t("Choose letters", "選擇文字", "글자를 골라요")).font(.ui(14.s)).foregroundStyle(.white)
+                Text(KJ.t("Letters: choose a row", "文字：選一行", "글자: 행을 골라요")).font(.ui(14.s)).foregroundStyle(.white)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 6.s) {
                         ForEach(Array(Self.groups.enumerated()), id: \.offset) { i, g in
@@ -167,7 +165,6 @@ struct KJStudyView: View {
                             .buttonStyle(.plain)
                         }
                     }
-                    .padding(.horizontal, 16.s)
                 }
                 let picked = Self.groups[safe: group]?.letters ?? KJC1.A
                 Text(picked.joined(separator: " ")).font(.custom(Fonts.rounded, size: 26.s)).foregroundStyle(.white)
@@ -178,10 +175,8 @@ struct KJStudyView: View {
                     practiceCard(.karuta, KJ.t("Listen & tap", "聽音找字", "듣고 찾기"), picked)
                     practiceCard(.mekuri, KJ.t("Match the sounds", "配對讀音", "소리 짝짓기"), picked)
                 }
-                .padding(.horizontal, 16.s)
             }
-            .padding(.bottom, 24.s)
-        }
+            .padding(.bottom, 8.s)
     }
 
     private func practiceCard(_ k: MGKind, _ label: String, _ letters: [String]) -> some View {
