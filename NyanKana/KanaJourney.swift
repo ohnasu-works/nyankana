@@ -188,7 +188,7 @@ struct KanaJourneyView: View {
                           redoSetup: { KJ.onboarded = false; go(.setup) },
                           playground: { go(.playground) })
             case .playground:
-                KJPlayground { AudioManager.shared.playBGM(.area(.lv1)); go(.map) }
+                KJPlayground { KJMusic.play(); go(.map) }
             case .stage(let n):
                 KJStageView(stage: KJC1.stage(n), resume: resume,
                             next: { go(KJC1.next(after: n).map { .stage($0) } ?? .map) },
@@ -197,7 +197,7 @@ struct KanaJourneyView: View {
             }
         }
         .transition(.opacity)
-        .onAppear { AudioManager.shared.playBGM(.area(.lv1)) }
+        .onAppear { KJMusic.play() }
     }
 
     private func go(_ s: Screen) {
@@ -445,7 +445,9 @@ struct KJLearnCard: View {
             PaperCard {
                 VStack(spacing: 10.s) {
                     Button { Speaker.shared.say(letter.kana) } label: {
-                        Text(letter.kana).font(.custom(Fonts.rounded, size: 150.s)).foregroundStyle(Color.ink)
+                        // two-letter sounds (しゅ, きゃ…) would not fit at full size and showed as "…"
+                        Text(letter.kana).font(.custom(Fonts.rounded, size: letter.kana.count > 1 ? 110.s : 150.s)).foregroundStyle(Color.ink)
+                            .lineLimit(1).minimumScaleFactor(0.3).fixedSize()
                             .scaleEffect(shown ? 1 : 0.4).opacity(shown ? 1 : 0)
                     }
                     .buttonStyle(.plain)

@@ -237,7 +237,8 @@ struct KJLetterSheet: View {
                 }
                 .buttonStyle(.plain)
             }
-            Text(l.kana).font(.custom(Fonts.rounded, size: 96.s)).foregroundStyle(Color.ink)
+            Text(l.kana).font(.custom(Fonts.rounded, size: l.kana.count > 1 ? 72.s : 96.s)).foregroundStyle(Color.ink)
+                .lineLimit(1).minimumScaleFactor(0.4)
                 .lineLimit(1).minimumScaleFactor(0.5)
             Text(l.romaji).font(.display(26.s)).foregroundStyle(Color.popDeep)
             Text(l.aid).font(.ui(16.s)).foregroundStyle(Color.ink).multilineTextAlignment(.center).padding(.horizontal, 24.s)

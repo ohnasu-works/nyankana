@@ -662,7 +662,7 @@ struct MiniGameView: View {
                     .font(.ui(15.s)).foregroundStyle(Color.ink.opacity(0.75))
                     if ctx.passed {
                         KJButton(title: KJ.both("Next", "下一步", "다음"), color: .pop, textColor: .white) {
-                            AudioManager.shared.playBGM(.area(.lv1))
+                            KJMusic.play()
                             finished(ctx.stars, ctx.score, ctx.won)
                         }
                         KJButton(title: KJ.both("Play again", "再玩一次", "다시 하기"), color: .sun) { retry() }
@@ -672,7 +672,7 @@ struct MiniGameView: View {
                             .font(.ui(14.s)).foregroundStyle(Color.danger).multilineTextAlignment(.center)
                         KJButton(title: KJ.both("Try again", "再挑戰", "다시 도전"), color: .pop, textColor: .white) { retry() }
                         KJButton(title: KJ.both("Quit", "離開", "그만두기"), color: .white) {
-                            AudioManager.shared.playBGM(.area(.lv1))
+                            KJMusic.play()
                             finished(0, ctx.score, [])
                         }
                     }
@@ -779,7 +779,7 @@ struct MGKaruta: View {
     private func cardView(_ c: Card) -> some View {
         let isReveal = reveal == c.id
         return Text(c.kana)
-            .font(.custom(Fonts.rounded, size: 46.s)).foregroundStyle(Color.ink)
+            .font(.custom(Fonts.rounded, size: 46.s)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
             .frame(maxWidth: .infinity).frame(height: 104.s)
             .background(
                 RoundedRectangle(cornerRadius: 8.s).fill(Color(hex: 0xFFF6E0))
@@ -1030,7 +1030,7 @@ struct MGTsuri: View {
                 .hueRotation(.degrees(f.gold ? 35 : 0))
                 .saturation(f.gold ? 1.4 : 1)
                 .shadow(color: f.gold ? Color.yellow : .clear, radius: 10)
-            Text(f.kana).font(.custom(Fonts.rounded, size: 30.s)).foregroundStyle(Color.ink)
+            Text(f.kana).font(.custom(Fonts.rounded, size: 30.s)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
                 .offset(x: face * 8.s, y: 1.s)
         }
         .rotationEffect(.degrees(reeling ? -60 * face : 0))
@@ -1285,7 +1285,7 @@ struct MGNazori: View {
                 HStack(spacing: 12.s) {
                     Image(stamp != nil ? "nk_nyan_joy" : "nk_nyan_proud").resizable().scaledToFit().frame(height: 72.s)
                     VStack(spacing: 2.s) {
-                        Text(guide || reveal || stamp != nil ? kana : "？").font(.custom(Fonts.rounded, size: 34.s)).foregroundStyle(Color.ink)
+                        Text(guide || reveal || stamp != nil ? kana : "？").font(.custom(Fonts.rounded, size: 34.s)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
                         Text(KJData.romaji(kana)).font(.display(16.s)).foregroundStyle(Color.ink.opacity(0.7))
                     }
                     .frame(width: 80.s, height: 80.s)
@@ -1341,7 +1341,7 @@ struct MGNazori: View {
                 ZStack {
                     Circle().stroke(Color(hex: 0xD62828), lineWidth: 6.s)
                     Circle().stroke(Color(hex: 0xD62828), lineWidth: 2.s).padding(9.s)
-                    Text(s).font(.custom(Fonts.rounded, size: 30.s)).foregroundStyle(Color(hex: 0xD62828))
+                    Text(s).font(.custom(Fonts.rounded, size: 30.s)).foregroundStyle(Color(hex: 0xD62828)).lineLimit(1).minimumScaleFactor(0.35)
                 }
                 .frame(width: side * 0.42, height: side * 0.42)
                 .rotationEffect(.degrees(-14))

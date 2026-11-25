@@ -209,7 +209,7 @@ struct MGChochin: View {
             if let m {
                 ZStack {
                     Image("mg_chochin").resizable().scaledToFit().frame(height: cell * 0.98)
-                    Text(m.kana).font(.custom(Fonts.rounded, size: cell * 0.3)).foregroundStyle(Color.ink)
+                    Text(m.kana).font(.custom(Fonts.rounded, size: cell * 0.3)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
                         .offset(y: cell * 0.98 * 0.152)
                 }
                 .scaleEffect(x: m.hit ? 1.25 : 1, y: m.hit ? 0.55 : 1, anchor: .bottom)
@@ -395,7 +395,7 @@ struct MGSushi: View {
         ZStack(alignment: .bottom) {
             // a different topping on each plate (salmon, tuna, egg, shrimp, ikura, kappa maki, octopus, inari, squid)
             Image(Self.netas[p.tag % Self.netas.count]).resizable().scaledToFit().frame(width: 108.s)
-            Text(p.text).font(.custom(Fonts.rounded, size: p.text.count > 2 ? 16.s : 22.s)).foregroundStyle(Color.ink)
+            Text(p.text).font(.custom(Fonts.rounded, size: p.text.count > 2 ? 16.s : 22.s)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
                 .lineLimit(1).minimumScaleFactor(0.6)
                 .padding(.horizontal, 7.s).frame(minWidth: 40.s, minHeight: 30.s)
                 .background(Capsule().fill(Color.white).overlay(Capsule().stroke(tags[p.tag % tags.count], lineWidth: 4)))
@@ -591,7 +591,7 @@ struct MGNinja: View {
     private func targetView(_ k: String) -> some View {
         ZStack {
             Image("mg_target").resizable().scaledToFit().frame(width: r.s * 2, height: r.s * 2)
-            Text(k).font(.custom(Fonts.rounded, size: r.s * 0.8)).foregroundStyle(Color.ink)
+            Text(k).font(.custom(Fonts.rounded, size: r.s * 0.8)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
         }
     }
 

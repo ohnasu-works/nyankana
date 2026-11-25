@@ -45,14 +45,14 @@ enum KanaRescue {
         outcome = Outcome(stageID: s.stageID, stars: cleared ? max(1, stars) : 0, score: score,
                           won: cleared ? words : [], cleared: cleared)
         session = nil
-        AudioManager.shared.playBGM(.area(.lv1))
+        KJMusic.play()
         AppState.shared.go(.kana)
     }
 
     @MainActor static func quit() {
         session = nil
         outcome = nil
-        AudioManager.shared.playBGM(.area(.lv1))
+        KJMusic.play()
         AppState.shared.go(.kana)
     }
 

@@ -173,6 +173,8 @@ struct KJMapView: View {
         ZStack {
             KJJapanMap(chapter: $chapter, play: play, home: home, playground: playground,
                        openCourse: { withAnimation(.easeInOut(duration: 0.25)) { showCourse = true } })
+                .onAppear { KJMusic.play(chapter) }
+                .onChange(of: chapter) { _, c in KJMusic.play(c) }
             if showCourse {
                 courseScreen.transition(.move(edge: .trailing))
             }
@@ -397,6 +399,7 @@ struct KJStageView: View {
         self.stage = stage
         self.next = next
         self.map = map
+        KJMusic.chapter = stage.chapter   // the region's own music
         replayGame = stage.kind == .mini && KJC1.stars(stage.id) > 0 ? KJC1.gamesMet(upTo: stage.id).randomElement() : nil
         if let r = resume, r.stageID == stage.id, r.cleared {
             KJC1.setStars(stage.id, r.stars)
@@ -512,7 +515,7 @@ struct KJStageView: View {
         case .pre: afterPre()
         case .learn: go(.game)
         case .game:
-            if stage.kind == .mini { AudioManager.shared.playBGM(.area(.lv1)) }
+            if stage.kind == .mini { KJMusic.play() }
             finish(max(1, stars), score, stage.newKana)
         case .clearFx: go(.post)
         case .post: go(.result)

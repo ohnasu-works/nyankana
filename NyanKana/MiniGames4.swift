@@ -53,7 +53,7 @@ struct MGMekuri: View {
                 .overlay(RoundedRectangle(cornerRadius: 10.s).stroke(c.matched ? Color.mintDeep : Color.ink, lineWidth: 3))
                 .overlay(
                     Text(c.face)
-                        .font(c.isKana ? Font.custom(Fonts.rounded, size: side * 0.5) : Font.display(side * 0.32))
+                        .font(c.isKana ? Font.custom(Fonts.rounded, size: side * 0.5) : Font.display(side * 0.32)).lineLimit(1).minimumScaleFactor(0.35)
                         .foregroundStyle(Color.ink)
                         .lineLimit(1).minimumScaleFactor(0.5)
                 )
@@ -199,7 +199,7 @@ struct MGTakoyaki: View {
                     .animation(.easeIn(duration: 0.4), value: b.burnt)
                 if b.cook > 0.95 && !b.burnt { Text("💨").font(.system(size: 22.s)).offset(x: cell * 0.3, y: -cell * 0.35) }
                 // the little flag with the letter
-                Text(b.kana).font(.custom(Fonts.rounded, size: cell * 0.26)).foregroundStyle(Color.ink)
+                Text(b.kana).font(.custom(Fonts.rounded, size: cell * 0.26)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
                     .padding(.horizontal, 5.s)
                     .background(RoundedRectangle(cornerRadius: 4.s).fill(Color.white).overlay(RoundedRectangle(cornerRadius: 4.s).stroke(Color.ink, lineWidth: 1.5)))
                     .offset(y: -cell * 0.44)
@@ -345,7 +345,7 @@ struct MGYuki: View {
             if let k {
                 ZStack {
                     Image("mg_yukinko").resizable().scaledToFit().frame(height: kh)
-                    Text(k.kana).font(.custom(Fonts.rounded, size: 24.s)).foregroundStyle(Color.ink)
+                    Text(k.kana).font(.custom(Fonts.rounded, size: 24.s)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
                         .offset(x: kh * 0.8 * (0.43 - 0.5), y: kh * (0.63 - 0.5))
                 }
                 .rotationEffect(.degrees(k.hit ? -70 : 0), anchor: .bottom)
@@ -502,7 +502,9 @@ struct MGMeiro: View {
             if here {
                 Image("nk_nyan_joy").resizable().scaledToFit().frame(height: cell * 0.9)
             } else {
-                Text(grid[i]).font(.custom(Fonts.rounded, size: cell * 0.48)).foregroundStyle(Color.ink)
+                // two-letter sounds (しゅ…) shrink to fit instead of turning into "…"
+                Text(grid[i]).font(.custom(Fonts.rounded, size: grid[i].count > 1 ? cell * 0.36 : cell * 0.48)).foregroundStyle(Color.ink)
+                    .lineLimit(1).minimumScaleFactor(0.4).padding(.horizontal, 3.s)
             }
         }
         .frame(width: cell, height: cell)
@@ -541,9 +543,15 @@ struct MGMeiro: View {
             guard ok else { continue }
             var gNew = (0..<(n * n)).map { _ in letters.randomElement() ?? "あ" }
             for (k, cell) in path.enumerated() { gNew[cell] = s[k] }
-            // no shortcut: the next letter must not sit beside the path where it isn't meant to be
+            // every step has look-alike traps right next to it (so you really have to know the letter),
+            // and the right letter never sits beside the path where it isn't meant to be
+            let onPath = Set(path).union([pos])
             for (k, cell) in path.enumerated() {
                 let prev = k == 0 ? pos : path[k - 1]
+                var traps = mgDecoys(s[k], letters).filter { $0 != s[k] }
+                for nb in neighbors(prev) where nb != cell && !onPath.contains(nb) {
+                    gNew[nb] = traps.isEmpty ? (letters.filter { $0 != s[k] }.randomElement() ?? gNew[nb]) : traps.removeFirst()
+                }
                 for nb in neighbors(prev) where nb != cell && gNew[nb] == s[k] {
                     gNew[nb] = letters.filter { $0 != s[k] }.randomElement() ?? gNew[nb]
                 }
@@ -623,7 +631,7 @@ struct MGYabusame: View {
                         Rectangle().fill(Color(hex: 0x7A4A21)).frame(width: 8.s, height: h * 0.3).offset(y: h * 0.15)
                         ZStack {
                             Image("mg_target").resizable().scaledToFit().frame(width: 84.s)
-                            Text(tg.kana).font(.custom(Fonts.rounded, size: 32.s)).foregroundStyle(Color.ink)
+                            Text(tg.kana).font(.custom(Fonts.rounded, size: 32.s)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
                         }
                         .scaleEffect(tg.hit ? 1.5 : 1)
                         .opacity(tg.hit ? 0 : 1)
@@ -760,7 +768,7 @@ struct MGKawara: View {
                     .position(x: w / 2, y: h * (top + bottom) / 2)
                 ForEach(tiles) { t in
                     let r = rect(t, w: w, h: h)
-                    Text(t.kana).font(.custom(Fonts.rounded, size: r.height * 0.55)).foregroundStyle(.white)
+                    Text(t.kana).font(.custom(Fonts.rounded, size: r.height * 0.55)).foregroundStyle(.white).lineLimit(1).minimumScaleFactor(0.35)
                         .frame(width: r.width - 4, height: r.height - 4)
                         .background(
                             RoundedRectangle(cornerRadius: 6.s)

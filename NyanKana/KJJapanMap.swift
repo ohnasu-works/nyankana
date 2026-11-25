@@ -212,3 +212,12 @@ struct KJJapanMap: View {
         return "▶ " + (done == 0 ? KJ.t("Start", "開始", "시작") : KJ.t("Continue", "繼續", "이어서")) + st
     }
 }
+
+/// にゃんカナ: each region has its own music (bgm_kj1 … bgm_kj7)
+enum KJMusic {
+    static var chapter = 1
+    static func play(_ ch: Int? = nil) {
+        if let ch { chapter = max(1, min(7, ch)) }
+        AudioManager.shared.playBGM(.track("kj\(chapter)"))
+    }
+}

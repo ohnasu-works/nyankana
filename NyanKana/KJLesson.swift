@@ -142,7 +142,7 @@ struct KJLessonView: View {
             }
         case .read(let k):
             VStack(spacing: 18.s) {
-                Text(k).font(.custom(Fonts.rounded, size: 110.s)).foregroundStyle(Color.ink)
+                Text(k).font(.custom(Fonts.rounded, size: 110.s)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
                     .lineLimit(1).minimumScaleFactor(0.5)
                     .frame(width: 190.s, height: 170.s)
                     .background(RoundedRectangle(cornerRadius: 24.s).fill(Color(hex: 0xFFF6E0)).overlay(RoundedRectangle(cornerRadius: 24.s).stroke(Color.ink, lineWidth: 3)))

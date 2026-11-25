@@ -79,7 +79,7 @@ struct MGDash: View {
                     ForEach(0..<3, id: \.self) { l in
                         ZStack {
                             Image("mg_torii").resizable().scaledToFit().frame(height: 92.s)
-                            Text(r.kanas[l]).font(.custom(Fonts.rounded, size: 19.s)).foregroundStyle(Color.ink)
+                            Text(r.kanas[l]).font(.custom(Fonts.rounded, size: 19.s)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
                                 .offset(y: 92.s * (0.405 - 0.5))
                         }
                         .opacity(r.done && r.kanas[l] != ask?.answer ? 0.5 : 1)
@@ -220,7 +220,7 @@ struct MGTaiko: View {
                     .scaleEffect(flashOK ? 1.2 : 1)
                     .position(x: w * zoneX, y: h * laneY)
                 ForEach(notes) { n in
-                    Text(n.kana).font(.custom(Fonts.rounded, size: 30.s)).foregroundStyle(.white)
+                    Text(n.kana).font(.custom(Fonts.rounded, size: 30.s)).foregroundStyle(.white).lineLimit(1).minimumScaleFactor(0.35)
                         .frame(width: 62.s, height: 62.s)
                         .background(Circle().fill(Color.sky).overlay(Circle().stroke(Color.white, lineWidth: 4)))
                         .scaleEffect(n.hit ? 1.6 : 1)
@@ -350,7 +350,7 @@ struct MGTrain: View {
                 LazyVGrid(columns: [GridItem(.flexible(), spacing: 12.s), GridItem(.flexible(), spacing: 12.s)], spacing: 12.s) {
                     ForEach(choices, id: \.self) { c in
                         Button { pick(c) } label: {
-                            Text(c).font(.custom(Fonts.rounded, size: 38.s)).foregroundStyle(Color.ink)
+                            Text(c).font(.custom(Fonts.rounded, size: 38.s)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
                                 .frame(maxWidth: .infinity).frame(height: 74.s)
                                 .background(RoundedRectangle(cornerRadius: 16.s).fill(wrongPick == c ? Color(hex: 0xFFC9C9) : Color.white)
                                     .overlay(RoundedRectangle(cornerRadius: 16.s).stroke(Color.ink, lineWidth: 3)))
@@ -489,7 +489,7 @@ struct MGTsumiki: View {
     }
 
     private func block(_ b: Block, col: Int, cell: CGFloat) -> some View {
-        Text(b.kana).font(.custom(Fonts.rounded, size: cell * 0.5)).foregroundStyle(Color.ink)
+        Text(b.kana).font(.custom(Fonts.rounded, size: cell * 0.5)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
             .frame(width: cell - 4, height: cell - 4)
             .background(RoundedRectangle(cornerRadius: 6.s)
                 .fill(LinearGradient(colors: [Color(hex: 0xF3D19C), Color(hex: 0xD9A35E)], startPoint: .top, endPoint: .bottom))
@@ -600,7 +600,7 @@ struct MGDaruma: View {
                 VStack(spacing: 0) {
                     Image("mg_daruma").resizable().scaledToFit().frame(height: 150.s).offset(y: 8.s)
                     ForEach(pieces) { p in
-                        Text(p.kana).font(.custom(Fonts.rounded, size: 30.s)).foregroundStyle(.white)
+                        Text(p.kana).font(.custom(Fonts.rounded, size: 30.s)).foregroundStyle(.white).lineLimit(1).minimumScaleFactor(0.35)
                             .shadow(color: .black.opacity(0.5), radius: 0, x: 1, y: 1)
                             .frame(width: pw, height: ph)
                             .background(Capsule().fill(p.color).overlay(Capsule().stroke(Color.ink, lineWidth: 3)))
@@ -730,7 +730,7 @@ struct MGKingyo: View {
                     ZStack {
                         Image("mg_kingyo").resizable().scaledToFit().frame(height: 96.s)
                             .rotationEffect(.radians(f.heading + .pi / 2))
-                        Text(f.kana).font(.custom(Fonts.rounded, size: 24.s)).foregroundStyle(Color.ink)
+                        Text(f.kana).font(.custom(Fonts.rounded, size: 24.s)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
                             .padding(4.s).background(Circle().fill(Color.white.opacity(0.85)))
                     }
                     .scaleEffect(f.caught != nil ? 1 - CGFloat(f.caught!) * 0.6 : 1)

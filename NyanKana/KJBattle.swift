@@ -511,7 +511,7 @@ struct KJBattleView: View {
                 let bob = sin(t * 2 + f.phase) * 6
                 let glow = isTarget && b.ask == .read
                 VStack(spacing: -10.s) {
-                        Text(f.kana).font(.custom(Fonts.rounded, size: 34.s)).foregroundStyle(Color.ink)
+                        Text(f.kana).font(.custom(Fonts.rounded, size: 34.s)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
                             .opacity(glow ? 1 : b.fogAlpha)
                             .frame(width: 56.s, height: 56.s)
                             .background(Circle().fill(glow ? Color.sun : Color.white)
@@ -559,7 +559,7 @@ struct KJBattleView: View {
             ForEach(Array(b.word.enumerated()), id: \.offset) { i, _ in
                 let typed = Array(b.typed)
                 Text(i < typed.count ? String(typed[i]) : "？")
-                    .font(.custom(Fonts.rounded, size: 34.s)).foregroundStyle(i < typed.count ? Color.ink : Color.ink.opacity(0.3))
+                    .font(.custom(Fonts.rounded, size: 34.s)).foregroundStyle(i < typed.count ? Color.ink : Color.ink.opacity(0.3)).lineLimit(1).minimumScaleFactor(0.35)
                     .frame(width: 56.s, height: 56.s)
                     .background(Circle().fill(Color.white).overlay(Circle().stroke(Color.ink, lineWidth: 3)))
             }
@@ -682,7 +682,7 @@ struct KJBattleView: View {
             LazyVGrid(columns: Array(repeating: GridItem(.fixed(64.s), spacing: 8.s), count: 4), spacing: 8.s) {
                 ForEach(b.pad, id: \.self) { k in
                     Button { b.padTap(k) } label: {
-                        Text(k).font(.custom(Fonts.rounded, size: 34.s)).foregroundStyle(Color.ink)
+                        Text(k).font(.custom(Fonts.rounded, size: 34.s)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
                             .frame(width: 62.s, height: 60.s)
                             .background(RoundedRectangle(cornerRadius: 14.s).fill(Color.white).overlay(RoundedRectangle(cornerRadius: 14.s).stroke(Color.ink, lineWidth: 3)))
                     }
@@ -714,7 +714,7 @@ struct KJBattleView: View {
             banner(title: KJ.both("You won!", "勝利！", "승리!"),
                    sub: String(repeating: "★", count: b.stars) + String(repeating: "☆", count: 3 - b.stars) + "   \(b.score)",
                    image: "nk_nyan_joy", button: KJ.both("Next", "下一步", "다음")) {
-                AudioManager.shared.playBGM(.area(.lv1)); finished(b.stars, b.score, b.won)
+                KJMusic.play(); finished(b.stars, b.score, b.won)
             }
         case .lost:
             banner(title: KJ.both("The letters got eaten…", "文字被吃掉了……", "글자를 먹혀 버렸다…"),
