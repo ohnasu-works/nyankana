@@ -59,7 +59,8 @@ final class KJBattle: ObservableObject {
     let goal: Int
     let bossWords: [String]
     private var wordsLeft: [String] = []
-    private let minionImages = ["nk_342", "nk_343", "nk_344", "nk_345", "nk_346", "nk_349", "nk_350", "nk_352", "nk_353"]
+    /// each region has its own yokai minions (also listed in the picture book)
+    private var minionImages: [String] { KJZukan.minions(st.chapter) }
     private var time: Double = 0
     private var spawnClock: Double = 0
     private var lastKana = ""
@@ -171,7 +172,9 @@ final class KJBattle: ObservableObject {
         guard let k = pickLetter(excluding: onField) else { return }
         let x: CGFloat = [0.2, 0.5, 0.8][slot]
         let home = CGFloat.random(in: 0.08...0.3)
-        foes.append(Foe(kana: k, image: minionImages.randomElement()!, x: x, y: -0.15, homeY: home))
+        let img = minionImages.randomElement() ?? "nk_342"
+        KJZukan.see(img)
+        foes.append(Foe(kana: k, image: img, x: x, y: -0.15, homeY: home))
         AudioManager.shared.se(.spawn, volume: 0.35)
     }
 
