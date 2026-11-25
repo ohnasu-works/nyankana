@@ -325,7 +325,11 @@ struct MiniGameView: View {
     @State private var gradeIn = false
     @State private var clock = Timer.publish(every: 1.0 / 30, on: .main, in: .common).autoconnect()
 
-    private var letters: [String] { stage.known.isEmpty ? KJC1.A : stage.known }
+    /// the letters to ask: everything known, the just-learned ones twice as often, plus the player's weak ones
+    private var letters: [String] {
+        let base = stage.known.isEmpty ? KJC1.A : stage.known
+        return base + stage.focus + stage.focus + KJWeak.top(3, in: base)
+    }
 
     var body: some View {
         GeometryReader { g in
@@ -1112,7 +1116,8 @@ enum MGGlyph {
         c.translateBy(x: 0, y: CGFloat(px))
         c.scaleBy(x: 1, y: -1)
         UIGraphicsPushContext(c)
-        let size = CGFloat(px) * 0.74
+        // two-letter sounds (きゃ) are drawn smaller so both fit
+        let size = CGFloat(px) * (k.count > 1 ? 0.44 : 0.74)
         let font = UIFont(name: Fonts.roundedBold, size: size) ?? .systemFont(ofSize: size, weight: .bold)
         let s = NSAttributedString(string: k, attributes: [.font: font, .foregroundColor: UIColor.black])
         let b = s.boundingRect(with: CGSize(width: px, height: px), options: [.usesLineFragmentOrigin], context: nil)

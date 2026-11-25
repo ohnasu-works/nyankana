@@ -4,7 +4,7 @@ import SwiftUI
 // 設計：00_企画/にゃんカナ_ゲーム設計書_v1.md の 21-5。セリフは KJC1Lines.swift（自動生成）。
 
 enum KJC1 {
-    enum Kind { case battle, mid, talk, listen, boss, mini }
+    enum Kind { case battle, mid, talk, listen, boss, mini, lesson }
 
     struct Stage: Identifiable {
         var id: Int
@@ -23,6 +23,7 @@ enum KJC1 {
         var mini: MGKind? = nil       // a mini-game stage (MiniGames.swift)
         var chapter = 1               // 1 関東 … 7 九州・沖縄 (chapters 2-7: KJChapters.swift)
         var foe: String? = nil        // the mid-boss / boss picture
+        var focus: [String] = []      // a game square right after a lesson: these letters come up more often
         var place: String { KJ.t(en, zh, ko) }
         var pre: [KJLine] { (KJC1.lines[id] ?? KJC1.lines2[id])?.pre ?? [] }
         var post: [KJLine] { (KJC1.lines[id] ?? KJC1.lines2[id])?.post ?? [] }
@@ -39,30 +40,37 @@ enum KJC1 {
     static let stages: [Stage] = stages1 + stages2
     static func stages(in chapter: Int) -> [Stage] { stages.filter { $0.chapter == chapter } }
     static let stages1: [Stage] = [
+        // 基本マス（lesson）で新しい文字を習い、すぐ次のゲームマスで その文字を中心に遊ぶ
         Stage(id: 1, ja: "あさくさ・かみなりもん", en: "Asakusa · Kaminarimon", zh: "淺草・雷門", ko: "아사쿠사・가미나리몬",
-              bg: "旅01_浅草_雷門", kind: .battle, newKana: A, known: A, words: ["あお", "いえ", "うえ"], goal: 18),
-        Stage(id: 101, ja: "しょどう どうじょう", en: "Tracing Dojo", zh: "描字道場", ko: "따라 쓰기 도장",
-              bg: "bg_mg_dojo", kind: .mini, known: A, mini: .nazori),
+              bg: "旅01_浅草_雷門", kind: .lesson, newKana: A, known: A, words: ["あお", "いえ", "うえ"]),
+        Stage(id: 101, ja: "あさくさ・あそび", en: "Asakusa · Game", zh: "淺草・遊戲", ko: "아사쿠사・게임",
+              bg: "旅01_浅草_雷門", kind: .mini, known: A, words: ["あお", "いえ", "うえ"], mini: .karuta, focus: A),
         Stage(id: 2, ja: "あさくさ・なかみせ", en: "Asakusa · Nakamise", zh: "淺草・仲見世", ko: "아사쿠사・나카미세",
-              bg: "旅01_浅草_仲見世通り", kind: .battle, newKana: K, known: A + K, words: ["かお", "あかい", "こえ", "あお", "いえ"], goal: 20),
-        Stage(id: 102, ja: "かるた たいかい", en: "Karuta Battle", zh: "歌留多大賽", ko: "카루타 대회",
-              bg: "bg_mg_karuta", kind: .mini, known: A + K, mini: .karuta),
+              bg: "旅01_浅草_仲見世通り", kind: .lesson, newKana: K, known: A + K, words: ["かお", "あかい", "こえ", "あお", "いえ"]),
+        Stage(id: 102, ja: "なかみせ・あそび", en: "Nakamise · Game", zh: "仲見世・遊戲", ko: "나카미세・게임",
+              bg: "旅01_浅草_仲見世通り", kind: .mini, known: A + K, words: ["かお", "あかい", "こえ"], mini: .tsuri, focus: K),
         Stage(id: 3, ja: "しぶや", en: "Shibuya", zh: "澀谷", ko: "시부야",
               bg: "bg_c1_shibuya", kind: .battle, known: A + K, words: ["かお", "あかい", "こえ", "あお", "いえ", "うえ"], goal: 25),
         Stage(id: 4, ja: "とうきょうタワー", en: "Tokyo Tower", zh: "東京鐵塔", ko: "도쿄 타워",
-              bg: "旅01_東京タワー_夜", kind: .battle, newKana: S, known: A + K + S, words: ["すし", "かさ", "あし", "かお", "こえ"], goal: 22),
+              bg: "旅01_東京タワー_夜", kind: .lesson, newKana: S, known: A + K + S, words: ["すし", "かさ", "あし", "かお", "こえ"]),
+        Stage(id: 104, ja: "タワー・あそび", en: "Tower · Game", zh: "鐵塔・遊戲", ko: "타워・게임",
+              bg: "旅01_東京タワー_夜", kind: .mini, known: A + K + S, words: ["すし", "かさ", "あし"], mini: .chochin, focus: S),
         Stage(id: 5, ja: "あきはばら", en: "Akihabara", zh: "秋葉原", ko: "아키하바라",
-              bg: "bg_c1_akiba", kind: .battle, newKana: T, known: A + K + S + T, words: ["たこ", "て", "つくえ", "すし", "かさ"], goal: 22),
+              bg: "bg_c1_akiba", kind: .lesson, newKana: T, known: A + K + S + T, words: ["たこ", "て", "つくえ", "すし", "かさ"]),
+        Stage(id: 105, ja: "あきはばら・あそび", en: "Akihabara · Game", zh: "秋葉原・遊戲", ko: "아키하바라・게임",
+              bg: "bg_c1_akiba", kind: .mini, known: A + K + S + T, words: ["たこ", "て", "つくえ"], mini: .sushi, focus: T),
         Stage(id: 6, ja: "あきはばら・あめ", en: "Akihabara · Rain", zh: "秋葉原・雨", ko: "아키하바라・비",
               bg: "bg_c1_akiba_rain", kind: .mid, known: A + K + S + T, words: ["かさ", "たこ", "つくえ", "あし", "すし", "かお"], goal: 12),
         Stage(id: 7, ja: "よこはま・ちゅうかがい", en: "Yokohama Chinatown", zh: "橫濱中華街", ko: "요코하마 차이나타운",
               bg: "bg_c1_chinatown", kind: .talk),
         Stage(id: 8, ja: "かまくら・だいぶつ", en: "Kamakura · Great Buddha", zh: "鎌倉大佛", ko: "가마쿠라 대불",
-              bg: "bg_c1_daibutsu", kind: .battle, newKana: N, known: all, words: ["ねこ", "いぬ", "さかな", "たこ", "かさ"], goal: 22),
+              bg: "bg_c1_daibutsu", kind: .lesson, newKana: N, known: all, words: ["ねこ", "いぬ", "さかな", "たこ", "かさ"]),
+        Stage(id: 108, ja: "かまくら・あそび", en: "Kamakura · Game", zh: "鎌倉・遊戲", ko: "가마쿠라・게임",
+              bg: "bg_c1_daibutsu", kind: .mini, known: all, words: ["ねこ", "いぬ", "さかな"], mini: .kingyo, focus: N),
         Stage(id: 9, ja: "えのしま", en: "Enoshima", zh: "江之島", ko: "에노시마",
               bg: "bg_c1_enoshima", kind: .battle, known: all, words: ["さかな", "ねこ", "いぬ", "すし", "たこ", "て"], goal: 25, tonbi: true),
-        Stage(id: 103, ja: "えのしま・もじつり", en: "Enoshima · Fishing", zh: "江之島・釣魚", ko: "에노시마・낚시",
-              bg: "bg_c1_enoshima", kind: .mini, known: all, mini: .tsuri),
+        Stage(id: 103, ja: "えのしま・あそび", en: "Enoshima · Game", zh: "江之島・遊戲", ko: "에노시마・게임",
+              bg: "bg_c1_enoshima", kind: .mini, known: all, words: ["さかな", "ねこ", "いぬ"], mini: .mekuri),
         Stage(id: 10, ja: "にっこう・とうしょうぐう", en: "Nikko · Toshogu", zh: "日光東照宮", ko: "닛코 도쇼구",
               bg: "旅01_日光東照宮", kind: .listen),
         Stage(id: 11, ja: "なす・せっしょうせき", en: "Nasu · Killing Stone", zh: "那須・殺生石", ko: "나스・살생석",
@@ -73,6 +81,12 @@ enum KJC1 {
     ]
 
     static func stage(_ n: Int) -> Stage { stages.first { $0.id == n } ?? stages[0] }
+
+    /// the games of every game square up to (and including) this one
+    static func gamesMet(upTo id: Int) -> [MGKind] {
+        guard let i = stages.firstIndex(where: { $0.id == id }) else { return [] }
+        return Array(Set(stages[...i].compactMap { $0.kind == .mini ? $0.mini : nil }))
+    }
 
     // progress: best stars per stage
     static func stars(_ id: Int) -> Int { UserDefaults.standard.integer(forKey: "kj.c1.s\(id)") }
@@ -156,7 +170,7 @@ struct KJMapView: View {
                     chapterArrow(1)
                 }
                 GeometryReader { g in
-                    let cols = 3
+                    let cols = course.count > 15 ? 4 : 3
                     let rows = Int((Double(course.count) / Double(cols)).rounded(.up))
                     let w = g.size.width / CGFloat(cols), h = g.size.height / CGFloat(rows)
                     ZStack {
@@ -170,7 +184,7 @@ struct KJMapView: View {
                         }
                         .stroke(Color.white.opacity(0.9), style: StrokeStyle(lineWidth: 8.s, lineCap: .round, dash: [2, 14.s]))
                         ForEach(Array(course.enumerated()), id: \.offset) { i, s in
-                            node(s).position(point(i, cols: cols, w: w, h: h))
+                            node(s).scaleEffect(course.count > 15 ? 0.78 : 1).position(point(i, cols: cols, w: w, h: h))
                         }
                     }
                 }
@@ -256,11 +270,15 @@ struct KJStageView: View {
     @State private var score: Int
     @State private var won: [String]
 
+    /// a game square played again: any game met so far (decided once, when the stage opens)
+    private let replayGame: MGKind?
+
     /// `resume`: back from the もじレスキュー boss battle — carry on with the clear effect
     init(stage: KJC1.Stage, resume: KanaRescue.Outcome? = nil, next: @escaping () -> Void, map: @escaping () -> Void) {
         self.stage = stage
         self.next = next
         self.map = map
+        replayGame = stage.kind == .mini && KJC1.stars(stage.id) > 0 ? KJC1.gamesMet(upTo: stage.id).randomElement() : nil
         if let r = resume, r.stageID == stage.id, r.cleared {
             KJC1.setStars(stage.id, r.stars)
             KJC1.setBest(stage.id, r.score)
@@ -345,8 +363,12 @@ struct KJStageView: View {
             KJTalkEvent { s, sc in finish(s, sc, ["こんにちは", "わたしは〇〇です"]) }
         case .listen:
             KJListenEvent { s, sc in finish(s, sc, []) }
+        case .lesson:
+            // 基本マス: the standard study round
+            KJLessonView(stage: stage) { s, sc, w in finish(s, sc, w) }
         case .mini:
-            MiniGameView(kind: stage.mini ?? .karuta, stage: stage) { s, sc, w in finish(s, sc, w) }
+            // ゲームマス: fixed game the first time, a random one of the games met so far when played again
+            MiniGameView(kind: replayGame ?? stage.mini ?? .karuta, stage: stage) { s, sc, w in finish(s, sc, w) }
         case .boss:
             // the chapter boss: the original もじレスキュー battle
             KJRescueLauncher(stage: stage)
