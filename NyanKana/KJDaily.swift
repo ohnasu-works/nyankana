@@ -121,7 +121,7 @@ enum KJSRS {
     }
 }
 
-// MARK: - おしらせ（毎日 19:00、ミッションが まだの日だけ）
+// MARK: - おしらせ：毎日 19:00 に「1もん」が とどく（通知の ボタンで そのまま こたえられる）
 
 enum KJReminder {
     static var on: Bool {
@@ -139,35 +139,112 @@ enum KJReminder {
         }
     }
 
+    struct Quiz { var head: String; var prompt: String; var choices: [String]; var answer: Int; var key: String; var reveal: String }
+
+    /// one small question: a word to review first, otherwise a word or letter the player has met
+    static func quiz(seed: Int) -> Quiz? {
+        var rng = SeededRandom(seed: UInt64(truncatingIfNeeded: seed &* 2654435761 &+ 97))
+        let words = KJData.words
+        let met = Set(KJSRS.all.keys)
+        let due = KJSRS.due
+        // words first (due ones, then ones already met, then the easy first words)
+        var pool = words.filter { due.contains($0.ja) }
+        if pool.isEmpty { pool = words.filter { met.contains($0.ja) } }
+        let letters = KJData.letters.filter { met.contains($0.kana) && !$0.romaji.isEmpty }
+        if pool.isEmpty && letters.isEmpty { pool = Array(words.prefix(40)) }
+        if !pool.isEmpty && (letters.isEmpty || rng.next() % 3 != 0) {
+            let w = pool[Int(rng.next() % UInt64(pool.count))]
+            var others = words.filter { $0.meaning != w.meaning }.map(\.meaning)
+            others.shuffle(using: &rng)
+            var ch = [w.meaning] + Array((NSOrderedSet(array: others).array as? [String] ?? others).prefix(2))
+            ch.shuffle(using: &rng)
+            return Quiz(head: "\(w.emoji)「\(w.ja)」って なに？", prompt: KJ.t("What does it mean?", "是什麼意思？", "무슨 뜻이에요?"),
+                        choices: ch, answer: ch.firstIndex(of: w.meaning) ?? 0, key: w.ja, reveal: "\(w.ja) = \(w.meaning)")
+        }
+        guard !letters.isEmpty else { return nil }
+        let l = letters[Int(rng.next() % UInt64(letters.count))]
+        var others = KJData.letters.filter { $0.romaji != l.romaji && !$0.romaji.isEmpty }.map(\.romaji)
+        others.shuffle(using: &rng)
+        var ch = [l.romaji] + Array((NSOrderedSet(array: others).array as? [String] ?? others).prefix(2))
+        ch.shuffle(using: &rng)
+        return Quiz(head: "「\(l.kana)」は どう よむ？", prompt: KJ.t("How do you read it?", "怎麼唸？", "어떻게 읽어요?"),
+                    choices: ch, answer: ch.firstIndex(of: l.romaji) ?? 0, key: l.kana, reveal: "\(l.kana) = \(l.romaji)")
+    }
+
     static func refresh() {
         let c = UNUserNotificationCenter.current()
         c.removePendingNotificationRequests(withIdentifiers: ids)
         guard on else { return }
         let cal = Calendar.current
-        let streak = KJDaily.streak
-        let dueCount = KJSRS.due.count
+        var cats: Set<UNNotificationCategory> = []
+        let marks = ["A", "B", "C"]
         for i in 0..<7 {
             guard let day = cal.date(byAdding: .day, value: i, to: Date()),
-                  let at = cal.date(bySettingHour: hour, minute: 0, second: 0, of: day) else { continue }
-            if i == 0 && (KJDaily.allDoneToday || at < Date()) { continue }
+                  let at = cal.date(bySettingHour: hour, minute: 0, second: 0, of: day), at > Date(),
+                  let q = quiz(seed: (cal.ordinality(of: .day, in: .era, for: day) ?? i)) else { continue }
+            // the three answers are buttons on the notification (long-press / pull down to answer)
+            let actions = q.choices.enumerated().map { j, t in UNNotificationAction(identifier: "a\(j)", title: "\(marks[j]). \(t)", options: []) }
+            cats.insert(UNNotificationCategory(identifier: "kj.q.\(i)", actions: actions, intentIdentifiers: []))
             let content = UNMutableNotificationContent()
-            content.title = "にゃんカナ"
-            if i <= 1 && streak > 0 {
-                content.body = KJ.t("Keep your \(streak)-day streak! Today's 3 missions are waiting.",
-                                    "連續\(streak)天！今天的3個任務在等你喔。",
-                                    "\(streak)일 연속! 오늘의 미션 3개가 기다려요.")
-            } else if i <= 1 && dueCount > 0 {
-                content.body = KJ.t("\(dueCount) words are ready to review. 3 minutes is enough!",
-                                    "有\(dueCount)個詞可以複習了，3分鐘就好！",
-                                    "복습할 단어가 \(dueCount)개 있어요. 3분이면 충분해요!")
-            } else {
-                content.body = KJ.t("Nyan is waiting! Let's do today's missions.",
-                                    "喵在等你！來完成今天的任務吧。",
-                                    "냥이 기다려요! 오늘의 미션을 해요.")
-            }
+            content.title = "きょうの 1もん"
+            content.body = q.head + "\n" + q.choices.enumerated().map { "\(marks[$0.offset]). \($0.element)" }.joined(separator: "   ")
+            content.subtitle = q.prompt
             content.sound = .default
+            content.categoryIdentifier = "kj.q.\(i)"
+            content.userInfo = ["answer": q.answer, "key": q.key, "reveal": q.reveal]
             let comps = cal.dateComponents([.year, .month, .day, .hour, .minute], from: at)
             c.add(UNNotificationRequest(identifier: ids[i], content: content, trigger: UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)))
+        }
+        c.setNotificationCategories(cats)
+    }
+
+    /// the answer chosen on the notification: tell right / wrong right away and feed the review schedule
+    static func answered(choice: Int, answer: Int, key: String, reveal: String) {
+        let ok = choice == answer
+        if ok { KJWeak.hit(key) } else { KJWeak.miss(key) }
+        let content = UNMutableNotificationContent()
+        content.title = ok ? "⭕ せいかい！" : "❌ ざんねん…"
+        content.body = reveal + (ok ? "" : KJ.t("  (it will come back in review)", "（會在複習時再出現）", " (복습에 다시 나와요)"))
+        UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "kj.result", content: content, trigger: nil))
+    }
+}
+
+/// a tiny fixed random, so each day's question stays the same when the schedule is rebuilt
+struct SeededRandom: RandomNumberGenerator {
+    var state: UInt64
+    init(seed: UInt64) { state = seed == 0 ? 0x9E3779B97F4A7C15 : seed }
+    mutating func next() -> UInt64 {
+        state ^= state << 13; state ^= state >> 7; state ^= state << 17
+        return state
+    }
+}
+
+/// answers from the notification buttons, and opening today's missions when the notification is tapped
+final class KJNotify: NSObject, UNUserNotificationCenterDelegate {
+    static let shared = KJNotify()
+    var openDaily: (() -> Void)?
+
+    func start() { UNUserNotificationCenter.current().delegate = self }
+
+    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification,
+                                            withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound])
+    }
+
+    nonisolated func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse,
+                                            withCompletionHandler completionHandler: @escaping () -> Void) {
+        let info = response.notification.request.content.userInfo
+        let action = response.actionIdentifier
+        let answer = info["answer"] as? Int ?? -1
+        let key = info["key"] as? String ?? ""
+        let reveal = info["reveal"] as? String ?? ""
+        Task { @MainActor in
+            if action.hasPrefix("a"), let n = Int(action.dropFirst()) {
+                KJReminder.answered(choice: n, answer: answer, key: key, reveal: reveal)
+            } else if action == UNNotificationDefaultActionIdentifier, !key.isEmpty {
+                KJNotify.shared.openDaily?()
+            }
+            completionHandler()
         }
     }
 }
@@ -347,8 +424,8 @@ struct KJDailyView: View {
             KJReminder.enable(v) { ok in remind = ok }
         })) {
             VStack(alignment: .leading, spacing: 1) {
-                Text("まいにち おしらせ（19:00）").font(.custom(Fonts.rounded, size: 15.s)).foregroundStyle(Color.ink)
-                Text(KJ.t("Only on days you haven't finished yet", "只在還沒完成的日子提醒", "아직 안 한 날에만 알려요"))
+                Text("まいにち 1もん（19:00）").font(.custom(Fonts.rounded, size: 15.s)).foregroundStyle(Color.ink)
+                Text(KJ.t("A quick quiz arrives every day. Answer right on the notification.", "每天送來1題小測驗，在通知上就能作答。", "매일 퀴즈 1문제가 와요. 알림에서 바로 답해요."))
                     .font(.ui(11.s, bold: false)).foregroundStyle(Color.ink.opacity(0.6))
             }
         }

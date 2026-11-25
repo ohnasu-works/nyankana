@@ -139,10 +139,12 @@ struct HomeView: View {
                 // Sora and Yui in the clothes chosen in the closet
                 GeometryReader { g in
                     let h = g.size.height
+                    let sora = Outfit.wearing("sora", app).image("sora"), yui = Outfit.wearing("yui", app).image("yui")
+                    let hs = KidLook.heights([sora, yui], height: h, maxHeight: h)
                     HStack(alignment: .bottom, spacing: -h * 0.12) {
-                        Image(Outfit.wearing("sora", app).image("sora")).resizable().scaledToFit().frame(height: h)
+                        Image(sora).resizable().scaledToFit().frame(height: hs[0])
                             .rotationEffect(.degrees(-3), anchor: .bottom)
-                        Image(Outfit.wearing("yui", app).image("yui")).resizable().scaledToFit().frame(height: h * 0.95)
+                        Image(yui).resizable().scaledToFit().frame(height: hs[1])
                             .rotationEffect(.degrees(3), anchor: .bottom)
                     }
                     .frame(width: g.size.width, height: h, alignment: .bottom)

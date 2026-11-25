@@ -213,9 +213,10 @@ struct RewardView: View {
         VStack(spacing: 10.s) {
             switch r {
             case .outfit(let o):
+                let hs = KidLook.heights([o.image("sora"), o.image("yui")], height: 200.s, maxHeight: 215.s)
                 HStack(alignment: .bottom, spacing: -10.s) {
-                    Image(o.image("sora")).resizable().scaledToFit().frame(height: 200.s)
-                    Image(o.image("yui")).resizable().scaledToFit().frame(height: 195.s)
+                    Image(o.image("sora")).resizable().scaledToFit().frame(height: hs[0])
+                    Image(o.image("yui")).resizable().scaledToFit().frame(height: hs[1])
                     Image(o.image("nyan")).resizable().scaledToFit().frame(height: 130.s)
                 }
                 Text(jp(T("新しい服", "새 옷", "新衣服"))).font(.ui(13.s)).foregroundStyle(Color.ink.opacity(0.6))

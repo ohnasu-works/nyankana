@@ -76,6 +76,8 @@ struct RootView: View {
         }
         .onAppear {
             AudioManager.shared.start()
+            KJNotify.shared.start()
+            KJNotify.shared.openDaily = { app.sheet = .daily }
             #if DEBUG && targetEnvironment(simulator)
             later(2.0) { VoiceAudit.run() }
             #endif

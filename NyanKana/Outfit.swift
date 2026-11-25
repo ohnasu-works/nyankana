@@ -128,8 +128,9 @@ struct ClosetView: View {
     /// the two kids (and Nyan) in what they wear now
     private var stage: some View {
         HStack(alignment: .bottom, spacing: 0) {
-            kidImage("sora", height: 230.s)
-            kidImage("yui", height: 220.s)
+            let hs = KidLook.heights([Outfit.wearing("sora", app).image("sora"), Outfit.wearing("yui", app).image("yui")], height: 230.s, maxHeight: 250.s)
+            kidImage("sora", height: hs[0])
+            kidImage("yui", height: hs[1])
             kidImage("nyan", height: 150.s)
         }
         .frame(maxWidth: .infinity)
@@ -219,5 +220,24 @@ struct ClosetView: View {
             if app.progress.outfits.insert("\(k).\(o.rawValue)").inserted { changed = true }
         } }
         if changed { app.save() }
+    }
+}
+
+
+// MARK: - Sora and Yui side by side: the same face size in every costume
+
+enum KidLook {
+    /// distance between the eyes, as a fraction of the picture height (measured from the art)
+    static let eyes: [String: CGFloat] = ["sora_aloha": 0.1366, "sora_castle": 0.1506, "sora_chef": 0.1337, "sora_full": 0.1284, "sora_hakama": 0.1222, "sora_happi": 0.1267, "sora_haregi": 0.1334, "sora_kendo": 0.1267, "sora_kitsune": 0.1297, "sora_ninja": 0.1411, "sora_pajama": 0.125, "sora_samurai": 0.1397, "sora_school": 0.1244, "sora_snow": 0.1145, "sora_yukata": 0.1241, "yui_aloha": 0.1043, "yui_castle": 0.0849, "yui_chef": 0.1187, "yui_full": 0.1261, "yui_hakama": 0.1187, "yui_happi": 0.125, "yui_haregi": 0.0988, "yui_kendo": 0.1145, "yui_kitsune": 0.1077, "yui_ninja": 0.1212, "yui_pajama": 0.1253, "yui_samurai": 0.1291, "yui_school": 0.0904, "yui_snow": 0.1209, "yui_yukata": 0.1131]
+    static let normalEyes: CGFloat = 0.128
+
+    /// heights for pictures shown side by side so their faces match;
+    /// the first picture gets `height` (smaller if another would not fit in `maxHeight`)
+    static func heights(_ images: [String], height: CGFloat, maxHeight: CGFloat? = nil) -> [CGFloat] {
+        let e = images.map { eyes[$0] ?? normalEyes }
+        let eyePx = height * e[0]
+        var hs = e.map { eyePx / $0 }
+        if let m = maxHeight, let top = hs.max(), top > m { hs = hs.map { $0 * m / top } }
+        return hs
     }
 }
