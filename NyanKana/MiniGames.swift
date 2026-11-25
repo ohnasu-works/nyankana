@@ -6,8 +6,19 @@ import Combine
 // 共通の枠：タイトル → 3・2・1・GO → プレイ → そこまで！ → 評価（S/A/B/C と ★）。
 // それぞれ専用の BGM（Sounds/bgm_mg_*.m4a、Gemini で作曲）と効果音（se_mg_*）。
 
-enum MGKind: String {
-    case karuta, tsuri, nazori
+enum MGKind: String, CaseIterable {
+    case karuta, tsuri, nazori, chochin, sushi, ninja
+
+    var icon: String {
+        switch self {
+        case .karuta: "🎴"
+        case .tsuri: "🎣"
+        case .nazori: "🖌️"
+        case .chochin: "🏮"
+        case .sushi: "🍣"
+        case .ninja: "🥷"
+        }
+    }
 
     /// the game's name in Japanese (read aloud on the title screen)
     var title: String {
@@ -15,6 +26,9 @@ enum MGKind: String {
         case .karuta: "かるた たいかい"
         case .tsuri: "もじ つり"
         case .nazori: "なぞりがき どうじょう"
+        case .chochin: "ちょうちん たたき"
+        case .sushi: "かいてん ずし"
+        case .ninja: "しゅりけん にんじゃ"
         }
     }
     var sub: String {
@@ -22,6 +36,9 @@ enum MGKind: String {
         case .karuta: KJ.t("Karuta Battle", "歌留多大賽", "카루타 대회")
         case .tsuri: KJ.t("Letter Fishing", "文字釣魚", "글자 낚시")
         case .nazori: KJ.t("Tracing Dojo", "描字道場", "따라 쓰기 도장")
+        case .chochin: KJ.t("Lantern Whack", "打燈籠", "초롱 두더지")
+        case .sushi: KJ.t("Sushi Train", "迴轉壽司", "회전 초밥")
+        case .ninja: KJ.t("Shuriken Ninja", "手裏劍忍者", "수리검 닌자")
         }
     }
     var howTo: String {
@@ -29,6 +46,9 @@ enum MGKind: String {
         case .karuta: KJ.both("Listen, then slap the card before the kappa does!", "聽發音，比河童更快拍下那張牌！", "소리를 듣고 갓파보다 먼저 카드를 쳐요!")
         case .tsuri: KJ.both("Catch the fish that has the letter!", "釣起帶著那個假名的魚！", "그 글자를 가진 물고기를 낚아요!")
         case .nazori: KJ.both("Trace the letter with your finger, then tap OK.", "用手指描寫假名，再按 OK。", "손가락으로 글자를 따라 쓰고 OK를 눌러요.")
+        case .chochin: KJ.both("Whack only the lantern ghosts with the letter!", "只打帶著那個假名的燈籠妖怪！", "그 글자를 가진 초롱 요괴만 때려요!")
+        case .sushi: KJ.both("Grab the plate the customer ordered!", "拿起客人點的那一盤！", "손님이 주문한 접시를 잡아요!")
+        case .ninja: KJ.both("Swipe to slice the target with the letter!", "滑動手指，劈開那個假名的靶！", "밀어서 그 글자의 과녁을 베어요!")
         }
     }
     var bg: String {
@@ -36,6 +56,9 @@ enum MGKind: String {
         case .karuta: "bg_mg_karuta"
         case .tsuri: "bg_c1_enoshima"
         case .nazori: "bg_mg_dojo"
+        case .chochin: "bg_mg_chochin"
+        case .sushi: "bg_mg_sushi"
+        case .ninja: "bg_mg_ninja"
         }
     }
     var hero: String {
@@ -43,6 +66,9 @@ enum MGKind: String {
         case .karuta: "mg_kappa"
         case .tsuri: "nk_nyan_fish"
         case .nazori: "nk_nyan_proud"
+        case .chochin: "mg_chochin"
+        case .sushi: "mg_sushi"
+        case .ninja: "nk_nyan_ninja"
         }
     }
     var bgm: String { "mg_" + rawValue }
@@ -52,6 +78,9 @@ enum MGKind: String {
         case .karuta: 50
         case .tsuri: 45
         case .nazori: nil
+        case .chochin: 45
+        case .sushi: 50
+        case .ninja: 45
         }
     }
     /// hits needed for an S
@@ -60,6 +89,9 @@ enum MGKind: String {
         case .karuta: 12
         case .tsuri: 12
         case .nazori: 5
+        case .chochin: 15
+        case .sushi: 12
+        case .ninja: 14
         }
     }
 }
@@ -199,6 +231,9 @@ struct MiniGameView: View {
                     case .karuta: MGKaruta(ctx: ctx, letters: letters)
                     case .tsuri: MGTsuri(ctx: ctx, letters: letters)
                     case .nazori: MGNazori(ctx: ctx, letters: letters)
+                    case .chochin: MGChochin(ctx: ctx, letters: letters)
+                    case .sushi: MGSushi(ctx: ctx, letters: letters)
+                    case .ninja: MGNinja(ctx: ctx, letters: letters)
                     }
                 }
                 .opacity(phase == .title ? 0 : 1)

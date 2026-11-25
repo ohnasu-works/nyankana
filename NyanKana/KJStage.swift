@@ -99,6 +99,7 @@ struct KJMapView: View {
     var play: (Int) -> Void
     var home: () -> Void
     var redoSetup: () -> Void
+    var playground: () -> Void = {}
 
     var body: some View {
         ZStack {
@@ -107,6 +108,19 @@ struct KJMapView: View {
                 HStack {
                     BackChip { home() }
                     Spacer()
+                    // あそびば: replay the mini-games
+                    Button {
+                        AudioManager.shared.se(.decide)
+                        playground()
+                    } label: {
+                        HStack(spacing: 4.s) {
+                            Text("🎮").font(.system(size: 16.s))
+                            Text("あそびば").font(.custom(Fonts.rounded, size: 14.s)).foregroundStyle(Color.ink)
+                        }
+                        .padding(.horizontal, 12.s).padding(.vertical, 6.s)
+                        .background(Capsule().fill(Color.mint).overlay(Capsule().stroke(Color.ink, lineWidth: 2.5)))
+                    }
+                    .buttonStyle(PressStyle(radius: 16.s, depth: 3))
                     KJSlowButton()
                 }
                 .padding(.horizontal, 14.s).padding(.top, 6.s)
@@ -165,7 +179,7 @@ struct KJMapView: View {
                         if special {
                             Image(s.kind == .boss ? "boss_kyubi" : "mid_karakasa").resizable().scaledToFit().frame(width: 46.s, height: 46.s)
                         } else if let m = s.mini {
-                            Text(m == .karuta ? "🎴" : m == .tsuri ? "🎣" : "🖌️").font(.system(size: 28.s))
+                            Text(m.icon).font(.system(size: 28.s))
                         } else {
                             Text("\(KJC1.number(s.id))").font(.display(24.s)).foregroundStyle(Color.ink)
                         }

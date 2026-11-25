@@ -150,7 +150,7 @@ struct KJLine {
 
 struct KanaJourneyView: View {
     @EnvironmentObject var app: AppState
-    enum Screen: Equatable { case setup, map, stage(Int) }
+    enum Screen: Equatable { case setup, map, stage(Int), playground }
     @State private var screen: Screen
     /// back from the もじレスキュー boss battle
     @State private var resume: KanaRescue.Outcome?
@@ -182,7 +182,10 @@ struct KanaJourneyView: View {
             case .map:
                 KJMapView(play: { go(.stage($0)) },
                           home: { Speaker.shared.stop(); app.go(.home) },
-                          redoSetup: { KJ.onboarded = false; go(.setup) })
+                          redoSetup: { KJ.onboarded = false; go(.setup) },
+                          playground: { go(.playground) })
+            case .playground:
+                KJPlayground { AudioManager.shared.playBGM(.area(.lv1)); go(.map) }
             case .stage(let n):
                 KJStageView(stage: KJC1.stage(n), resume: resume,
                             next: { go(KJC1.next(after: n).map { .stage($0) } ?? .map) },
