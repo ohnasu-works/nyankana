@@ -4,7 +4,7 @@ import SwiftUI
 /// and is used everywhere they appear (closet, home).
 enum Outfit: String, CaseIterable, Identifiable {
     // one costume for clearing each region, plus study rewards
-    case normal = "default", yukata, happi, snow, ninja, samurai, school, aloha, chef, hakama, kitsune, pajama
+    case normal = "default", yukata, happi, snow, ninja, samurai, school, aloha, chef, hakama, kitsune, pajama, kendo, haregi, castle
     var id: String { rawValue }
 
     static let kids = ["sora", "yui", "nyan"]
@@ -28,11 +28,17 @@ enum Outfit: String, CaseIterable, Identifiable {
         case .hakama: T("はかま", "하카마", "袴")
         case .kitsune: T("きつね", "여우", "狐狸")
         case .pajama: T("パジャマ", "잠옷", "睡衣")
+        case .kendo: T("けんどう", "검도복", "劍道服")
+        case .haregi: T("はれぎ", "설빔 기모노", "新年和服")
+        case .castle: T("おしろの いしょう", "성의 의상", "城堡服裝")
         }
     }
 
     /// the chapter whose boss gives this costume
     private var chapter: Int? { [Outfit.yukata: 1, .happi: 2, .snow: 3, .ninja: 4, .samurai: 5, .school: 6, .aloha: 7][self] }
+
+    /// days in a row that give this costume
+    var streakDays: Int? { KJDaily.goals.first { $0.outfit == self }?.days }
 
     /// how to get it (shown while locked)
     var condition: String {
@@ -45,6 +51,9 @@ enum Outfit: String, CaseIterable, Identifiable {
         case .hakama: return T("JLPT もしで|80点|以上", "JLPT 모의고사 80점 이상", "JLPT模擬考80分以上")
         case .kitsune: return T("ぜんぶの|ステージを|クリア", "모든 스테이지 클리어", "通關所有關卡")
         case .pajama: return T("トレーニングで|50問|正解", "트레이닝 50문제 정답", "訓練答對50題")
+        case .kendo, .haregi, .castle:
+            let n = streakDays ?? 0
+            return T("まいにち|\(n)日|れんぞく", "\(n)일 연속", "連續\(n)天")
         default: return ""
         }
     }
@@ -58,6 +67,7 @@ enum Outfit: String, CaseIterable, Identifiable {
         case .hakama: return KJTrainMode.mock.best >= 80
         case .kitsune: return KJC1.stages.allSatisfy { KJC1.stars($0.id) > 0 }
         case .pajama: return KJTrainMode.totalCorrect >= 50
+        case .kendo, .haregi, .castle: return KJDaily.best >= (streakDays ?? 0)
         default: return false
         }
     }

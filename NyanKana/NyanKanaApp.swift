@@ -71,6 +71,7 @@ struct RootView: View {
             // large on iPad: the small form sheet cut off the pictures and the text
             case .howTo:  KJHowToSheet().presentationDetents([.large]).modifier(PageSizedSheet())
             case .shop:   ShopView()
+            case .daily:  KJDailyView().presentationDetents([.large]).modifier(PageSizedSheet())
             }
         }
         .onAppear {

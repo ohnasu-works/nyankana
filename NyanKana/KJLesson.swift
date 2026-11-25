@@ -11,8 +11,9 @@ enum KJWeak {
         get { (UserDefaults.standard.dictionary(forKey: key) as? [String: Int]) ?? [:] }
         set { UserDefaults.standard.set(newValue, forKey: key) }
     }
-    static func miss(_ k: String) { var a = all; a[k, default: 0] += 2; all = a }
+    static func miss(_ k: String) { var a = all; a[k, default: 0] += 2; all = a; KJSRS.miss(k) }
     static func hit(_ k: String) {
+        KJSRS.hit(k)
         var a = all
         guard let v = a[k] else { return }
         a[k] = v > 1 ? v - 1 : nil

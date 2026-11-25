@@ -403,6 +403,8 @@ struct KJTrainView: View {
         guard !done else { return }
         done = true
         mode.record(score)
+        if mode == .review { KJDaily.mark(.review) }
+        if mode == .speak { KJDaily.mark(.speak) }
         AudioManager.shared.se(.studyClear)
     }
 
@@ -453,8 +455,10 @@ struct KJTrainView: View {
                             choices: [p.a, p.b], answer: say == p.a ? 0 : 1, explain: p.meaning)
             }
         case .review:
+            // what is due today first (1 day, 3 days, 1 week… after learning), then the weakest, then anything
             let weak = KJWeak.all.sorted { $0.value > $1.value }.map(\.key)
-            let pool = weak.isEmpty ? Array(KJC1.all.shuffled().prefix(10)) : Array(weak.prefix(10))
+            var pool: [String] = []
+            for k in KJSRS.due + weak + KJC1.all.shuffled() where !pool.contains(k) && pool.count < 10 { pool.append(k) }
             return pool.map { k in
                 let isWord = k.count > 2 || KJData.word(k) != nil && k.count > 1
                 let others = isWord

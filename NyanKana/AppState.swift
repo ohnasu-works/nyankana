@@ -9,7 +9,7 @@ enum Screen: Equatable {
 }
 
 enum SheetKind: String, Identifiable {
-    case items, howTo, shop
+    case items, howTo, shop, daily
     var id: String { rawValue }
 }
 

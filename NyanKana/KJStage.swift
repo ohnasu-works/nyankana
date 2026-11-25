@@ -122,6 +122,7 @@ enum KJC1 {
     static func stars(_ id: Int) -> Int { UserDefaults.standard.integer(forKey: "kj.c1.s\(id)") }
     static func setStars(_ id: Int, _ s: Int) {
         if s > stars(id) { UserDefaults.standard.set(s, forKey: "kj.c1.s\(id)") }
+        if s > 0 { KJDaily.mark(.stage) }
     }
     static func best(_ id: Int) -> Int { UserDefaults.standard.integer(forKey: "kj.c1.b\(id)") }
     static func setBest(_ id: Int, _ s: Int) {

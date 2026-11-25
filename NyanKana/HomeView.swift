@@ -13,19 +13,21 @@ struct HomeView: View {
             let tileW = (maxW - gap) / 2
             let logoH = 92.s, smallH = 78.s
             // the premium badge has its own row above the logo, so it never covers the logo
-            let badgeH: CGFloat = app.isPremium ? 0 : 40.s
+            let badgeH: CGFloat = 40.s
             // the big tiles share what is left; GAME / STUDY are taller than ZUKAN / RECORD
-            let rest = geo.size.height - logoH - smallH - (app.isPremium ? 0 : badgeH + gap) - gap * 4 - 20
+            let rest = geo.size.height - logoH - smallH - (badgeH + gap) - gap * 4 - 20
             let unit = min(tileW * 1.25, rest / 2.3)
             let h1 = unit * 1.3, h2 = unit * 1.0
             ZStack {
                 VStack(spacing: gap) {
                     Spacer(minLength: 0)
-                    if !app.isPremium {
-                        premiumBadge
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .frame(height: badgeH)
+                    // today's missions (and the shop while not premium), above the logo
+                    HStack(spacing: 10.s) {
+                        KJDailyChip { app.sheet = .daily }
+                        if !app.isPremium { premiumBadge }
                     }
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .frame(height: badgeH)
                     logo.frame(height: logoH)
                     HStack(spacing: gap) {
                         gameTile(tileW).frame(width: tileW, height: h1)
@@ -53,6 +55,7 @@ struct HomeView: View {
         .onAppear {
             AudioManager.shared.playBGM(.home)
             DispatchQueue.main.async { MapPicture.warmUp() }   // so the map is ready when GAME is tapped
+            KJReminder.refresh()
         }
     }
 
