@@ -69,7 +69,7 @@ struct RootView: View {
             switch sheet {
             case .items:  ItemListView()
             // large on iPad: the small form sheet cut off the pictures and the text
-            case .howTo:  GuideSheet().presentationDetents([.large]).modifier(PageSizedSheet())
+            case .howTo:  KJHowToSheet().presentationDetents([.large]).modifier(PageSizedSheet())
             case .shop:   ShopView()
             }
         }

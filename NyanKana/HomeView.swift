@@ -216,12 +216,12 @@ struct HomeView: View {
     // MARK: small row
 
     private func smallRow(_ width: CGFloat) -> some View {
-        let w = (width - 30.s) / 4
+        // にゃんカナ: no item list (the boss battle has no items) — three buttons
+        let w = (width - 20.s) / 3
         let size = min(13.s, (w - 12) / 6.4)
         return HStack(spacing: 10.s) {
             small("ui_dress|👗", L("home.closet"), Stripes(a: Color(hex: 0xFF8FC0), b: Color(hex: 0xFF7AB3)), size) { app.go(.closet) }.frame(width: w)
                 .overlay(alignment: .topTrailing) { if Outfit.hasNew(app) { Circle().fill(Color.popDeep).frame(width: 14, height: 14).overlay(Circle().stroke(Color.white, lineWidth: 2)).offset(x: 2, y: -2).allowsHitTesting(false) } }
-            small("ui_heart|❤️", L("home.items"), Stripes(a: Color(hex: 0x4FD0D8), b: Color(hex: 0x36BCC6)), size) { app.sheet = .items }.frame(width: w)
             small("ui_question|❓", L("home.howto"), Stripes(a: Color(hex: 0xFFAD4F), b: Color(hex: 0xFF9A2E)), size) { app.sheet = .howTo }.frame(width: w)
             small("ui_gear|⚙️", L("home.settings"), Stripes(a: Color(hex: 0xB48CFF), b: Color(hex: 0x9F72F5)), size) { app.go(.settings) }.frame(width: w)
         }
