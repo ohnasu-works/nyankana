@@ -322,6 +322,7 @@ struct MGSushi: View {
     @State private var clock = Timer.publish(every: 1.0 / 30, on: .main, in: .common).autoconnect()
 
     private let tags: [Color] = [.pop, .sky, .mint, .sun, .grape]
+    static let netas = ["mg_sushi"] + (1...8).map { "mg_sushi_\($0)" }
     private let laneY: [CGFloat] = [0.5, 0.7]
     private var words: [String] {
         KJData.words.map(\.ja).filter { w in w.allSatisfy { letters.contains(String($0)) } }
@@ -392,7 +393,8 @@ struct MGSushi: View {
 
     private func plateView(_ p: Plate) -> some View {
         ZStack(alignment: .bottom) {
-            Image("mg_sushi").resizable().scaledToFit().frame(width: 108.s)
+            // a different topping on each plate (salmon, tuna, egg, shrimp, ikura, kappa maki, octopus, inari, squid)
+            Image(Self.netas[p.tag % Self.netas.count]).resizable().scaledToFit().frame(width: 108.s)
             Text(p.text).font(.custom(Fonts.rounded, size: p.text.count > 2 ? 16.s : 22.s)).foregroundStyle(Color.ink)
                 .lineLimit(1).minimumScaleFactor(0.6)
                 .padding(.horizontal, 7.s).frame(minWidth: 40.s, minHeight: 30.s)
@@ -417,7 +419,7 @@ struct MGSushi: View {
         stack = 0; ask = nil; flying = nil
         plates = []
         for lane in 0..<2 {
-            for i in 0..<4 { plates.append(Plate(text: content(), lane: lane, x: Double(i) / 4 + 0.05, tag: Int.random(in: 0..<5))) }
+            for i in 0..<4 { plates.append(Plate(text: content(), lane: lane, x: Double(i) / 4 + 0.05, tag: Int.random(in: 0..<40))) }
         }
     }
 
