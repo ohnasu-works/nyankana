@@ -31,7 +31,8 @@ struct MGScroller: View {
 /// speak the question if it is a sound (or a word)
 @MainActor func mgSpeak(_ a: MGAsk?) {
     switch a {
-    case .sound(let k)?, .word(let k)?: later(0.2) { Speaker.shared.say(k) }
+    // romaji too: beginners learn the sound by hearing it while they look for the letter
+    case .sound(let k)?, .word(let k)?, .romaji(let k)?: later(0.2) { Speaker.shared.say(k) }
     case .chain(let w, 0)?: later(0.2) { Speaker.shared.say(w) }
     default: break
     }

@@ -512,15 +512,15 @@ struct KJBattleView: View {
                 let glow = isTarget && b.ask == .read
                 VStack(spacing: -10.s) {
                         Text(f.kana).font(.custom(Fonts.rounded, size: 34.s)).foregroundStyle(Color.ink)
-                            .opacity(isTarget ? 1 : b.fogAlpha)
+                            .opacity(glow ? 1 : b.fogAlpha)
                             .frame(width: 56.s, height: 56.s)
                             .background(Circle().fill(glow ? Color.sun : Color.white)
-                                .overlay(Circle().stroke(isTarget ? Color.pop : Color.ink, lineWidth: isTarget ? 4 : 3)))
+                                .overlay(Circle().stroke(glow ? Color.pop : Color.ink, lineWidth: glow ? 4 : 3)))   // listening: no hint which one it is
                             .shadow(color: glow ? Color.sun : .clear, radius: 12)
                             .zIndex(1)
                         Image(f.image).resizable().scaledToFit().frame(width: 92.s, height: 92.s)
                     }
-                    .scaleEffect(f.dying ? 1.5 : (isTarget ? 1.08 : 1))
+                    .scaleEffect(f.dying ? 1.5 : (glow ? 1.08 : 1))
                     .opacity(f.dying ? 0 : 1)
                     .rotationEffect(.degrees(f.shake ? 12 : 0))
                     .animation(.easeOut(duration: 0.35), value: f.dying)

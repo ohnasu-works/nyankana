@@ -27,6 +27,14 @@ struct KJStudyView: View {
                     AudioManager.shared.playBGM(.study)
                     withAnimation { playing = nil }
                 }
+                // quit in the middle of a game
+                .overlay(alignment: .topLeading) {
+                    BackChip {
+                        AudioManager.shared.playBGM(.study)
+                        withAnimation { playing = nil }
+                    }
+                    .padding(.leading, 14.s).padding(.top, 6.s)
+                }
                 .transition(.opacity)
             } else {
                 main.transition(.opacity)

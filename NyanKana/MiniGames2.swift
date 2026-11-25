@@ -65,7 +65,13 @@ struct MGPrompt: View {
                 }
                 .buttonStyle(PressStyle(radius: 33.s, depth: 4))
             case .romaji(let k)?:
-                bubble(Text(KJData.romaji(k)).font(.display(40.s)))
+                Button { Speaker.shared.say(k) } label: {
+                    bubble(HStack(spacing: 8.s) {
+                        Text(KJData.romaji(k)).font(.display(40.s))
+                        Image(systemName: "speaker.wave.2.fill").font(.system(size: 20.s, weight: .bold)).foregroundStyle(Color.sky)
+                    })
+                }
+                .buttonStyle(.plain)
             case .word(let w)?:
                 let word = KJData.word(w)
                 Button { Speaker.shared.say(w) } label: {
@@ -722,6 +728,10 @@ struct KJPlayground: View {
                 MiniGameView(kind: k, stage: KJPlay.stage(k)) { s, sc, _ in
                     KJPlay.record(k, stars: s, score: sc)
                     withAnimation { playing = nil }
+                }
+                // quit in the middle of a game
+                .overlay(alignment: .topLeading) {
+                    BackChip { withAnimation { playing = nil } }.padding(.leading, 14.s).padding(.top, 6.s)
                 }
                 .transition(.opacity)
             } else {

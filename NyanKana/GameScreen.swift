@@ -344,6 +344,42 @@ struct AnswerPanel: View {
     }
 
     @ViewBuilder private func question(_ f: Foe) -> some View {
+        if KanaRescue.active && f.held == nil && q0(f).kind != .order {
+            kanaPrompt(f)
+        } else {
+            plainQuestion(f)
+        }
+    }
+    private func q0(_ f: Foe) -> Question { f.question }
+
+    /// にゃんカナ: the sound ("tsu") or the word, big in the middle, read out loud —
+    /// beginners learn by listening while they choose
+    private func kanaPrompt(_ f: Foe) -> some View {
+        let q = f.question
+        let isLetter = q.meaning.hasPrefix("“")
+        let shown = isLetter ? q.meaning.replacingOccurrences(of: "“", with: "").replacingOccurrences(of: "”", with: "") : q.meaning
+        let say = { if let k = q.kana { Speaker.shared.say(k) } }
+        return HStack(alignment: .center, spacing: 10.s) {
+            Spacer(minLength: 34.s)
+            Button { AudioManager.shared.se(.tap, rate: 1.4, volume: 0.4); say() } label: {
+                HStack(spacing: 10.s) {
+                    Text(shown)
+                        .font(isLetter ? .display(54.s) : .ui(30.s))
+                        .foregroundStyle(Color.ink)
+                        .lineLimit(1).minimumScaleFactor(0.5)
+                    Image(systemName: "speaker.wave.2.fill").font(.system(size: 24.s, weight: .bold)).foregroundStyle(Color.sky)
+                }
+            }
+            .buttonStyle(.plain)
+            Spacer(minLength: 0)
+            modeToggle
+        }
+        .frame(minHeight: 96.s)
+        // read it out when this one comes up (matching the sound to the letters is the practice)
+        .task(id: f.id) { try? await Task.sleep(nanoseconds: 250_000_000); say() }
+    }
+
+    @ViewBuilder private func plainQuestion(_ f: Foe) -> some View {
         let q = f.question
         VStack(spacing: 6.s) {
             HStack(alignment: .top) {

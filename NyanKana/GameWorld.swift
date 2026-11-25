@@ -517,10 +517,11 @@ final class GameWorld {
         body.name = id.uuidString
 
         let station: Float = kind == .boss ? 9.5 : kind == .mid ? 9.5 : kind == .event ? 8.5 : kind == .kidnap ? 8.0 : 7.5
-        let spread: Float = count >= 3 ? 2.6 : 1.8
+        // three in a row: a little closer together and a little further back, so the outer two never get cut by the screen edge
+        let spread: Float = count >= 3 ? 2.0 : 1.8
         let x = count > 1 ? (Float(index) - Float(count - 1) / 2) * spread * 1.15 : 0
         let y: Float = kind == .boss ? 2.95 : kind == .mid ? 2.45 : kind == .event ? 2.1 : kind == .kidnap ? 1.8 : 1.6
-        let near = point(ahead: station + Float(index % 2) * 0.6, right: x, up: y)
+        let near = point(ahead: station + (count >= 3 ? 2.5 : 0) + Float(index % 2) * 0.6, right: x, up: y)
         // a thrower pops out of purple smoke far down the street and throws from there (it walks in afterwards)
         let farSpot = point(ahead: 19, right: x * 1.2, up: 1.5)
         let to = thrower ? farSpot : near

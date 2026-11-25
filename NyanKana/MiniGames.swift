@@ -1001,10 +1001,16 @@ struct MGTsuri: View {
                 }
                 .buttonStyle(PressStyle(radius: 33.s, depth: 4))
             } else {
-                Text(answer.map { KJData.romaji($0) } ?? "")
-                    .font(.display(40.s)).foregroundStyle(Color.ink)
+                Button { if let a = answer { Speaker.shared.say(a) } } label: {
+                    HStack(spacing: 8.s) {
+                        Text(answer.map { KJData.romaji($0) } ?? "").font(.display(40.s)).foregroundStyle(Color.ink)
+                        Image(systemName: "speaker.wave.2.fill").font(.system(size: 20.s, weight: .bold)).foregroundStyle(Color.sky)
+                    }
+                    .padding(.horizontal, 16.s)
                     .frame(minWidth: 96.s, minHeight: 66.s)
                     .background(RoundedRectangle(cornerRadius: 18.s).fill(Color.white).overlay(RoundedRectangle(cornerRadius: 18.s).stroke(Color.ink, lineWidth: 3)))
+                }
+                .buttonStyle(.plain)
             }
             Text(listenMode ? KJ.t("Which fish?", "哪條魚？", "어느 물고기?") : KJ.t("Find this sound!", "找這個音！", "이 소리를 찾아요!"))
                 .font(.ui(12.s)).foregroundStyle(Color.ink)
@@ -1063,7 +1069,7 @@ struct MGTsuri: View {
             answer = f.kana
             listenMode = ctx.hits < 3 || Bool.random()
         }
-        if listenMode { later(0.2) { Speaker.shared.say(f.kana) } }
+        later(0.2) { Speaker.shared.say(f.kana) }   // the romaji is read out too (learn by hearing)
     }
 
     private func step() {
