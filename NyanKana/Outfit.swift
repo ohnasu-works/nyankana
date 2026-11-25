@@ -1,77 +1,64 @@
 import SwiftUI
 
-/// Costumes for Ken and Rin. The worn costume is stored in `ProgressStore.wearing` ("ken" -> "ken.uniform")
-/// and is used everywhere the kid appears (closet, story scenes).
+/// にゃんカナ: costumes for Sora and Nyan. The worn costume is stored in `ProgressStore.wearing` ("sora" -> "sora.ninja")
+/// and is used everywhere they appear (closet, home).
 enum Outfit: String, CaseIterable, Identifiable {
-    // one costume for clearing each level, plus a study reward and a premium one
-    case normal = "default", uniform, street, sports, suit, garden, lab, hero, pajama, yukata
-    // study rewards: the word egg grows, each skill is mastered, and study streaks
-    case egg, picnic, cafe, gown, royal, dj, idol, detective, pilot, winter, beach, party
-    // mastery rewards: every stage at three stars, then every other costume
-    case starry, legend
+    // one costume for clearing each region, plus study rewards
+    case normal = "default", yukata, happi, snow, ninja, samurai, school, aloha, chef, hakama, kitsune, pajama
     var id: String { rawValue }
 
-    static let kids = ["ken", "rin"]
+    static let kids = ["sora", "nyan"]
 
-    func image(_ kid: String) -> String { self == .normal ? "\(kid)_full" : "\(kid)_\(rawValue)" }
+    func image(_ kid: String) -> String {
+        if self == .normal { return kid == "nyan" ? "nyan" : "sora_full" }
+        return "\(kid)_\(rawValue)"
+    }
 
     var name: String {
         switch self {
         case .normal: T("いつもの服", "평상복", "平常服")
-        case .uniform: T("制服", "교복", "制服")
-        case .street: T("ストリート", "스트리트", "街頭風")
-        case .garden: T("ガーデン", "가든", "花園風")
-        case .lab: T("研究者", "연구원", "研究員")
-        case .pajama: T("にゃんこパジャマ", "냥이 잠옷", "貓咪睡衣")
-        case .sports: T("スポーツウェア", "스포츠웨어", "運動服")
-        case .suit: T("スーツ", "정장", "西裝")
-        case .hero: T("ワーディアの勇者", "워디아의 용사", "沃迪亞的勇者")
         case .yukata: T("ゆかた", "유카타", "浴衣")
-        case .egg: T("たまごパーカー", "달걀 후드티", "蛋蛋連帽衫")
-        case .picnic: T("春のピクニック", "봄 피크닉", "春季野餐")
-        case .cafe: T("ブックカフェ", "북카페", "書店咖啡")
-        case .gown: T("卒業ガウン", "졸업 가운", "畢業袍")
-        case .royal: kidRoyal
-        case .dj: T("DJ", "DJ", "DJ")
-        case .idol: T("アイドル", "아이돌", "偶像")
-        case .detective: T("名探偵", "명탐정", "名偵探")
-        case .pilot: T("パイロット", "파일럿", "機長")
-        case .winter: T("冬のコート", "겨울 코트", "冬季大衣")
-        case .beach: T("夏のビーチ", "여름 해변", "夏日海灘")
-        case .party: T("パーティー", "파티", "派對")
-        case .starry: T("星空の旅人", "별하늘 여행자", "星空旅人")
-        case .legend: T("ワーディアの伝説", "워디아의 전설", "沃迪亞的傳說")
+        case .happi: T("まつりの はっぴ", "축제 핫피", "祭典法被")
+        case .snow: T("ゆきの コート", "눈 코트", "雪地外套")
+        case .ninja: T("にんじゃ", "닌자", "忍者")
+        case .samurai: T("さむらい", "사무라이", "武士")
+        case .school: T("がくらん", "가쿠란", "立領學生服")
+        case .aloha: T("かりゆし", "가리유시", "嘉利吉衫")
+        case .chef: T("すしやさん", "초밥 장인", "壽司師傅")
+        case .hakama: T("はかま", "하카마", "袴")
+        case .kitsune: T("きつね", "여우", "狐狸")
+        case .pajama: T("パジャマ", "잠옷", "睡衣")
         }
     }
-    private var kidRoyal: String { T("王子さま・お姫さま", "왕자님·공주님", "王子・公主") }
+
+    /// the chapter whose boss gives this costume
+    private var chapter: Int? { [Outfit.yukata: 1, .happi: 2, .snow: 3, .ninja: 4, .samurai: 5, .school: 6, .aloha: 7][self] }
 
     /// how to get it (shown while locked)
     var condition: String {
+        if let c = chapter {
+            let n = KJC1.chapterNames[c]?.ja ?? ""
+            return T("\(n)を|クリア", "\(n) 클리어", "通關\(n)")
+        }
         switch self {
-        case .normal: ""
-        case .uniform: T("Lv1を|クリア", "Lv1 클리어", "通關Lv1")
-        case .street: T("Lv2を|クリア", "Lv2 클리어", "通關Lv2")
-        case .garden: T("Lv5を|クリア", "Lv5 클리어", "通關Lv5")
-        case .lab: T("Lv6を|クリア", "Lv6 클리어", "通關Lv6")
-        case .pajama: T("おべんきょうを|3日する", "공부 3일 하기", "學習3天")
-        case .sports: T("Lv3を|クリア", "Lv3 클리어", "通關Lv3")
-        case .suit: T("Lv4を|クリア", "Lv4 클리어", "通關Lv4")
-        case .hero: T("卒業を|クリア", "졸업 클리어", "通關畢業")
-        case .yukata: T("プレミアム|限定", "프리미엄 한정", "高級版限定")
-        case .egg: T("ことばのたまごを|10語|育てる", "단어 10개 익히기", "培育10個單字")
-        case .picnic: T("ことばのたまごを|50語|育てる", "단어 50개 익히기", "培育50個單字")
-        case .cafe: T("ことばのたまごを|200語|育てる", "단어 200개 익히기", "培育200個單字")
-        case .gown: T("ことばのたまごを|500語|育てる", "단어 500개 익히기", "培育500個單字")
-        case .royal: T("ことばのたまごを|1000語|育てる", "단어 1000개 익히기", "培育1000個單字")
-        case .dj: T("リスニングで|100問|正解", "리스닝 100문제 정답", "聽力答對100題")
-        case .idol: T("スピーキングで|100問|正解", "스피킹 100문제 정답", "口說答對100題")
-        case .detective: T("書き取りで|100問|正解", "받아쓰기 100문제 정답", "聽寫答對100題")
-        case .pilot: T("TOEIC模試で|500点|以上", "TOEIC 모의고사 500점 이상", "TOEIC模擬考500分以上")
-        case .winter: T("べんきょうを|7日|連続", "공부 7일 연속", "連續學習7天")
-        case .beach: T("べんきょうを|30日|連続", "공부 30일 연속", "連續學習30天")
-        case .party: T("べんきょうを|100日|連続", "공부 100일 연속", "連續學習100天")
-        case .starry: T("ぜんぶの|ステージで|★3", "모든 스테이지 ★3", "所有關卡★3")
-        case .legend: T("ほかの|衣装を|ぜんぶ|集める", "다른 의상 모두 모으기", "收集其他所有服裝")
+        case .chef: return T("トレーニングで|300問|正解", "트레이닝 300문제 정답", "訓練答對300題")
+        case .hakama: return T("JLPT もしで|80点|以上", "JLPT 모의고사 80점 이상", "JLPT模擬考80分以上")
+        case .kitsune: return T("ぜんぶの|ステージを|クリア", "모든 스테이지 클리어", "通關所有關卡")
+        case .pajama: return T("トレーニングで|50問|正解", "트레이닝 50문제 정답", "訓練答對50題")
+        default: return ""
+        }
+    }
+
+    func unlocked(_ app: AppState) -> Bool {
+        if app.dev.unlocks { return true }
+        if self == .normal { return true }
+        if let c = chapter { return KJC1.stages(in: c).last.map { KJC1.stars($0.id) > 0 } ?? false }
+        switch self {
+        case .chef: return KJTrainMode.totalCorrect >= 300
+        case .hakama: return KJTrainMode.mock.best >= 80
+        case .kitsune: return KJC1.stages.allSatisfy { KJC1.stars($0.id) > 0 }
+        case .pajama: return KJTrainMode.totalCorrect >= 50
+        default: return false
         }
     }
 
@@ -80,46 +67,6 @@ enum Outfit: String, CaseIterable, Identifiable {
         let now = app.study.streak, saved = UserDefaults.standard.integer(forKey: "study.bestStreak")
         if now > saved { UserDefaults.standard.set(now, forKey: "study.bestStreak") }
         return max(now, saved)
-    }
-
-    /// three stars on every stage of every area (any difficulty)
-    static func allThreeStars(_ app: AppState) -> Bool {
-        Area.allCases.allSatisfy { a in
-            (1...a.stageCount).allSatisfy { i in
-                Difficulty.allCases.contains { (app.progress.results[ProgressStore.key(StageRef(area: a, index: i, difficulty: $0))]?.stars ?? 0) >= 3 }
-            }
-        }
-    }
-
-    func unlocked(_ app: AppState) -> Bool {
-        if app.dev.unlocks { return true }
-        func cleared(_ a: Area) -> Bool { app.progress.clearedStages(in: a) >= a.stageCount }
-        switch self {
-        case .normal: return true
-        case .uniform: return cleared(.lv1)
-        case .street: return cleared(.lv2)
-        case .garden: return cleared(.lv5)
-        case .lab: return cleared(.lv6)
-        case .pajama: return app.study.days.filter { $0.value > 0 }.count >= 3
-        case .sports: return cleared(.lv3)
-        case .suit: return cleared(.lv4)
-        case .hero: return cleared(.graduation)
-        case .yukata: return app.isPremium
-        case .egg, .picnic, .cafe, .gown, .royal:
-            let need = [Outfit.egg: 1, .picnic: 2, .cafe: 3, .gown: 4, .royal: 5][self] ?? 9
-            return VocabPet.stage(app.vocab.masteredCount) >= need
-        case .dj: return (app.study.skills["listening"]?[0] ?? 0) >= 100
-        case .idol: return (app.study.skills["speaking"]?[0] ?? 0) >= 100
-        case .detective: return (app.study.skills["writing"]?[0] ?? 0) >= 100
-        case .pilot: return (app.study.best["toeicMock"] ?? 0) >= 500
-        case .winter: return Outfit.bestStreak(app) >= 7
-        case .beach: return Outfit.bestStreak(app) >= 30
-        case .party: return Outfit.bestStreak(app) >= 100
-        case .starry: return Outfit.allThreeStars(app)
-        case .legend:
-            // every other costume except the premium-only one
-            return Outfit.allCases.allSatisfy { $0 == .legend || $0 == .yukata || $0.unlocked(app) }
-        }
     }
 
     static func wearing(_ kid: String, _ app: AppState) -> Outfit {
@@ -142,7 +89,7 @@ enum Outfit: String, CaseIterable, Identifiable {
 
 struct ClosetView: View {
     @EnvironmentObject var app: AppState
-    @State private var kid = "ken"
+    @State private var kid = "sora"
     @State private var hop = 0
 
     var body: some View {
@@ -171,9 +118,8 @@ struct ClosetView: View {
     /// the two kids (and Nyan) in what they wear now
     private var stage: some View {
         HStack(alignment: .bottom, spacing: 0) {
-            kidImage("ken", height: 250.s)
-            Image("nyan").resizable().scaledToFit().frame(height: 108.s).padding(.horizontal, -6)
-            kidImage("rin", height: 202.s)   // top of her head at Ken's eye level
+            kidImage("sora", height: 250.s)
+            kidImage("nyan", height: 170.s)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8.s)
@@ -194,10 +140,10 @@ struct ClosetView: View {
         HStack(spacing: 10.s) {
             ForEach(Outfit.kids, id: \.self) { k in
                 Button { AudioManager.shared.se(.tap); kid = k } label: {
-                    Text(Cast(k).name).font(.en(18.s))
+                    Text(k == "sora" ? "ソラ" : "ニャン").font(.custom(Fonts.rounded, size: 18.s))
                         .foregroundStyle(kid == k ? Color.white : Color.ink)
                         .frame(maxWidth: .infinity, minHeight: 40.s)
-                        .background(Capsule().fill(kid == k ? (k == "ken" ? Color.mintDeep : Color.popDeep) : Color.white)
+                        .background(Capsule().fill(kid == k ? (k == "sora" ? Color.mintDeep : Color.popDeep) : Color.white)
                             .overlay(Capsule().stroke(Color.ink, lineWidth: 2.5)))
                 }
                 .buttonStyle(.plain)
@@ -218,7 +164,6 @@ struct ClosetView: View {
         return Button {
             guard open else {
                 AudioManager.shared.se(.tap)
-                if o == .yukata && !app.isPremium { app.sheet = .shop }
                 return
             }
             AudioManager.shared.se(.decide)
