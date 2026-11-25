@@ -31,6 +31,8 @@ final class AudioManager {
         case mgSlap = "se_mg_slap", mgSplash = "se_mg_splash", mgReel = "se_mg_reel", mgBrush = "se_mg_brush", mgStamp = "se_mg_stamp"
         case mgCount = "se_mg_count", mgGo = "se_mg_go", mgWhoosh = "se_mg_whoosh", mgBloop = "se_mg_bloop"
         case mgPokon = "se_mg_pokon", mgClink = "se_mg_clink", mgSlash = "se_mg_slash", mgPoof = "se_mg_poof"
+        case mgDon = "se_mg_don", mgKa = "se_mg_ka", mgHorn = "se_mg_horn", mgSizzle = "se_mg_sizzle"
+        case mgCrack = "se_mg_crack", mgFlip = "se_mg_flip", mgArrow = "se_mg_arrow", mgGallop = "se_mg_gallop"
 
         var isNew: Bool { !rawValue.hasPrefix("se_") }
         static var newSet: [SE] { allCases.filter(\.isNew) }

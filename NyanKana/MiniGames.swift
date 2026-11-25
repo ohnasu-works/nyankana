@@ -8,6 +8,7 @@ import Combine
 
 enum MGKind: String, CaseIterable {
     case karuta, tsuri, nazori, chochin, sushi, ninja
+    case dash, taiko, train, shodo, tsumiki, daruma, kingyo, mekuri, takoyaki, yuki, meiro, yabusame, kawara
 
     var icon: String {
         switch self {
@@ -17,6 +18,19 @@ enum MGKind: String, CaseIterable {
         case .chochin: "🏮"
         case .sushi: "🍣"
         case .ninja: "🥷"
+        case .dash: "🏃"
+        case .taiko: "🥁"
+        case .train: "🚄"
+        case .shodo: "✍️"
+        case .tsumiki: "🧱"
+        case .daruma: "🎎"
+        case .kingyo: "🐠"
+        case .mekuri: "🃏"
+        case .takoyaki: "🐙"
+        case .yuki: "⛄"
+        case .meiro: "🧭"
+        case .yabusame: "🏹"
+        case .kawara: "💥"
         }
     }
 
@@ -29,6 +43,19 @@ enum MGKind: String, CaseIterable {
         case .chochin: "ちょうちん たたき"
         case .sushi: "かいてん ずし"
         case .ninja: "しゅりけん にんじゃ"
+        case .dash: "ニャン ダッシュ"
+        case .taiko: "たいこ リズム"
+        case .train: "しんかんせん レース"
+        case .shodo: "しょどう チャレンジ"
+        case .tsumiki: "もじ つみき"
+        case .daruma: "だるま おとし"
+        case .kingyo: "きんぎょ すくい"
+        case .mekuri: "めくり カード"
+        case .takoyaki: "たこやき やたい"
+        case .yuki: "ゆきがっせん"
+        case .meiro: "もじ めいろ"
+        case .yabusame: "やぶさめ"
+        case .kawara: "かわら わり"
         }
     }
     var sub: String {
@@ -39,6 +66,19 @@ enum MGKind: String, CaseIterable {
         case .chochin: KJ.t("Lantern Whack", "打燈籠", "초롱 두더지")
         case .sushi: KJ.t("Sushi Train", "迴轉壽司", "회전 초밥")
         case .ninja: KJ.t("Shuriken Ninja", "手裏劍忍者", "수리검 닌자")
+        case .dash: KJ.t("Nyan Dash", "喵喵衝刺", "냥 대시")
+        case .taiko: KJ.t("Taiko Rhythm", "太鼓節奏", "북 리듬")
+        case .train: KJ.t("Bullet Train Race", "新幹線大賽", "신칸센 레이스")
+        case .shodo: KJ.t("Calligraphy Challenge", "書法挑戰", "서예 챌린지")
+        case .tsumiki: KJ.t("Letter Blocks", "文字積木", "글자 블록")
+        case .daruma: KJ.t("Daruma Drop", "不倒翁敲敲樂", "다루마 떨어뜨리기")
+        case .kingyo: KJ.t("Goldfish Scooping", "撈金魚", "금붕어 건지기")
+        case .mekuri: KJ.t("Memory Cards", "翻牌配對", "카드 뒤집기")
+        case .takoyaki: KJ.t("Takoyaki Stand", "章魚燒攤", "타코야키 포장마차")
+        case .yuki: KJ.t("Snowball Fight", "打雪仗", "눈싸움")
+        case .meiro: KJ.t("Letter Maze", "文字迷宮", "글자 미로")
+        case .yabusame: KJ.t("Horseback Archery", "流鏑馬", "야부사메")
+        case .kawara: KJ.t("Tile Breaker", "破瓦片", "기와 깨기")
         }
     }
     var howTo: String {
@@ -49,6 +89,19 @@ enum MGKind: String, CaseIterable {
         case .chochin: KJ.both("Whack only the lantern ghosts with the letter!", "只打帶著那個假名的燈籠妖怪！", "그 글자를 가진 초롱 요괴만 때려요!")
         case .sushi: KJ.both("Grab the plate the customer ordered!", "拿起客人點的那一盤！", "손님이 주문한 접시를 잡아요!")
         case .ninja: KJ.both("Swipe to slice the target with the letter!", "滑動手指，劈開那個假名的靶！", "밀어서 그 글자의 과녁을 베어요!")
+        case .dash: KJ.both("Run through the gate with the letter! Tap a lane to move.", "從有那個假名的鳥居穿過去！點跑道移動。", "그 글자의 도리이를 지나가요! 길을 눌러 이동해요.")
+        case .taiko: KJ.both("Hit the drum when the note with the letter reaches the circle!", "有那個假名的音符到圓圈時，敲鼓！", "그 글자의 음표가 원에 오면 북을 쳐요!")
+        case .train: KJ.both("Answer fast to speed up your train. Beat the rival to Osaka!", "快速回答讓列車加速，比對手先到大阪！", "빨리 대답해서 열차를 가속! 라이벌보다 먼저 오사카로!")
+        case .shodo: KJ.both("Listen and write the letter from memory, then tap OK.", "聽發音，憑記憶寫出假名，再按 OK。", "소리를 듣고 기억해서 글자를 쓴 뒤 OK를 눌러요.")
+        case .tsumiki: KJ.both("Tap the blocks with the letter before they pile up to the top!", "在積木堆到頂之前，點掉有那個假名的積木！", "블록이 꼭대기까지 쌓이기 전에 그 글자의 블록을 눌러요!")
+        case .daruma: KJ.both("Knock out the block with the letter. Don't topple the daruma!", "敲出有那個假名的木塊，別讓不倒翁倒下！", "그 글자의 블록을 쳐내요. 다루마를 쓰러뜨리지 마요!")
+        case .kingyo: KJ.both("Scoop the goldfish with the letter. Wrong ones tear your paper scoop!", "撈起有那個假名的金魚。撈錯紙網會破！", "그 글자의 금붕어를 건져요. 틀리면 뜰채가 찢어져요!")
+        case .mekuri: KJ.both("Flip two cards and match the letter with its sound!", "翻兩張牌，把假名和讀音配成一對！", "카드 두 장을 뒤집어 글자와 소리를 짝지어요!")
+        case .takoyaki: KJ.both("Serve the ordered takoyaki when it turns golden. Not raw, not burnt!", "客人點的章魚燒變金黃時出餐！別生也別焦！", "주문한 타코야키가 노릇해지면 내요. 덜 익거나 타면 안 돼요!")
+        case .yuki: KJ.both("Throw snowballs only at the kids holding the letter!", "只對舉著那個假名的孩子丟雪球！", "그 글자를 든 아이에게만 눈덩이를 던져요!")
+        case .meiro: KJ.both("Hop to the next letter of the word, square by square!", "照著詞的順序，一格一格跳到下一個假名！", "단어 순서대로 한 칸씩 다음 글자로 뛰어요!")
+        case .yabusame: KJ.both("Shoot only the targets with the letter as you gallop past!", "策馬奔馳，只射有那個假名的靶！", "말을 타고 달리며 그 글자의 과녁만 쏴요!")
+        case .kawara: KJ.both("Bounce the ball and break only the tiles with the letter!", "反彈球，只打破有那個假名的瓦片！", "공을 튕겨서 그 글자의 기와만 깨요!")
         }
     }
     var bg: String {
@@ -59,6 +112,19 @@ enum MGKind: String, CaseIterable {
         case .chochin: "bg_mg_chochin"
         case .sushi: "bg_mg_sushi"
         case .ninja: "bg_mg_ninja"
+        case .dash: "bg_mg_dash"
+        case .taiko: "bg_mg_chochin"
+        case .train: "bg_mg_shinkansen"
+        case .shodo: "bg_mg_dojo"
+        case .tsumiki: "bg_mg_karuta"
+        case .daruma: "bg_mg_daruma"
+        case .kingyo: "bg_mg_kingyo"
+        case .mekuri: "bg_mg_karuta"
+        case .takoyaki: "bg_mg_takoyaki"
+        case .yuki: "bg_mg_yuki"
+        case .meiro: "旅01_日光東照宮"
+        case .yabusame: "bg_mg_yabusame"
+        case .kawara: "bg_mg_dojo"
         }
     }
     var hero: String {
@@ -69,6 +135,19 @@ enum MGKind: String, CaseIterable {
         case .chochin: "mg_chochin"
         case .sushi: "mg_sushi"
         case .ninja: "nk_nyan_ninja"
+        case .dash: "nk_nyan_hero"
+        case .taiko: "mg_taiko"
+        case .train: "mg_train"
+        case .shodo: "nk_nyan_think"
+        case .tsumiki: "nk_nyan_think"
+        case .daruma: "mg_daruma"
+        case .kingyo: "mg_kingyo"
+        case .mekuri: "nk_nyan_tip"
+        case .takoyaki: "mg_takoyaki"
+        case .yuki: "mg_yukinko"
+        case .meiro: "nk_nyan_think"
+        case .yabusame: "nk_nyan_yabusame"
+        case .kawara: "nk_nyan_angry"
         }
     }
     var bgm: String { "mg_" + rawValue }
@@ -81,6 +160,19 @@ enum MGKind: String, CaseIterable {
         case .chochin: 45
         case .sushi: 50
         case .ninja: 45
+        case .dash: 45
+        case .taiko: 45
+        case .train: 60
+        case .shodo: nil
+        case .tsumiki: 50
+        case .daruma: 45
+        case .kingyo: 45
+        case .mekuri: 60
+        case .takoyaki: 50
+        case .yuki: 45
+        case .meiro: 60
+        case .yabusame: 45
+        case .kawara: 60
         }
     }
     /// hits needed for an S
@@ -92,6 +184,19 @@ enum MGKind: String, CaseIterable {
         case .chochin: 15
         case .sushi: 12
         case .ninja: 14
+        case .dash: 12
+        case .taiko: 15
+        case .train: 15
+        case .shodo: 6
+        case .tsumiki: 15
+        case .daruma: 12
+        case .kingyo: 12
+        case .mekuri: 8
+        case .takoyaki: 12
+        case .yuki: 14
+        case .meiro: 20
+        case .yabusame: 12
+        case .kawara: 12
         }
     }
 }
@@ -234,6 +339,19 @@ struct MiniGameView: View {
                     case .chochin: MGChochin(ctx: ctx, letters: letters)
                     case .sushi: MGSushi(ctx: ctx, letters: letters)
                     case .ninja: MGNinja(ctx: ctx, letters: letters)
+                    case .dash: MGDash(ctx: ctx, letters: letters)
+                    case .taiko: MGTaiko(ctx: ctx, letters: letters)
+                    case .train: MGTrain(ctx: ctx, letters: letters)
+                    case .shodo: MGNazori(ctx: ctx, letters: letters, guide: false)
+                    case .tsumiki: MGTsumiki(ctx: ctx, letters: letters)
+                    case .daruma: MGDaruma(ctx: ctx, letters: letters)
+                    case .kingyo: MGKingyo(ctx: ctx, letters: letters)
+                    case .mekuri: MGMekuri(ctx: ctx, letters: letters)
+                    case .takoyaki: MGTakoyaki(ctx: ctx, letters: letters)
+                    case .yuki: MGYuki(ctx: ctx, letters: letters)
+                    case .meiro: MGMeiro(ctx: ctx, letters: letters)
+                    case .yabusame: MGYabusame(ctx: ctx, letters: letters)
+                    case .kawara: MGKawara(ctx: ctx, letters: letters)
                     }
                 }
                 .opacity(phase == .title ? 0 : 1)
@@ -1068,6 +1186,9 @@ enum MGGlyph {
 struct MGNazori: View {
     @ObservedObject var ctx: MGCtx
     let letters: [String]
+    /// false: しょどうチャレンジ — write from memory (the letter shows only after OK)
+    var guide = true
+    @State private var reveal = false
 
     @State private var order: [String] = []
     @State private var idx = 0
@@ -1089,7 +1210,7 @@ struct MGNazori: View {
                 HStack(spacing: 12.s) {
                     Image(stamp != nil ? "nk_nyan_joy" : "nk_nyan_proud").resizable().scaledToFit().frame(height: 72.s)
                     VStack(spacing: 2.s) {
-                        Text(kana).font(.custom(Fonts.rounded, size: 34.s)).foregroundStyle(Color.ink)
+                        Text(guide || reveal || stamp != nil ? kana : "？").font(.custom(Fonts.rounded, size: 34.s)).foregroundStyle(Color.ink)
                         Text(KJData.romaji(kana)).font(.display(16.s)).foregroundStyle(Color.ink.opacity(0.7))
                     }
                     .frame(width: 80.s, height: 80.s)
@@ -1130,7 +1251,7 @@ struct MGNazori: View {
             }
             .stroke(Color(hex: 0xE05050).opacity(0.35), style: StrokeStyle(lineWidth: 1.5, dash: [6, 6]))
             Image(uiImage: glyph.image).resizable().frame(width: side, height: side)
-                .blendMode(.multiply).opacity(0.22)
+                .blendMode(.multiply).opacity(guide || reveal || stamp != nil ? 0.22 : 0)
             Canvas { c, _ in
                 for s in strokes {
                     guard let f = s.first else { continue }
@@ -1181,14 +1302,16 @@ struct MGNazori: View {
     }
 
     private func load() {
-        strokes = []; stamp = nil; tries = 0; busy = false
+        strokes = []; stamp = nil; tries = 0; busy = false; reveal = false
         glyph = MGGlyph.make(kana)
     }
 
     private func judge() {
         guard ctx.running, !busy, !strokes.isEmpty else { return }
         let r = MGGlyph.judge(strokes, mask: glyph.mask)
-        if r.cover >= 0.55 && r.inside >= 0.7 {
+        // writing from memory on blank paper is harder to place exactly: a little kinder
+        let (needCover, needInside) = guide ? (0.55, 0.7) : (0.42, 0.58)
+        if r.cover >= needCover && r.inside >= needInside {
             busy = true
             let great = r.cover >= 0.75 && r.inside >= 0.85
             AudioManager.shared.se(.mgStamp)
@@ -1200,7 +1323,13 @@ struct MGNazori: View {
             tries += 1
             ctx.bad(at: CGPoint(x: 0.5, y: 0.5), shakeIt: false)
             ctx.pop(KJ.t("Once more!", "再一次！", "한 번 더!"), at: CGPoint(x: 0.5, y: 0.42), color: .sky)
-            strokes = []
+            if !guide {
+                // show the letter for a moment, then try again
+                reveal = true
+                later(1.3) { reveal = false; strokes = [] }
+            } else {
+                strokes = []
+            }
             if tries >= 3 {
                 // three misses: move on (no points) so nobody gets stuck
                 busy = true
