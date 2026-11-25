@@ -45,20 +45,44 @@ enum KJC1 {
               bg: "旅01_浅草_雷門", kind: .lesson, newKana: A, known: A, words: ["あお", "いえ", "うえ"]),
         Stage(id: 101, ja: "あさくさ・あそび", en: "Asakusa · Game", zh: "淺草・遊戲", ko: "아사쿠사・게임",
               bg: "旅01_浅草_雷門", kind: .mini, known: A, words: ["あお", "いえ", "うえ"], mini: .karuta, focus: A),
+        Stage(id: 201, ja: "あさくさ・ことば", en: "Asakusa · Words", zh: "淺草・詞語", ko: "아사쿠사・단어",
+              bg: "旅01_浅草_雷門", kind: .lesson, known: A, words: ["あお", "いえ", "うえ", "あい"]),
+        Stage(id: 301, ja: "あさくさ・あそび2", en: "Asakusa · Game 2", zh: "淺草・遊戲2", ko: "아사쿠사・게임2",
+              bg: "旅01_浅草_雷門", kind: .mini, known: A, words: ["あお", "いえ", "うえ"], mini: .nazori, focus: A),
+        Stage(id: 401, ja: "あさくさ・しゅぎょう", en: "Asakusa · Training", zh: "淺草・修行", ko: "아사쿠사・수행",
+              bg: "旅01_浅草_雷門", kind: .battle, known: A, words: ["あお", "いえ", "うえ", "あい"], goal: 20),
         Stage(id: 2, ja: "あさくさ・なかみせ", en: "Asakusa · Nakamise", zh: "淺草・仲見世", ko: "아사쿠사・나카미세",
               bg: "旅01_浅草_仲見世通り", kind: .lesson, newKana: K, known: A + K, words: ["かお", "あかい", "こえ", "あお", "いえ"]),
         Stage(id: 102, ja: "なかみせ・あそび", en: "Nakamise · Game", zh: "仲見世・遊戲", ko: "나카미세・게임",
               bg: "旅01_浅草_仲見世通り", kind: .mini, known: A + K, words: ["かお", "あかい", "こえ"], mini: .tsuri, focus: K),
+        Stage(id: 202, ja: "なかみせ・ことば", en: "Nakamise · Words", zh: "仲見世・詞語", ko: "나카미세・단어",
+              bg: "旅01_浅草_仲見世通り", kind: .lesson, known: A + K, words: ["かお", "あかい", "こえ", "いけ", "おか", "かき"]),
+        Stage(id: 302, ja: "なかみせ・あそび2", en: "Nakamise · Game 2", zh: "仲見世・遊戲2", ko: "나카미세・게임2",
+              bg: "旅01_浅草_仲見世通り", kind: .mini, known: A + K, words: ["かお", "あかい", "こえ"], mini: .taiko, focus: K),
+        Stage(id: 402, ja: "なかみせ・しゅぎょう", en: "Nakamise · Training", zh: "仲見世・修行", ko: "나카미세・수행",
+              bg: "旅01_浅草_仲見世通り", kind: .battle, known: A + K, words: ["かお", "あかい", "こえ", "いけ", "おか", "かき"], goal: 20),
         Stage(id: 3, ja: "しぶや", en: "Shibuya", zh: "澀谷", ko: "시부야",
               bg: "bg_c1_shibuya", kind: .battle, known: A + K, words: ["かお", "あかい", "こえ", "あお", "いえ", "うえ"], goal: 25),
         Stage(id: 4, ja: "とうきょうタワー", en: "Tokyo Tower", zh: "東京鐵塔", ko: "도쿄 타워",
               bg: "旅01_東京タワー_夜", kind: .lesson, newKana: S, known: A + K + S, words: ["すし", "かさ", "あし", "かお", "こえ"]),
         Stage(id: 104, ja: "タワー・あそび", en: "Tower · Game", zh: "鐵塔・遊戲", ko: "타워・게임",
               bg: "旅01_東京タワー_夜", kind: .mini, known: A + K + S, words: ["すし", "かさ", "あし"], mini: .chochin, focus: S),
+        Stage(id: 203, ja: "とうきょうタワー・ことば", en: "Tokyo Tower · Words", zh: "東京鐵塔・詞語", ko: "도쿄 타워・단어",
+              bg: "旅01_東京タワー_夜", kind: .lesson, known: A + K + S, words: ["すし", "かさ", "あし", "いす", "うし", "しお"]),
+        Stage(id: 303, ja: "とうきょうタワー・あそび2", en: "Tokyo Tower · Game 2", zh: "東京鐵塔・遊戲2", ko: "도쿄 타워・게임2",
+              bg: "旅01_東京タワー_夜", kind: .mini, known: A + K + S, words: ["すし", "かさ", "あし"], mini: .daruma, focus: S),
+        Stage(id: 403, ja: "とうきょうタワー・しゅぎょう", en: "Tokyo Tower · Training", zh: "東京鐵塔・修行", ko: "도쿄 타워・수행",
+              bg: "旅01_東京タワー_夜", kind: .battle, known: A + K + S, words: ["すし", "かさ", "あし", "いす", "うし", "しお"], goal: 20),
         Stage(id: 5, ja: "あきはばら", en: "Akihabara", zh: "秋葉原", ko: "아키하바라",
               bg: "bg_c1_akiba", kind: .lesson, newKana: T, known: A + K + S + T, words: ["たこ", "て", "つくえ", "すし", "かさ"]),
         Stage(id: 105, ja: "あきはばら・あそび", en: "Akihabara · Game", zh: "秋葉原・遊戲", ko: "아키하바라・게임",
               bg: "bg_c1_akiba", kind: .mini, known: A + K + S + T, words: ["たこ", "て", "つくえ"], mini: .sushi, focus: T),
+        Stage(id: 204, ja: "あきはばら・ことば", en: "Akihabara · Words", zh: "秋葉原・詞語", ko: "아키하바라・단어",
+              bg: "bg_c1_akiba", kind: .lesson, known: A + K + S + T, words: ["たこ", "つくえ", "くつ", "うた", "とけい", "そと"]),
+        Stage(id: 304, ja: "あきはばら・あそび2", en: "Akihabara · Game 2", zh: "秋葉原・遊戲2", ko: "아키하바라・게임2",
+              bg: "bg_c1_akiba", kind: .mini, known: A + K + S + T, words: ["たこ", "つくえ", "くつ"], mini: .yuki, focus: T),
+        Stage(id: 404, ja: "あきはばら・しゅぎょう", en: "Akihabara · Training", zh: "秋葉原・修行", ko: "아키하바라・수행",
+              bg: "bg_c1_akiba", kind: .battle, known: A + K + S + T, words: ["たこ", "つくえ", "くつ", "うた", "とけい", "そと"], goal: 20),
         Stage(id: 6, ja: "あきはばら・あめ", en: "Akihabara · Rain", zh: "秋葉原・雨", ko: "아키하바라・비",
               bg: "bg_c1_akiba_rain", kind: .mid, known: A + K + S + T, words: ["かさ", "たこ", "つくえ", "あし", "すし", "かお"], goal: 12),
         Stage(id: 7, ja: "よこはま・ちゅうかがい", en: "Yokohama Chinatown", zh: "橫濱中華街", ko: "요코하마 차이나타운",
@@ -67,6 +91,12 @@ enum KJC1 {
               bg: "bg_c1_daibutsu", kind: .lesson, newKana: N, known: all, words: ["ねこ", "いぬ", "さかな", "たこ", "かさ"]),
         Stage(id: 108, ja: "かまくら・あそび", en: "Kamakura · Game", zh: "鎌倉・遊戲", ko: "가마쿠라・게임",
               bg: "bg_c1_daibutsu", kind: .mini, known: all, words: ["ねこ", "いぬ", "さかな"], mini: .kingyo, focus: N),
+        Stage(id: 205, ja: "かまくら・ことば", en: "Kamakura · Words", zh: "鎌倉・詞語", ko: "가마쿠라・단어",
+              bg: "bg_c1_daibutsu", kind: .lesson, known: all, words: ["ねこ", "いぬ", "さかな", "かに", "なつ", "にく"]),
+        Stage(id: 305, ja: "かまくら・あそび2", en: "Kamakura · Game 2", zh: "鎌倉・遊戲2", ko: "가마쿠라・게임2",
+              bg: "bg_c1_daibutsu", kind: .mini, known: all, words: ["ねこ", "いぬ", "さかな"], mini: .dash, focus: N),
+        Stage(id: 405, ja: "かまくら・しゅぎょう", en: "Kamakura · Training", zh: "鎌倉・修行", ko: "가마쿠라・수행",
+              bg: "bg_c1_daibutsu", kind: .battle, known: all, words: ["ねこ", "いぬ", "さかな", "かに", "なつ", "にく"], goal: 20),
         Stage(id: 9, ja: "えのしま", en: "Enoshima", zh: "江之島", ko: "에노시마",
               bg: "bg_c1_enoshima", kind: .battle, known: all, words: ["さかな", "ねこ", "いぬ", "すし", "たこ", "て"], goal: 25, tonbi: true),
         Stage(id: 103, ja: "えのしま・あそび", en: "Enoshima · Game", zh: "江之島・遊戲", ko: "에노시마・게임",
@@ -300,6 +330,10 @@ struct KJMapView: View {
                 if isBoss {
                     Text("BOSS").font(.display(11.s)).foregroundStyle(.white)
                         .padding(.horizontal, 7).background(Capsule().fill(Color.popDeep).overlay(Capsule().stroke(Color.ink, lineWidth: 2)))
+                } else if s.kind == .lesson && s.newKana.isEmpty {
+                    // ことばマス
+                    Text("ことば").font(.custom(Fonts.rounded, size: 11.s)).foregroundStyle(Color.ink)
+                        .padding(.horizontal, 6).background(Capsule().fill(Color(hex: 0xFFE27A)).overlay(Capsule().stroke(Color.ink, lineWidth: 1.5)))
                 } else if s.kind == .lesson, let a = s.newKana.first, let b = s.newKana.last {
                     // what the lesson teaches
                     Text(a == b ? a : "\(a)〜\(b)").font(.custom(Fonts.rounded, size: 11.s)).foregroundStyle(Color.ink)

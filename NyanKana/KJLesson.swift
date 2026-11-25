@@ -31,9 +31,11 @@ struct KJLessonView: View {
 
     enum Q: Equatable {
         case listen(String), read(String), trace(String), word(String), review(String)
+        /// ことばマス: hear a word → pick how it is written / see a word → pick what it means
+        case hearWord(String), meaning(String)
         var key: String {
             switch self {
-            case .listen(let k), .read(let k), .trace(let k), .word(let k), .review(let k): k
+            case .listen(let k), .read(let k), .trace(let k), .word(let k), .review(let k), .hearWord(let k), .meaning(let k): k
             }
         }
     }
@@ -126,6 +128,8 @@ struct KJLessonView: View {
         case .read: return ("よんで えらぼう", KJ.t("How do you read it?", "怎麼唸？", "어떻게 읽어요?"))
         case .trace: return ("なぞって かこう", KJ.t("Trace it with your finger", "用手指描寫", "손가락으로 따라 쓰기"))
         case .word: return ("ことばを つくろう", KJ.t("Make the word", "拼出這個詞", "단어 만들기"))
+        case .hearWord: return ("ことばを きこう", KJ.t("Listen: which word is it?", "聽聽看，是哪個詞？", "듣고 어떤 단어인지 골라요"))
+        case .meaning: return ("いみは どれ？", KJ.t("What does it mean?", "是什麼意思？", "무슨 뜻이에요?"))
         }
     }
 
@@ -148,7 +152,62 @@ struct KJLessonView: View {
             trace(k)
         case .word(let w):
             word(w)
+        case .hearWord(let w):
+            VStack(spacing: 18.s) {
+                speakerButton(w, big: true)
+                choiceGrid(answer: w, labels: choices)
+            }
+        case .meaning(let w):
+            VStack(spacing: 18.s) {
+                Button { Speaker.shared.say(w) } label: {
+                    Text(w).font(.custom(Fonts.rounded, size: 64.s)).foregroundStyle(Color.ink)
+                        .lineLimit(1).minimumScaleFactor(0.4)
+                        .padding(.horizontal, 20.s)
+                        .frame(minWidth: 190.s, minHeight: 130.s)
+                        .background(RoundedRectangle(cornerRadius: 24.s).fill(Color(hex: 0xFFF6E0)).overlay(RoundedRectangle(cornerRadius: 24.s).stroke(Color.ink, lineWidth: 3)))
+                }
+                .buttonStyle(.plain)
+                meaningGrid(answer: w)
+            }
         }
+    }
+
+    /// the four meanings (picture + words in the learner's language)
+    private func meaningGrid(answer: String) -> some View {
+        LazyVGrid(columns: [GridItem(.flexible(), spacing: 12.s), GridItem(.flexible(), spacing: 12.s)], spacing: 12.s) {
+            ForEach(choices, id: \.self) { c in
+                let info = KJData.word(c)
+                let isRight = showRight && c == answer
+                let isWrong = picked == c && c != answer
+                Button { choose(c, answer: answer) } label: {
+                    VStack(spacing: 2.s) {
+                        Text(info?.emoji ?? "❓").font(.system(size: 34.s))
+                        Text(info?.meaning ?? "").font(.ui(14.s)).foregroundStyle(Color.ink)
+                            .lineLimit(2).minimumScaleFactor(0.6).multilineTextAlignment(.center)
+                    }
+                    .frame(maxWidth: .infinity).frame(height: 96.s)
+                    .background(RoundedRectangle(cornerRadius: 18.s)
+                        .fill(isRight ? Color(hex: 0xD9F7E3) : isWrong ? Color(hex: 0xFFD6D6) : Color.white)
+                        .overlay(RoundedRectangle(cornerRadius: 18.s).stroke(isRight ? Color.mintDeep : Color.ink, lineWidth: isRight ? 4 : 3)))
+                }
+                .buttonStyle(PressStyle(radius: 18.s, depth: 4))
+                .disabled(picked != nil)
+            }
+        }
+    }
+
+    /// three other words for the choices: ones of the same length that the player can read first
+    private func wordDecoys(_ w: String) -> [String] {
+        let have = Set(pool)
+        let readable = KJData.words.map(\.ja).filter { $0 != w && $0.allSatisfy { have.contains(String($0)) || "ゃゅょっー".contains($0) } }
+        var out = (stage.words.filter { $0 != w && KJData.word($0) != nil } + readable.filter { $0.count == w.count } + readable).uniqued()
+        // the same word with one letter swapped looks the most alike
+        let chars = w.map(String.init)
+        if let i = chars.indices.randomElement(), let swap = mgDecoys(chars[i], pool).first(where: { $0 != chars[i] }) {
+            var c = chars; c[i] = swap; out.insert(c.joined(), at: 0)
+        }
+        for x in KJData.words.map(\.ja).shuffled() where out.count < 3 && x != w && !out.contains(x) { out.append(x) }
+        return Array(out.filter { $0 != w }.prefix(3))
     }
 
     private func speakerButton(_ k: String, big: Bool) -> some View {
@@ -293,6 +352,7 @@ struct KJLessonView: View {
     // MARK: flow
 
     private func build() {
+        if stage.newKana.isEmpty { buildWords(); return }
         let new = stage.newKana
         let others = pool.filter { !new.contains($0) }
         var qs: [Q] = []
@@ -306,6 +366,22 @@ struct KJLessonView: View {
         var rev = KJWeak.top(3, in: pool)
         rev += others.shuffled().filter { !rev.contains($0) }
         qs += rev.prefix(4).map { .review($0) }
+        queue = qs
+        total = qs.count
+        i = 0
+        prepare()
+    }
+
+    /// ことばマス: the words of this place, one by one (hear → meaning → make), then the weak ones again
+    private func buildWords() {
+        let ws = stage.words.filter { KJData.word($0) != nil }.uniqued()
+        var qs: [Q] = []
+        qs += ws.shuffled().map { .hearWord($0) }
+        qs += ws.shuffled().map { .meaning($0) }
+        qs += ws.filter { $0.count <= 6 }.shuffled().prefix(3).map { .word($0) }
+        var rev = KJWeak.top(3, in: pool)
+        rev += pool.shuffled().filter { !rev.contains($0) }
+        qs += rev.prefix(3).map { .review($0) }
         queue = qs
         total = qs.count
         i = 0
@@ -327,6 +403,14 @@ struct KJLessonView: View {
         case .trace(let k):
             glyph = MGGlyph.make(k)
             later(0.3) { Speaker.shared.say(k) }
+        case .hearWord(let w):
+            choices = ([w] + wordDecoys(w)).shuffled()
+            later(0.35) { Speaker.shared.say(w) }
+        case .meaning(let w):
+            var d = wordDecoys(w).filter { KJData.word($0) != nil }
+            for x in KJData.words.map(\.ja).shuffled() where d.count < 3 && x != w && !d.contains(x) { d.append(x) }
+            choices = ([w] + d.prefix(3)).shuffled()
+            later(0.35) { Speaker.shared.say(w) }
         case .word(let w):
             var keys = w.map(String.init)
             for k in pool.shuffled() where keys.count < 8 && k.count == 1 && !keys.contains(k) { keys.append(k) }
@@ -384,7 +468,7 @@ struct KJLessonView: View {
             let rate = Double(firstTry) / Double(max(total, 1))
             let stars = rate >= 0.9 ? 3 : rate >= 0.7 ? 2 : 1
             AudioManager.shared.se(.studyClear)
-            finished(stars, firstTry * 100, stage.newKana)
+            finished(stars, firstTry * 100, stage.newKana.isEmpty ? stage.words : stage.newKana)
             return
         }
         withAnimation(.easeInOut(duration: 0.2)) { i += 1 }

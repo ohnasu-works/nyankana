@@ -85,5 +85,40 @@ extension KJC1 {
             KJLine(role: "n", face: "", ja: "かんとうの もじが もどった！", en: "The letters of Kanto are back!", zh: "關東的文字回來了！", ko: "간토의 글자가 돌아왔다!"),
             KJLine(role: "s", face: "sora_smile", ja: "つぎは どこ？", en: "Where next?", zh: "下一站去哪？", ko: "다음은 어디야?"),
             KJLine(role: "y", face: "nk_nyan_proud", ja: "とうほく！", en: "Tohoku!", zh: "東北！", ko: "도호쿠!")]),
+        201: (pre: [
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "「あ」と「い」で「あい」。ことばに なった！", en: "あ and い make あい (love). It's a word!", zh: "「あ」和「い」組成「あい」。變成詞了！", ko: "「あ」와「い」로「あい」. 단어가 됐어!"),
+            KJLine(role: "s", face: "sora_smile", ja: "もじを ならべると ことばに なるんだ。", en: "Put letters in a row and they become words.", zh: "把字排在一起就變成詞了。", ko: "글자를 늘어놓으면 단어가 되는구나.")],
+            post: []),
+        401: (pre: [
+            KJLine(role: "n", face: "", ja: "かみなりもんの ちょうちんの かげに ザコが いた！", en: "Minions were hiding behind the Kaminarimon lantern!", zh: "雷門的燈籠後面躲著小嘍囉！", ko: "가미나리몬 초롱 뒤에 졸개가 있었다!")],
+            post: []),
+        202: (pre: [
+            KJLine(role: "y", face: "nk_nyan_sniff", ja: "「かき」って くだもの？ かい？", en: "Is かき a fruit? Or a shellfish?", zh: "「かき」是水果？還是貝類？", ko: "「かき」는 과일? 조개?"),
+            KJLine(role: "s", face: "sora_think", ja: "どっちも「かき」なんだって。", en: "Apparently both are かき.", zh: "聽說兩個都叫「かき」。", ko: "둘 다「かき」래.")],
+            post: []),
+        402: (pre: [
+            KJLine(role: "s", face: "sora_shock", ja: "なかみせの やねの うえから ザコが！", en: "Minions from the roofs of Nakamise!", zh: "仲見世的屋頂上跑出小嘍囉！", ko: "나카미세 지붕 위에서 졸개가!")],
+            post: []),
+        203: (pre: [
+            KJLine(role: "y", face: "nk_nyan_joy", ja: "「すし」が よめた！ たべたい！", en: "I can read すし! I want some!", zh: "讀得出「すし」了！好想吃！", ko: "「すし」를 읽었어! 먹고 싶어!"),
+            KJLine(role: "s", face: "sora_tsukkomi", ja: "よんだら すぐ たべたく なるね。", en: "You want to eat everything you read.", zh: "一讀到就想吃呢。", ko: "읽자마자 먹고 싶어하네.")],
+            post: []),
+        403: (pre: [
+            KJLine(role: "n", face: "", ja: "タワーの ひかりに ザコが あつまってきた！", en: "Minions gather around the tower lights!", zh: "小嘍囉聚集在鐵塔的燈光下！", ko: "타워 불빛에 졸개가 모여들었다!")],
+            post: []),
+        204: (pre: [
+            KJLine(role: "s", face: "sora_smile", ja: "「とけい」「くつ」…まちの ことばが ふえてきた。", en: "Clock, shoes… more and more town words.", zh: "「時鐘」「鞋子」……街上的詞變多了。", ko: "「시계」「신발」… 거리의 단어가 늘었어."),
+            KJLine(role: "y", face: "nk_nyan_proud", ja: "ソラ、じょうずに なったね！", en: "Sora, you've gotten good!", zh: "空，你變厲害了！", ko: "소라, 잘하게 됐네!")],
+            post: []),
+        404: (pre: [
+            KJLine(role: "y", face: "nk_nyan_angry", ja: "でんきの まちで ザコが あばれてる！", en: "Minions running wild in the electric town!", zh: "小嘍囉在電器街鬧事！", ko: "전자 상가에서 졸개가 날뛰어!")],
+            post: []),
+        205: (pre: [
+            KJLine(role: "y", face: "nk_nyan_gentle", ja: "「ねこ」…ぼくの ことだ。", en: "ねこ… that's me.", zh: "「ねこ」……就是我。", ko: "「ねこ」… 나잖아."),
+            KJLine(role: "s", face: "sora_smile", ja: "「いぬ」も「さかな」も よめるよ。", en: "I can read いぬ and さかな too.", zh: "「いぬ」和「さかな」也讀得出來。", ko: "「いぬ」도「さかな」도 읽을 수 있어.")],
+            post: []),
+        405: (pre: [
+            KJLine(role: "n", face: "", ja: "だいぶつの まえで ザコが まちぶせ！", en: "Minions lie in wait before the Great Buddha!", zh: "小嘍囉在大佛前埋伏！", ko: "대불 앞에서 졸개가 매복!")],
+            post: []),
     ]
 }

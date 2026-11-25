@@ -329,7 +329,247 @@ extension KJData {
         Word(ja: "外", emoji: "🌳", en: "outside", zh: "外面", ko: "밖"),
         Word(ja: "門", emoji: "⛩️", en: "gate", zh: "門", ko: "문"),
         Word(ja: "東", emoji: "🌅", en: "east", zh: "東", ko: "동쪽"),
-        Word(ja: "西", emoji: "🌇", en: "west", zh: "西", ko: "서쪽")
+        Word(ja: "西", emoji: "🌇", en: "west", zh: "西", ko: "서쪽"),
+        Word(ja: "あい", emoji: "❤️", en: "love", zh: "愛", ko: "사랑"),
+        Word(ja: "あき", emoji: "🍁", en: "autumn", zh: "秋天", ko: "가을"),
+        Word(ja: "あさ", emoji: "🌅", en: "morning", zh: "早上", ko: "아침"),
+        Word(ja: "いか", emoji: "🦑", en: "squid", zh: "魷魚", ko: "오징어"),
+        Word(ja: "いけ", emoji: "🏞️", en: "pond", zh: "池塘", ko: "연못"),
+        Word(ja: "いす", emoji: "🪑", en: "chair", zh: "椅子", ko: "의자"),
+        Word(ja: "いと", emoji: "🧵", en: "thread", zh: "線", ko: "실"),
+        Word(ja: "うし", emoji: "🐄", en: "cow", zh: "牛", ko: "소"),
+        Word(ja: "うた", emoji: "🎤", en: "song", zh: "歌", ko: "노래"),
+        Word(ja: "うち", emoji: "🏠", en: "home", zh: "家", ko: "집"),
+        Word(ja: "えき", emoji: "🚉", en: "station", zh: "車站", ko: "역"),
+        Word(ja: "おか", emoji: "⛰️", en: "hill", zh: "山丘", ko: "언덕"),
+        Word(ja: "おけ", emoji: "🪣", en: "tub", zh: "木桶", ko: "통"),
+        Word(ja: "かき", emoji: "🦪", en: "oyster / persimmon", zh: "牡蠣", ko: "굴"),
+        Word(ja: "かた", emoji: "💪", en: "shoulder", zh: "肩膀", ko: "어깨"),
+        Word(ja: "かに", emoji: "🦀", en: "crab", zh: "螃蟹", ko: "게"),
+        Word(ja: "きく", emoji: "👂", en: "to listen", zh: "聽", ko: "듣다"),
+        Word(ja: "くち", emoji: "👄", en: "mouth", zh: "嘴巴", ko: "입"),
+        Word(ja: "くつ", emoji: "👟", en: "shoes", zh: "鞋子", ko: "신발"),
+        Word(ja: "こい", emoji: "🎏", en: "carp", zh: "鯉魚", ko: "잉어"),
+        Word(ja: "さけ", emoji: "🐟", en: "salmon", zh: "鮭魚", ko: "연어"),
+        Word(ja: "しお", emoji: "🧂", en: "salt", zh: "鹽", ko: "소금"),
+        Word(ja: "した", emoji: "👅", en: "tongue / below", zh: "舌頭", ko: "혀"),
+        Word(ja: "すいか", emoji: "🍉", en: "watermelon", zh: "西瓜", ko: "수박"),
+        Word(ja: "せき", emoji: "💺", en: "seat", zh: "座位", ko: "자리"),
+        Word(ja: "そと", emoji: "🌳", en: "outside", zh: "外面", ko: "밖"),
+        Word(ja: "たけ", emoji: "🎋", en: "bamboo", zh: "竹子", ko: "대나무"),
+        Word(ja: "ちかい", emoji: "📍", en: "near", zh: "近的", ko: "가깝다"),
+        Word(ja: "つき", emoji: "🌙", en: "moon", zh: "月亮", ko: "달"),
+        Word(ja: "とけい", emoji: "⏰", en: "clock", zh: "時鐘", ko: "시계"),
+        Word(ja: "なつ", emoji: "🌻", en: "summer", zh: "夏天", ko: "여름"),
+        Word(ja: "なに", emoji: "❓", en: "what", zh: "什麼", ko: "무엇"),
+        Word(ja: "にく", emoji: "🥩", en: "meat", zh: "肉", ko: "고기"),
+        Word(ja: "ぬの", emoji: "🧣", en: "cloth", zh: "布", ko: "천"),
+        Word(ja: "のこす", emoji: "🍽️", en: "to leave (food)", zh: "剩下", ko: "남기다"),
+        Word(ja: "あつい", emoji: "🔥", en: "hot", zh: "熱的", ko: "덥다"),
+        Word(ja: "おおきい", emoji: "🐘", en: "big", zh: "大的", ko: "크다"),
+        Word(ja: "ちいさい", emoji: "🐜", en: "small", zh: "小的", ko: "작다"),
+        Word(ja: "たかい", emoji: "🗼", en: "tall / expensive", zh: "高的", ko: "높다"),
+        Word(ja: "あたたかい", emoji: "☀️", en: "warm", zh: "溫暖的", ko: "따뜻하다"),
+        Word(ja: "おいしい", emoji: "😋", en: "tasty", zh: "好吃的", ko: "맛있다"),
+        Word(ja: "はし", emoji: "🥢", en: "chopsticks", zh: "筷子", ko: "젓가락"),
+        Word(ja: "はこ", emoji: "📦", en: "box", zh: "箱子", ko: "상자"),
+        Word(ja: "はる", emoji: "🌸", en: "spring", zh: "春天", ko: "봄"),
+        Word(ja: "ひる", emoji: "🌞", en: "noon", zh: "中午", ko: "낮"),
+        Word(ja: "ふく", emoji: "👕", en: "clothes", zh: "衣服", ko: "옷"),
+        Word(ja: "ふゆ", emoji: "⛄", en: "winter", zh: "冬天", ko: "겨울"),
+        Word(ja: "へび", emoji: "🐍", en: "snake", zh: "蛇", ko: "뱀"),
+        Word(ja: "ほね", emoji: "🦴", en: "bone", zh: "骨頭", ko: "뼈"),
+        Word(ja: "まど", emoji: "🪟", en: "window", zh: "窗戶", ko: "창문"),
+        Word(ja: "まち", emoji: "🏘️", en: "town", zh: "城鎮", ko: "마을"),
+        Word(ja: "みず", emoji: "💧", en: "water", zh: "水", ko: "물"),
+        Word(ja: "みせ", emoji: "🏪", en: "shop", zh: "店", ko: "가게"),
+        Word(ja: "みち", emoji: "🛣️", en: "road", zh: "路", ko: "길"),
+        Word(ja: "むら", emoji: "🛖", en: "village", zh: "村莊", ko: "마을"),
+        Word(ja: "もり", emoji: "🌲", en: "forest", zh: "森林", ko: "숲"),
+        Word(ja: "やさい", emoji: "🥬", en: "vegetables", zh: "蔬菜", ko: "채소"),
+        Word(ja: "ゆめ", emoji: "💭", en: "dream", zh: "夢", ko: "꿈"),
+        Word(ja: "ゆび", emoji: "☝️", en: "finger", zh: "手指", ko: "손가락"),
+        Word(ja: "よむ", emoji: "📖", en: "to read", zh: "讀", ko: "읽다"),
+        Word(ja: "わたし", emoji: "🙋", en: "I / me", zh: "我", ko: "나"),
+        Word(ja: "ほか", emoji: "➕", en: "other", zh: "其他", ko: "다른"),
+        Word(ja: "ひこうき", emoji: "✈️", en: "airplane", zh: "飛機", ko: "비행기"),
+        Word(ja: "ふとん", emoji: "🛏️", en: "futon", zh: "被褥", ko: "이불"),
+        Word(ja: "みかん", emoji: "🍊", en: "mandarin orange", zh: "橘子", ko: "귤"),
+        Word(ja: "なみ", emoji: "🌊", en: "wave", zh: "波浪", ko: "파도"),
+        Word(ja: "にわ", emoji: "🏡", en: "garden", zh: "庭院", ko: "정원"),
+        Word(ja: "にもつ", emoji: "🧳", en: "luggage", zh: "行李", ko: "짐"),
+        Word(ja: "のみもの", emoji: "🥤", en: "drink", zh: "飲料", ko: "음료"),
+        Word(ja: "たべもの", emoji: "🍱", en: "food", zh: "食物", ko: "음식"),
+        Word(ja: "ともだち", emoji: "🧑‍🤝‍🧑", en: "friend", zh: "朋友", ko: "친구"),
+        Word(ja: "あめ", emoji: "🌧️", en: "rain / candy", zh: "雨 / 糖果", ko: "비 / 사탕"),
+        Word(ja: "あたま", emoji: "🧠", en: "head", zh: "頭", ko: "머리"),
+        Word(ja: "からだ", emoji: "🧍", en: "body", zh: "身體", ko: "몸"),
+        Word(ja: "こども", emoji: "🧒", en: "child", zh: "小孩", ko: "아이"),
+        Word(ja: "おとな", emoji: "🧑", en: "adult", zh: "大人", ko: "어른"),
+        Word(ja: "きもの", emoji: "👘", en: "kimono", zh: "和服", ko: "기모노"),
+        Word(ja: "おまつり", emoji: "🏮", en: "festival", zh: "祭典", ko: "축제"),
+        Word(ja: "はなび", emoji: "🎆", en: "fireworks", zh: "煙火", ko: "불꽃놀이"),
+        Word(ja: "ゆかた", emoji: "👘", en: "summer kimono", zh: "浴衣", ko: "유카타"),
+        Word(ja: "まつり", emoji: "🎐", en: "festival", zh: "祭典", ko: "축제"),
+        Word(ja: "みなと", emoji: "⚓", en: "harbor", zh: "港口", ko: "항구"),
+        Word(ja: "ふるい", emoji: "🏚️", en: "old", zh: "舊的", ko: "낡다"),
+        Word(ja: "あたらしい", emoji: "✨", en: "new", zh: "新的", ko: "새롭다"),
+        Word(ja: "やすみ", emoji: "🛌", en: "holiday / rest", zh: "休息", ko: "휴일"),
+        Word(ja: "あさひ", emoji: "🌄", en: "morning sun", zh: "朝陽", ko: "아침 해"),
+        Word(ja: "れきし", emoji: "📜", en: "history", zh: "歷史", ko: "역사"),
+        Word(ja: "ろうそく", emoji: "🕯️", en: "candle", zh: "蠟燭", ko: "초"),
+        Word(ja: "わらう", emoji: "😆", en: "to laugh", zh: "笑", ko: "웃다"),
+        Word(ja: "はしる", emoji: "🏃", en: "to run", zh: "跑", ko: "달리다"),
+        Word(ja: "のる", emoji: "🚌", en: "to ride", zh: "搭乘", ko: "타다"),
+        Word(ja: "おりる", emoji: "⬇️", en: "to get off", zh: "下車", ko: "내리다"),
+        Word(ja: "かえる", emoji: "🐸", en: "frog / to go home", zh: "青蛙 / 回家", ko: "개구리 / 돌아가다"),
+        Word(ja: "あるく", emoji: "🚶", en: "to walk", zh: "走路", ko: "걷다"),
+        Word(ja: "かがみ", emoji: "🪞", en: "mirror", zh: "鏡子", ko: "거울"),
+        Word(ja: "ごみ", emoji: "🗑️", en: "trash", zh: "垃圾", ko: "쓰레기"),
+        Word(ja: "げた", emoji: "🩴", en: "wooden sandals", zh: "木屐", ko: "게타"),
+        Word(ja: "ぎんこう", emoji: "🏦", en: "bank", zh: "銀行", ko: "은행"),
+        Word(ja: "ぞう", emoji: "🐘", en: "elephant", zh: "大象", ko: "코끼리"),
+        Word(ja: "かぜ", emoji: "🌬️", en: "wind / a cold", zh: "風 / 感冒", ko: "바람 / 감기"),
+        Word(ja: "ずっと", emoji: "♾️", en: "all the time", zh: "一直", ko: "계속"),
+        Word(ja: "じかん", emoji: "⏳", en: "time", zh: "時間", ko: "시간"),
+        Word(ja: "だいこん", emoji: "🥕", en: "daikon radish", zh: "白蘿蔔", ko: "무"),
+        Word(ja: "どこ", emoji: "🗺️", en: "where", zh: "哪裡", ko: "어디"),
+        Word(ja: "でぐち", emoji: "🚪", en: "exit", zh: "出口", ko: "출구"),
+        Word(ja: "べんとう", emoji: "🍱", en: "boxed lunch", zh: "便當", ko: "도시락"),
+        Word(ja: "ぼうし", emoji: "🧢", en: "hat", zh: "帽子", ko: "모자"),
+        Word(ja: "ぶどう", emoji: "🍇", en: "grapes", zh: "葡萄", ko: "포도"),
+        Word(ja: "てんぷら", emoji: "🍤", en: "tempura", zh: "天婦羅", ko: "튀김"),
+        Word(ja: "きっぷ", emoji: "🎫", en: "ticket", zh: "車票", ko: "표"),
+        Word(ja: "いっぱい", emoji: "🈵", en: "full", zh: "滿滿的", ko: "가득"),
+        Word(ja: "えだまめ", emoji: "🫛", en: "edamame", zh: "毛豆", ko: "풋콩"),
+        Word(ja: "がっこう", emoji: "🏫", en: "school", zh: "學校", ko: "학교"),
+        Word(ja: "ざぶとん", emoji: "🟫", en: "floor cushion", zh: "坐墊", ko: "방석"),
+        Word(ja: "どうぶつ", emoji: "🦁", en: "animal", zh: "動物", ko: "동물"),
+        Word(ja: "きゃく", emoji: "🧑‍💼", en: "guest", zh: "客人", ko: "손님"),
+        Word(ja: "きゅうり", emoji: "🥒", en: "cucumber", zh: "小黃瓜", ko: "오이"),
+        Word(ja: "しゅくだい", emoji: "📝", en: "homework", zh: "作業", ko: "숙제"),
+        Word(ja: "しょくどう", emoji: "🍽️", en: "dining hall", zh: "食堂", ko: "식당"),
+        Word(ja: "ちょうちん", emoji: "🏮", en: "paper lantern", zh: "燈籠", ko: "초롱"),
+        Word(ja: "ちゅうい", emoji: "⚠️", en: "caution", zh: "注意", ko: "주의"),
+        Word(ja: "にゅうがく", emoji: "🎒", en: "entering school", zh: "入學", ko: "입학"),
+        Word(ja: "ひゃく", emoji: "💯", en: "hundred", zh: "一百", ko: "백"),
+        Word(ja: "びょういん", emoji: "🏥", en: "hospital", zh: "醫院", ko: "병원"),
+        Word(ja: "みゃく", emoji: "💓", en: "pulse", zh: "脈搏", ko: "맥박"),
+        Word(ja: "りょこう", emoji: "🧳", en: "travel", zh: "旅行", ko: "여행"),
+        Word(ja: "きょうしつ", emoji: "🏫", en: "classroom", zh: "教室", ko: "교실"),
+        Word(ja: "じゅぎょう", emoji: "📚", en: "class / lesson", zh: "上課", ko: "수업"),
+        Word(ja: "ぎゅうどん", emoji: "🍚", en: "beef bowl", zh: "牛丼", ko: "소고기덮밥"),
+        Word(ja: "きゅうきゅうしゃ", emoji: "🚑", en: "ambulance", zh: "救護車", ko: "구급차"),
+        Word(ja: "じょうず", emoji: "👍", en: "good at", zh: "擅長", ko: "잘하다"),
+        Word(ja: "でんしゃ", emoji: "🚃", en: "train", zh: "電車", ko: "전철"),
+        Word(ja: "じてんしゃ", emoji: "🚲", en: "bicycle", zh: "腳踏車", ko: "자전거"),
+        Word(ja: "おちゃ", emoji: "🍵", en: "green tea", zh: "綠茶", ko: "녹차"),
+        Word(ja: "バス", emoji: "🚌", en: "bus", zh: "公車", ko: "버스"),
+        Word(ja: "パン", emoji: "🍞", en: "bread", zh: "麵包", ko: "빵"),
+        Word(ja: "ペン", emoji: "🖊️", en: "pen", zh: "筆", ko: "펜"),
+        Word(ja: "テレビ", emoji: "📺", en: "TV", zh: "電視", ko: "텔레비전"),
+        Word(ja: "コーヒー", emoji: "☕", en: "coffee", zh: "咖啡", ko: "커피"),
+        Word(ja: "ジュース", emoji: "🧃", en: "juice", zh: "果汁", ko: "주스"),
+        Word(ja: "ゲーム", emoji: "🎮", en: "game", zh: "遊戲", ko: "게임"),
+        Word(ja: "ピアノ", emoji: "🎹", en: "piano", zh: "鋼琴", ko: "피아노"),
+        Word(ja: "ギター", emoji: "🎸", en: "guitar", zh: "吉他", ko: "기타"),
+        Word(ja: "サッカー", emoji: "⚽", en: "soccer", zh: "足球", ko: "축구"),
+        Word(ja: "バナナ", emoji: "🍌", en: "banana", zh: "香蕉", ko: "바나나"),
+        Word(ja: "トイレ", emoji: "🚻", en: "toilet", zh: "廁所", ko: "화장실"),
+        Word(ja: "エレベーター", emoji: "🛗", en: "elevator", zh: "電梯", ko: "엘리베이터"),
+        Word(ja: "コンビニ", emoji: "🏪", en: "convenience store", zh: "便利商店", ko: "편의점"),
+        Word(ja: "スマホ", emoji: "📱", en: "smartphone", zh: "智慧型手機", ko: "스마트폰"),
+        Word(ja: "パソコン", emoji: "💻", en: "computer", zh: "電腦", ko: "컴퓨터"),
+        Word(ja: "シャツ", emoji: "👔", en: "shirt", zh: "襯衫", ko: "셔츠"),
+        Word(ja: "スカート", emoji: "👗", en: "skirt", zh: "裙子", ko: "치마"),
+        Word(ja: "ズボン", emoji: "👖", en: "trousers", zh: "褲子", ko: "바지"),
+        Word(ja: "ボール", emoji: "⚽", en: "ball", zh: "球", ko: "공"),
+        Word(ja: "ドア", emoji: "🚪", en: "door", zh: "門", ko: "문"),
+        Word(ja: "ベッド", emoji: "🛏️", en: "bed", zh: "床", ko: "침대"),
+        Word(ja: "テーブル", emoji: "🍽️", en: "table", zh: "桌子", ko: "테이블"),
+        Word(ja: "カレー", emoji: "🍛", en: "curry", zh: "咖哩", ko: "카레"),
+        Word(ja: "ピザ", emoji: "🍕", en: "pizza", zh: "披薩", ko: "피자"),
+        Word(ja: "チーズ", emoji: "🧀", en: "cheese", zh: "起司", ko: "치즈"),
+        Word(ja: "アニメ", emoji: "📺", en: "anime", zh: "動畫", ko: "애니메이션"),
+        Word(ja: "マンガ", emoji: "📚", en: "manga", zh: "漫畫", ko: "만화"),
+        Word(ja: "ネコ", emoji: "🐈", en: "cat", zh: "貓", ko: "고양이"),
+        Word(ja: "ロボット", emoji: "🤖", en: "robot", zh: "機器人", ko: "로봇"),
+        Word(ja: "レストラン", emoji: "🍴", en: "restaurant", zh: "餐廳", ko: "레스토랑"),
+        Word(ja: "メニュー", emoji: "📋", en: "menu", zh: "菜單", ko: "메뉴"),
+        Word(ja: "ペンギン", emoji: "🐧", en: "penguin", zh: "企鵝", ko: "펭귄"),
+        Word(ja: "ライオン", emoji: "🦁", en: "lion", zh: "獅子", ko: "사자"),
+        Word(ja: "コアラ", emoji: "🐨", en: "koala", zh: "無尾熊", ko: "코알라"),
+        Word(ja: "ハンバーガー", emoji: "🍔", en: "hamburger", zh: "漢堡", ko: "햄버거"),
+        Word(ja: "フォーク", emoji: "🍴", en: "fork", zh: "叉子", ko: "포크"),
+        Word(ja: "ナイフ", emoji: "🔪", en: "knife", zh: "刀子", ko: "나이프"),
+        Word(ja: "スプーン", emoji: "🥄", en: "spoon", zh: "湯匙", ko: "숟가락"),
+        Word(ja: "ヨーグルト", emoji: "🥣", en: "yogurt", zh: "優格", ko: "요거트"),
+        Word(ja: "ワンピース", emoji: "👗", en: "dress", zh: "洋裝", ko: "원피스"),
+        Word(ja: "リモコン", emoji: "🎛️", en: "remote control", zh: "遙控器", ko: "리모컨"),
+        Word(ja: "ラジオ", emoji: "📻", en: "radio", zh: "收音機", ko: "라디오"),
+        Word(ja: "一つ", emoji: "☝️", en: "one (thing)", zh: "一個", ko: "하나"),
+        Word(ja: "二つ", emoji: "✌️", en: "two (things)", zh: "兩個", ko: "둘"),
+        Word(ja: "四つ", emoji: "🍀", en: "four (things)", zh: "四個", ko: "넷"),
+        Word(ja: "五つ", emoji: "🖐️", en: "five (things)", zh: "五個", ko: "다섯"),
+        Word(ja: "六月", emoji: "📅", en: "June", zh: "六月", ko: "6월"),
+        Word(ja: "九月", emoji: "📅", en: "September", zh: "九月", ko: "9월"),
+        Word(ja: "十日", emoji: "📆", en: "the 10th", zh: "十號", ko: "10일"),
+        Word(ja: "一月", emoji: "🎍", en: "January", zh: "一月", ko: "1월"),
+        Word(ja: "日曜日", emoji: "📅", en: "Sunday", zh: "星期日", ko: "일요일"),
+        Word(ja: "月曜日", emoji: "📅", en: "Monday", zh: "星期一", ko: "월요일"),
+        Word(ja: "火曜日", emoji: "📅", en: "Tuesday", zh: "星期二", ko: "화요일"),
+        Word(ja: "水曜日", emoji: "📅", en: "Wednesday", zh: "星期三", ko: "수요일"),
+        Word(ja: "木曜日", emoji: "📅", en: "Thursday", zh: "星期四", ko: "목요일"),
+        Word(ja: "金曜日", emoji: "📅", en: "Friday", zh: "星期五", ko: "금요일"),
+        Word(ja: "土曜日", emoji: "📅", en: "Saturday", zh: "星期六", ko: "토요일"),
+        Word(ja: "お金", emoji: "💰", en: "money", zh: "錢", ko: "돈"),
+        Word(ja: "木の下", emoji: "🌳", en: "under the tree", zh: "樹下", ko: "나무 아래"),
+        Word(ja: "山田さん", emoji: "🙋", en: "Mr./Ms. Yamada", zh: "山田先生", ko: "야마다 씨"),
+        Word(ja: "田んぼ", emoji: "🌾", en: "rice field", zh: "稻田", ko: "논"),
+        Word(ja: "本だな", emoji: "📚", en: "bookshelf", zh: "書架", ko: "책장"),
+        Word(ja: "人気", emoji: "⭐", en: "popular", zh: "受歡迎", ko: "인기"),
+        Word(ja: "三人", emoji: "👨‍👩‍👦", en: "three people", zh: "三個人", ko: "세 사람"),
+        Word(ja: "目玉", emoji: "👁️", en: "eyeball", zh: "眼珠", ko: "눈알"),
+        Word(ja: "口ぶえ", emoji: "😗", en: "whistle", zh: "口哨", ko: "휘파람"),
+        Word(ja: "手紙", emoji: "✉️", en: "letter", zh: "信", ko: "편지"),
+        Word(ja: "足あと", emoji: "👣", en: "footprint", zh: "腳印", ko: "발자국"),
+        Word(ja: "金魚", emoji: "🐠", en: "goldfish", zh: "金魚", ko: "금붕어"),
+        Word(ja: "火じ", emoji: "🚒", en: "fire (disaster)", zh: "火災", ko: "화재"),
+        Word(ja: "水着", emoji: "👙", en: "swimsuit", zh: "泳衣", ko: "수영복"),
+        Word(ja: "大雨", emoji: "⛈️", en: "heavy rain", zh: "大雨", ko: "큰비"),
+        Word(ja: "雨の日", emoji: "☔", en: "rainy day", zh: "雨天", ko: "비 오는 날"),
+        Word(ja: "雪だるま", emoji: "☃️", en: "snowman", zh: "雪人", ko: "눈사람"),
+        Word(ja: "天ぷら", emoji: "🍤", en: "tempura", zh: "天婦羅", ko: "튀김"),
+        Word(ja: "春休み", emoji: "🌸", en: "spring break", zh: "春假", ko: "봄방학"),
+        Word(ja: "夏休み", emoji: "🏖️", en: "summer vacation", zh: "暑假", ko: "여름방학"),
+        Word(ja: "冬休み", emoji: "⛄", en: "winter break", zh: "寒假", ko: "겨울방학"),
+        Word(ja: "花火", emoji: "🎆", en: "fireworks", zh: "煙火", ko: "불꽃놀이"),
+        Word(ja: "青空", emoji: "🌤️", en: "blue sky", zh: "藍天", ko: "푸른 하늘"),
+        Word(ja: "気もち", emoji: "💗", en: "feeling", zh: "心情", ko: "기분"),
+        Word(ja: "風車", emoji: "🎡", en: "windmill", zh: "風車", ko: "풍차"),
+        Word(ja: "頭いい", emoji: "🧠", en: "smart", zh: "聰明", ko: "똑똑하다"),
+        Word(ja: "力もち", emoji: "💪", en: "strong person", zh: "大力士", ko: "힘센 사람"),
+        Word(ja: "休み時間", emoji: "⏸️", en: "break time", zh: "休息時間", ko: "쉬는 시간"),
+        Word(ja: "右手", emoji: "🫱", en: "right hand", zh: "右手", ko: "오른손"),
+        Word(ja: "左手", emoji: "🫲", en: "left hand", zh: "左手", ko: "왼손"),
+        Word(ja: "前足", emoji: "🐾", en: "front paw", zh: "前腳", ko: "앞발"),
+        Word(ja: "後ろ", emoji: "🔙", en: "behind", zh: "後面", ko: "뒤"),
+        Word(ja: "駅前", emoji: "🚉", en: "in front of the station", zh: "車站前", ko: "역 앞"),
+        Word(ja: "電気", emoji: "💡", en: "electricity / light", zh: "電燈", ko: "전기"),
+        Word(ja: "車いす", emoji: "🦽", en: "wheelchair", zh: "輪椅", ko: "휠체어"),
+        Word(ja: "店員", emoji: "🧑‍💼", en: "clerk", zh: "店員", ko: "점원"),
+        Word(ja: "外国", emoji: "🌏", en: "foreign country", zh: "外國", ko: "외국"),
+        Word(ja: "北海道", emoji: "🗾", en: "Hokkaido", zh: "北海道", ko: "홋카이도"),
+        Word(ja: "南口", emoji: "🚪", en: "south exit", zh: "南出口", ko: "남쪽 출구"),
+        Word(ja: "東京", emoji: "🗼", en: "Tokyo", zh: "東京", ko: "도쿄"),
+        Word(ja: "西口", emoji: "🚪", en: "west exit", zh: "西出口", ko: "서쪽 출구"),
+        Word(ja: "町長", emoji: "👔", en: "town mayor", zh: "鎮長", ko: "읍장"),
+        Word(ja: "海水", emoji: "🌊", en: "seawater", zh: "海水", ko: "바닷물"),
+        Word(ja: "島国", emoji: "🏝️", en: "island country", zh: "島國", ko: "섬나라"),
+        Word(ja: "船長", emoji: "⚓", en: "captain", zh: "船長", ko: "선장"),
+        Word(ja: "旅人", emoji: "🧳", en: "traveler", zh: "旅人", ko: "나그네"),
+        Word(ja: "大門", emoji: "⛩️", en: "big gate", zh: "大門", ko: "큰 문"),
+        Word(ja: "道ばた", emoji: "🛤️", en: "roadside", zh: "路邊", ko: "길가")
     ]
     static let lookAlike2: [[String]] = [["シ", "ツ"], ["ソ", "ン"], ["ク", "ケ", "タ"], ["ウ", "ワ", "フ"], ["コ", "ユ"], ["ル", "レ"], ["ア", "マ"], ["チ", "テ"], ["ヌ", "メ", "ス"], ["ノ", "メ"], ["ハ", "ヘ"], ["は", "ほ", "け"], ["め", "ぬ"], ["る", "ろ"], ["れ", "わ", "ね"], ["ま", "も"], ["ば", "ぱ"], ["び", "ぴ"], ["ぶ", "ぷ"], ["べ", "ぺ"], ["ぼ", "ぽ"], ["じ", "ぢ"], ["ず", "づ"], ["しゃ", "しょ"], ["きゃ", "きょ"], ["ちゃ", "ちょ"], ["人", "入", "八"], ["日", "目", "田"], ["木", "本", "休"], ["土", "上", "工"], ["大", "犬", "太"], ["千", "十"], ["右", "石", "左"], ["東", "車"], ["天", "大"], ["夏", "冬"], ["雪", "雨"]]
     /// how to say a kanji out loud (one kanji alone can be read many ways)
@@ -353,104 +593,221 @@ extension KJC1 {
     static let stages2: [Stage] = [
         Stage(id: 2001, ja: "せんだい・たなばた", en: "Sendai · Tanabata", zh: "仙台・七夕", ko: "센다이・다나바타", bg: "bg_c2_sendai", kind: .lesson, newKana: ["は", "ひ", "ふ", "へ", "ほ"], known: ["は", "ひ", "ふ", "へ", "ほ"], words: ["はな", "ひと", "ふね", "ほし", "ひとつ", "ふたつ"], goal: 20, chapter: 2),
         Stage(id: 2002, ja: "せんだい・たなばた・あそび", en: "Sendai · Tanabata · Game", zh: "仙台・七夕・遊戲", ko: "센다이・다나바타・게임", bg: "bg_c2_sendai", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ"], words: ["はな", "ひと", "ふね", "ほし", "ひとつ", "ふたつ"], goal: 20, mini: .taiko, chapter: 2, focus: ["は", "ひ", "ふ", "へ", "ほ"]),
+        Stage(id: 2501, ja: "せんだい・たなばた・ことば", en: "Sendai · Tanabata · Words", zh: "仙台・七夕・詞語", ko: "센다이・다나바타・단어", bg: "bg_c2_sendai", kind: .lesson, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ"], words: ["はな", "ひと", "ふね", "ほし", "ひとつ", "ふたつ"], goal: 20, chapter: 2),
+        Stage(id: 2502, ja: "せんだい・たなばた・あそび2", en: "Sendai · Tanabata · Game 2", zh: "仙台・七夕・遊戲2", ko: "센다이・다나바타・게임2", bg: "bg_c2_sendai", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ"], words: ["はな", "ひと", "ふね", "ほし", "ひとつ", "ふたつ"], goal: 20, mini: .yabusame, chapter: 2, focus: ["は", "ひ", "ふ", "へ", "ほ"]),
+        Stage(id: 2503, ja: "せんだい・たなばた・しゅぎょう", en: "Sendai · Tanabata · Training", zh: "仙台・七夕・修行", ko: "센다이・다나바타・수행", bg: "bg_c2_sendai", kind: .battle, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ"], words: ["はな", "ひと", "ふね", "ほし", "ひとつ", "ふたつ"], goal: 25, chapter: 2),
         Stage(id: 2003, ja: "せんだい・よる", en: "Sendai · Night", zh: "仙台・夜", ko: "센다이・밤", bg: "bg_c2_sendai", kind: .lesson, newKana: ["ま", "み", "む", "め", "も"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も"], words: ["まめ", "みみ", "むし", "め", "もも", "なまえ"], goal: 20, chapter: 2),
         Stage(id: 2004, ja: "せんだい・よる・あそび", en: "Sendai · Night · Game", zh: "仙台・夜・遊戲", ko: "센다이・밤・게임", bg: "bg_c2_sendai", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も"], words: ["はな", "ひと", "ふね", "ほし", "まめ", "みみ"], goal: 20, mini: .daruma, chapter: 2, focus: ["ま", "み", "む", "め", "も"]),
-        Stage(id: 2005, ja: "ぎんざん おんせん", en: "Ginzan Onsen", zh: "銀山溫泉", ko: "긴잔 온천", bg: "bg_c2_ginzan", kind: .lesson, newKana: ["や", "ゆ", "よ", "わ", "を", "ん"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん"], words: ["へや", "やま", "ゆき", "わに", "ほん", "はな"], goal: 20, chapter: 2),
+        Stage(id: 2504, ja: "せんだい・よる・ことば", en: "Sendai · Night · Words", zh: "仙台・夜・詞語", ko: "센다이・밤・단어", bg: "bg_c2_sendai", kind: .lesson, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も"], words: ["まめ", "みみ", "むし", "め", "もも", "なまえ"], goal: 20, chapter: 2),
+        Stage(id: 2505, ja: "せんだい・よる・あそび2", en: "Sendai · Night · Game 2", zh: "仙台・夜・遊戲2", ko: "센다이・밤・게임2", bg: "bg_c2_sendai", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も"], words: ["はな", "ひと", "ふね", "ほし", "まめ", "みみ"], goal: 20, mini: .tsumiki, chapter: 2, focus: ["ま", "み", "む", "め", "も"]),
+        Stage(id: 2506, ja: "せんだい・よる・しゅぎょう", en: "Sendai · Night · Training", zh: "仙台・夜・修行", ko: "센다이・밤・수행", bg: "bg_c2_sendai", kind: .battle, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も"], words: ["まめ", "みみ", "むし", "め", "もも", "なまえ"], goal: 25, chapter: 2),
+        Stage(id: 2005, ja: "ぎんざん おんせん", en: "Ginzan Onsen", zh: "銀山溫泉", ko: "긴잔 온천", bg: "bg_c2_ginzan", kind: .lesson, newKana: ["や", "ゆ", "よ", "わ", "を", "ん"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん"], words: ["へや", "やま", "ゆき", "わに", "ほん", "ふゆ"], goal: 20, chapter: 2),
         Stage(id: 2006, ja: "ぎんざん おんせん・あそび", en: "Ginzan Onsen · Game", zh: "銀山溫泉・遊戲", ko: "긴잔 온천・게임", bg: "bg_c2_ginzan", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .yuki, chapter: 2, focus: ["や", "ゆ", "よ", "わ", "を", "ん"]),
-        Stage(id: 2007, ja: "ぎんざん・あさ", en: "Ginzan · Morning", zh: "銀山・早上", ko: "긴잔・아침", bg: "bg_c2_ginzan", kind: .lesson, newKana: ["ら", "り", "る", "れ", "ろ"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ"], words: ["よる", "さる", "くるま", "いくら", "はな", "ひと"], goal: 20, chapter: 2),
+        Stage(id: 2507, ja: "ぎんざん おんせん・ことば", en: "Ginzan Onsen · Words", zh: "銀山溫泉・詞語", ko: "긴잔 온천・단어", bg: "bg_c2_ginzan", kind: .lesson, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん"], words: ["へや", "やま", "ゆき", "わに", "ほん", "ふゆ"], goal: 20, chapter: 2),
+        Stage(id: 2508, ja: "ぎんざん おんせん・あそび2", en: "Ginzan Onsen · Game 2", zh: "銀山溫泉・遊戲2", ko: "긴잔 온천・게임2", bg: "bg_c2_ginzan", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .takoyaki, chapter: 2, focus: ["や", "ゆ", "よ", "わ", "を", "ん"]),
+        Stage(id: 2509, ja: "ぎんざん おんせん・しゅぎょう", en: "Ginzan Onsen · Training", zh: "銀山溫泉・修行", ko: "긴잔 온천・수행", bg: "bg_c2_ginzan", kind: .battle, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん"], words: ["へや", "やま", "ゆき", "わに", "ほん", "ふゆ"], goal: 25, chapter: 2),
+        Stage(id: 2007, ja: "ぎんざん・あさ", en: "Ginzan · Morning", zh: "銀山・早上", ko: "긴잔・아침", bg: "bg_c2_ginzan", kind: .lesson, newKana: ["ら", "り", "る", "れ", "ろ"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ"], words: ["よる", "さる", "くるま", "いくら", "はる", "ひる"], goal: 20, chapter: 2),
         Stage(id: 2008, ja: "ぎんざん・あさ・あそび", en: "Ginzan · Morning · Game", zh: "銀山・早上・遊戲", ko: "긴잔・아침・게임", bg: "bg_c2_ginzan", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .dash, chapter: 2, focus: ["ら", "り", "る", "れ", "ろ"]),
+        Stage(id: 2510, ja: "ぎんざん・あさ・ことば", en: "Ginzan · Morning · Words", zh: "銀山・早上・詞語", ko: "긴잔・아침・단어", bg: "bg_c2_ginzan", kind: .lesson, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ"], words: ["よる", "さる", "くるま", "いくら", "はる", "ひる"], goal: 20, chapter: 2),
+        Stage(id: 2511, ja: "ぎんざん・あさ・あそび2", en: "Ginzan · Morning · Game 2", zh: "銀山・早上・遊戲2", ko: "긴잔・아침・게임2", bg: "bg_c2_ginzan", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .train, chapter: 2, focus: ["ら", "り", "る", "れ", "ろ"]),
+        Stage(id: 2512, ja: "ぎんざん・あさ・しゅぎょう", en: "Ginzan · Morning · Training", zh: "銀山・早上・修行", ko: "긴잔・아침・수행", bg: "bg_c2_ginzan", kind: .battle, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ"], words: ["よる", "さる", "くるま", "いくら", "はる", "ひる"], goal: 25, chapter: 2),
         Stage(id: 2009, ja: "ゆきの よる・あそび", en: "Snowy Night · Game", zh: "雪夜・遊戲", ko: "눈 오는 밤・게임", bg: "bg_c2_ginzan", kind: .battle, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 25, chapter: 2),
         Stage(id: 2010, ja: "ゆきの よる（中ボス）", en: "Snowy Night (Mid-boss)", zh: "雪夜（中頭目）", ko: "눈 오는 밤 (중간 보스)", bg: "bg_c2_ginzan", kind: .mid, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 12, chapter: 2, foe: "zk_2_3"),
-        Stage(id: 2011, ja: "せんだい・いちば", en: "Sendai · Market", zh: "仙台・市場", ko: "센다이・시장", bg: "bg_c2_sendai", kind: .lesson, newKana: ["が", "ぎ", "ぐ", "げ", "ご"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご"], words: ["りんご", "かぎ", "ごはん", "たまご", "はな", "ひと"], goal: 20, chapter: 2),
+        Stage(id: 2011, ja: "せんだい・いちば", en: "Sendai · Market", zh: "仙台・市場", ko: "센다이・시장", bg: "bg_c2_sendai", kind: .lesson, newKana: ["が", "ぎ", "ぐ", "げ", "ご"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご"], words: ["りんご", "かぎ", "ごはん", "たまご", "かがみ", "ごみ"], goal: 20, chapter: 2),
         Stage(id: 2012, ja: "せんだい・いちば・あそび", en: "Sendai · Market · Game", zh: "仙台・市場・遊戲", ko: "센다이・시장・게임", bg: "bg_c2_sendai", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .ninja, chapter: 2, focus: ["が", "ぎ", "ぐ", "げ", "ご"]),
-        Stage(id: 2013, ja: "あおもり・りんご", en: "Aomori · Apples", zh: "青森・蘋果", ko: "아오모리・사과", bg: "bg_mg_chochin", kind: .lesson, newKana: ["ざ", "じ", "ず", "ぜ", "ぞ"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ"], words: ["ねずみ", "はな", "ひと", "ふね", "へや", "ほし"], goal: 20, chapter: 2),
+        Stage(id: 2513, ja: "せんだい・いちば・ことば", en: "Sendai · Market · Words", zh: "仙台・市場・詞語", ko: "센다이・시장・단어", bg: "bg_c2_sendai", kind: .lesson, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご"], words: ["りんご", "かぎ", "ごはん", "たまご", "かがみ", "ごみ"], goal: 20, chapter: 2),
+        Stage(id: 2514, ja: "せんだい・いちば・あそび2", en: "Sendai · Market · Game 2", zh: "仙台・市場・遊戲2", ko: "센다이・시장・게임2", bg: "bg_c2_sendai", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .kawara, chapter: 2, focus: ["が", "ぎ", "ぐ", "げ", "ご"]),
+        Stage(id: 2515, ja: "せんだい・いちば・しゅぎょう", en: "Sendai · Market · Training", zh: "仙台・市場・修行", ko: "센다이・시장・수행", bg: "bg_c2_sendai", kind: .battle, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご"], words: ["りんご", "かぎ", "ごはん", "たまご", "かがみ", "ごみ"], goal: 25, chapter: 2),
+        Stage(id: 2013, ja: "あおもり・りんご", en: "Aomori · Apples", zh: "青森・蘋果", ko: "아오모리・사과", bg: "bg_mg_chochin", kind: .lesson, newKana: ["ざ", "じ", "ず", "ぜ", "ぞ"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ"], words: ["ねずみ", "みず", "ぞう", "かぜ", "じかん", "はな"], goal: 20, chapter: 2),
         Stage(id: 2014, ja: "あおもり・りんご・あそび", en: "Aomori · Apples · Game", zh: "青森・蘋果・遊戲", ko: "아오모리・사과・게임", bg: "bg_mg_chochin", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .yabusame, chapter: 2, focus: ["ざ", "じ", "ず", "ぜ", "ぞ"]),
-        Stage(id: 2015, ja: "やまがた", en: "Yamagata", zh: "山形", ko: "야마가타", bg: "bg_c2_ginzan", kind: .lesson, newKana: ["だ", "ぢ", "づ", "で", "ど"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど"], words: ["でんわ", "はな", "ひと", "ふね", "へや", "ほし"], goal: 20, chapter: 2),
+        Stage(id: 2516, ja: "あおもり・りんご・ことば", en: "Aomori · Apples · Words", zh: "青森・蘋果・詞語", ko: "아오모리・사과・단어", bg: "bg_mg_chochin", kind: .lesson, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ"], words: ["ねずみ", "みず", "ぞう", "かぜ", "じかん", "はな"], goal: 20, chapter: 2),
+        Stage(id: 2517, ja: "あおもり・りんご・あそび2", en: "Aomori · Apples · Game 2", zh: "青森・蘋果・遊戲2", ko: "아오모리・사과・게임2", bg: "bg_mg_chochin", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .meiro, chapter: 2, focus: ["ざ", "じ", "ず", "ぜ", "ぞ"]),
+        Stage(id: 2518, ja: "あおもり・りんご・しゅぎょう", en: "Aomori · Apples · Training", zh: "青森・蘋果・修行", ko: "아오모리・사과・수행", bg: "bg_mg_chochin", kind: .battle, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ"], words: ["ねずみ", "みず", "ぞう", "かぜ", "じかん", "はな"], goal: 25, chapter: 2),
+        Stage(id: 2015, ja: "やまがた", en: "Yamagata", zh: "山形", ko: "야마가타", bg: "bg_c2_ginzan", kind: .lesson, newKana: ["だ", "ぢ", "づ", "で", "ど"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど"], words: ["でんわ", "まど", "ともだち", "からだ", "こども", "だいこん"], goal: 20, chapter: 2),
         Stage(id: 2016, ja: "やまがた・あそび", en: "Yamagata · Game", zh: "山形・遊戲", ko: "야마가타・게임", bg: "bg_c2_ginzan", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .tsumiki, chapter: 2, focus: ["だ", "ぢ", "づ", "で", "ど"]),
-        Stage(id: 2017, ja: "あきた", en: "Akita", zh: "秋田", ko: "아키타", bg: "bg_c2_sendai", kind: .lesson, newKana: ["ば", "び", "ぶ", "べ", "ぼ"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ"], words: ["ぶた", "かばん", "はな", "ひと", "ふね", "へや"], goal: 20, chapter: 2),
+        Stage(id: 2519, ja: "やまがた・ことば", en: "Yamagata · Words", zh: "山形・詞語", ko: "야마가타・단어", bg: "bg_c2_ginzan", kind: .lesson, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど"], words: ["でんわ", "まど", "ともだち", "からだ", "こども", "だいこん"], goal: 20, chapter: 2),
+        Stage(id: 2520, ja: "やまがた・あそび2", en: "Yamagata · Game 2", zh: "山形・遊戲2", ko: "야마가타・게임2", bg: "bg_c2_ginzan", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .nazori, chapter: 2, focus: ["だ", "ぢ", "づ", "で", "ど"]),
+        Stage(id: 2521, ja: "やまがた・しゅぎょう", en: "Yamagata · Training", zh: "山形・修行", ko: "야마가타・수행", bg: "bg_c2_ginzan", kind: .battle, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど"], words: ["でんわ", "まど", "ともだち", "からだ", "こども", "だいこん"], goal: 25, chapter: 2),
+        Stage(id: 2017, ja: "あきた", en: "Akita", zh: "秋田", ko: "아키타", bg: "bg_c2_sendai", kind: .lesson, newKana: ["ば", "び", "ぶ", "べ", "ぼ"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ"], words: ["ぶた", "かばん", "へび", "ゆび", "たべもの", "はなび"], goal: 20, chapter: 2),
         Stage(id: 2018, ja: "あきた・あそび", en: "Akita · Game", zh: "秋田・遊戲", ko: "아키타・게임", bg: "bg_c2_sendai", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .takoyaki, chapter: 2, focus: ["ば", "び", "ぶ", "べ", "ぼ"]),
-        Stage(id: 2019, ja: "いわて", en: "Iwate", zh: "岩手", ko: "이와테", bg: "bg_c2_ginzan", kind: .lesson, newKana: ["ぱ", "ぴ", "ぷ", "ぺ", "ぽ"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ"], words: ["えんぴつ", "さんぽ", "はな", "ひと", "ふね", "へや"], goal: 20, chapter: 2),
+        Stage(id: 2522, ja: "あきた・ことば", en: "Akita · Words", zh: "秋田・詞語", ko: "아키타・단어", bg: "bg_c2_sendai", kind: .lesson, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ"], words: ["ぶた", "かばん", "へび", "ゆび", "たべもの", "はなび"], goal: 20, chapter: 2),
+        Stage(id: 2523, ja: "あきた・あそび2", en: "Akita · Game 2", zh: "秋田・遊戲2", ko: "아키타・게임2", bg: "bg_c2_sendai", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .shodo, chapter: 2, focus: ["ば", "び", "ぶ", "べ", "ぼ"]),
+        Stage(id: 2524, ja: "あきた・しゅぎょう", en: "Akita · Training", zh: "秋田・修行", ko: "아키타・수행", bg: "bg_c2_sendai", kind: .battle, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ"], words: ["ぶた", "かばん", "へび", "ゆび", "たべもの", "はなび"], goal: 25, chapter: 2),
+        Stage(id: 2019, ja: "いわて", en: "Iwate", zh: "岩手", ko: "이와테", bg: "bg_c2_ginzan", kind: .lesson, newKana: ["ぱ", "ぴ", "ぷ", "ぺ", "ぽ"], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ"], words: ["えんぴつ", "さんぽ", "てんぷら", "はな", "ひと", "ふね"], goal: 20, chapter: 2),
         Stage(id: 2020, ja: "いわて・あそび", en: "Iwate · Game", zh: "岩手・遊戲", ko: "이와테・게임", bg: "bg_c2_ginzan", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .train, chapter: 2, focus: ["ぱ", "ぴ", "ぷ", "ぺ", "ぽ"]),
+        Stage(id: 2525, ja: "いわて・ことば", en: "Iwate · Words", zh: "岩手・詞語", ko: "이와테・단어", bg: "bg_c2_ginzan", kind: .lesson, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ"], words: ["えんぴつ", "さんぽ", "てんぷら", "はな", "ひと", "ふね"], goal: 20, chapter: 2),
+        Stage(id: 2526, ja: "いわて・あそび2", en: "Iwate · Game 2", zh: "岩手・遊戲2", ko: "이와테・게임2", bg: "bg_c2_ginzan", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .karuta, chapter: 2, focus: ["ぱ", "ぴ", "ぷ", "ぺ", "ぽ"]),
+        Stage(id: 2527, ja: "いわて・しゅぎょう", en: "Iwate · Training", zh: "岩手・修行", ko: "이와테・수행", bg: "bg_c2_ginzan", kind: .battle, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ"], words: ["えんぴつ", "さんぽ", "てんぷら", "はな", "ひと", "ふね"], goal: 25, chapter: 2),
         Stage(id: 2021, ja: "ボスの まえ", en: "Before the Boss", zh: "頭目之前", ko: "보스 전", bg: "bg_c2_ginzan", kind: .mini, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ"], goal: 20, mini: .kawara, chapter: 2),
         Stage(id: 2022, ja: "とうほく・ボス", en: "Tohoku · Boss", zh: "東北・頭目", ko: "도호쿠・보스", bg: "bg_c2_ginzan", kind: .boss, newKana: [], known: ["は", "ひ", "ふ", "へ", "ほ", "ま", "み", "む", "め", "も", "や", "ゆ", "よ", "わ", "を", "ん", "ら", "り", "る", "れ", "ろ", "が", "ぎ", "ぐ", "げ", "ご", "ざ", "じ", "ず", "ぜ", "ぞ", "だ", "ぢ", "づ", "で", "ど", "ば", "び", "ぶ", "べ", "ぼ", "ぱ", "ぴ", "ぷ", "ぺ", "ぽ"], words: ["はな", "ひと", "ふね", "へや", "ほし", "まめ", "みみ", "むし", "め", "もも", "やま", "ゆき"], goal: 14, chapter: 2, foe: "boss_will"),
-        Stage(id: 3001, ja: "おたる うんが", en: "Otaru Canal", zh: "小樽運河", ko: "오타루 운하", bg: "bg_c3_otaru", kind: .lesson, newKana: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ"], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ"], words: ["ほし", "むし", "ゆき", "きょう", "しゃしん"], goal: 20, chapter: 3),
-        Stage(id: 3002, ja: "おたる うんが・あそび", en: "Otaru Canal · Game", zh: "小樽運河・遊戲", ko: "오타루 운하・게임", bg: "bg_c3_otaru", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ"], words: ["ほし", "むし", "ゆき", "きょう", "しゃしん"], goal: 20, mini: .meiro, chapter: 3, focus: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ"]),
-        Stage(id: 3003, ja: "おたる・よる", en: "Otaru · Night", zh: "小樽・夜", ko: "오타루・밤", bg: "bg_c3_otaru", kind: .lesson, newKana: ["ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ"], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ"], words: ["わに", "ちゃ", "きょう", "しゃしん", "ほし", "むし"], goal: 20, chapter: 3),
+        Stage(id: 3001, ja: "おたる うんが", en: "Otaru Canal", zh: "小樽運河", ko: "오타루 운하", bg: "bg_c3_otaru", kind: .lesson, newKana: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ"], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ"], words: ["ほし", "むし", "ゆき", "きょう", "しゃしん", "あき"], goal: 20, chapter: 3),
+        Stage(id: 3002, ja: "おたる うんが・あそび", en: "Otaru Canal · Game", zh: "小樽運河・遊戲", ko: "오타루 운하・게임", bg: "bg_c3_otaru", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ"], words: ["ほし", "むし", "ゆき", "きょう", "しゃしん", "あき"], goal: 20, mini: .meiro, chapter: 3, focus: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ"]),
+        Stage(id: 3501, ja: "おたる うんが・ことば", en: "Otaru Canal · Words", zh: "小樽運河・詞語", ko: "오타루 운하・단어", bg: "bg_c3_otaru", kind: .lesson, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ"], words: ["ほし", "むし", "ゆき", "きょう", "しゃしん", "あき"], goal: 20, chapter: 3),
+        Stage(id: 3502, ja: "おたる うんが・あそび2", en: "Otaru Canal · Game 2", zh: "小樽運河・遊戲2", ko: "오타루 운하・게임2", bg: "bg_c3_otaru", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ"], words: ["ほし", "むし", "ゆき", "きょう", "しゃしん", "あき"], goal: 20, mini: .tsuri, chapter: 3, focus: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ"]),
+        Stage(id: 3503, ja: "おたる うんが・しゅぎょう", en: "Otaru Canal · Training", zh: "小樽運河・修行", ko: "오타루 운하・수행", bg: "bg_c3_otaru", kind: .battle, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ"], words: ["ほし", "むし", "ゆき", "きょう", "しゃしん", "あき"], goal: 25, chapter: 3),
+        Stage(id: 3003, ja: "おたる・よる", en: "Otaru · Night", zh: "小樽・夜", ko: "오타루・밤", bg: "bg_c3_otaru", kind: .lesson, newKana: ["ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ"], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ"], words: ["わに", "ちゃ", "きょう", "しゃしん", "うち", "かに"], goal: 20, chapter: 3),
         Stage(id: 3004, ja: "おたる・よる・あそび", en: "Otaru · Night · Game", zh: "小樽・夜・遊戲", ko: "오타루・밤・게임", bg: "bg_c3_otaru", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ"], words: ["ほし", "むし", "ゆき", "わに", "ちゃ", "きょう"], goal: 20, mini: .nazori, chapter: 3, focus: ["ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ"]),
+        Stage(id: 3504, ja: "おたる・よる・ことば", en: "Otaru · Night · Words", zh: "小樽・夜・詞語", ko: "오타루・밤・단어", bg: "bg_c3_otaru", kind: .lesson, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ"], words: ["わに", "ちゃ", "きょう", "しゃしん", "うち", "かに"], goal: 20, chapter: 3),
+        Stage(id: 3505, ja: "おたる・よる・あそび2", en: "Otaru · Night · Game 2", zh: "小樽・夜・遊戲2", ko: "오타루・밤・게임2", bg: "bg_c3_otaru", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ"], words: ["ほし", "むし", "ゆき", "わに", "ちゃ", "きょう"], goal: 20, mini: .chochin, chapter: 3, focus: ["ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ"]),
+        Stage(id: 3506, ja: "おたる・よる・しゅぎょう", en: "Otaru · Night · Training", zh: "小樽・夜・修行", ko: "오타루・밤・수행", bg: "bg_c3_otaru", kind: .battle, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ"], words: ["わに", "ちゃ", "きょう", "しゃしん", "うち", "かに"], goal: 25, chapter: 3),
         Stage(id: 3005, ja: "はこだて・あさいち", en: "Hakodate · Morning Market", zh: "函館・早市", ko: "하코다테・아침 시장", bg: "bg_c3_hakodate", kind: .lesson, newKana: ["ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ"], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ"], words: ["ひと", "みみ", "ねずみ", "ひとつ", "ちゃ", "きょう"], goal: 20, chapter: 3),
         Stage(id: 3006, ja: "はこだて・あさいち・あそび", en: "Hakodate · Morning Market · Game", zh: "函館・早市・遊戲", ko: "하코다테・아침 시장・게임", bg: "bg_c3_hakodate", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .shodo, chapter: 3, focus: ["ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ"]),
+        Stage(id: 3507, ja: "はこだて・あさいち・ことば", en: "Hakodate · Morning Market · Words", zh: "函館・早市・詞語", ko: "하코다테・아침 시장・단어", bg: "bg_c3_hakodate", kind: .lesson, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ"], words: ["ひと", "みみ", "ねずみ", "ひとつ", "ちゃ", "きょう"], goal: 20, chapter: 3),
+        Stage(id: 3508, ja: "はこだて・あさいち・あそび2", en: "Hakodate · Morning Market · Game 2", zh: "函館・早市・遊戲2", ko: "하코다테・아침 시장・게임2", bg: "bg_c3_hakodate", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .sushi, chapter: 3, focus: ["ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ"]),
+        Stage(id: 3509, ja: "はこだて・あさいち・しゅぎょう", en: "Hakodate · Morning Market · Training", zh: "函館・早市・修行", ko: "하코다테・아침 시장・수행", bg: "bg_c3_hakodate", kind: .battle, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ"], words: ["ひと", "みみ", "ねずみ", "ひとつ", "ちゃ", "きょう"], goal: 25, chapter: 3),
         Stage(id: 3007, ja: "はこだて", en: "Hakodate", zh: "函館", ko: "하코다테", bg: "bg_c3_hakodate", kind: .lesson, newKana: ["りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ"], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ"], words: ["りんご", "かぎ", "ちゃ", "きょう", "しゃしん", "ぎゅうにゅう"], goal: 20, chapter: 3),
         Stage(id: 3008, ja: "はこだて・あそび", en: "Hakodate · Game", zh: "函館・遊戲", ko: "하코다테・게임", bg: "bg_c3_hakodate", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .karuta, chapter: 3, focus: ["りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ"]),
+        Stage(id: 3510, ja: "はこだて・ことば", en: "Hakodate · Words", zh: "函館・詞語", ko: "하코다테・단어", bg: "bg_c3_hakodate", kind: .lesson, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ"], words: ["りんご", "かぎ", "ちゃ", "きょう", "しゃしん", "ぎゅうにゅう"], goal: 20, chapter: 3),
+        Stage(id: 3511, ja: "はこだて・あそび2", en: "Hakodate · Game 2", zh: "函館・遊戲2", ko: "하코다테・게임2", bg: "bg_c3_hakodate", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .kingyo, chapter: 3, focus: ["りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ"]),
+        Stage(id: 3512, ja: "はこだて・しゅぎょう", en: "Hakodate · Training", zh: "函館・修行", ko: "하코다테・수행", bg: "bg_c3_hakodate", kind: .battle, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ"], words: ["りんご", "かぎ", "ちゃ", "きょう", "しゃしん", "ぎゅうにゅう"], goal: 25, chapter: 3),
         Stage(id: 3009, ja: "ゆきの はら", en: "Snowy Field", zh: "雪原", ko: "눈 덮인 들판", bg: "bg_mg_yuki", kind: .lesson, newKana: ["じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ"], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ"], words: ["ちゃ", "きょう", "しゃしん", "じゃがいも", "ぎゅうにゅう", "りょうり"], goal: 20, chapter: 3),
         Stage(id: 3010, ja: "ゆきの はら・あそび", en: "Snowy Field · Game", zh: "雪原・遊戲", ko: "눈 덮인 들판・게임", bg: "bg_mg_yuki", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .tsuri, chapter: 3, focus: ["じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ"]),
+        Stage(id: 3513, ja: "ゆきの はら・ことば", en: "Snowy Field · Words", zh: "雪原・詞語", ko: "눈 덮인 들판・단어", bg: "bg_mg_yuki", kind: .lesson, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ"], words: ["ちゃ", "きょう", "しゃしん", "じゃがいも", "ぎゅうにゅう", "りょうり"], goal: 20, chapter: 3),
+        Stage(id: 3514, ja: "ゆきの はら・あそび2", en: "Snowy Field · Game 2", zh: "雪原・遊戲2", ko: "눈 덮인 들판・게임2", bg: "bg_mg_yuki", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .mekuri, chapter: 3, focus: ["じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ"]),
+        Stage(id: 3515, ja: "ゆきの はら・しゅぎょう", en: "Snowy Field · Training", zh: "雪原・修行", ko: "눈 덮인 들판・수행", bg: "bg_mg_yuki", kind: .battle, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ"], words: ["ちゃ", "きょう", "しゃしん", "じゃがいも", "ぎゅうにゅう", "りょうり"], goal: 25, chapter: 3),
         Stage(id: 3011, ja: "ゆきの はら・あそび", en: "Snowy Field · Game", zh: "雪原・遊戲", ko: "눈 들판・게임", bg: "bg_mg_yuki", kind: .battle, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 25, chapter: 3),
         Stage(id: 3012, ja: "ゆきの はら（中ボス）", en: "Snowy Field (Mid-boss)", zh: "雪原（中頭目）", ko: "눈 들판 (중간 보스)", bg: "bg_mg_yuki", kind: .mid, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", "ナ", "ニ", "ヌ", "ネ", "ノ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 12, chapter: 3, foe: "zk_3_3"),
         Stage(id: 3013, ja: "おたる・カタカナ", en: "Otaru · Katakana", zh: "小樽・片假名", ko: "오타루・가타카나", bg: "bg_c3_otaru", kind: .lesson, newKana: ["ア", "イ", "ウ", "エ", "オ"], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, chapter: 3),
         Stage(id: 3014, ja: "おたる・カタカナ・あそび", en: "Otaru · Katakana · Game", zh: "小樽・片假名・遊戲", ko: "오타루・가타카나・게임", bg: "bg_c3_otaru", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .chochin, chapter: 3, focus: ["ア", "イ", "ウ", "エ", "オ"]),
+        Stage(id: 3516, ja: "おたる・カタカナ・ことば", en: "Otaru · Katakana · Words", zh: "小樽・片假名・詞語", ko: "오타루・가타카나・단어", bg: "bg_c3_otaru", kind: .lesson, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, chapter: 3),
+        Stage(id: 3517, ja: "おたる・カタカナ・あそび2", en: "Otaru · Katakana · Game 2", zh: "小樽・片假名・遊戲2", ko: "오타루・가타카나・게임2", bg: "bg_c3_otaru", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .taiko, chapter: 3, focus: ["ア", "イ", "ウ", "エ", "オ"]),
+        Stage(id: 3518, ja: "おたる・カタカナ・しゅぎょう", en: "Otaru · Katakana · Training", zh: "小樽・片假名・修行", ko: "오타루・가타카나・수행", bg: "bg_c3_otaru", kind: .battle, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 25, chapter: 3),
         Stage(id: 3015, ja: "はこだて・カタカナ", en: "Hakodate · Katakana", zh: "函館・片假名", ko: "하코다테・가타카나", bg: "bg_c3_hakodate", kind: .lesson, newKana: ["カ", "キ", "ク", "ケ", "コ"], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ"], words: ["ケーキ", "イカ", "ひと", "ほし", "みみ", "むし"], goal: 20, chapter: 3),
         Stage(id: 3016, ja: "はこだて・カタカナ・あそび", en: "Hakodate · Katakana · Game", zh: "函館・片假名・遊戲", ko: "하코다테・가타카나・게임", bg: "bg_c3_hakodate", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .sushi, chapter: 3, focus: ["カ", "キ", "ク", "ケ", "コ"]),
+        Stage(id: 3519, ja: "はこだて・カタカナ・ことば", en: "Hakodate · Katakana · Words", zh: "函館・片假名・詞語", ko: "하코다테・가타카나・단어", bg: "bg_c3_hakodate", kind: .lesson, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ"], words: ["ケーキ", "イカ", "ひと", "ほし", "みみ", "むし"], goal: 20, chapter: 3),
+        Stage(id: 3520, ja: "はこだて・カタカナ・あそび2", en: "Hakodate · Katakana · Game 2", zh: "函館・片假名・遊戲2", ko: "하코다테・가타카나・게임2", bg: "bg_c3_hakodate", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .daruma, chapter: 3, focus: ["カ", "キ", "ク", "ケ", "コ"]),
+        Stage(id: 3521, ja: "はこだて・カタカナ・しゅぎょう", en: "Hakodate · Katakana · Training", zh: "函館・片假名・修行", ko: "하코다테・가타카나・수행", bg: "bg_c3_hakodate", kind: .battle, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ"], words: ["ケーキ", "イカ", "ひと", "ほし", "みみ", "むし"], goal: 25, chapter: 3),
         Stage(id: 3017, ja: "ゆきの まち", en: "Snowy Town", zh: "雪之鎮", ko: "눈의 마을", bg: "bg_c3_otaru", kind: .lesson, newKana: ["サ", "シ", "ス", "セ", "ソ"], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ"], words: ["アイス", "スキー", "サケ", "スイカ", "ソース", "ひと"], goal: 20, chapter: 3),
         Stage(id: 3018, ja: "ゆきの まち・あそび", en: "Snowy Town · Game", zh: "雪之鎮・遊戲", ko: "눈의 마을・게임", bg: "bg_c3_otaru", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .kingyo, chapter: 3, focus: ["サ", "シ", "ス", "セ", "ソ"]),
-        Stage(id: 3019, ja: "はこだて・よる", en: "Hakodate · Night", zh: "函館・夜", ko: "하코다테・밤", bg: "bg_c3_hakodate", kind: .lesson, newKana: ["タ", "チ", "ツ", "テ", "ト"], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト"], words: ["タクシー", "セーター", "ひと", "ほし", "みみ", "むし"], goal: 20, chapter: 3),
+        Stage(id: 3522, ja: "ゆきの まち・ことば", en: "Snowy Town · Words", zh: "雪之鎮・詞語", ko: "눈의 마을・단어", bg: "bg_c3_otaru", kind: .lesson, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ"], words: ["アイス", "スキー", "サケ", "スイカ", "ソース", "ひと"], goal: 20, chapter: 3),
+        Stage(id: 3523, ja: "ゆきの まち・あそび2", en: "Snowy Town · Game 2", zh: "雪之鎮・遊戲2", ko: "눈의 마을・게임2", bg: "bg_c3_otaru", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .yuki, chapter: 3, focus: ["サ", "シ", "ス", "セ", "ソ"]),
+        Stage(id: 3524, ja: "ゆきの まち・しゅぎょう", en: "Snowy Town · Training", zh: "雪之鎮・修行", ko: "눈의 마을・수행", bg: "bg_c3_otaru", kind: .battle, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ"], words: ["アイス", "スキー", "サケ", "スイカ", "ソース", "ひと"], goal: 25, chapter: 3),
+        Stage(id: 3019, ja: "はこだて・よる", en: "Hakodate · Night", zh: "函館・夜", ko: "하코다테・밤", bg: "bg_c3_hakodate", kind: .lesson, newKana: ["タ", "チ", "ツ", "テ", "ト"], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト"], words: ["タクシー", "セーター", "スカート", "ひと", "ほし", "みみ"], goal: 20, chapter: 3),
         Stage(id: 3020, ja: "はこだて・よる・あそび", en: "Hakodate · Night · Game", zh: "函館・夜・遊戲", ko: "하코다테・밤・게임", bg: "bg_c3_hakodate", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .mekuri, chapter: 3, focus: ["タ", "チ", "ツ", "テ", "ト"]),
-        Stage(id: 3021, ja: "おたる・ゆうがた", en: "Otaru · Evening", zh: "小樽・傍晚", ko: "오타루・저녁", bg: "bg_c3_otaru", kind: .lesson, newKana: ["ナ", "ニ", "ヌ", "ネ", "ノ"], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", "ナ", "ニ", "ヌ", "ネ", "ノ"], words: ["カニ", "ナス", "テニス", "ネクタイ", "ノート", "ひと"], goal: 20, chapter: 3),
+        Stage(id: 3525, ja: "はこだて・よる・ことば", en: "Hakodate · Night · Words", zh: "函館・夜・詞語", ko: "하코다테・밤・단어", bg: "bg_c3_hakodate", kind: .lesson, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト"], words: ["タクシー", "セーター", "スカート", "ひと", "ほし", "みみ"], goal: 20, chapter: 3),
+        Stage(id: 3526, ja: "はこだて・よる・あそび2", en: "Hakodate · Night · Game 2", zh: "函館・夜・遊戲2", ko: "하코다테・밤・게임2", bg: "bg_c3_hakodate", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .dash, chapter: 3, focus: ["タ", "チ", "ツ", "テ", "ト"]),
+        Stage(id: 3527, ja: "はこだて・よる・しゅぎょう", en: "Hakodate · Night · Training", zh: "函館・夜・修行", ko: "하코다테・밤・수행", bg: "bg_c3_hakodate", kind: .battle, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト"], words: ["タクシー", "セーター", "スカート", "ひと", "ほし", "みみ"], goal: 25, chapter: 3),
+        Stage(id: 3021, ja: "おたる・ゆうがた", en: "Otaru · Evening", zh: "小樽・傍晚", ko: "오타루・저녁", bg: "bg_c3_otaru", kind: .lesson, newKana: ["ナ", "ニ", "ヌ", "ネ", "ノ"], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", "ナ", "ニ", "ヌ", "ネ", "ノ"], words: ["カニ", "ナス", "テニス", "ネクタイ", "ノート", "ネコ"], goal: 20, chapter: 3),
         Stage(id: 3022, ja: "おたる・ゆうがた・あそび", en: "Otaru · Evening · Game", zh: "小樽・傍晚・遊戲", ko: "오타루・저녁・게임", bg: "bg_c3_otaru", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", "ナ", "ニ", "ヌ", "ネ", "ノ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .taiko, chapter: 3, focus: ["ナ", "ニ", "ヌ", "ネ", "ノ"]),
+        Stage(id: 3528, ja: "おたる・ゆうがた・ことば", en: "Otaru · Evening · Words", zh: "小樽・傍晚・詞語", ko: "오타루・저녁・단어", bg: "bg_c3_otaru", kind: .lesson, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", "ナ", "ニ", "ヌ", "ネ", "ノ"], words: ["カニ", "ナス", "テニス", "ネクタイ", "ノート", "ネコ"], goal: 20, chapter: 3),
+        Stage(id: 3529, ja: "おたる・ゆうがた・あそび2", en: "Otaru · Evening · Game 2", zh: "小樽・傍晚・遊戲2", ko: "오타루・저녁・게임2", bg: "bg_c3_otaru", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", "ナ", "ニ", "ヌ", "ネ", "ノ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .ninja, chapter: 3, focus: ["ナ", "ニ", "ヌ", "ネ", "ノ"]),
+        Stage(id: 3530, ja: "おたる・ゆうがた・しゅぎょう", en: "Otaru · Evening · Training", zh: "小樽・傍晚・修行", ko: "오타루・저녁・수행", bg: "bg_c3_otaru", kind: .battle, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", "ナ", "ニ", "ヌ", "ネ", "ノ"], words: ["カニ", "ナス", "テニス", "ネクタイ", "ノート", "ネコ"], goal: 25, chapter: 3),
         Stage(id: 3023, ja: "ボスの まえ", en: "Before the Boss", zh: "頭目之前", ko: "보스 전", bg: "bg_mg_yuki", kind: .mini, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", "ナ", "ニ", "ヌ", "ネ", "ノ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに"], goal: 20, mini: .daruma, chapter: 3),
         Stage(id: 3024, ja: "ほっかいどう・ボス", en: "Hokkaido · Boss", zh: "北海道・頭目", ko: "홋카이도・보스", bg: "bg_mg_yuki", kind: .boss, newKana: [], known: ["きゃ", "きゅ", "きょ", "しゃ", "しゅ", "しょ", "ちゃ", "ちゅ", "ちょ", "にゃ", "にゅ", "にょ", "ひゃ", "ひゅ", "ひょ", "みゃ", "みゅ", "みょ", "りゃ", "りゅ", "りょ", "ぎゃ", "ぎゅ", "ぎょ", "じゃ", "じゅ", "じょ", "びゃ", "びゅ", "びょ", "ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク", "ケ", "コ", "サ", "シ", "ス", "セ", "ソ", "タ", "チ", "ツ", "テ", "ト", "ナ", "ニ", "ヌ", "ネ", "ノ"], words: ["ひと", "ほし", "みみ", "むし", "ゆき", "わに", "りんご", "かぎ", "ねずみ", "ひとつ", "ちゃ", "きょう"], goal: 14, chapter: 3, foe: "boss_have"),
-        Stage(id: 4001, ja: "しらかわごう", en: "Shirakawa-go", zh: "白川鄉", ko: "시라카와고", bg: "bg_c4_shirakawa", kind: .lesson, newKana: ["ハ", "ヒ", "フ", "ヘ", "ホ"], known: ["ハ", "ヒ", "フ", "ヘ", "ホ"], words: [], goal: 20, chapter: 4),
-        Stage(id: 4002, ja: "しらかわごう・あそび", en: "Shirakawa-go · Game", zh: "白川鄉・遊戲", ko: "시라카와고・게임", bg: "bg_c4_shirakawa", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ"], words: [], goal: 20, mini: .yuki, chapter: 4, focus: ["ハ", "ヒ", "フ", "ヘ", "ホ"]),
-        Stage(id: 4003, ja: "ふじさん", en: "Mount Fuji", zh: "富士山", ko: "후지산", bg: "bg_mg_shinkansen", kind: .lesson, newKana: ["マ", "ミ", "ム", "メ", "モ"], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ"], words: ["ハム", "トマト", "メモ", "ホーム"], goal: 20, chapter: 4),
-        Stage(id: 4004, ja: "ふじさん・あそび", en: "Mount Fuji · Game", zh: "富士山・遊戲", ko: "후지산・게임", bg: "bg_mg_shinkansen", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ"], words: ["ハム", "トマト", "メモ", "ホーム"], goal: 20, mini: .dash, chapter: 4, focus: ["マ", "ミ", "ム", "メ", "モ"]),
-        Stage(id: 4005, ja: "かなざわ・けんろくえん", en: "Kanazawa · Kenrokuen", zh: "金澤・兼六園", ko: "가나자와・겐로쿠엔", bg: "bg_c4_kanazawa", kind: .lesson, newKana: ["ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン"], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン"], words: ["ワイン", "ハム", "トマト", "メモ", "ホーム"], goal: 20, chapter: 4),
-        Stage(id: 4006, ja: "かなざわ・けんろくえん・あそび", en: "Kanazawa · Kenrokuen · Game", zh: "金澤・兼六園・遊戲", ko: "가나자와・겐로쿠엔・게임", bg: "bg_c4_kanazawa", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン"], words: ["ハム", "トマト", "メモ", "ホーム", "ワイン"], goal: 20, mini: .ninja, chapter: 4, focus: ["ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン"]),
+        Stage(id: 4001, ja: "しらかわごう", en: "Shirakawa-go", zh: "白川鄉", ko: "시라카와고", bg: "bg_c4_shirakawa", kind: .lesson, newKana: ["ハ", "ヒ", "フ", "ヘ", "ホ"], known: ["ハ", "ヒ", "フ", "ヘ", "ホ"], words: ["コーヒー", "ナイフ"], goal: 20, chapter: 4),
+        Stage(id: 4002, ja: "しらかわごう・あそび", en: "Shirakawa-go · Game", zh: "白川鄉・遊戲", ko: "시라카와고・게임", bg: "bg_c4_shirakawa", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ"], words: ["コーヒー", "ナイフ"], goal: 20, mini: .yuki, chapter: 4, focus: ["ハ", "ヒ", "フ", "ヘ", "ホ"]),
+        Stage(id: 4501, ja: "しらかわごう・ことば", en: "Shirakawa-go · Words", zh: "白川鄉・詞語", ko: "시라카와고・단어", bg: "bg_c4_shirakawa", kind: .lesson, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ"], words: ["コーヒー", "ナイフ", "はな", "ひと"], goal: 20, chapter: 4),
+        Stage(id: 4502, ja: "しらかわごう・あそび2", en: "Shirakawa-go · Game 2", zh: "白川鄉・遊戲2", ko: "시라카와고・게임2", bg: "bg_c4_shirakawa", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ"], words: ["コーヒー", "ナイフ"], goal: 20, mini: .yabusame, chapter: 4, focus: ["ハ", "ヒ", "フ", "ヘ", "ホ"]),
+        Stage(id: 4503, ja: "しらかわごう・しゅぎょう", en: "Shirakawa-go · Training", zh: "白川鄉・修行", ko: "시라카와고・수행", bg: "bg_c4_shirakawa", kind: .battle, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ"], words: ["コーヒー", "ナイフ", "はな", "ひと"], goal: 25, chapter: 4),
+        Stage(id: 4003, ja: "ふじさん", en: "Mount Fuji", zh: "富士山", ko: "후지산", bg: "bg_mg_shinkansen", kind: .lesson, newKana: ["マ", "ミ", "ム", "メ", "モ"], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ"], words: ["ハム", "トマト", "メモ", "ホーム", "スマホ", "アニメ"], goal: 20, chapter: 4),
+        Stage(id: 4004, ja: "ふじさん・あそび", en: "Mount Fuji · Game", zh: "富士山・遊戲", ko: "후지산・게임", bg: "bg_mg_shinkansen", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ"], words: ["ハム", "トマト", "メモ", "ホーム", "コーヒー", "スマホ"], goal: 20, mini: .dash, chapter: 4, focus: ["マ", "ミ", "ム", "メ", "モ"]),
+        Stage(id: 4504, ja: "ふじさん・ことば", en: "Mount Fuji · Words", zh: "富士山・詞語", ko: "후지산・단어", bg: "bg_mg_shinkansen", kind: .lesson, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ"], words: ["ハム", "トマト", "メモ", "ホーム", "スマホ", "アニメ"], goal: 20, chapter: 4),
+        Stage(id: 4505, ja: "ふじさん・あそび2", en: "Mount Fuji · Game 2", zh: "富士山・遊戲2", ko: "후지산・게임2", bg: "bg_mg_shinkansen", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ"], words: ["ハム", "トマト", "メモ", "ホーム", "コーヒー", "スマホ"], goal: 20, mini: .tsumiki, chapter: 4, focus: ["マ", "ミ", "ム", "メ", "モ"]),
+        Stage(id: 4506, ja: "ふじさん・しゅぎょう", en: "Mount Fuji · Training", zh: "富士山・修行", ko: "후지산・수행", bg: "bg_mg_shinkansen", kind: .battle, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ"], words: ["ハム", "トマト", "メモ", "ホーム", "スマホ", "アニメ"], goal: 25, chapter: 4),
+        Stage(id: 4005, ja: "かなざわ・けんろくえん", en: "Kanazawa · Kenrokuen", zh: "金澤・兼六園", ko: "가나자와・겐로쿠엔", bg: "bg_c4_kanazawa", kind: .lesson, newKana: ["ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン"], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン"], words: ["ワイン", "ハム", "トマト", "メモ", "ホーム", "コーヒー"], goal: 20, chapter: 4),
+        Stage(id: 4006, ja: "かなざわ・けんろくえん・あそび", en: "Kanazawa · Kenrokuen · Game", zh: "金澤・兼六園・遊戲", ko: "가나자와・겐로쿠엔・게임", bg: "bg_c4_kanazawa", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン"], words: ["ハム", "トマト", "メモ", "ホーム", "ワイン", "コーヒー"], goal: 20, mini: .ninja, chapter: 4, focus: ["ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン"]),
+        Stage(id: 4507, ja: "かなざわ・けんろくえん・ことば", en: "Kanazawa · Kenrokuen · Words", zh: "金澤・兼六園・詞語", ko: "가나자와・겐로쿠엔・단어", bg: "bg_c4_kanazawa", kind: .lesson, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン"], words: ["ワイン", "ハム", "トマト", "メモ", "ホーム", "コーヒー"], goal: 20, chapter: 4),
+        Stage(id: 4508, ja: "かなざわ・けんろくえん・あそび2", en: "Kanazawa · Kenrokuen · Game 2", zh: "金澤・兼六園・遊戲2", ko: "가나자와・겐로쿠엔・게임2", bg: "bg_c4_kanazawa", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン"], words: ["ハム", "トマト", "メモ", "ホーム", "ワイン", "コーヒー"], goal: 20, mini: .takoyaki, chapter: 4, focus: ["ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン"]),
+        Stage(id: 4509, ja: "かなざわ・けんろくえん・しゅぎょう", en: "Kanazawa · Kenrokuen · Training", zh: "金澤・兼六園・修行", ko: "가나자와・겐로쿠엔・수행", bg: "bg_c4_kanazawa", kind: .battle, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン"], words: ["ワイン", "ハム", "トマト", "メモ", "ホーム", "コーヒー"], goal: 25, chapter: 4),
         Stage(id: 4007, ja: "かなざわ・まち", en: "Kanazawa · Town", zh: "金澤・街道", ko: "가나자와・거리", bg: "bg_c4_kanazawa", kind: .lesson, newKana: ["ラ", "リ", "ル", "レ", "ロ"], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ミルク", "レモン"], goal: 20, chapter: 4),
         Stage(id: 4008, ja: "かなざわ・まち・あそび", en: "Kanazawa · Town · Game", zh: "金澤・街道・遊戲", ko: "가나자와・거리・게임", bg: "bg_c4_kanazawa", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト"], goal: 20, mini: .yabusame, chapter: 4, focus: ["ラ", "リ", "ル", "レ", "ロ"]),
+        Stage(id: 4510, ja: "かなざわ・まち・ことば", en: "Kanazawa · Town · Words", zh: "金澤・街道・詞語", ko: "가나자와・거리・단어", bg: "bg_c4_kanazawa", kind: .lesson, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ミルク", "レモン"], goal: 20, chapter: 4),
+        Stage(id: 4511, ja: "かなざわ・まち・あそび2", en: "Kanazawa · Town · Game 2", zh: "金澤・街道・遊戲2", ko: "가나자와・거리・게임2", bg: "bg_c4_kanazawa", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト"], goal: 20, mini: .train, chapter: 4, focus: ["ラ", "リ", "ル", "レ", "ロ"]),
+        Stage(id: 4512, ja: "かなざわ・まち・しゅぎょう", en: "Kanazawa · Town · Training", zh: "金澤・街道・修行", ko: "가나자와・거리・수행", bg: "bg_c4_kanazawa", kind: .battle, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ミルク", "レモン"], goal: 25, chapter: 4),
         Stage(id: 4009, ja: "やまみち・あそび", en: "Mountain Path · Game", zh: "山路・遊戲", ko: "산길・게임", bg: "bg_c4_shirakawa", kind: .battle, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト"], goal: 25, chapter: 4),
         Stage(id: 4010, ja: "やまみち（中ボス）", en: "Mountain Path (Mid-boss)", zh: "山路（中頭目）", ko: "산길 (중간 보스)", bg: "bg_c4_shirakawa", kind: .mid, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "百", "千", "円"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト"], goal: 12, chapter: 4, foe: "zk_4_3"),
-        Stage(id: 4011, ja: "えきの みせ", en: "Station Shop", zh: "車站商店", ko: "역 가게", bg: "bg_c4_kanazawa", kind: .lesson, newKana: ["一", "二", "三", "四", "五"], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五"], words: ["三つ", "ホテル", "メロン", "ラーメン", "カメラ", "ハム"], goal: 20, chapter: 4),
+        Stage(id: 4011, ja: "えきの みせ", en: "Station Shop", zh: "車站商店", ko: "역 가게", bg: "bg_c4_kanazawa", kind: .lesson, newKana: ["一", "二", "三", "四", "五"], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五"], words: ["三つ", "一つ", "二つ", "四つ", "五つ", "ホテル"], goal: 20, chapter: 4),
         Stage(id: 4012, ja: "えきの みせ・あそび", en: "Station Shop · Game", zh: "車站商店・遊戲", ko: "역 가게・게임", bg: "bg_c4_kanazawa", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト"], goal: 20, mini: .tsumiki, chapter: 4, focus: ["一", "二", "三", "四", "五"]),
+        Stage(id: 4513, ja: "えきの みせ・ことば", en: "Station Shop · Words", zh: "車站商店・詞語", ko: "역 가게・단어", bg: "bg_c4_kanazawa", kind: .lesson, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五"], words: ["三つ", "一つ", "二つ", "四つ", "五つ", "ホテル"], goal: 20, chapter: 4),
+        Stage(id: 4514, ja: "えきの みせ・あそび2", en: "Station Shop · Game 2", zh: "車站商店・遊戲2", ko: "역 가게・게임2", bg: "bg_c4_kanazawa", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト"], goal: 20, mini: .kawara, chapter: 4, focus: ["一", "二", "三", "四", "五"]),
+        Stage(id: 4515, ja: "えきの みせ・しゅぎょう", en: "Station Shop · Training", zh: "車站商店・修行", ko: "역 가게・수행", bg: "bg_c4_kanazawa", kind: .battle, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五"], words: ["三つ", "一つ", "二つ", "四つ", "五つ", "ホテル"], goal: 25, chapter: 4),
         Stage(id: 4013, ja: "しらかわごう・ゆき", en: "Shirakawa-go · Snow", zh: "白川鄉・雪", ko: "시라카와고・눈", bg: "bg_c4_shirakawa", kind: .lesson, newKana: ["六", "七", "八", "九", "十"], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト"], goal: 20, chapter: 4),
         Stage(id: 4014, ja: "しらかわごう・ゆき・あそび", en: "Shirakawa-go · Snow · Game", zh: "白川鄉・雪・遊戲", ko: "시라카와고・눈・게임", bg: "bg_c4_shirakawa", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト"], goal: 20, mini: .takoyaki, chapter: 4, focus: ["六", "七", "八", "九", "十"]),
+        Stage(id: 4516, ja: "しらかわごう・ゆき・ことば", en: "Shirakawa-go · Snow · Words", zh: "白川鄉・雪・詞語", ko: "시라카와고・눈・단어", bg: "bg_c4_shirakawa", kind: .lesson, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト"], goal: 20, chapter: 4),
+        Stage(id: 4517, ja: "しらかわごう・ゆき・あそび2", en: "Shirakawa-go · Snow · Game 2", zh: "白川鄉・雪・遊戲2", ko: "시라카와고・눈・게임2", bg: "bg_c4_shirakawa", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト"], goal: 20, mini: .meiro, chapter: 4, focus: ["六", "七", "八", "九", "十"]),
+        Stage(id: 4518, ja: "しらかわごう・ゆき・しゅぎょう", en: "Shirakawa-go · Snow · Training", zh: "白川鄉・雪・修行", ko: "시라카와고・눈・수행", bg: "bg_c4_shirakawa", kind: .battle, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト"], goal: 25, chapter: 4),
         Stage(id: 4015, ja: "ふじさん・ふもと", en: "Foot of Mount Fuji", zh: "富士山腳", ko: "후지산 기슭", bg: "bg_mg_shinkansen", kind: .lesson, newKana: ["百", "千", "円"], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "百", "千", "円"], words: ["十円", "百円", "千円", "五円", "八百", "ホテル"], goal: 20, chapter: 4),
         Stage(id: 4016, ja: "ふじさん・ふもと・あそび", en: "Foot of Mount Fuji · Game", zh: "富士山腳・遊戲", ko: "후지산 기슭・게임", bg: "bg_mg_shinkansen", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "百", "千", "円"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト"], goal: 20, mini: .train, chapter: 4, focus: ["百", "千", "円"]),
+        Stage(id: 4519, ja: "ふじさん・ふもと・ことば", en: "Foot of Mount Fuji · Words", zh: "富士山腳・詞語", ko: "후지산 기슭・단어", bg: "bg_mg_shinkansen", kind: .lesson, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "百", "千", "円"], words: ["十円", "百円", "千円", "五円", "八百", "ホテル"], goal: 20, chapter: 4),
+        Stage(id: 4520, ja: "ふじさん・ふもと・あそび2", en: "Foot of Mount Fuji · Game 2", zh: "富士山腳・遊戲2", ko: "후지산 기슭・게임2", bg: "bg_mg_shinkansen", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "百", "千", "円"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト"], goal: 20, mini: .nazori, chapter: 4, focus: ["百", "千", "円"]),
+        Stage(id: 4521, ja: "ふじさん・ふもと・しゅぎょう", en: "Foot of Mount Fuji · Training", zh: "富士山腳・修行", ko: "후지산 기슭・수행", bg: "bg_mg_shinkansen", kind: .battle, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "百", "千", "円"], words: ["十円", "百円", "千円", "五円", "八百", "ホテル"], goal: 25, chapter: 4),
         Stage(id: 4017, ja: "ボスの まえ", en: "Before the Boss", zh: "頭目之前", ko: "보스 전", bg: "bg_c4_shirakawa", kind: .mini, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "百", "千", "円"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト"], goal: 20, mini: .kawara, chapter: 4),
         Stage(id: 4018, ja: "ちゅうぶ・ボス", en: "Chubu · Boss", zh: "中部・頭目", ko: "주부・보스", bg: "bg_c4_shirakawa", kind: .boss, newKana: [], known: ["ハ", "ヒ", "フ", "ヘ", "ホ", "マ", "ミ", "ム", "メ", "モ", "ヤ", "ユ", "ヨ", "ワ", "ヲ", "ン", "ラ", "リ", "ル", "レ", "ロ", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十", "百", "千", "円"], words: ["ホテル", "メロン", "ラーメン", "カメラ", "ハム", "トマト", "ミルク", "レモン", "メモ", "ホーム", "ワイン", "十円"], goal: 14, chapter: 4, foe: "boss_seven"),
-        Stage(id: 5001, ja: "ふしみ いなり", en: "Fushimi Inari", zh: "伏見稻荷", ko: "후시미 이나리", bg: "bg_c5_inari", kind: .lesson, newKana: ["日", "月", "木", "山", "川"], known: ["日", "月", "木", "山", "川"], words: ["山", "川", "月", "木"], goal: 20, chapter: 5),
-        Stage(id: 5002, ja: "ふしみ いなり・あそび", en: "Fushimi Inari · Game", zh: "伏見稻荷・遊戲", ko: "후시미 이나리・게임", bg: "bg_c5_inari", kind: .mini, newKana: [], known: ["日", "月", "木", "山", "川"], words: ["山", "川", "月", "木"], goal: 20, mini: .meiro, chapter: 5, focus: ["日", "月", "木", "山", "川"]),
-        Stage(id: 5003, ja: "きょうと・ひがしやま", en: "Kyoto · Higashiyama", zh: "京都・東山", ko: "교토・히가시야마", bg: "bg_mg_dash", kind: .lesson, newKana: ["目", "口", "耳", "手", "足"], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足"], words: ["口", "目", "手", "足", "耳", "山"], goal: 20, chapter: 5),
+        Stage(id: 5001, ja: "ふしみ いなり", en: "Fushimi Inari", zh: "伏見稻荷", ko: "후시미 이나리", bg: "bg_c5_inari", kind: .lesson, newKana: ["日", "月", "木", "山", "川"], known: ["日", "月", "木", "山", "川"], words: ["山", "川", "月", "木", "六月", "九月"], goal: 20, chapter: 5),
+        Stage(id: 5002, ja: "ふしみ いなり・あそび", en: "Fushimi Inari · Game", zh: "伏見稻荷・遊戲", ko: "후시미 이나리・게임", bg: "bg_c5_inari", kind: .mini, newKana: [], known: ["日", "月", "木", "山", "川"], words: ["山", "川", "月", "木", "六月", "九月"], goal: 20, mini: .meiro, chapter: 5, focus: ["日", "月", "木", "山", "川"]),
+        Stage(id: 5501, ja: "ふしみ いなり・ことば", en: "Fushimi Inari · Words", zh: "伏見稻荷・詞語", ko: "후시미 이나리・단어", bg: "bg_c5_inari", kind: .lesson, newKana: [], known: ["日", "月", "木", "山", "川"], words: ["山", "川", "月", "木", "六月", "九月"], goal: 20, chapter: 5),
+        Stage(id: 5502, ja: "ふしみ いなり・あそび2", en: "Fushimi Inari · Game 2", zh: "伏見稻荷・遊戲2", ko: "후시미 이나리・게임2", bg: "bg_c5_inari", kind: .mini, newKana: [], known: ["日", "月", "木", "山", "川"], words: ["山", "川", "月", "木", "六月", "九月"], goal: 20, mini: .shodo, chapter: 5, focus: ["日", "月", "木", "山", "川"]),
+        Stage(id: 5503, ja: "ふしみ いなり・しゅぎょう", en: "Fushimi Inari · Training", zh: "伏見稻荷・修行", ko: "후시미 이나리・수행", bg: "bg_c5_inari", kind: .battle, newKana: [], known: ["日", "月", "木", "山", "川"], words: ["山", "川", "月", "木", "六月", "九月"], goal: 25, chapter: 5),
+        Stage(id: 5003, ja: "きょうと・ひがしやま", en: "Kyoto · Higashiyama", zh: "京都・東山", ko: "교토・히가시야마", bg: "bg_mg_dash", kind: .lesson, newKana: ["目", "口", "耳", "手", "足"], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足"], words: ["口", "目", "手", "足", "耳", "口ぶえ"], goal: 20, chapter: 5),
         Stage(id: 5004, ja: "きょうと・ひがしやま・あそび", en: "Kyoto · Higashiyama · Game", zh: "京都・東山・遊戲", ko: "교토・히가시야마・게임", bg: "bg_mg_dash", kind: .mini, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足"], words: ["山", "川", "月", "木", "口", "目"], goal: 20, mini: .nazori, chapter: 5, focus: ["目", "口", "耳", "手", "足"]),
-        Stage(id: 5005, ja: "なら こうえん", en: "Nara Park", zh: "奈良公園", ko: "나라 공원", bg: "bg_c5_nara", kind: .lesson, newKana: ["人", "田", "火", "水", "金"], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金"], words: ["火山", "水", "人口", "山", "川", "月"], goal: 20, chapter: 5),
+        Stage(id: 5504, ja: "きょうと・ひがしやま・ことば", en: "Kyoto · Higashiyama · Words", zh: "京都・東山・詞語", ko: "교토・히가시야마・단어", bg: "bg_mg_dash", kind: .lesson, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足"], words: ["口", "目", "手", "足", "耳", "口ぶえ"], goal: 20, chapter: 5),
+        Stage(id: 5505, ja: "きょうと・ひがしやま・あそび2", en: "Kyoto · Higashiyama · Game 2", zh: "京都・東山・遊戲2", ko: "교토・히가시야마・게임2", bg: "bg_mg_dash", kind: .mini, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足"], words: ["山", "川", "月", "木", "口", "目"], goal: 20, mini: .karuta, chapter: 5, focus: ["目", "口", "耳", "手", "足"]),
+        Stage(id: 5506, ja: "きょうと・ひがしやま・しゅぎょう", en: "Kyoto · Higashiyama · Training", zh: "京都・東山・修行", ko: "교토・히가시야마・수행", bg: "bg_mg_dash", kind: .battle, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足"], words: ["口", "目", "手", "足", "耳", "口ぶえ"], goal: 25, chapter: 5),
+        Stage(id: 5005, ja: "なら こうえん", en: "Nara Park", zh: "奈良公園", ko: "나라 공원", bg: "bg_c5_nara", kind: .lesson, newKana: ["人", "田", "火", "水", "金"], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金"], words: ["火山", "水", "人口", "お金", "山田さん", "田んぼ"], goal: 20, chapter: 5),
         Stage(id: 5006, ja: "なら こうえん・あそび", en: "Nara Park · Game", zh: "奈良公園・遊戲", ko: "나라 공원・게임", bg: "bg_c5_nara", kind: .mini, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金"], words: ["火山", "山", "川", "水", "月", "木"], goal: 20, mini: .shodo, chapter: 5, focus: ["人", "田", "火", "水", "金"]),
+        Stage(id: 5507, ja: "なら こうえん・ことば", en: "Nara Park · Words", zh: "奈良公園・詞語", ko: "나라 공원・단어", bg: "bg_c5_nara", kind: .lesson, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金"], words: ["火山", "水", "人口", "お金", "山田さん", "田んぼ"], goal: 20, chapter: 5),
+        Stage(id: 5508, ja: "なら こうえん・あそび2", en: "Nara Park · Game 2", zh: "奈良公園・遊戲2", ko: "나라 공원・게임2", bg: "bg_c5_nara", kind: .mini, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金"], words: ["火山", "山", "川", "水", "月", "木"], goal: 20, mini: .tsuri, chapter: 5, focus: ["人", "田", "火", "水", "金"]),
+        Stage(id: 5509, ja: "なら こうえん・しゅぎょう", en: "Nara Park · Training", zh: "奈良公園・修行", ko: "나라 공원・수행", bg: "bg_c5_nara", kind: .battle, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金"], words: ["火山", "水", "人口", "お金", "山田さん", "田んぼ"], goal: 25, chapter: 5),
         Stage(id: 5007, ja: "おおさか・あそび", en: "Osaka · Game", zh: "大阪・遊戲", ko: "오사카・게임", bg: "bg_mg_takoyaki", kind: .battle, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金"], words: ["火山", "山", "川", "水", "月", "木"], goal: 25, chapter: 5),
         Stage(id: 5008, ja: "おおさか（中ボス）", en: "Osaka (Mid-boss)", zh: "大阪（中頭目）", ko: "오사카 (중간 보스)", bg: "bg_mg_takoyaki", kind: .mid, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本", "大", "小", "上", "下"], words: ["日本", "火山", "大人", "子ども", "女の子", "男の子"], goal: 12, chapter: 5, foe: "zk_5_3"),
-        Stage(id: 5009, ja: "おおさか・よる", en: "Osaka · Night", zh: "大阪・夜", ko: "오사카・밤", bg: "bg_mg_takoyaki", kind: .lesson, newKana: ["土", "子", "女", "男", "本"], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本"], words: ["日本", "子ども", "女の子", "男の子", "火山", "山"], goal: 20, chapter: 5),
+        Stage(id: 5009, ja: "おおさか・よる", en: "Osaka · Night", zh: "大阪・夜", ko: "오사카・밤", bg: "bg_mg_takoyaki", kind: .lesson, newKana: ["土", "子", "女", "男", "本"], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本"], words: ["日本", "子ども", "女の子", "男の子", "本だな", "火山"], goal: 20, chapter: 5),
         Stage(id: 5010, ja: "おおさか・よる・あそび", en: "Osaka · Night · Game", zh: "大阪・夜・遊戲", ko: "오사카・밤・게임", bg: "bg_mg_takoyaki", kind: .mini, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本"], words: ["日本", "火山", "子ども", "女の子", "男の子", "山"], goal: 20, mini: .karuta, chapter: 5, focus: ["土", "子", "女", "男", "本"]),
-        Stage(id: 5011, ja: "いが・しろ", en: "Iga · Castle", zh: "伊賀・城", ko: "이가・성", bg: "bg_mg_ninja", kind: .lesson, newKana: ["大", "小", "上", "下"], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本", "大", "小", "上", "下"], words: ["大人", "大きい", "小さい", "上", "下", "日本"], goal: 20, chapter: 5),
+        Stage(id: 5510, ja: "おおさか・よる・ことば", en: "Osaka · Night · Words", zh: "大阪・夜・詞語", ko: "오사카・밤・단어", bg: "bg_mg_takoyaki", kind: .lesson, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本"], words: ["日本", "子ども", "女の子", "男の子", "本だな", "火山"], goal: 20, chapter: 5),
+        Stage(id: 5511, ja: "おおさか・よる・あそび2", en: "Osaka · Night · Game 2", zh: "大阪・夜・遊戲2", ko: "오사카・밤・게임2", bg: "bg_mg_takoyaki", kind: .mini, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本"], words: ["日本", "火山", "子ども", "女の子", "男の子", "山"], goal: 20, mini: .chochin, chapter: 5, focus: ["土", "子", "女", "男", "本"]),
+        Stage(id: 5512, ja: "おおさか・よる・しゅぎょう", en: "Osaka · Night · Training", zh: "大阪・夜・修行", ko: "오사카・밤・수행", bg: "bg_mg_takoyaki", kind: .battle, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本"], words: ["日本", "子ども", "女の子", "男の子", "本だな", "火山"], goal: 25, chapter: 5),
+        Stage(id: 5011, ja: "いが・しろ", en: "Iga · Castle", zh: "伊賀・城", ko: "이가・성", bg: "bg_mg_ninja", kind: .lesson, newKana: ["大", "小", "上", "下"], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本", "大", "小", "上", "下"], words: ["大人", "大きい", "小さい", "上", "下", "木の下"], goal: 20, chapter: 5),
         Stage(id: 5012, ja: "いが・しろ・あそび", en: "Iga · Castle · Game", zh: "伊賀・城・遊戲", ko: "이가・성・게임", bg: "bg_mg_ninja", kind: .mini, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本", "大", "小", "上", "下"], words: ["日本", "火山", "大人", "子ども", "女の子", "男の子"], goal: 20, mini: .tsuri, chapter: 5, focus: ["大", "小", "上", "下"]),
+        Stage(id: 5513, ja: "いが・しろ・ことば", en: "Iga · Castle · Words", zh: "伊賀・城・詞語", ko: "이가・성・단어", bg: "bg_mg_ninja", kind: .lesson, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本", "大", "小", "上", "下"], words: ["大人", "大きい", "小さい", "上", "下", "木の下"], goal: 20, chapter: 5),
+        Stage(id: 5514, ja: "いが・しろ・あそび2", en: "Iga · Castle · Game 2", zh: "伊賀・城・遊戲2", ko: "이가・성・게임2", bg: "bg_mg_ninja", kind: .mini, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本", "大", "小", "上", "下"], words: ["日本", "火山", "大人", "子ども", "女の子", "男の子"], goal: 20, mini: .sushi, chapter: 5, focus: ["大", "小", "上", "下"]),
+        Stage(id: 5515, ja: "いが・しろ・しゅぎょう", en: "Iga · Castle · Training", zh: "伊賀・城・修行", ko: "이가・성・수행", bg: "bg_mg_ninja", kind: .battle, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本", "大", "小", "上", "下"], words: ["大人", "大きい", "小さい", "上", "下", "木の下"], goal: 25, chapter: 5),
         Stage(id: 5013, ja: "ボスの まえ", en: "Before the Boss", zh: "頭目之前", ko: "보스 전", bg: "bg_c5_inari", kind: .mini, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本", "大", "小", "上", "下"], words: ["日本", "火山", "大人", "子ども", "女の子", "男の子"], goal: 20, mini: .chochin, chapter: 5),
         Stage(id: 5014, ja: "かんさい・ボス", en: "Kansai · Boss", zh: "關西・頭目", ko: "간사이・보스", bg: "bg_c5_inari", kind: .boss, newKana: [], known: ["日", "月", "木", "山", "川", "目", "口", "耳", "手", "足", "人", "田", "火", "水", "金", "土", "子", "女", "男", "本", "大", "小", "上", "下"], words: ["日本", "火山", "大人", "子ども", "女の子", "男の子", "山", "川", "水", "月", "木", "口"], goal: 14, chapter: 5, foe: "boss_if"),
-        Stage(id: 6001, ja: "みやじま", en: "Miyajima", zh: "宮島", ko: "미야지마", bg: "bg_c6_miyajima", kind: .lesson, newKana: ["天", "気", "雨", "雪", "風"], known: ["天", "気", "雨", "雪", "風"], words: ["天気", "雨", "雪", "風"], goal: 20, chapter: 6),
-        Stage(id: 6002, ja: "みやじま・あそび", en: "Miyajima · Game", zh: "宮島・遊戲", ko: "미야지마・게임", bg: "bg_c6_miyajima", kind: .mini, newKana: [], known: ["天", "気", "雨", "雪", "風"], words: ["天気", "雨", "雪", "風"], goal: 20, mini: .sushi, chapter: 6, focus: ["天", "気", "雨", "雪", "風"]),
-        Stage(id: 6003, ja: "みやじま・ゆうがた", en: "Miyajima · Evening", zh: "宮島・傍晚", ko: "미야지마・저녁", bg: "bg_c6_miyajima", kind: .lesson, newKana: ["体", "頭", "元", "薬", "力"], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力"], words: ["元気", "頭", "薬", "天気", "雨", "雪"], goal: 20, chapter: 6),
+        Stage(id: 6001, ja: "みやじま", en: "Miyajima", zh: "宮島", ko: "미야지마", bg: "bg_c6_miyajima", kind: .lesson, newKana: ["天", "気", "雨", "雪", "風"], known: ["天", "気", "雨", "雪", "風"], words: ["天気", "雨", "雪", "風", "人気", "大雨"], goal: 20, chapter: 6),
+        Stage(id: 6002, ja: "みやじま・あそび", en: "Miyajima · Game", zh: "宮島・遊戲", ko: "미야지마・게임", bg: "bg_c6_miyajima", kind: .mini, newKana: [], known: ["天", "気", "雨", "雪", "風"], words: ["天気", "雨", "雪", "風", "人気", "大雨"], goal: 20, mini: .sushi, chapter: 6, focus: ["天", "気", "雨", "雪", "風"]),
+        Stage(id: 6501, ja: "みやじま・ことば", en: "Miyajima · Words", zh: "宮島・詞語", ko: "미야지마・단어", bg: "bg_c6_miyajima", kind: .lesson, newKana: [], known: ["天", "気", "雨", "雪", "風"], words: ["天気", "雨", "雪", "風", "人気", "大雨"], goal: 20, chapter: 6),
+        Stage(id: 6502, ja: "みやじま・あそび2", en: "Miyajima · Game 2", zh: "宮島・遊戲2", ko: "미야지마・게임2", bg: "bg_c6_miyajima", kind: .mini, newKana: [], known: ["天", "気", "雨", "雪", "風"], words: ["天気", "雨", "雪", "風", "人気", "大雨"], goal: 20, mini: .kingyo, chapter: 6, focus: ["天", "気", "雨", "雪", "風"]),
+        Stage(id: 6503, ja: "みやじま・しゅぎょう", en: "Miyajima · Training", zh: "宮島・修行", ko: "미야지마・수행", bg: "bg_c6_miyajima", kind: .battle, newKana: [], known: ["天", "気", "雨", "雪", "風"], words: ["天気", "雨", "雪", "風", "人気", "大雨"], goal: 25, chapter: 6),
+        Stage(id: 6003, ja: "みやじま・ゆうがた", en: "Miyajima · Evening", zh: "宮島・傍晚", ko: "미야지마・저녁", bg: "bg_c6_miyajima", kind: .lesson, newKana: ["体", "頭", "元", "薬", "力"], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力"], words: ["元気", "頭", "薬", "頭いい", "力もち", "天気"], goal: 20, chapter: 6),
         Stage(id: 6004, ja: "みやじま・ゆうがた・あそび", en: "Miyajima · Evening · Game", zh: "宮島・傍晚・遊戲", ko: "미야지마・저녁・게임", bg: "bg_c6_miyajima", kind: .mini, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力"], words: ["天気", "元気", "雨", "雪", "風", "頭"], goal: 20, mini: .kingyo, chapter: 6, focus: ["体", "頭", "元", "薬", "力"]),
-        Stage(id: 6005, ja: "どうご おんせん", en: "Dogo Onsen", zh: "道後溫泉", ko: "도고 온천", bg: "bg_c6_dogo", kind: .lesson, newKana: ["春", "夏", "秋", "冬", "休"], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休"], words: ["春", "夏", "秋", "冬", "休み", "天気"], goal: 20, chapter: 6),
+        Stage(id: 6504, ja: "みやじま・ゆうがた・ことば", en: "Miyajima · Evening · Words", zh: "宮島・傍晚・詞語", ko: "미야지마・저녁・단어", bg: "bg_c6_miyajima", kind: .lesson, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力"], words: ["元気", "頭", "薬", "頭いい", "力もち", "天気"], goal: 20, chapter: 6),
+        Stage(id: 6505, ja: "みやじま・ゆうがた・あそび2", en: "Miyajima · Evening · Game 2", zh: "宮島・傍晚・遊戲2", ko: "미야지마・저녁・게임2", bg: "bg_c6_miyajima", kind: .mini, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力"], words: ["天気", "元気", "雨", "雪", "風", "頭"], goal: 20, mini: .mekuri, chapter: 6, focus: ["体", "頭", "元", "薬", "力"]),
+        Stage(id: 6506, ja: "みやじま・ゆうがた・しゅぎょう", en: "Miyajima · Evening · Training", zh: "宮島・傍晚・修行", ko: "미야지마・저녁・수행", bg: "bg_c6_miyajima", kind: .battle, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力"], words: ["元気", "頭", "薬", "頭いい", "力もち", "天気"], goal: 25, chapter: 6),
+        Stage(id: 6005, ja: "どうご おんせん", en: "Dogo Onsen", zh: "道後溫泉", ko: "도고 온천", bg: "bg_c6_dogo", kind: .lesson, newKana: ["春", "夏", "秋", "冬", "休"], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休"], words: ["春", "夏", "秋", "冬", "休み", "春休み"], goal: 20, chapter: 6),
         Stage(id: 6006, ja: "どうご おんせん・あそび", en: "Dogo Onsen · Game", zh: "道後溫泉・遊戲", ko: "도고 온천・게임", bg: "bg_c6_dogo", kind: .mini, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休"], words: ["天気", "元気", "雨", "雪", "風", "春"], goal: 20, mini: .mekuri, chapter: 6, focus: ["春", "夏", "秋", "冬", "休"]),
+        Stage(id: 6507, ja: "どうご おんせん・ことば", en: "Dogo Onsen · Words", zh: "道後溫泉・詞語", ko: "도고 온천・단어", bg: "bg_c6_dogo", kind: .lesson, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休"], words: ["春", "夏", "秋", "冬", "休み", "春休み"], goal: 20, chapter: 6),
+        Stage(id: 6508, ja: "どうご おんせん・あそび2", en: "Dogo Onsen · Game 2", zh: "道後溫泉・遊戲2", ko: "도고 온천・게임2", bg: "bg_c6_dogo", kind: .mini, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休"], words: ["天気", "元気", "雨", "雪", "風", "春"], goal: 20, mini: .taiko, chapter: 6, focus: ["春", "夏", "秋", "冬", "休"]),
+        Stage(id: 6509, ja: "どうご おんせん・しゅぎょう", en: "Dogo Onsen · Training", zh: "道後溫泉・修行", ko: "도고 온천・수행", bg: "bg_c6_dogo", kind: .battle, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休"], words: ["春", "夏", "秋", "冬", "休み", "春休み"], goal: 25, chapter: 6),
         Stage(id: 6007, ja: "どうご・よる・あそび", en: "Dogo · Night · Game", zh: "道後・夜・遊戲", ko: "도고・밤・게임", bg: "bg_c6_dogo", kind: .battle, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休"], words: ["天気", "元気", "雨", "雪", "風", "春"], goal: 25, chapter: 6),
         Stage(id: 6008, ja: "どうご・よる（中ボス）", en: "Dogo · Night (Mid-boss)", zh: "道後・夜（中頭目）", ko: "도고・밤 (중간 보스)", bg: "bg_c6_dogo", kind: .mid, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休", "心", "花", "空", "病", "晴"], words: ["天気", "元気", "雨", "雪", "風", "春"], goal: 12, chapter: 6, foe: "zk_6_3"),
-        Stage(id: 6009, ja: "しこくの やま", en: "Shikoku Mountains", zh: "四國山區", ko: "시코쿠의 산", bg: "bg_c6_dogo", kind: .lesson, newKana: ["心", "花", "空", "病", "晴"], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休", "心", "花", "空", "病", "晴"], words: ["花", "空", "病気", "晴れ", "心", "天気"], goal: 20, chapter: 6),
+        Stage(id: 6009, ja: "しこくの やま", en: "Shikoku Mountains", zh: "四國山區", ko: "시코쿠의 산", bg: "bg_c6_dogo", kind: .lesson, newKana: ["心", "花", "空", "病", "晴"], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休", "心", "花", "空", "病", "晴"], words: ["花", "空", "病気", "晴れ", "心", "花火"], goal: 20, chapter: 6),
         Stage(id: 6010, ja: "しこくの やま・あそび", en: "Shikoku Mountains · Game", zh: "四國山區・遊戲", ko: "시코쿠의 산・게임", bg: "bg_c6_dogo", kind: .mini, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休", "心", "花", "空", "病", "晴"], words: ["天気", "元気", "雨", "雪", "風", "春"], goal: 20, mini: .taiko, chapter: 6, focus: ["心", "花", "空", "病", "晴"]),
+        Stage(id: 6510, ja: "しこくの やま・ことば", en: "Shikoku Mountains · Words", zh: "四國山區・詞語", ko: "시코쿠의 산・단어", bg: "bg_c6_dogo", kind: .lesson, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休", "心", "花", "空", "病", "晴"], words: ["花", "空", "病気", "晴れ", "心", "花火"], goal: 20, chapter: 6),
+        Stage(id: 6511, ja: "しこくの やま・あそび2", en: "Shikoku Mountains · Game 2", zh: "四國山區・遊戲2", ko: "시코쿠의 산・게임2", bg: "bg_c6_dogo", kind: .mini, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休", "心", "花", "空", "病", "晴"], words: ["天気", "元気", "雨", "雪", "風", "春"], goal: 20, mini: .daruma, chapter: 6, focus: ["心", "花", "空", "病", "晴"]),
+        Stage(id: 6512, ja: "しこくの やま・しゅぎょう", en: "Shikoku Mountains · Training", zh: "四國山區・修行", ko: "시코쿠의 산・수행", bg: "bg_c6_dogo", kind: .battle, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休", "心", "花", "空", "病", "晴"], words: ["花", "空", "病気", "晴れ", "心", "花火"], goal: 25, chapter: 6),
         Stage(id: 6011, ja: "ボスの まえ", en: "Before the Boss", zh: "頭目之前", ko: "보스 전", bg: "bg_c6_miyajima", kind: .mini, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休", "心", "花", "空", "病", "晴"], words: ["天気", "元気", "雨", "雪", "風", "春"], goal: 20, mini: .daruma, chapter: 6),
         Stage(id: 6012, ja: "ちゅうごく・しこく・ボス", en: "Chugoku & Shikoku · Boss", zh: "中國・四國・頭目", ko: "주고쿠・시코쿠・보스", bg: "bg_c6_miyajima", kind: .boss, newKana: [], known: ["天", "気", "雨", "雪", "風", "体", "頭", "元", "薬", "力", "春", "夏", "秋", "冬", "休", "心", "花", "空", "病", "晴"], words: ["天気", "元気", "雨", "雪", "風", "春", "夏", "秋", "冬", "休み", "頭", "花"], goal: 14, chapter: 6, foe: "boss_logic"),
-        Stage(id: 7001, ja: "くまもと じょう", en: "Kumamoto Castle", zh: "熊本城", ko: "구마모토성", bg: "bg_c7_kumamoto", kind: .lesson, newKana: ["右", "左", "前", "後", "道"], known: ["右", "左", "前", "後", "道"], words: ["右", "左", "道", "前"], goal: 20, chapter: 7),
-        Stage(id: 7002, ja: "くまもと じょう・あそび", en: "Kumamoto Castle · Game", zh: "熊本城・遊戲", ko: "구마모토성・게임", bg: "bg_c7_kumamoto", kind: .mini, newKana: [], known: ["右", "左", "前", "後", "道"], words: ["右", "左", "道", "前"], goal: 20, mini: .yuki, chapter: 7, focus: ["右", "左", "前", "後", "道"]),
-        Stage(id: 7003, ja: "くまもと・まち", en: "Kumamoto · Town", zh: "熊本・街上", ko: "구마모토・거리", bg: "bg_c7_kumamoto", kind: .lesson, newKana: ["駅", "電", "車", "店", "外"], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外"], words: ["駅", "電車", "車", "店", "外", "右"], goal: 20, chapter: 7),
+        Stage(id: 7001, ja: "くまもと じょう", en: "Kumamoto Castle", zh: "熊本城", ko: "구마모토성", bg: "bg_c7_kumamoto", kind: .lesson, newKana: ["右", "左", "前", "後", "道"], known: ["右", "左", "前", "後", "道"], words: ["右", "左", "道", "前", "右手", "左手"], goal: 20, chapter: 7),
+        Stage(id: 7002, ja: "くまもと じょう・あそび", en: "Kumamoto Castle · Game", zh: "熊本城・遊戲", ko: "구마모토성・게임", bg: "bg_c7_kumamoto", kind: .mini, newKana: [], known: ["右", "左", "前", "後", "道"], words: ["右", "左", "道", "前", "右手", "左手"], goal: 20, mini: .yuki, chapter: 7, focus: ["右", "左", "前", "後", "道"]),
+        Stage(id: 7501, ja: "くまもと じょう・ことば", en: "Kumamoto Castle · Words", zh: "熊本城・詞語", ko: "구마모토성・단어", bg: "bg_c7_kumamoto", kind: .lesson, newKana: [], known: ["右", "左", "前", "後", "道"], words: ["右", "左", "道", "前", "右手", "左手"], goal: 20, chapter: 7),
+        Stage(id: 7502, ja: "くまもと じょう・あそび2", en: "Kumamoto Castle · Game 2", zh: "熊本城・遊戲2", ko: "구마모토성・게임2", bg: "bg_c7_kumamoto", kind: .mini, newKana: [], known: ["右", "左", "前", "後", "道"], words: ["右", "左", "道", "前", "右手", "左手"], goal: 20, mini: .dash, chapter: 7, focus: ["右", "左", "前", "後", "道"]),
+        Stage(id: 7503, ja: "くまもと じょう・しゅぎょう", en: "Kumamoto Castle · Training", zh: "熊本城・修行", ko: "구마모토성・수행", bg: "bg_c7_kumamoto", kind: .battle, newKana: [], known: ["右", "左", "前", "後", "道"], words: ["右", "左", "道", "前", "右手", "左手"], goal: 25, chapter: 7),
+        Stage(id: 7003, ja: "くまもと・まち", en: "Kumamoto · Town", zh: "熊本・街上", ko: "구마모토・거리", bg: "bg_c7_kumamoto", kind: .lesson, newKana: ["駅", "電", "車", "店", "外"], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外"], words: ["駅", "電車", "車", "店", "外", "風車"], goal: 20, chapter: 7),
         Stage(id: 7004, ja: "くまもと・まち・あそび", en: "Kumamoto · Town · Game", zh: "熊本・街上・遊戲", ko: "구마모토・거리・게임", bg: "bg_c7_kumamoto", kind: .mini, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外"], words: ["駅", "電車", "車", "右", "左", "店"], goal: 20, mini: .dash, chapter: 7, focus: ["駅", "電", "車", "店", "外"]),
-        Stage(id: 7005, ja: "おきなわの むら", en: "Okinawa Village", zh: "沖繩村落", ko: "오키나와 마을", bg: "bg_c7_okinawa", kind: .lesson, newKana: ["北", "南", "東", "西", "町"], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町"], words: ["北", "町", "東", "西", "駅", "電車"], goal: 20, chapter: 7),
+        Stage(id: 7504, ja: "くまもと・まち・ことば", en: "Kumamoto · Town · Words", zh: "熊本・街上・詞語", ko: "구마모토・거리・단어", bg: "bg_c7_kumamoto", kind: .lesson, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外"], words: ["駅", "電車", "車", "店", "外", "風車"], goal: 20, chapter: 7),
+        Stage(id: 7505, ja: "くまもと・まち・あそび2", en: "Kumamoto · Town · Game 2", zh: "熊本・街上・遊戲2", ko: "구마모토・거리・게임2", bg: "bg_c7_kumamoto", kind: .mini, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外"], words: ["駅", "電車", "車", "右", "左", "店"], goal: 20, mini: .ninja, chapter: 7, focus: ["駅", "電", "車", "店", "外"]),
+        Stage(id: 7506, ja: "くまもと・まち・しゅぎょう", en: "Kumamoto · Town · Training", zh: "熊本・街上・修行", ko: "구마모토・거리・수행", bg: "bg_c7_kumamoto", kind: .battle, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外"], words: ["駅", "電車", "車", "店", "外", "風車"], goal: 25, chapter: 7),
+        Stage(id: 7005, ja: "おきなわの むら", en: "Okinawa Village", zh: "沖繩村落", ko: "오키나와 마을", bg: "bg_c7_okinawa", kind: .lesson, newKana: ["北", "南", "東", "西", "町"], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町"], words: ["北", "町", "東", "西", "南口", "西口"], goal: 20, chapter: 7),
         Stage(id: 7006, ja: "おきなわの むら・あそび", en: "Okinawa Village · Game", zh: "沖繩村落・遊戲", ko: "오키나와 마을・게임", bg: "bg_c7_okinawa", kind: .mini, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町"], words: ["駅", "電車", "車", "右", "左", "北"], goal: 20, mini: .ninja, chapter: 7, focus: ["北", "南", "東", "西", "町"]),
+        Stage(id: 7507, ja: "おきなわの むら・ことば", en: "Okinawa Village · Words", zh: "沖繩村落・詞語", ko: "오키나와 마을・단어", bg: "bg_c7_okinawa", kind: .lesson, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町"], words: ["北", "町", "東", "西", "南口", "西口"], goal: 20, chapter: 7),
+        Stage(id: 7508, ja: "おきなわの むら・あそび2", en: "Okinawa Village · Game 2", zh: "沖繩村落・遊戲2", ko: "오키나와 마을・게임2", bg: "bg_c7_okinawa", kind: .mini, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町"], words: ["駅", "電車", "車", "右", "左", "北"], goal: 20, mini: .yabusame, chapter: 7, focus: ["北", "南", "東", "西", "町"]),
+        Stage(id: 7509, ja: "おきなわの むら・しゅぎょう", en: "Okinawa Village · Training", zh: "沖繩村落・修行", ko: "오키나와 마을・수행", bg: "bg_c7_okinawa", kind: .battle, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町"], words: ["北", "町", "東", "西", "南口", "西口"], goal: 25, chapter: 7),
         Stage(id: 7007, ja: "うみべ・あそび", en: "Seaside · Game", zh: "海邊・遊戲", ko: "바닷가・게임", bg: "bg_c7_okinawa", kind: .battle, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町"], words: ["駅", "電車", "車", "右", "左", "北"], goal: 25, chapter: 7),
         Stage(id: 7008, ja: "うみべ（中ボス）", en: "Seaside (Mid-boss)", zh: "海邊（中頭目）", ko: "바닷가 (중간 보스)", bg: "bg_c7_okinawa", kind: .mid, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町", "海", "島", "船", "旅", "門"], words: ["駅", "電車", "車", "右", "左", "北"], goal: 12, chapter: 7, foe: "zk_7_3"),
-        Stage(id: 7009, ja: "おきなわ・ゆうひ", en: "Okinawa · Sunset", zh: "沖繩・夕陽", ko: "오키나와・석양", bg: "bg_c7_okinawa", kind: .lesson, newKana: ["海", "島", "船", "旅", "門"], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町", "海", "島", "船", "旅", "門"], words: ["海", "島", "旅", "船", "門", "駅"], goal: 20, chapter: 7),
+        Stage(id: 7009, ja: "おきなわ・ゆうひ", en: "Okinawa · Sunset", zh: "沖繩・夕陽", ko: "오키나와・석양", bg: "bg_c7_okinawa", kind: .lesson, newKana: ["海", "島", "船", "旅", "門"], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町", "海", "島", "船", "旅", "門"], words: ["海", "島", "旅", "船", "門", "北海道"], goal: 20, chapter: 7),
         Stage(id: 7010, ja: "おきなわ・ゆうひ・あそび", en: "Okinawa · Sunset · Game", zh: "沖繩・夕陽・遊戲", ko: "오키나와・석양・게임", bg: "bg_c7_okinawa", kind: .mini, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町", "海", "島", "船", "旅", "門"], words: ["駅", "電車", "車", "右", "左", "北"], goal: 20, mini: .yabusame, chapter: 7, focus: ["海", "島", "船", "旅", "門"]),
+        Stage(id: 7510, ja: "おきなわ・ゆうひ・ことば", en: "Okinawa · Sunset · Words", zh: "沖繩・夕陽・詞語", ko: "오키나와・석양・단어", bg: "bg_c7_okinawa", kind: .lesson, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町", "海", "島", "船", "旅", "門"], words: ["海", "島", "旅", "船", "門", "北海道"], goal: 20, chapter: 7),
+        Stage(id: 7511, ja: "おきなわ・ゆうひ・あそび2", en: "Okinawa · Sunset · Game 2", zh: "沖繩・夕陽・遊戲2", ko: "오키나와・석양・게임2", bg: "bg_c7_okinawa", kind: .mini, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町", "海", "島", "船", "旅", "門"], words: ["駅", "電車", "車", "右", "左", "北"], goal: 20, mini: .tsumiki, chapter: 7, focus: ["海", "島", "船", "旅", "門"]),
+        Stage(id: 7512, ja: "おきなわ・ゆうひ・しゅぎょう", en: "Okinawa · Sunset · Training", zh: "沖繩・夕陽・修行", ko: "오키나와・석양・수행", bg: "bg_c7_okinawa", kind: .battle, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町", "海", "島", "船", "旅", "門"], words: ["海", "島", "旅", "船", "門", "北海道"], goal: 25, chapter: 7),
         Stage(id: 7011, ja: "ボスの まえ", en: "Before the Boss", zh: "頭目之前", ko: "보스 전", bg: "bg_c7_okinawa", kind: .mini, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町", "海", "島", "船", "旅", "門"], words: ["駅", "電車", "車", "右", "左", "北"], goal: 20, mini: .tsumiki, chapter: 7),
         Stage(id: 7012, ja: "おきなわ・ボス", en: "Okinawa · Boss", zh: "沖繩・頭目", ko: "오키나와・보스", bg: "bg_c7_okinawa", kind: .boss, newKana: [], known: ["右", "左", "前", "後", "道", "駅", "電", "車", "店", "外", "北", "南", "東", "西", "町", "海", "島", "船", "旅", "門"], words: ["駅", "電車", "車", "右", "左", "北", "店", "道", "海", "島", "旅", "船"], goal: 14, chapter: 7, foe: "boss_silence"),
     ]
@@ -462,21 +819,57 @@ extension KJC1 {
             KJLine(role: "y", face: "nk_nyan_tip", ja: "かっぱが たべたんだ。は・ひ・ふ・へ・ほ！", en: "A kappa ate them. Ha, hi, fu, he, ho!", zh: "是河童吃掉的。は、ひ、ふ、へ、ほ！", ko: "갓파가 먹었어. 하, 히, 후, 헤, 호!")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "はなが よめる！", en: "I can read \"flower\"!", zh: "看得懂「花」了！", ko: "「꽃」이 읽혀!")]),
+        2501: (pre: [
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "はなの まちで ことばを さがそう。", en: "Let's look for words in the town of flowers.", zh: "在花之城找找詞語吧。", ko: "꽃의 마을에서 단어를 찾아보자."),
+            KJLine(role: "s", face: "sora_smile", ja: "「はな」「ひと」…よめるかな。", en: "\"Hana\", \"hito\"… can I read them?", zh: "「はな」「ひと」……讀得出來嗎？", ko: "「하나」「히토」… 읽을 수 있을까.")],
+            post: [
+]),
+        2503: (pre: [
+            KJLine(role: "n", face: "", ja: "たなばたの かざりの かげから ザコが でてきた！", en: "Minions jump out from behind the Tanabata streamers!", zh: "七夕裝飾後面跑出了小嘍囉！", ko: "다나바타 장식 뒤에서 졸개가 나왔다!")],
+            post: [
+]),
         2003: (pre: [
             KJLine(role: "y", face: "nk_nyan_sniff", ja: "いい におい。これ いくら？", en: "Smells good. How much is this?", zh: "好香。這個多少錢？", ko: "좋은 냄새. 이거 얼마?"),
             KJLine(role: "s", face: "sora_tsukkomi", ja: "ネコは おかね ないでしょ。", en: "Cats don't have money.", zh: "貓又沒有錢。", ko: "고양이는 돈 없잖아.")],
             post: [
             KJLine(role: "y", face: "nk_nyan_joy", ja: "ひとつ ください！", en: "One, please!", zh: "請給我一個！", ko: "하나 주세요!")]),
+        2504: (pre: [
+            KJLine(role: "y", face: "nk_nyan_sniff", ja: "まめ、もも、みみ…おいしそうな ことば！", en: "Beans, peaches, ears… tasty words!", zh: "豆子、桃子、耳朵……好好吃的詞！", ko: "콩, 복숭아, 귀… 맛있는 단어!"),
+            KJLine(role: "s", face: "sora_tsukkomi", ja: "みみは たべないよ。", en: "You don't eat ears.", zh: "耳朵不能吃啦。", ko: "귀는 안 먹어.")],
+            post: [
+]),
+        2506: (pre: [
+            KJLine(role: "s", face: "sora_scared", ja: "よるの みちに なにか いる…！", en: "Something is on the night road…!", zh: "夜路上有東西……！", ko: "밤길에 뭔가 있어…!")],
+            post: [
+]),
         2005: (pre: [
             KJLine(role: "n", face: "", ja: "ゆきの よる。おんせんの まち。", en: "A snowy night. A hot-spring town.", zh: "下雪的夜晚。溫泉小鎮。", ko: "눈 내리는 밤. 온천 마을."),
             KJLine(role: "s", face: "sora_smile", ja: "わあ、きれい。", en: "Wow, so pretty.", zh: "哇，好漂亮。", ko: "와, 예쁘다.")],
             post: [
             KJLine(role: "y", face: "nk_nyan_sleep", ja: "おやすみ…。", en: "Good night...", zh: "晚安……", ko: "잘 자….")]),
+        2507: (pre: [
+            KJLine(role: "n", face: "", ja: "おんせんの のれんに ことばが かいてある。", en: "Words are written on the hot-spring curtains.", zh: "溫泉門簾上寫著字。", ko: "온천 포렴에 글자가 쓰여 있다."),
+            KJLine(role: "y", face: "nk_nyan_joy", ja: "「ゆ」は おゆの こと！", en: "\"Yu\" means hot water!", zh: "「ゆ」就是熱水！", ko: "「유」는 뜨거운 물이야!")],
+            post: [
+]),
+        2509: (pre: [
+            KJLine(role: "y", face: "nk_nyan_angry", ja: "ゆきだまを なげてくる！", en: "They're throwing snowballs!", zh: "他們丟雪球過來了！", ko: "눈덩이를 던져!")],
+            post: [
+]),
         2007: (pre: [
             KJLine(role: "s", face: "sora_think", ja: "いま なんじ？", en: "What time is it now?", zh: "現在幾點？", ko: "지금 몇 시야?"),
             KJLine(role: "y", face: "nk_nyan_proud", ja: "しちじ だよ！", en: "It's seven o'clock!", zh: "七點喔！", ko: "일곱 시야!")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "よし、いこう！", en: "OK, let's go!", zh: "好，走吧！", ko: "좋아, 가자!")]),
+        2510: (pre: [
+            KJLine(role: "s", face: "sora_think", ja: "「くるま」と「さる」、どっちが どっち？", en: "Kuruma and saru — which is which?", zh: "「くるま」和「さる」，哪個是哪個？", ko: "「쿠루마」랑「사루」, 어느 게 어느 거?"),
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "よく きいて、ゆっくり よもう。", en: "Listen well and read slowly.", zh: "仔細聽，慢慢讀。", ko: "잘 듣고 천천히 읽자.")],
+            post: [
+]),
+        2512: (pre: [
+            KJLine(role: "n", face: "", ja: "あさの みちに ザコの れつ！", en: "A line of minions on the morning road!", zh: "早晨的路上有一排小嘍囉！", ko: "아침 길에 졸개 행렬!")],
+            post: [
+]),
         2010: (pre: [
             KJLine(role: "n", face: "", ja: "ゆきの なかから なにか くる！", en: "Something is coming out of the snow!", zh: "雪裡有東西過來了！", ko: "눈 속에서 뭔가 온다!"),
             KJLine(role: "s", face: "sora_scared", ja: "こわい…！", en: "Scary...!", zh: "好可怕……！", ko: "무서워…!")],
@@ -487,26 +880,71 @@ extension KJC1 {
             KJLine(role: "s", face: "sora_think", ja: "か が が に なる？", en: "か becomes が?", zh: "か 變成 が？", ko: "か가 が가 돼?")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "かぎ、ゲット！", en: "Got the key!", zh: "拿到鑰匙了！", ko: "열쇠 획득!")]),
+        2513: (pre: [
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "「かぎ」の「ぎ」に てんてんが あるね。", en: "The ぎ in かぎ has two dots.", zh: "「かぎ」的「ぎ」有兩點喔。", ko: "「かぎ」의「ぎ」에 점 두 개가 있지."),
+            KJLine(role: "s", face: "sora_smile", ja: "てんてんを みのがさない！", en: "I won't miss the dots!", zh: "不會漏看那兩點！", ko: "점 두 개를 놓치지 않을 거야!")],
+            post: [
+]),
+        2515: (pre: [
+            KJLine(role: "s", face: "sora_shock", ja: "いちばの おくから ザコが！", en: "Minions from the back of the market!", zh: "市場深處跑出小嘍囉！", ko: "시장 안쪽에서 졸개가!")],
+            post: [
+]),
         2013: (pre: [
             KJLine(role: "y", face: "nk_nyan_joy", ja: "りんご みっつ ください！", en: "Three apples, please!", zh: "請給我三個蘋果！", ko: "사과 세 개 주세요!"),
             KJLine(role: "s", face: "sora_tsukkomi", ja: "たべすぎ！", en: "That's too many!", zh: "吃太多了！", ko: "너무 많이 먹어!")],
             post: [
             KJLine(role: "y", face: "nk_nyan_proud", ja: "ありがとうございました！", en: "Thank you very much!", zh: "非常感謝！", ko: "감사했습니다!")]),
+        2516: (pre: [
+            KJLine(role: "y", face: "nk_nyan_joy", ja: "りんごの はたけで ことば さがし！", en: "Word hunting in the apple orchard!", zh: "在蘋果園裡找詞語！", ko: "사과밭에서 단어 찾기!"),
+            KJLine(role: "s", face: "sora_think", ja: "「ねずみ」の「ず」…すこし むずかしい。", en: "The ず in ねずみ… a little tricky.", zh: "「ねずみ」的「ず」……有點難。", ko: "「ねずみ」의「ず」… 조금 어려워.")],
+            post: [
+]),
+        2518: (pre: [
+            KJLine(role: "y", face: "nk_nyan_angry", ja: "りんごを ねらって ザコが きた！", en: "Minions are after the apples!", zh: "小嘍囉來搶蘋果了！", ko: "졸개가 사과를 노리고 왔어!")],
+            post: [
+]),
         2015: (pre: [
             KJLine(role: "s", face: "sora_think", ja: "でんわ どこ？", en: "Where's the phone?", zh: "電話在哪裡？", ko: "전화 어디 있어?"),
             KJLine(role: "y", face: "nk_nyan_wave", ja: "あそこ！", en: "Over there!", zh: "那邊！", ko: "저기!")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "でんわが よめた！", en: "I could read \"phone\"!", zh: "看得懂「電話」了！", ko: "「전화」를 읽었어!")]),
+        2519: (pre: [
+            KJLine(role: "s", face: "sora_smile", ja: "「でんわ」って かけた！", en: "I wrote \"denwa\"!", zh: "我寫出「でんわ」了！", ko: "「덴와」를 썼어!"),
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "「ぢ」「づ」は あまり つかわないよ。", en: "ぢ and づ aren't used very often.", zh: "「ぢ」「づ」不太常用喔。", ko: "「ぢ」「づ」는 잘 안 써.")],
+            post: [
+]),
+        2521: (pre: [
+            KJLine(role: "n", face: "", ja: "やまがたの さかみちで まちぶせだ！", en: "An ambush on a Yamagata hill road!", zh: "山形的坡道上有埋伏！", ko: "야마가타 언덕길에서 매복이다!")],
+            post: [
+]),
         2017: (pre: [
             KJLine(role: "y", face: "nk_nyan_sniff", ja: "ごはんの じかんだ！", en: "It's time to eat!", zh: "吃飯時間到了！", ko: "밥 먹을 시간이야!"),
             KJLine(role: "s", face: "sora_smile", ja: "いただきます。", en: "Let's eat.", zh: "我開動了。", ko: "잘 먹겠습니다.")],
             post: [
             KJLine(role: "y", face: "nk_nyan_joy", ja: "ごちそうさま！", en: "That was delicious!", zh: "我吃飽了！", ko: "잘 먹었습니다!")]),
+        2522: (pre: [
+            KJLine(role: "y", face: "nk_nyan_sniff", ja: "ごはん、ぶた、かばん…あれ？かばんは たべない。", en: "Rice, pig, bag… wait, you can't eat a bag.", zh: "飯、豬、包包……咦？包包不能吃。", ko: "밥, 돼지, 가방… 어? 가방은 못 먹어."),
+            KJLine(role: "s", face: "sora_tsukkomi", ja: "たべものの ことばばかり！", en: "All you think of is food words!", zh: "全是吃的詞！", ko: "먹는 단어만!")],
+            post: [
+]),
+        2524: (pre: [
+            KJLine(role: "s", face: "sora_scared", ja: "あきたの もりから こえが…！", en: "Voices from the Akita woods…!", zh: "秋田的森林裡有聲音……！", ko: "아키타 숲에서 소리가…!")],
+            post: [
+]),
         2019: (pre: [
             KJLine(role: "y", face: "nk_nyan_tip", ja: "「゜」で ぱ・ぴ・ぷ・ぺ・ぽ！", en: "With ゜: pa, pi, pu, pe, po!", zh: "加上「゜」：ぱ、ぴ、ぷ、ぺ、ぽ！", ko: "「゜」로 파, 피, 푸, 페, 포!"),
             KJLine(role: "s", face: "sora_smile", ja: "ぽんって かんじ。", en: "Sounds like a \"pop\".", zh: "像「啵」的感覺。", ko: "퐁 하는 느낌.")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "さんぽ しよう。", en: "Let's take a walk.", zh: "去散步吧。", ko: "산책하자.")]),
+        2525: (pre: [
+            KJLine(role: "y", face: "nk_nyan_joy", ja: "ぱっ、ぴっ、ぷっ！ たのしい おと！", en: "Pa, pi, pu! Fun sounds!", zh: "啪、噼、噗！好好玩的聲音！", ko: "파, 피, 푸! 재밌는 소리!"),
+            KJLine(role: "s", face: "sora_smile", ja: "「さんぽ」の「ぽ」は まるだね。", en: "The ぽ in さんぽ has a circle.", zh: "「さんぽ」的「ぽ」是小圓圈。", ko: "「さんぽ」의「ぽ」는 동그라미네.")],
+            post: [
+]),
+        2527: (pre: [
+            KJLine(role: "n", face: "", ja: "いわての ぼくじょうに ザコが あつまった！", en: "Minions gather on an Iwate farm!", zh: "岩手的牧場聚集了小嘍囉！", ko: "이와테 목장에 졸개가 모였다!")],
+            post: [
+]),
         2022: (pre: [
             KJLine(role: "kappa", face: "boss_will", ja: "もじは ぜんぶ おれの もの！", en: "All the letters are mine!", zh: "字全都是我的！", ko: "글자는 전부 내 거야!"),
             KJLine(role: "s", face: "sora_shock", ja: "かっぱだ！", en: "It's the kappa!", zh: "是河童！", ko: "갓파다!"),
@@ -521,26 +959,71 @@ extension KJC1 {
             KJLine(role: "y", face: "nk_nyan_tip", ja: "ちいさい「ゃ」は いっしょに よむよ。きゃ！", en: "Read the small ゃ together with it. Kya!", zh: "小的「ゃ」要一起唸。きゃ！", ko: "작은 「ゃ」는 같이 읽어. 캬!")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "きょうは いい ひ！", en: "Today is a good day!", zh: "今天是好日子！", ko: "오늘은 좋은 날!")]),
+        3501: (pre: [
+            KJLine(role: "s", face: "sora_think", ja: "「きょう」は 2もじ だけど ひとつの おと？", en: "きょう is two letters but one sound?", zh: "「きょう」是兩個字但只有一個音？", ko: "「きょう」는 두 글자인데 한 소리?"),
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "ちいさい「ょ」で くっつくんだ。", en: "The small ょ sticks them together.", zh: "小的「ょ」把它們黏在一起。", ko: "작은「ょ」로 붙는 거야.")],
+            post: [
+]),
+        3503: (pre: [
+            KJLine(role: "n", face: "", ja: "さっぽろの ゆきまつりに ザコが まぎれこんだ！", en: "Minions sneaked into the Sapporo Snow Festival!", zh: "小嘍囉混進了札幌雪祭！", ko: "삿포로 눈축제에 졸개가 섞여 들었다!")],
+            post: [
+]),
         3003: (pre: [
             KJLine(role: "s", face: "sora_think", ja: "しゃしん とって いい？", en: "Can I take a photo?", zh: "可以拍照嗎？", ko: "사진 찍어도 돼?"),
             KJLine(role: "y", face: "nk_nyan_proud", ja: "どうぞ！", en: "Go ahead!", zh: "請！", ko: "그래!")],
             post: [
             KJLine(role: "y", face: "nk_nyan_joy", ja: "いい しゃしん！", en: "Nice photo!", zh: "好照片！", ko: "좋은 사진!")]),
+        3504: (pre: [
+            KJLine(role: "y", face: "nk_nyan_joy", ja: "「ちゃ」は おちゃの ちゃ！", en: "Cha as in ocha (tea)!", zh: "「ちゃ」是茶的「ちゃ」！", ko: "「차」는 오차의 차!"),
+            KJLine(role: "s", face: "sora_smile", ja: "あたたかい おちゃ、のみたいな。", en: "I'd like some warm tea.", zh: "好想喝熱茶。", ko: "따뜻한 차 마시고 싶다.")],
+            post: [
+]),
+        3506: (pre: [
+            KJLine(role: "y", face: "nk_nyan_angry", ja: "にゃんの なまえを ばかに したな！", en: "They made fun of the name \"nyan\"!", zh: "竟敢取笑「喵」這個名字！", ko: "냥이라는 이름을 놀렸어!")],
+            post: [
+]),
         3005: (pre: [
             KJLine(role: "y", face: "nk_nyan_sniff", ja: "カニ ください！", en: "Crab, please!", zh: "請給我螃蟹！", ko: "게 주세요!"),
             KJLine(role: "s", face: "sora_tsukkomi", ja: "まだ よめないでしょ。", en: "You can't read that yet.", zh: "你還看不懂吧。", ko: "아직 못 읽잖아.")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "おちゃ のもう。", en: "Let's drink some tea.", zh: "喝點茶吧。", ko: "차 마시자.")]),
+        3507: (pre: [
+            KJLine(role: "s", face: "sora_think", ja: "「ひゃく」と「ひやく」は ちがう？", en: "Are ひゃく and ひやく different?", zh: "「ひゃく」和「ひやく」不一樣？", ko: "「ひゃく」랑「ひやく」는 달라?"),
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "ちいさい かなは はやく よむよ。", en: "Read the small kana quickly.", zh: "小假名要唸快一點。", ko: "작은 가나는 빨리 읽어.")],
+            post: [
+]),
+        3509: (pre: [
+            KJLine(role: "n", face: "", ja: "あさひかわの どうぶつえんで さわぎだ！", en: "Trouble at the Asahikawa zoo!", zh: "旭川動物園出事了！", ko: "아사히카와 동물원에서 소동이다!")],
+            post: [
+]),
         3007: (pre: [
             KJLine(role: "s", face: "sora_think", ja: "りょうりが したいな。", en: "I want to cook.", zh: "想做菜呢。", ko: "요리하고 싶다."),
             KJLine(role: "y", face: "nk_nyan_joy", ja: "じゃがいも かおう！", en: "Let's buy potatoes!", zh: "買馬鈴薯吧！", ko: "감자 사자!")],
             post: [
             KJLine(role: "y", face: "nk_nyan_proud", ja: "おいしい！", en: "Delicious!", zh: "好吃！", ko: "맛있어!")]),
+        3510: (pre: [
+            KJLine(role: "y", face: "nk_nyan_hero", ja: "「りょうり」は りょこうの たのしみ！", en: "Cooking is the fun part of travel!", zh: "料理是旅行的樂趣！", ko: "요리는 여행의 즐거움!"),
+            KJLine(role: "s", face: "sora_smile", ja: "ほっかいどうの りょうり、たべたい。", en: "I want to try Hokkaido food.", zh: "好想吃北海道料理。", ko: "홋카이도 요리 먹고 싶어.")],
+            post: [
+]),
+        3512: (pre: [
+            KJLine(role: "s", face: "sora_shock", ja: "うしの むれの なかに ザコが！", en: "Minions in the herd of cows!", zh: "牛群裡有小嘍囉！", ko: "소 떼 속에 졸개가!")],
+            post: [
+]),
         3009: (pre: [
             KJLine(role: "y", face: "nk_nyan_surprised", ja: "ぎゅうにゅう こおった！", en: "The milk froze!", zh: "牛奶結冰了！", ko: "우유가 얼었어!"),
             KJLine(role: "s", face: "sora_tsukkomi", ja: "さむすぎ！", en: "It's way too cold!", zh: "太冷了！", ko: "너무 추워!")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "あったかい もの たべたい。", en: "I want something warm.", zh: "想吃熱的東西。", ko: "따뜻한 거 먹고 싶어.")]),
+        3513: (pre: [
+            KJLine(role: "s", face: "sora_smile", ja: "「じゃがいも」、ほっかいどうの めいぶつ！", en: "Potatoes — Hokkaido's specialty!", zh: "馬鈴薯，北海道的名產！", ko: "감자, 홋카이도 명물!"),
+            KJLine(role: "y", face: "nk_nyan_joy", ja: "バターを のせて たべよう。", en: "Let's eat them with butter.", zh: "加奶油一起吃吧。", ko: "버터 올려서 먹자.")],
+            post: [
+]),
+        3515: (pre: [
+            KJLine(role: "n", face: "", ja: "じゃがいもばたけを ザコが あらしている！", en: "Minions are wrecking the potato field!", zh: "小嘍囉在糟蹋馬鈴薯田！", ko: "졸개가 감자밭을 망치고 있다!")],
+            post: [
+]),
         3012: (pre: [
             KJLine(role: "n", face: "", ja: "ふぶきの なかに かげが！", en: "A shadow in the blizzard!", zh: "暴風雪中有影子！", ko: "눈보라 속에 그림자가!"),
             KJLine(role: "y", face: "nk_nyan_hero", ja: "まけないぞ！", en: "We won't lose!", zh: "不會輸的！", ko: "지지 않아!")],
@@ -551,26 +1034,71 @@ extension KJC1 {
             KJLine(role: "s", face: "sora_think", ja: "アイスも？", en: "Like \"ice cream\"?", zh: "像「冰淇淋」？", ko: "아이스크림도?")],
             post: [
             KJLine(role: "y", face: "nk_nyan_joy", ja: "アイス ください！", en: "Ice cream, please!", zh: "請給我冰淇淋！", ko: "아이스크림 주세요!")]),
+        3516: (pre: [
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "カタカナは そとの くにの ことばに つかうよ。", en: "Katakana is for words from other countries.", zh: "片假名用在外來語喔。", ko: "가타카나는 외래어에 써."),
+            KJLine(role: "s", face: "sora_think", ja: "「アイス」は カタカナだね。", en: "\"Aisu\" is in katakana.", zh: "「アイス」是片假名呢。", ko: "「아이스」는 가타카나구나.")],
+            post: [
+]),
+        3518: (pre: [
+            KJLine(role: "n", face: "", ja: "うんがの ガラスの まちに ザコが！", en: "Minions in the canal town of glass!", zh: "運河玻璃小鎮出現了小嘍囉！", ko: "운하 유리 마을에 졸개가!")],
+            post: [
+]),
         3015: (pre: [
             KJLine(role: "s", face: "sora_smile", ja: "ケーキ たべたい！", en: "I want cake!", zh: "想吃蛋糕！", ko: "케이크 먹고 싶어!"),
             KJLine(role: "y", face: "nk_nyan_proud", ja: "ケーキ ふたつ！", en: "Two cakes!", zh: "兩個蛋糕！", ko: "케이크 두 개!")],
             post: [
             KJLine(role: "s", face: "sora_tsukkomi", ja: "ひとつで いいよ。", en: "One is enough.", zh: "一個就好。", ko: "하나면 돼.")]),
+        3519: (pre: [
+            KJLine(role: "s", face: "sora_smile", ja: "「ケーキ」の「ー」は のばす しるし。", en: "The ー in ケーキ means make it long.", zh: "「ケーキ」的「ー」是拉長音的記號。", ko: "「ケーキ」의「ー」는 늘이는 표시."),
+            KJLine(role: "y", face: "nk_nyan_joy", ja: "ケーーキ！", en: "Keeeeki!", zh: "蛋～～糕！", ko: "케~~이크!")],
+            post: [
+]),
+        3521: (pre: [
+            KJLine(role: "y", face: "nk_nyan_angry", ja: "ケーキを ぬすむ ザコは ゆるさない！", en: "No mercy for cake thieves!", zh: "偷蛋糕的小嘍囉不可原諒！", ko: "케이크 도둑 졸개는 용서 못 해!")],
+            post: [
+]),
         3017: (pre: [
             KJLine(role: "y", face: "nk_nyan_wave", ja: "スキー しよう！", en: "Let's go skiing!", zh: "去滑雪吧！", ko: "스키 타자!"),
             KJLine(role: "s", face: "sora_scared", ja: "ころびそう…。", en: "I might fall...", zh: "好像會跌倒……", ko: "넘어질 것 같아….")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "たのしかった！", en: "That was fun!", zh: "好好玩！", ko: "재밌었어!")]),
+        3522: (pre: [
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "「シ」と「ツ」、「ソ」と「ン」は にてるよ。", en: "シ and ツ, ソ and ン look alike.", zh: "「シ」和「ツ」、「ソ」和「ン」很像喔。", ko: "「シ」와「ツ」,「ソ」와「ン」은 닮았어."),
+            KJLine(role: "s", face: "sora_think", ja: "せんの むきを よく みよう。", en: "Look at which way the lines go.", zh: "仔細看筆畫的方向。", ko: "선의 방향을 잘 보자.")],
+            post: [
+]),
+        3524: (pre: [
+            KJLine(role: "n", face: "", ja: "ゆきの まちで スキーの ザコが すべってくる！", en: "Skiing minions slide down through the snowy town!", zh: "雪之鎮有滑雪的小嘍囉滑下來了！", ko: "눈의 마을에서 스키 졸개가 내려온다!")],
+            post: [
+]),
         3019: (pre: [
             KJLine(role: "s", face: "sora_think", ja: "タクシー よぶ？", en: "Shall we call a taxi?", zh: "要叫計程車嗎？", ko: "택시 부를까?"),
             KJLine(role: "y", face: "nk_nyan_tip", ja: "あるこう。ちかいよ。", en: "Let's walk. It's close.", zh: "走路吧。很近。", ko: "걷자. 가까워.")],
             post: [
             KJLine(role: "y", face: "nk_nyan_joy", ja: "ついた！", en: "We're here!", zh: "到了！", ko: "도착!")]),
+        3525: (pre: [
+            KJLine(role: "s", face: "sora_smile", ja: "「タクシー」で ホテルへ！", en: "To the hotel by taxi!", zh: "坐計程車去飯店！", ko: "택시로 호텔에!"),
+            KJLine(role: "y", face: "nk_nyan_proud", ja: "「テ」と「ト」、もう まちがえない。", en: "I won't mix up テ and ト anymore.", zh: "「テ」和「ト」我不會再搞錯了。", ko: "「テ」랑「ト」는 이제 안 틀려.")],
+            post: [
+]),
+        3527: (pre: [
+            KJLine(role: "n", face: "", ja: "はこだての よけいの まえで ザコが まっていた！", en: "Minions wait in front of the Hakodate night view!", zh: "小嘍囉在函館夜景前等著！", ko: "하코다테 야경 앞에서 졸개가 기다리고 있었다!")],
+            post: [
+]),
         3021: (pre: [
             KJLine(role: "y", face: "nk_nyan_sniff", ja: "ソースの におい！", en: "I smell sauce!", zh: "醬汁的味道！", ko: "소스 냄새!"),
             KJLine(role: "s", face: "sora_smile", ja: "ノートに かいて おこう。", en: "I'll write it in my notebook.", zh: "寫在筆記本上吧。", ko: "노트에 적어 두자.")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "カタカナ、はんぶん おぼえた！", en: "I learned half of katakana!", zh: "片假名學會一半了！", ko: "가타카나 반 외웠어!")]),
+        3528: (pre: [
+            KJLine(role: "y", face: "nk_nyan_sniff", ja: "「カニ」「イカ」「サケ」…うみの ごちそう！", en: "Crab, squid, salmon… a seafood feast!", zh: "螃蟹、魷魚、鮭魚……海鮮大餐！", ko: "게, 오징어, 연어… 바다 진수성찬!"),
+            KJLine(role: "s", face: "sora_tsukkomi", ja: "また たべものの はなし！", en: "Food talk again!", zh: "又在說吃的！", ko: "또 먹는 얘기!")],
+            post: [
+]),
+        3530: (pre: [
+            KJLine(role: "s", face: "sora_scared", ja: "ゆうがたの みなとに かげが…！", en: "Shadows at the harbor at dusk…!", zh: "傍晚的港口有影子……！", ko: "저녁 항구에 그림자가…!")],
+            post: [
+]),
         3024: (pre: [
             KJLine(role: "yukionna", face: "boss_have", ja: "もじは こおらせて しまったわ。", en: "I froze all the letters.", zh: "我把字都凍住了。", ko: "글자는 다 얼려 버렸어."),
             KJLine(role: "s", face: "sora_scared", ja: "ゆきおんなだ…！", en: "It's the snow woman...!", zh: "是雪女……！", ko: "설녀다…!"),
@@ -585,21 +1113,57 @@ extension KJC1 {
             KJLine(role: "y", face: "nk_nyan_tip", ja: "カタカナの のこりを おぼえよう。", en: "Let's learn the rest of katakana.", zh: "來學剩下的片假名吧。", ko: "남은 가타카나를 외우자.")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "ホテル みつけた！", en: "I found a hotel!", zh: "找到飯店了！", ko: "호텔 찾았다!")]),
+        4501: (pre: [
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "「ハ」「ヒ」「フ」…ひらがなと にてる？", en: "ハ, ヒ, フ… do they look like hiragana?", zh: "「ハ」「ヒ」「フ」……跟平假名像嗎？", ko: "「ハ」「ヒ」「フ」… 히라가나랑 닮았어?"),
+            KJLine(role: "s", face: "sora_think", ja: "「ヘ」は ほとんど おなじだ！", en: "ヘ is almost the same!", zh: "「ヘ」幾乎一模一樣！", ko: "「ヘ」는 거의 같아!")],
+            post: [
+]),
+        4503: (pre: [
+            KJLine(role: "n", face: "", ja: "がっしょうづくりの むらに ザコが かくれている！", en: "Minions hide in the thatched-roof village!", zh: "合掌造村落裡藏著小嘍囉！", ko: "갓쇼즈쿠리 마을에 졸개가 숨어 있다!")],
+            post: [
+]),
         4003: (pre: [
             KJLine(role: "s", face: "sora_think", ja: "えきは どこですか？", en: "Where is the station?", zh: "車站在哪裡？", ko: "역은 어디예요?"),
             KJLine(role: "y", face: "nk_nyan_wave", ja: "まっすぐ いって、みぎ！", en: "Go straight, then right!", zh: "直走，然後右轉！", ko: "쭉 가서 오른쪽!")],
             post: [
             KJLine(role: "y", face: "nk_nyan_joy", ja: "メロン うりばだ！", en: "A melon stand!", zh: "是賣哈密瓜的地方！", ko: "멜론 가게다!")]),
+        4504: (pre: [
+            KJLine(role: "s", face: "sora_smile", ja: "ふじさんの まえで「メロン」パン！", en: "Melon bread in front of Mt. Fuji!", zh: "在富士山前吃「菠蘿麵包」！", ko: "후지산 앞에서「메론」빵!"),
+            KJLine(role: "y", face: "nk_nyan_joy", ja: "「ラーメン」も たべよう！", en: "Let's have ramen too!", zh: "也來吃「拉麵」吧！", ko: "「라멘」도 먹자!")],
+            post: [
+]),
+        4506: (pre: [
+            KJLine(role: "n", face: "", ja: "ふじさんの ふもとで ザコが まちかまえる！", en: "Minions lie in wait at the foot of Mt. Fuji!", zh: "小嘍囉在富士山腳下等著！", ko: "후지산 기슭에서 졸개가 기다린다!")],
+            post: [
+]),
         4005: (pre: [
             KJLine(role: "n", face: "", ja: "あきの にわ。", en: "A garden in autumn.", zh: "秋天的庭園。", ko: "가을의 정원."),
             KJLine(role: "s", face: "sora_smile", ja: "ラーメン たべたい。", en: "I want ramen.", zh: "想吃拉麵。", ko: "라멘 먹고 싶어.")],
             post: [
             KJLine(role: "y", face: "nk_nyan_proud", ja: "カメラで パシャ！", en: "Snap with the camera!", zh: "用相機喀嚓！", ko: "카메라로 찰칵!")]),
+        4507: (pre: [
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "「ヲ」は ほとんど つかわない めずらしい もじ。", en: "ヲ is a rare letter — almost never used.", zh: "「ヲ」是很少用的稀有字。", ko: "「ヲ」는 거의 안 쓰는 희귀한 글자."),
+            KJLine(role: "s", face: "sora_smile", ja: "「ワイン」は よめるね。", en: "I can read \"wain\" (wine).", zh: "「ワイン」讀得出來。", ko: "「와인」은 읽을 수 있네.")],
+            post: [
+]),
+        4509: (pre: [
+            KJLine(role: "n", face: "", ja: "ていえんの いけから ザコが とびだした！", en: "Minions leap out of the garden pond!", zh: "小嘍囉從庭園池塘跳出來了！", ko: "정원 연못에서 졸개가 튀어나왔다!")],
+            post: [
+]),
         4007: (pre: [
             KJLine(role: "s", face: "sora_think", ja: "ホームは なんばん？", en: "Which platform number?", zh: "幾號月台？", ko: "몇 번 승강장이야?"),
             KJLine(role: "y", face: "nk_nyan_tip", ja: "にばんせん だよ。", en: "Platform two.", zh: "二號月台。", ko: "2번 선이야.")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "カタカナ、ぜんぶ おぼえた！", en: "I learned all the katakana!", zh: "片假名全部學會了！", ko: "가타카나 다 외웠어!")]),
+        4510: (pre: [
+            KJLine(role: "s", face: "sora_think", ja: "「ル」と「レ」、にてる…。", en: "ル and レ look alike…", zh: "「ル」和「レ」好像……", ko: "「ル」랑「レ」, 닮았어…."),
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "「ル」は 2ほん、「レ」は 1ぽん！", en: "ル has two strokes, レ has one!", zh: "「ル」兩畫，「レ」一畫！", ko: "「ル」는 두 획,「レ」는 한 획!")],
+            post: [
+]),
+        4512: (pre: [
+            KJLine(role: "n", face: "", ja: "かなざわの まちなみに ザコの むれ！", en: "A pack of minions in Kanazawa's old streets!", zh: "金澤的街道上有一群小嘍囉！", ko: "가나자와 거리에 졸개 무리!")],
+            post: [
+]),
         4010: (pre: [
             KJLine(role: "n", face: "", ja: "かぜが つよく なった！", en: "The wind got strong!", zh: "風變強了！", ko: "바람이 세졌어!"),
             KJLine(role: "s", face: "sora_scared", ja: "なにか いる！", en: "Something's there!", zh: "有東西！", ko: "뭔가 있어!")],
@@ -610,16 +1174,43 @@ extension KJC1 {
             KJLine(role: "s", face: "sora_surprised", ja: "かんじ！？", en: "Kanji!?", zh: "漢字！？", ko: "한자!?")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "三つ ください。", en: "Three, please.", zh: "請給我三個。", ko: "세 개 주세요.")]),
+        4513: (pre: [
+            KJLine(role: "y", face: "nk_nyan_proud", ja: "いち、に、さん、よん、ご！", en: "Ichi, ni, san, yon, go!", zh: "一、二、三、四、五！", ko: "이치, 니, 산, 욘, 고!"),
+            KJLine(role: "s", face: "sora_smile", ja: "かんじの かずは かんたんだね。", en: "Kanji numbers are easy.", zh: "漢字數字很簡單呢。", ko: "한자 숫자는 쉽네.")],
+            post: [
+]),
+        4515: (pre: [
+            KJLine(role: "n", face: "", ja: "しんかんせんの えきに ザコが ならんでいる！", en: "Minions are lined up at the bullet-train station!", zh: "新幹線車站排滿了小嘍囉！", ko: "신칸센 역에 졸개가 줄 서 있다!")],
+            post: [
+]),
         4013: (pre: [
             KJLine(role: "s", face: "sora_think", ja: "この ゆきだるま、いくら？", en: "How much is this snowman?", zh: "這個雪人多少錢？", ko: "이 눈사람 얼마야?"),
             KJLine(role: "y", face: "nk_nyan_proud", ja: "八百円！", en: "Eight hundred yen!", zh: "八百日圓！", ko: "800엔!")],
             post: [
             KJLine(role: "s", face: "sora_tsukkomi", ja: "たかい！", en: "Too expensive!", zh: "好貴！", ko: "비싸!")]),
+        4516: (pre: [
+            KJLine(role: "s", face: "sora_think", ja: "「七」は「しち」？「なな」？", en: "Is 七 \"shichi\" or \"nana\"?", zh: "「七」是「しち」還是「なな」？", ko: "「七」은「시치」?「나나」?"),
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "どっちも つかうよ！", en: "Both are used!", zh: "兩個都用喔！", ko: "둘 다 써!")],
+            post: [
+]),
+        4518: (pre: [
+            KJLine(role: "y", face: "nk_nyan_angry", ja: "かずを かぞえる ひまも ない！", en: "No time to count them!", zh: "連數的時間都沒有！", ko: "셀 시간도 없어!")],
+            post: [
+]),
         4015: (pre: [
             KJLine(role: "y", face: "nk_nyan_tip", ja: "百、千、円！", en: "Hundred, thousand, yen!", zh: "百、千、圓！", ko: "백, 천, 엔!"),
             KJLine(role: "s", face: "sora_smile", ja: "おかいもの、できる！", en: "Now I can go shopping!", zh: "可以買東西了！", ko: "쇼핑할 수 있어!")],
             post: [
             KJLine(role: "y", face: "nk_nyan_joy", ja: "千円で おつり ください。", en: "Here's a thousand yen, change please.", zh: "一千日圓，請找錢。", ko: "천 엔이요, 거스름돈 주세요.")]),
+        4519: (pre: [
+            KJLine(role: "y", face: "nk_nyan_joy", ja: "「千円」で ラーメンが たべられる！", en: "With 1000 yen you can eat ramen!", zh: "「一千日圓」就能吃拉麵！", ko: "「천 엔」이면 라멘을 먹을 수 있어!"),
+            KJLine(role: "s", face: "sora_smile", ja: "おかねの かんじも よめた。", en: "I can read money kanji too.", zh: "錢的漢字也讀得懂了。", ko: "돈 한자도 읽었어.")],
+            post: [
+]),
+        4521: (pre: [
+            KJLine(role: "n", face: "", ja: "おみせの まえで ザコが おかねを ねらう！", en: "Minions after the money in front of the shop!", zh: "小嘍囉在店門口盯著錢！", ko: "가게 앞에서 졸개가 돈을 노린다!")],
+            post: [
+]),
         4018: (pre: [
             KJLine(role: "tengu", face: "boss_seven", ja: "わしの やまに なんの ようだ！", en: "What do you want on my mountain!", zh: "來我的山做什麼！", ko: "내 산에 무슨 볼일이냐!"),
             KJLine(role: "s", face: "sora_shock", ja: "てんぐだ！", en: "It's the tengu!", zh: "是天狗！", ko: "텐구다!"),
@@ -634,17 +1225,44 @@ extension KJC1 {
             KJLine(role: "s", face: "sora_smile", ja: "おもしろい！", en: "Interesting!", zh: "好有趣！", ko: "재밌다!")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "山と 川、わかった！", en: "I got 山 and 川!", zh: "懂了山和川！", ko: "山과 川 알겠어!")]),
+        5501: (pre: [
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "「日」は おひさま、「月」は おつきさま。", en: "日 is the sun, 月 is the moon.", zh: "「日」是太陽，「月」是月亮。", ko: "「日」은 해,「月」은 달."),
+            KJLine(role: "s", face: "sora_smile", ja: "えから できた もじだね。", en: "They came from pictures.", zh: "是從圖畫變來的字呢。", ko: "그림에서 생긴 글자구나.")],
+            post: [
+]),
+        5503: (pre: [
+            KJLine(role: "n", face: "", ja: "きよみずでらの ぶたいに ザコが あらわれた！", en: "Minions appear on the Kiyomizu stage!", zh: "清水寺的舞台出現了小嘍囉！", ko: "기요미즈데라 무대에 졸개가 나타났다!")],
+            post: [
+]),
         5003: (pre: [
             KJLine(role: "s", face: "sora_think", ja: "なにが すき？", en: "What do you like?", zh: "你喜歡什麼？", ko: "뭘 좋아해?"),
             KJLine(role: "y", face: "nk_nyan_proud", ja: "さかなが だいすき！", en: "I love fish!", zh: "我最喜歡魚！", ko: "생선 정말 좋아해!")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "目、口、耳！", en: "Eye, mouth, ear!", zh: "眼、口、耳！", ko: "눈, 입, 귀!")]),
+        5504: (pre: [
+            KJLine(role: "s", face: "sora_think", ja: "「目」「口」「耳」…かおの かんじ！", en: "目, 口, 耳… face kanji!", zh: "「目」「口」「耳」……臉的漢字！", ko: "「目」「口」「耳」… 얼굴 한자!"),
+            KJLine(role: "y", face: "nk_nyan_joy", ja: "にゃんの みみは ここ！", en: "Nyan's ears are right here!", zh: "喵的耳朵在這裡！", ko: "냥의 귀는 여기!")],
+            post: [
+]),
+        5506: (pre: [
+            KJLine(role: "n", face: "", ja: "ならの しかに まじって ザコが！", en: "Minions mixed in with the Nara deer!", zh: "小嘍囉混在奈良的鹿群裡！", ko: "나라의 사슴 사이에 졸개가!")],
+            post: [
+]),
         5005: (pre: [
             KJLine(role: "n", face: "", ja: "しかが いっぱい。", en: "Lots of deer.", zh: "好多鹿。", ko: "사슴이 가득."),
             KJLine(role: "y", face: "nk_nyan_surprised", ja: "しかが せんべいを ほしがってる！", en: "The deer want crackers!", zh: "鹿想要仙貝！", ko: "사슴이 센베이를 원해!"),
             KJLine(role: "s", face: "sora_scared", ja: "たべられる！", en: "They'll eat me!", zh: "會被吃掉！", ko: "먹힐 것 같아!")],
             post: [
             KJLine(role: "s", face: "sora_tired", ja: "たのしいけど、つかれた。", en: "Fun, but tiring.", zh: "好玩但好累。", ko: "재밌지만 피곤해.")]),
+        5507: (pre: [
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "「火」と「水」は はんたいだね。", en: "火 and 水 are opposites.", zh: "「火」和「水」是相反的。", ko: "「火」와「水」는 반대야."),
+            KJLine(role: "s", face: "sora_smile", ja: "「火山」、かっこいい ことば！", en: "Kazan (volcano) — a cool word!", zh: "「火山」，好帥的詞！", ko: "「화산」, 멋진 단어!")],
+            post: [
+]),
+        5509: (pre: [
+            KJLine(role: "s", face: "sora_shock", ja: "たこやきやの まえで ザコが けんか！", en: "Minions fighting in front of the takoyaki stand!", zh: "小嘍囉在章魚燒攤前打架！", ko: "다코야키 가게 앞에서 졸개가 싸워!")],
+            post: [
+]),
         5008: (pre: [
             KJLine(role: "y", face: "nk_nyan_angry", ja: "たこやき とられた！", en: "Someone took my takoyaki!", zh: "章魚燒被搶了！", ko: "타코야키를 뺏겼어!"),
             KJLine(role: "s", face: "sora_tsukkomi", ja: "そこ！？", en: "That's what you care about!?", zh: "重點是那個！？", ko: "거기야!?")],
@@ -655,11 +1273,29 @@ extension KJC1 {
             KJLine(role: "y", face: "nk_nyan_joy", ja: "めっちゃ たのしい！", en: "Super fun!", zh: "超好玩的！", ko: "완전 재밌어!")],
             post: [
             KJLine(role: "s", face: "sora_think", ja: "めっちゃ？", en: "\"Meccha\"?", zh: "「超」？", ko: "「멧챠」?")]),
+        5510: (pre: [
+            KJLine(role: "s", face: "sora_think", ja: "「男」と「女」、かたちで わかる？", en: "Can you tell 男 and 女 apart by shape?", zh: "「男」和「女」看形狀分得出來嗎？", ko: "「男」과「女」, 모양으로 알 수 있어?"),
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "「男」は「田」と「力」！", en: "男 is 田 plus 力!", zh: "「男」是「田」加「力」！", ko: "「男」은「田」과「力」!")],
+            post: [
+]),
+        5512: (pre: [
+            KJLine(role: "n", face: "", ja: "おおさかじょうの いしがきを ザコが よじのぼる！", en: "Minions climb the stone walls of Osaka Castle!", zh: "小嘍囉在爬大阪城的石牆！", ko: "오사카성 돌담을 졸개가 기어오른다!")],
+            post: [
+]),
         5011: (pre: [
             KJLine(role: "y", face: "nk_nyan_hero", ja: "にんにん！", en: "Nin-nin!", zh: "忍忍！", ko: "닌닌!"),
             KJLine(role: "s", face: "sora_tsukkomi", ja: "ネコの にんじゃ…。", en: "A cat ninja...", zh: "貓忍者……", ko: "고양이 닌자….")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "大と 小、おぼえた！", en: "I learned 大 and 小!", zh: "學會大和小了！", ko: "大와 小 외웠어!")]),
+        5513: (pre: [
+            KJLine(role: "y", face: "nk_nyan_proud", ja: "「大」きい にゃんと、「小」さい ねずみ。", en: "A big Nyan and a small mouse.", zh: "「大」大的喵和「小」小的老鼠。", ko: "「큰」냥이랑「작은」쥐."),
+            KJLine(role: "s", face: "sora_tsukkomi", ja: "おおきいって じぶんで いう？", en: "You call yourself big?", zh: "自己說自己大？", ko: "자기가 크다고 해?")],
+            post: [
+]),
+        5515: (pre: [
+            KJLine(role: "n", face: "", ja: "どうとんぼりの かんばんの うえに ザコが！", en: "Minions on top of the Dotonbori signs!", zh: "道頓堀的招牌上有小嘍囉！", ko: "도톤보리 간판 위에 졸개가!")],
+            post: [
+]),
         5014: (pre: [
             KJLine(role: "oni", face: "boss_if", ja: "もじは おれさまの おやつだ！", en: "Letters are my snack!", zh: "字是本大爺的點心！", ko: "글자는 이 몸의 간식이다!"),
             KJLine(role: "s", face: "sora_shock", ja: "おにだ！", en: "It's the oni!", zh: "是鬼！", ko: "오니다!"),
@@ -674,17 +1310,44 @@ extension KJC1 {
             KJLine(role: "y", face: "nk_nyan_tip", ja: "天気、雨、雪…そらの かんじだよ。", en: "Weather, rain, snow... sky kanji.", zh: "天氣、雨、雪……天空的漢字。", ko: "날씨, 비, 눈… 하늘의 한자야.")],
             post: [
             KJLine(role: "y", face: "nk_nyan_joy", ja: "あしたは 晴れ かな？", en: "Will it be sunny tomorrow?", zh: "明天會晴天嗎？", ko: "내일은 맑을까?")]),
+        6501: (pre: [
+            KJLine(role: "s", face: "sora_think", ja: "きょうの「天気」は？", en: "What's today's weather?", zh: "今天的「天氣」如何？", ko: "오늘「날씨」는?"),
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "「雨」は あまつぶの かたち。", en: "雨 has the shape of raindrops.", zh: "「雨」是雨滴的形狀。", ko: "「雨」는 빗방울 모양.")],
+            post: [
+]),
+        6503: (pre: [
+            KJLine(role: "n", face: "", ja: "いつくしまの とりいの まえで ザコが まつ！", en: "Minions wait before the Itsukushima gate!", zh: "小嘍囉在嚴島鳥居前等著！", ko: "이쓰쿠시마 도리이 앞에서 졸개가 기다린다!")],
+            post: [
+]),
         6003: (pre: [
             KJLine(role: "s", face: "sora_sad", ja: "あたまが いたい…。", en: "My head hurts...", zh: "頭好痛……", ko: "머리가 아파…."),
             KJLine(role: "y", face: "nk_nyan_surprised", ja: "だいじょうぶ？ 薬 ある？", en: "Are you OK? Do you have medicine?", zh: "還好嗎？有藥嗎？", ko: "괜찮아? 약 있어?")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "もう 元気！", en: "I'm fine now!", zh: "已經好了！", ko: "이제 괜찮아!")]),
+        6504: (pre: [
+            KJLine(role: "y", face: "nk_nyan_sad", ja: "あたまが いたい…「薬」ちょうだい。", en: "My head hurts… give me medicine.", zh: "頭好痛……給我「藥」。", ko: "머리가 아파… 「약」줘."),
+            KJLine(role: "s", face: "sora_tsukkomi", ja: "たべすぎた だけでしょ。", en: "You just ate too much.", zh: "你只是吃太多了吧。", ko: "그냥 많이 먹은 거잖아.")],
+            post: [
+]),
+        6506: (pre: [
+            KJLine(role: "n", face: "", ja: "おんせんの ゆけむりの なかから ザコが！", en: "Minions out of the hot-spring steam!", zh: "溫泉蒸氣裡跑出小嘍囉！", ko: "온천 김 속에서 졸개가!")],
+            post: [
+]),
         6005: (pre: [
             KJLine(role: "n", face: "", ja: "しこくの ふるい おんせん。", en: "An old hot spring in Shikoku.", zh: "四國的古老溫泉。", ko: "시코쿠의 오래된 온천."),
             KJLine(role: "y", face: "nk_nyan_sleep", ja: "きょうは 休み…。", en: "Today is a day off...", zh: "今天休息……", ko: "오늘은 쉬는 날…."),
             KJLine(role: "s", face: "sora_tsukkomi", ja: "まだ たび の とちゅう！", en: "We're still on the trip!", zh: "旅行還沒結束！", ko: "아직 여행 중이야!")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "春、夏、秋、冬！", en: "Spring, summer, autumn, winter!", zh: "春、夏、秋、冬！", ko: "봄, 여름, 가을, 겨울!")]),
+        6507: (pre: [
+            KJLine(role: "s", face: "sora_smile", ja: "はる、なつ、あき、ふゆ。日本には きせつが 4つ。", en: "Spring, summer, autumn, winter. Japan has four seasons.", zh: "春夏秋冬。日本有四個季節。", ko: "봄, 여름, 가을, 겨울. 일본에는 계절이 넷."),
+            KJLine(role: "y", face: "nk_nyan_joy", ja: "どの きせつも おいしい！", en: "Every season is delicious!", zh: "每個季節都好好吃！", ko: "모든 계절이 맛있어!")],
+            post: [
+]),
+        6509: (pre: [
+            KJLine(role: "n", face: "", ja: "こうえんの さくらの したに ザコが！", en: "Minions under the park's cherry trees!", zh: "公園的櫻花樹下有小嘍囉！", ko: "공원 벚나무 아래 졸개가!")],
+            post: [
+]),
         6008: (pre: [
             KJLine(role: "n", face: "", ja: "ゆけむりの なかに だれか いる。", en: "Someone is in the steam.", zh: "熱氣中有人。", ko: "김 속에 누군가 있어."),
             KJLine(role: "y", face: "nk_nyan_hero", ja: "でてこい！", en: "Come out!", zh: "出來吧！", ko: "나와라!")],
@@ -695,6 +1358,15 @@ extension KJC1 {
             KJLine(role: "y", face: "nk_nyan_proud", ja: "力 いっぱい！", en: "Full of power!", zh: "充滿力量！", ko: "힘이 넘쳐!")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "花が きれい。", en: "The flowers are pretty.", zh: "花好漂亮。", ko: "꽃이 예뻐.")]),
+        6510: (pre: [
+            KJLine(role: "y", face: "nk_nyan_gentle", ja: "「心」は こころ。だいじな もじだよ。", en: "心 means heart. An important letter.", zh: "「心」就是心。很重要的字喔。", ko: "「心」은 마음. 소중한 글자야."),
+            KJLine(role: "s", face: "sora_smile", ja: "「晴れ」の ひは そらが きれい。", en: "On sunny days the sky is beautiful.", zh: "「晴天」的時候天空好美。", ko: "「맑은」날은 하늘이 예뻐.")],
+            post: [
+]),
+        6512: (pre: [
+            KJLine(role: "n", face: "", ja: "うずしおの うみから ザコが とびだす！", en: "Minions leap out of the whirlpool sea!", zh: "小嘍囉從漩渦海裡跳出來！", ko: "소용돌이 바다에서 졸개가 튀어나온다!")],
+            post: [
+]),
         6012: (pre: [
             KJLine(role: "tanuki", face: "boss_logic", ja: "ぽんぽこ！ もじは わしが ばけさせた！", en: "Ponpoko! I changed all the letters!", zh: "砰砰叩！字都被我變走了！", ko: "퐁포코! 글자는 내가 둔갑시켰다!"),
             KJLine(role: "s", face: "sora_shock", ja: "たぬきだ！", en: "It's the tanuki!", zh: "是狸貓！", ko: "너구리다!"),
@@ -709,17 +1381,44 @@ extension KJC1 {
             KJLine(role: "y", face: "nk_nyan_tip", ja: "右、左、まえ…みちの かんじを おぼえよう。", en: "Right, left, front... let's learn road kanji.", zh: "右、左、前……來學道路的漢字吧。", ko: "오른쪽, 왼쪽, 앞… 길의 한자를 외우자.")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "駅は 右だ！", en: "The station is on the right!", zh: "車站在右邊！", ko: "역은 오른쪽이야!")]),
+        7501: (pre: [
+            KJLine(role: "s", face: "sora_think", ja: "「右」と「左」、にてて まよう。", en: "右 and 左 look alike; I get confused.", zh: "「右」和「左」很像，好難分。", ko: "「右」와「左」, 닮아서 헷갈려."),
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "「右」は「口」、「左」は「工」！", en: "右 has 口, 左 has 工!", zh: "「右」有「口」，「左」有「工」！", ko: "「右」는「口」,「左」는「工」!")],
+            post: [
+]),
+        7503: (pre: [
+            KJLine(role: "n", face: "", ja: "ながさきの さかみちで ザコが ころがってくる！", en: "Minions come rolling down Nagasaki's hills!", zh: "小嘍囉從長崎的坡道滾下來！", ko: "나가사키 언덕길에서 졸개가 굴러온다!")],
+            post: [
+]),
         7003: (pre: [
             KJLine(role: "s", face: "sora_sad", ja: "でんしゃに のりおくれた…。", en: "I missed the train...", zh: "沒趕上電車……", ko: "전철을 놓쳤어…."),
             KJLine(role: "y", face: "nk_nyan_tip", ja: "つぎの でんしゃを まとう。", en: "Let's wait for the next train.", zh: "等下一班電車吧。", ko: "다음 전철을 기다리자.")],
             post: [
             KJLine(role: "y", face: "nk_nyan_joy", ja: "きた！", en: "Here it comes!", zh: "來了！", ko: "왔다!")]),
+        7504: (pre: [
+            KJLine(role: "y", face: "nk_nyan_joy", ja: "「駅」で「電車」に のろう！", en: "Let's take the train at the station!", zh: "在「車站」搭「電車」吧！", ko: "「역」에서「전철」을 타자!"),
+            KJLine(role: "s", face: "sora_smile", ja: "きっぷの かんじも よめるよ。", en: "I can read the kanji on the ticket.", zh: "車票上的漢字也看得懂。", ko: "표에 적힌 한자도 읽을 수 있어.")],
+            post: [
+]),
+        7506: (pre: [
+            KJLine(role: "n", face: "", ja: "ホームに ザコが あふれている！", en: "The platform is overflowing with minions!", zh: "月台上擠滿了小嘍囉！", ko: "승강장에 졸개가 넘쳐난다!")],
+            post: [
+]),
         7005: (pre: [
             KJLine(role: "n", face: "", ja: "あおい うみ。あかい やね。", en: "Blue sea. Red roofs.", zh: "藍色的海。紅色的屋頂。", ko: "파란 바다. 빨간 지붕."),
             KJLine(role: "s", face: "sora_scared", ja: "さいふが ない！", en: "My wallet is gone!", zh: "錢包不見了！", ko: "지갑이 없어!"),
             KJLine(role: "y", face: "nk_nyan_tip", ja: "すみません、たすけて ください！", en: "Excuse me, please help!", zh: "不好意思，請幫幫忙！", ko: "실례합니다, 도와주세요!")],
             post: [
             KJLine(role: "s", face: "sora_smile", ja: "あった！ ありがとうございます！", en: "Found it! Thank you so much!", zh: "找到了！非常感謝！", ko: "찾았다! 감사합니다!")]),
+        7507: (pre: [
+            KJLine(role: "s", face: "sora_think", ja: "きた、みなみ、ひがし、にし…。", en: "North, south, east, west…", zh: "北、南、東、西……", ko: "북, 남, 동, 서…."),
+            KJLine(role: "y", face: "nk_nyan_tip", ja: "ちずを よむときに つかうよ。", en: "You use them to read maps.", zh: "看地圖的時候會用到。", ko: "지도 읽을 때 써.")],
+            post: [
+]),
+        7509: (pre: [
+            KJLine(role: "n", face: "", ja: "おきなわの まちで ザコが みちを ふさぐ！", en: "Minions block the road in an Okinawa town!", zh: "小嘍囉在沖繩的城鎮擋路！", ko: "오키나와 마을에서 졸개가 길을 막는다!")],
+            post: [
+]),
         7008: (pre: [
             KJLine(role: "n", face: "", ja: "なみの なかから なにか くる！", en: "Something is coming from the waves!", zh: "浪裡有東西過來了！", ko: "파도 속에서 뭔가 온다!"),
             KJLine(role: "s", face: "sora_scared", ja: "またー！？", en: "Not again!?", zh: "又來了！？", ko: "또야!?")],
@@ -730,6 +1429,15 @@ extension KJC1 {
             KJLine(role: "y", face: "nk_nyan_gentle", ja: "たび、たのしかったね。", en: "This trip was fun, huh.", zh: "旅行好開心呢。", ko: "여행 즐거웠지.")],
             post: [
             KJLine(role: "s", face: "sora_think", ja: "まだ おわってないよ！", en: "It's not over yet!", zh: "還沒結束喔！", ko: "아직 안 끝났어!")]),
+        7510: (pre: [
+            KJLine(role: "y", face: "nk_nyan_gentle", ja: "「海」「島」「船」「旅」…たびの ことばが そろった。", en: "Sea, island, ship, trip… all the travel words.", zh: "「海」「島」「船」「旅」……旅行的詞都齊了。", ko: "「바다」「섬」「배」「여행」… 여행 단어가 다 모였어."),
+            KJLine(role: "s", face: "sora_smile", ja: "ここまで ほんとうに ながい たびだったね。", en: "It's been a really long journey.", zh: "這趟旅程真的好長呢。", ko: "여기까지 정말 긴 여행이었어.")],
+            post: [
+]),
+        7512: (pre: [
+            KJLine(role: "n", face: "", ja: "さいごの しまで ザコの だいぐんだん！", en: "A huge army of minions on the last island!", zh: "最後的島上有一大群小嘍囉！", ko: "마지막 섬에 졸개 대군단!")],
+            post: [
+]),
         7012: (pre: [
             KJLine(role: "kijimuna", face: "boss_silence", ja: "あそぼう！ もじは かくしちゃった！", en: "Let's play! I hid all the letters!", zh: "來玩吧！我把字藏起來了！", ko: "놀자! 글자는 숨겨 버렸어!"),
             KJLine(role: "s", face: "sora_shock", ja: "キジムナーだ！", en: "It's the Kijimuna!", zh: "是樹精！", ko: "키지무나다!"),
