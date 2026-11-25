@@ -37,7 +37,7 @@ struct RootView: View {
             case .map:       StageMapView().geometryGroup().transition(.move(edge: .trailing))
             case .study:     KJStudyView { app.go(.home) }.geometryGroup().transition(.move(edge: .trailing))
             case .zukan:     KJZukanView().geometryGroup().transition(.move(edge: .trailing))
-            case .record:    RecordView().geometryGroup().transition(.move(edge: .trailing))
+            case .record:    KJRecordView().geometryGroup().transition(.move(edge: .trailing))
             case .closet:    ClosetView().geometryGroup().transition(.move(edge: .trailing))
             case .settings:  SettingsView().geometryGroup().transition(.move(edge: .trailing))
             case .kana:      KanaJourneyView().transition(.opacity)
