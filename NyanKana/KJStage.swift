@@ -482,7 +482,7 @@ struct KJStageView: View {
     @ViewBuilder private var game: some View {
         switch stage.kind {
         case .talk:
-            KJTalkEvent { s, sc in finish(s, sc, ["こんにちは", "わたしは〇〇です"]) }
+            KJTalkEvent(chapter: stage.chapter) { s, sc in finish(s, sc, stage.chapter <= 1 ? ["こんにちは", "わたしは〇〇です"] : (KJTalkSets.sets[stage.chapter] ?? []).map(\.answer).uniqued()) }
         case .listen:
             KJListenEvent { s, sc in finish(s, sc, []) }
         case .lesson:
@@ -617,10 +617,13 @@ struct KJResultView: View {
 // MARK: - event: Yokohama Chinatown — answer the shop keeper (and say your own name)
 
 struct KJTalkEvent: View {
+    var chapter = 1
     var finished: (_ stars: Int, _ score: Int) -> Void
     struct Q { var npc: String; var face: String; var en: String; var zh: String; var ko: String; var answer: String }
+    private var all: [Q] { chapter <= 1 ? Self.greetings : (KJTalkSets.sets[chapter] ?? Self.greetings) }
+    private var options: [String] { all.map(\.answer).uniqued() }
     // situations (in the learner's language) → the right greeting
-    private let all: [Q] = [
+    static let greetings: [Q] = [
         Q(npc: "いらっしゃい！", face: "npc_chinatown", en: "You walk into the shop in the afternoon.", zh: "下午走進店裡。", ko: "낮에 가게에 들어갔어요.", answer: "こんにちは"),
         Q(npc: "はい、どうぞ。", face: "npc_chinatown", en: "The shop keeper hands you a meat bun.", zh: "店員遞給你肉包。", ko: "가게 주인이 고기만두를 줬어요.", answer: "ありがとう"),
         Q(npc: "おはよう！", face: "npc_chinatown", en: "It's 8 in the morning.", zh: "早上8點。", ko: "아침 8시예요.", answer: "おはよう"),
@@ -629,7 +632,6 @@ struct KJTalkEvent: View {
         Q(npc: "またね！", face: "npc_chinatown", en: "You are leaving the shop.", zh: "你要離開店了。", ko: "가게를 나가요.", answer: "さようなら"),
         Q(npc: "はじめまして！", face: "npc_chinatown", en: "You meet someone for the first time.", zh: "第一次見面。", ko: "처음 만났어요.", answer: "はじめまして"),
     ]
-    private let options = ["こんにちは", "ありがとう", "おはよう", "こんばんは", "すみません", "さようなら", "はじめまして"]
     @State private var qs: [Q] = []
     @State private var q = 0
     @State private var choices: [String] = []
@@ -678,7 +680,7 @@ struct KJTalkEvent: View {
     // the player says their own name: "わたしは ___ です"
     private var nameCard: some View {
         VStack(spacing: 14.s) {
-            Image("npc_chinatown").resizable().scaledToFit().frame(height: 150.s).modifier(Bob())
+            Image(all.first?.face ?? "npc_chinatown").resizable().scaledToFit().frame(height: 150.s).modifier(Bob())
             PaperCard {
                 VStack(spacing: 10.s) {
                     Text("おなまえは？").font(.ui(22.s)).foregroundStyle(Color.ink)
@@ -732,8 +734,10 @@ struct KJTalkEvent: View {
     private func answer(_ c: String, _ cur: Q) {
         picked = c
         Speaker.shared.say(cur.answer)
+        // then the other person answers back
+        later(1.3) { Speaker.shared.say(cur.npc, gender: .male) }
         if c == cur.answer { right += 1; AudioManager.shared.se(.kira) } else { AudioManager.shared.se(.wrong) }
-        later(1.4) {
+        later(2.8) {
             if q + 1 < qs.count { q += 1; makeChoices() } else { withAnimation { nameStep = true } }
         }
     }
