@@ -80,11 +80,16 @@ struct KJStudyView: View {
                             AudioManager.shared.se(.tap)
                             tab = t
                         } label: {
-                            Text(title(t)).font(.custom(Fonts.rounded, size: 14.s))
+                            VStack(spacing: 0) {
+                                Text(title(t)).font(.custom(Fonts.rounded, size: 14.s))
+                                    .lineLimit(1).minimumScaleFactor(0.7)
+                                // the meaning in the player's language, so the tabs are never confused
+                                Text(sub(t)).font(.ui(10.s, bold: false)).opacity(0.75)
+                                    .lineLimit(1).minimumScaleFactor(0.6)
+                            }
                                 .foregroundStyle(tab == t ? Color.white : Color.ink)
-                                .lineLimit(1).minimumScaleFactor(0.7)
                                 .frame(maxWidth: .infinity)
-                                .padding(.horizontal, 6.s).padding(.vertical, 7.s)
+                                .padding(.horizontal, 6.s).padding(.vertical, 5.s)
                                 .background(Capsule().fill(tab == t ? Color.grape : Color.white).overlay(Capsule().stroke(Color.ink, lineWidth: 2.5)))
                         }
                         .buttonStyle(.plain)
@@ -105,8 +110,17 @@ struct KJStudyView: View {
         switch t {
         case .chart: "もじひょう"
         case .words: "ことば"
-        case .train: "トレーニング"
+        case .train: "れんしゅう"
         case .exam: "しけん"
+        }
+    }
+
+    private func sub(_ t: Tab) -> String {
+        switch t {
+        case .chart: KJ.t("Letters", "文字表", "글자표")
+        case .words: KJ.t("Words", "單字", "단어")
+        case .train: KJ.t("Practice", "練習", "연습")
+        case .exam: KJ.t("Test", "考試", "시험")
         }
     }
 
