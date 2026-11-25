@@ -133,13 +133,13 @@ struct HomeView: View {
             ZStack {
                 Sunburst(a: Color(hex: 0xFF8FC0), b: Color(hex: 0xFF6AA8), center: .init(x: 0.5, y: 0.55), rays: 16)
                 StarBurst().fill(Color(hex: 0xFFF3A8)).frame(width: 150.s, height: 150.s).opacity(0.85)
-                // Sora and Nyan in the clothes chosen in the closet
+                // Sora and Yui in the clothes chosen in the closet
                 GeometryReader { g in
                     let h = g.size.height
-                    HStack(alignment: .bottom, spacing: -h * 0.16) {
+                    HStack(alignment: .bottom, spacing: -h * 0.12) {
                         Image(Outfit.wearing("sora", app).image("sora")).resizable().scaledToFit().frame(height: h)
                             .rotationEffect(.degrees(-3), anchor: .bottom)
-                        Image(Outfit.wearing("nyan", app).image("nyan")).resizable().scaledToFit().frame(height: h * 0.7)
+                        Image(Outfit.wearing("yui", app).image("yui")).resizable().scaledToFit().frame(height: h * 0.95)
                             .rotationEffect(.degrees(3), anchor: .bottom)
                     }
                     .frame(width: g.size.width, height: h, alignment: .bottom)

@@ -41,6 +41,26 @@ enum KJZukan {
         KJC1.stages(in: b.chapter).contains { s in (b.mid ? s.kind == .mid : s.kind == .boss) && KJC1.stars(s.id) > 0 }
     }
 
+    /// もじだま carry one letter, つくもがみ carry one word: the zukan shows (and reads) what each one holds
+    static func short(_ m: String) -> String? {
+        guard let i = EnemyTable.info[m] else { return nil }
+        return i.name.hasPrefix("もじだま") ? "「\(i.word)」" : i.word
+    }
+    static func detail(_ m: String) -> (image: String, name: String, sub: String) {
+        let no = "No.\(Int(m.dropFirst(3)) ?? 0)"
+        guard let i = EnemyTable.info[m] else { return (m, no, KJ.t("A yokai minion that ate letters", "吃掉文字的小妖怪", "글자를 먹은 졸개 요괴")) }
+        if i.name.hasPrefix("もじだま") {
+            let r = i.word.applyingTransform(.toLatin, reverse: false) ?? ""
+            return (m, i.name, KJ.t("A letter spirit. It holds the letter \(i.word) (\(r)). Beat it to free the letter!",
+                                    "文字精靈，身上帶著「\(i.word)」（\(r)）。打倒它就能救回這個字！",
+                                    "글자 정령. 「\(i.word)」(\(r)) 글자를 갖고 있어요. 쓰러뜨리면 글자가 돌아와요!"))
+        }
+        let mean = KJ.t(i.en, i.zh.isEmpty ? i.en : i.zh, i.ko.isEmpty ? i.en : i.ko)
+        return (m, i.name, KJ.t("It holds the word \(i.word)\(mean.isEmpty ? "" : " = \(mean)").",
+                                "身上帶著「\(i.word)」這個詞\(mean.isEmpty ? "" : "＝\(mean)")。",
+                                "「\(i.word)」라는 말을 갖고 있어요\(mean.isEmpty ? "" : " = \(mean)")."))
+    }
+
     /// words met in cleared stages
     static var learnedWords: Set<String> {
         Set(KJC1.stages.filter { KJC1.stars($0.id) > 0 }.flatMap(\.words))
@@ -158,8 +178,9 @@ struct KJZukanView: View {
                     Button {
                         guard open else { return }
                         AudioManager.shared.se(.decide)
-                        show = (m, no, KJ.t("A yokai minion that ate letters", "吃掉文字的小妖怪", "글자를 먹은 졸개 요괴"))
-                    } label: { cell(m, open: open, label: no, height: 58.s) }
+                        show = KJZukan.detail(m)
+                        if let w = EnemyTable.info[m]?.word { Speaker.shared.say(w) }
+                    } label: { cell(m, open: open, label: KJZukan.short(m) ?? no, height: 58.s) }
                     .buttonStyle(.plain)
                 }
             }
@@ -171,6 +192,7 @@ struct KJZukanView: View {
     private var friends: some View {
         let list: [(String, String, String)] = [
             ("sora_full", "ソラ", KJ.t("A boy traveling Japan with Nyan", "和喵一起旅行日本的少年", "냥과 일본을 여행하는 소년")),
+            ("yui_full", "ユイ", KJ.t("Sora's friend. She travels with him and cheers him on", "索拉的朋友，和他一起旅行、替他加油", "소라의 친구. 함께 여행하며 응원해요")),
             ("nyan", "ニャン", KJ.t("A talking cat who loves fish", "愛吃魚、會說話的貓", "생선을 좋아하는 말하는 고양이")),
             ("npc_nakamise", "なかみせの おみせの ひと", KJ.t("Shop keeper in Asakusa", "淺草的店員", "아사쿠사의 가게 주인")),
             ("npc_chinatown", "ちゅうかがいの おみせの ひと", KJ.t("Shop keeper in Yokohama Chinatown", "橫濱中華街的店員", "요코하마 차이나타운 가게 주인")),

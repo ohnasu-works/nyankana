@@ -7,10 +7,10 @@ enum Outfit: String, CaseIterable, Identifiable {
     case normal = "default", yukata, happi, snow, ninja, samurai, school, aloha, chef, hakama, kitsune, pajama
     var id: String { rawValue }
 
-    static let kids = ["sora", "nyan"]
+    static let kids = ["sora", "yui", "nyan"]
 
     func image(_ kid: String) -> String {
-        if self == .normal { return kid == "nyan" ? "nyan" : "sora_full" }
+        if self == .normal { return kid == "nyan" ? "nyan" : "\(kid)_full" }
         return "\(kid)_\(rawValue)"
     }
 
@@ -22,7 +22,7 @@ enum Outfit: String, CaseIterable, Identifiable {
         case .snow: T("ゆきの コート", "눈 코트", "雪地外套")
         case .ninja: T("にんじゃ", "닌자", "忍者")
         case .samurai: T("さむらい", "사무라이", "武士")
-        case .school: T("がくらん", "가쿠란", "立領學生服")
+        case .school: T("せいふく", "교복", "制服")
         case .aloha: T("かりゆし", "가리유시", "嘉利吉衫")
         case .chef: T("すしやさん", "초밥 장인", "壽司師傅")
         case .hakama: T("はかま", "하카마", "袴")
@@ -118,8 +118,9 @@ struct ClosetView: View {
     /// the two kids (and Nyan) in what they wear now
     private var stage: some View {
         HStack(alignment: .bottom, spacing: 0) {
-            kidImage("sora", height: 250.s)
-            kidImage("nyan", height: 170.s)
+            kidImage("sora", height: 230.s)
+            kidImage("yui", height: 220.s)
+            kidImage("nyan", height: 150.s)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 8.s)
@@ -140,10 +141,10 @@ struct ClosetView: View {
         HStack(spacing: 10.s) {
             ForEach(Outfit.kids, id: \.self) { k in
                 Button { AudioManager.shared.se(.tap); kid = k } label: {
-                    Text(k == "sora" ? "ソラ" : "ニャン").font(.custom(Fonts.rounded, size: 18.s))
+                    Text(k == "sora" ? "ソラ" : k == "yui" ? "ユイ" : "ニャン").font(.custom(Fonts.rounded, size: 18.s))
                         .foregroundStyle(kid == k ? Color.white : Color.ink)
                         .frame(maxWidth: .infinity, minHeight: 40.s)
-                        .background(Capsule().fill(kid == k ? (k == "sora" ? Color.mintDeep : Color.popDeep) : Color.white)
+                        .background(Capsule().fill(kid == k ? (k == "sora" ? Color.mintDeep : k == "yui" ? Color.pop : Color.popDeep) : Color.white)
                             .overlay(Capsule().stroke(Color.ink, lineWidth: 2.5)))
                 }
                 .buttonStyle(.plain)
