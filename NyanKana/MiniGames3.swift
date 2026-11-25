@@ -171,8 +171,8 @@ struct MGDash: View {
                 }
                 var keep = false
                 if ok { keep = mgChain(&ask, ctx: ctx) == .next } else if case .chain? = ask { keep = true }
-                let my = token
-                later(0.5) { if my == token { spawn(keep: keep) } }
+                let my = token, keepIt = keep
+                later(0.5) { if my == token { spawn(keep: keepIt) } }
             }
         }
         rows.removeAll { $0.x < -0.2 }

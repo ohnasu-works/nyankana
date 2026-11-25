@@ -290,9 +290,9 @@ enum MGKind: String, CaseIterable {
     var stars: Int {
         guard passed else { return 0 }
         switch grade {
-        case "S": 3
-        case "A": 2
-        default: 1
+        case "S": return 3
+        case "A": return 2
+        default: return 1
         }
     }
     /// 12. reached the goal: the rest of the clock is bonus time
