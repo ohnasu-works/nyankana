@@ -33,6 +33,15 @@ final class KJBattle: ObservableObject {
     /// ⑨ the glowing minion was tapped in "read" mode: point at the answer buttons
     @Published var readHint = false
     @Published var readChoices: [String] = []
+    /// the first "read" questions: everything stops and an arrow points at the buttons below
+    @Published var readTutorial = false
+    /// after a wrong answer nothing can be tapped for a moment (no guessing by tapping everything fast)
+    @Published var locked = false
+    private var wrongOnTarget = 0
+    static var readTutorialSeen: Int {
+        get { UserDefaults.standard.integer(forKey: "kj.readTut") }
+        set { UserDefaults.standard.set(newValue, forKey: "kj.readTut") }
+    }
     @Published var hearts = 3
     @Published var score = 0
     @Published var combo = 0
@@ -60,7 +69,13 @@ final class KJBattle: ObservableObject {
     let bossWords: [String]
     private var wordsLeft: [String] = []
     /// each region has its own yokai minions (also listed in the picture book)
-    private var minionImages: [String] { KJZukan.minions(st.chapter) }
+    /// (letter spirits — もじだま — carry a letter on their body; in battle that letter would be confused
+    /// with the one in the bubble, so the battle uses the picture yokai only)
+    private var minionImages: [String] {
+        let all = KJZukan.minions(st.chapter)
+        let plain = all.filter { !(EnemyTable.info[$0]?.name.contains("もじだま") ?? false) }
+        return plain.isEmpty ? all : plain
+    }
     private var time: Double = 0
     private var spawnClock: Double = 0
     private var lastKana = ""
@@ -101,7 +116,7 @@ final class KJBattle: ObservableObject {
         time += dt
         if fever > 0 { fever = max(0, fever - dt) }
         switch phase {
-        case .waves: tickWaves(dt); tickTonbi(dt)
+        case .waves: if !readTutorial { tickWaves(dt); tickTonbi(dt) }
         case .word, .boss: tickWord(dt)
         default: break
         }
@@ -189,6 +204,7 @@ final class KJBattle: ObservableObject {
         let t = choices.randomElement()!
         targetID = t.id
         lastKana = t.kana
+        wrongOnTarget = 0
         // mix the kinds of question (the very first ones are always "listen")
         ask = (hits >= 4 && Double.random(in: 0...1) < 0.4) ? .read : .listen
         if ask == .read {
@@ -197,6 +213,8 @@ final class KJBattle: ObservableObject {
             for o in others where opts.count < 3 { opts.insert(KJData.romaji(o)) }
             readChoices = Array(opts).shuffled()
             AudioManager.shared.se(.eyeShine, volume: 0.5)
+            // the first two times ever: stop and show where to answer
+            if Self.readTutorialSeen < 2 { readTutorial = true }
         } else {
             callOut()
         }
@@ -215,7 +233,7 @@ final class KJBattle: ObservableObject {
         // the gesture reports every finger move: act once per touch, on the minion as it is now
         if let l = lastTap, l.id == seen.id, time - l.at < 0.5 { return }
         lastTap = (seen.id, time)
-        guard phase == .waves, let foe = foes.first(where: { $0.id == seen.id }), !foe.dying, let t = target else { return }
+        guard phase == .waves, !locked, let foe = foes.first(where: { $0.id == seen.id }), !foe.dying, let t = target else { return }
         if ask == .read {
             // in "read" mode the answer is a sound button, not a minion
             if foe.id != t.id { wrong(foe) } else {
@@ -229,7 +247,8 @@ final class KJBattle: ObservableObject {
     }
 
     func read(_ romaji: String) {
-        guard phase == .waves, ask == .read, let t = target else { return }
+        guard phase == .waves, ask == .read, !locked, let t = target else { return }
+        if readTutorial { readTutorial = false; Self.readTutorialSeen += 1 }
         if romaji == KJData.romaji(t.kana) {
             Speaker.shared.say(t.kana)
             defeat(t)
@@ -268,7 +287,13 @@ final class KJBattle: ObservableObject {
 
     private func wrong(_ foe: Foe) {
         combo = 0; misses += 1
+        score = max(0, score - 30)
         AudioManager.shared.se(.wrong, volume: 0.7)
+        // tapping everything fast does not work: a short freeze, and the second miss on the same letter costs a heart
+        locked = true
+        later(1.0) { self.locked = false }
+        wrongOnTarget += 1
+        if wrongOnTarget >= 2 { wrongOnTarget = 0; hurt(); if phase == .lost { return } }
         if let i = foes.firstIndex(where: { $0.id == foe.id }) {
             foes[i].shake = true
             later(0.35) { if let j = self.foes.firstIndex(where: { $0.id == foe.id }) { self.foes[j].shake = false } }
@@ -410,7 +435,7 @@ final class KJBattle: ObservableObject {
     }
 
     func retry() {
-        hearts = 3; combo = 0; foes.removeAll(); targetID = nil
+        hearts = 3; combo = 0; foes.removeAll(); targetID = nil; locked = false; readTutorial = false
         if phase == .lost && hits >= goal && hasBoss { startBoss() } else { start() }
     }
 
@@ -626,7 +651,18 @@ struct KJBattleView: View {
                 Image(b.combo >= 5 ? "nk_nyan_joy" : "nk_nyan_proud").resizable().scaledToFit().frame(height: 74.s)
                 VStack(spacing: 6.s) {
                     if b.ask == .read && b.phase == .waves {
-                        if b.readHint {
+                        if b.readTutorial {
+                            // the first times: everything stops, and the buttons below are pointed out
+                            VStack(spacing: 2.s) {
+                                Text("ひかった もじの よみかたを えらぼう").font(.custom(Fonts.rounded, size: 15.s)).foregroundStyle(.white)
+                                Text(KJ.t("A letter is glowing. Choose how it sounds below!", "有個字在發光，從下面選出它的讀音！", "빛나는 글자가 있어요. 아래에서 읽는 법을 골라요!"))
+                                    .font(.ui(12.s, bold: false)).foregroundStyle(.white).multilineTextAlignment(.center)
+                            }
+                            .padding(.horizontal, 14.s).padding(.vertical, 8.s)
+                            .background(RoundedRectangle(cornerRadius: 14.s).fill(Color.popDeep).overlay(RoundedRectangle(cornerRadius: 14.s).stroke(Color.ink, lineWidth: 2.5)))
+                            Image(systemName: "arrowshape.down.fill").font(.system(size: 30.s, weight: .black)).foregroundStyle(Color.popDeep)
+                                .offset(y: CGFloat(sin(t * 8) * 5))
+                        } else if b.readHint {
                             Text(KJ.both("↓ Choose how it sounds", "↓ 選擇讀音", "↓ 읽는 법을 골라요"))
                                 .font(.ui(14.s)).foregroundStyle(.white)
                                 .padding(.horizontal, 10.s).padding(.vertical, 4.s)
@@ -638,9 +674,13 @@ struct KJBattleView: View {
                                 Button { b.read(r) } label: {
                                     Text(r).font(.display(24.s)).foregroundStyle(Color.ink)
                                         .frame(width: 62.s, height: 52.s)
-                                        .background(RoundedRectangle(cornerRadius: 14.s).fill(Color.white).overlay(RoundedRectangle(cornerRadius: 14.s).stroke(Color.ink, lineWidth: 3)))
+                                        .background(RoundedRectangle(cornerRadius: 14.s).fill(b.readTutorial ? Color.sun : Color.white)
+                                            .overlay(RoundedRectangle(cornerRadius: 14.s).stroke(b.readTutorial ? Color.popDeep : Color.ink, lineWidth: 3)))
                                 }
                                 .buttonStyle(PressStyle(radius: 14.s, depth: 4))
+                                .scaleEffect(b.readTutorial ? 1 + 0.06 * CGFloat(sin(t * 6)) : 1)
+                                .opacity(b.locked ? 0.45 : 1)
+                                .disabled(b.locked)
                             }
                         }
                         Text(KJ.both("How does the glowing one sound?", "發光的字怎麼唸？", "빛나는 글자는 어떻게 읽어요?"))

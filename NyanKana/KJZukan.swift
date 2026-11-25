@@ -44,12 +44,12 @@ enum KJZukan {
     /// もじだま carry one letter, つくもがみ carry one word: the zukan shows (and reads) what each one holds
     static func short(_ m: String) -> String? {
         guard let i = EnemyTable.info[m] else { return nil }
-        return i.name.hasPrefix("もじだま") ? "「\(i.word)」" : i.word
+        return i.name.contains("もじだま") ? "「\(i.word)」" : i.word
     }
     static func detail(_ m: String) -> (image: String, name: String, sub: String) {
         let no = "No.\(Int(m.dropFirst(3)) ?? 0)"
         guard let i = EnemyTable.info[m] else { return (m, no, KJ.t("A yokai minion that ate letters", "吃掉文字的小妖怪", "글자를 먹은 졸개 요괴")) }
-        if i.name.hasPrefix("もじだま") {
+        if i.name.contains("もじだま") {
             let r = i.word.applyingTransform(.toLatin, reverse: false) ?? ""
             return (m, i.name, KJ.t("A letter spirit. It holds the letter \(i.word) (\(r)). Beat it to free the letter!",
                                     "文字精靈，身上帶著「\(i.word)」（\(r)）。打倒它就能救回這個字！",

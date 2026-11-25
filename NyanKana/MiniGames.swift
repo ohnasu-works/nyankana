@@ -286,7 +286,8 @@ enum MGKind: String, CaseIterable {
     }
     /// at least one star, so a weak run never blocks the journey
     /// no star (= try again) when hardly anything was right
-    var passed: Bool { hits >= max(2, target / 3) }
+    /// (half the goal, and more right than wrong — tapping everything fast does not pass)
+    var passed: Bool { hits >= max(2, target / 2) && accuracy >= 0.5 }
     var stars: Int {
         guard passed else { return 0 }
         switch grade {

@@ -455,7 +455,8 @@ struct KJStageView: View {
                 HStack {
                     BackChip { map() }
                     Spacer()
-                    if step != .result {
+                    // skip the story / explanation; skipping the game itself (= a free clear) only in developer mode
+                    if step != .result && (step != .game || AppState.shared.dev.unlocks) {
                         Button { Speaker.shared.stop(); skip() } label: {
                             Image(systemName: "forward.end.fill").font(.system(size: 15.s, weight: .bold)).foregroundStyle(Color.ink)
                                 .padding(.horizontal, 12.s).padding(.vertical, 9.s)
