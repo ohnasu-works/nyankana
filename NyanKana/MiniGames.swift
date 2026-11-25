@@ -389,6 +389,7 @@ struct MiniGameView: View {
                 }
                 overlay(g.size)
             }
+            .frame(width: g.size.width, height: g.size.height)
         }
         .onAppear {
             // words this game can chain letter by letter (only games that bring the answer to you use chains)
@@ -565,18 +566,25 @@ struct MiniGameView: View {
     private func titleCard(_ size: CGSize) -> some View {
         ZStack {
             Color.black.opacity(0.4).ignoresSafeArea()
-            StarBurst().fill(Color.sun.opacity(0.55))
-                .frame(width: size.width * 1.3, height: size.width * 1.3)
-                .rotationEffect(.degrees(spin ? 360 : 0))
-                .animation(.linear(duration: 14).repeatForever(autoreverses: false), value: spin)
+            // the burst is drawn as an overlay so its size never widens the layout (it used to push everything right)
+            Color.clear
+                .frame(width: size.width, height: size.height)
+                .overlay(
+                    StarBurst().fill(Color.sun.opacity(0.55))
+                        .frame(width: size.width * 1.3, height: size.width * 1.3)
+                        .rotationEffect(.degrees(spin ? 360 : 0))
+                        .animation(.linear(duration: 14).repeatForever(autoreverses: false), value: spin)
+                )
+                .clipped()
                 .onAppear { spin = true }
                 .allowsHitTesting(false)
             VStack(spacing: 14.s) {
                 Image(kind.hero).resizable().scaledToFit().frame(height: 190.s).modifier(Bob())
                 // sized so the whole name always fits on one line
-                OutlinedText(kind.title, font: .custom(Fonts.rounded, size: min(40.s, (size.width - 60.s) / CGFloat(max(kind.title.count, 1)) * 1.05)),
+                OutlinedText(kind.title, font: .custom(Fonts.rounded, size: min(40.s, (size.width - 70.s) / CGFloat(max(kind.title.count, 1)))),
                              fill: .sun, width: 5, shadow: 4)
                     .fixedSize()
+                    .frame(width: size.width - 20.s)
                 RibbonTitle(text: kind.sub, color: .sky, size: 20)
                 PaperCard {
                     Text(kind.howTo).font(.ui(15.s)).foregroundStyle(Color.ink).multilineTextAlignment(.center)
@@ -586,10 +594,11 @@ struct MiniGameView: View {
                 .padding(.horizontal, 30.s)
                 Text("TAP!").font(.display(18.s)).foregroundStyle(.white).opacity(0.85)
             }
-            .frame(width: size.width)
+            .frame(width: size.width, height: size.height)
             .offset(x: titleIn ? 0 : -size.width * 1.2)
             .rotationEffect(.degrees(titleIn ? 0 : -12))
         }
+        .frame(width: size.width, height: size.height)
         .contentShape(Rectangle())
         .onTapGesture { startCount() }
     }
@@ -762,7 +771,8 @@ struct MGKaruta: View {
             Text(name).font(.ui(11.s)).foregroundStyle(Color.ink)
             Text("\(n)").font(.display(22.s)).foregroundStyle(c).monospacedDigit()
         }
-        .padding(.horizontal, 12.s).padding(.vertical, 3.s)
+        .frame(width: 74.s)   // same width for both sides
+        .padding(.vertical, 3.s)
         .background(RoundedRectangle(cornerRadius: 10.s).fill(Color.white.opacity(0.9)).overlay(RoundedRectangle(cornerRadius: 10.s).stroke(Color.ink, lineWidth: 2)))
     }
 

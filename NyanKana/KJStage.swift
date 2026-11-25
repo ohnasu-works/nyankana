@@ -136,12 +136,25 @@ struct KJMapView: View {
         ["旅01_隅田川の桜並木_夕方", "bg_c2_sendai", "bg_c3_otaru", "bg_c4_shirakawa", "bg_c5_inari", "bg_c6_miyajima", "bg_c7_okinawa"][max(0, min(6, chapter - 1))]
     }
 
+    /// the stage list of one region opens over the Japan map
+    @State private var showCourse = false
+
     var body: some View {
+        ZStack {
+            KJJapanMap(chapter: $chapter, play: play, home: home, playground: playground,
+                       openCourse: { withAnimation(.easeInOut(duration: 0.25)) { showCourse = true } })
+            if showCourse {
+                courseScreen.transition(.move(edge: .trailing))
+            }
+        }
+    }
+
+    private var courseScreen: some View {
         ZStack {
             KJBackdrop(bg: chapterBG, dim: 0.35)
             VStack(spacing: 10.s) {
                 HStack {
-                    BackChip { home() }
+                    BackChip { withAnimation(.easeInOut(duration: 0.25)) { showCourse = false } }
                     Spacer()
                     // あそびば: replay the mini-games
                     Button {
