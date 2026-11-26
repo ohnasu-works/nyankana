@@ -525,7 +525,7 @@ struct MGMeiro: View {
     /// a word (or a row of the kana table) laid out as a winding path from where Nyan stands
     private func build() {
         token += 1
-        let words = KJData.words.map(\.ja).filter { w in w.count >= 2 && w.allSatisfy { letters.contains(String($0)) } }
+        let words = MGWords.pick(readable: letters, minLength: 2)
         let rows = [KJC1.A, KJC1.K, KJC1.S, KJC1.T, KJC1.N].filter { $0.allSatisfy { letters.contains($0) } }
         for _ in 0..<30 {
             let s: [String] = (Bool.random() || rows.isEmpty) && !words.isEmpty

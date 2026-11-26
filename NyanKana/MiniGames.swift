@@ -396,9 +396,8 @@ struct MiniGameView: View {
         .onAppear {
             // words this game can chain letter by letter (only games that bring the answer to you use chains)
             let chainable: Set<MGKind> = [.chochin, .yuki, .ninja, .yabusame, .taiko, .dash]
-            let ls = Set(letters)
-            MGAsk.chainWords = chainable.contains(kind)
-                ? stage.words.filter { w in w.count >= 2 && w.allSatisfy { ls.contains(String($0)) } } : []
+            MGWords.taught = KJLearned.answerWords(for: stage)
+            MGAsk.chainWords = chainable.contains(kind) ? MGWords.pick(readable: letters, minLength: 2) : []
             AudioManager.shared.playBGM(.track(kind.bgm))
             ctx.endRequested = { endGame() }
             ctx.reset(total: kind.duration, target: kind.target)

@@ -487,7 +487,7 @@ struct KJStageView: View {
         case .talk:
             KJTalkEvent(chapter: stage.chapter) { s, sc in finish(s, sc, stage.chapter <= 1 ? ["こんにちは", "わたしは〇〇です"] : (KJTalkSets.sets[stage.chapter] ?? []).map(\.answer).uniqued()) }
         case .listen:
-            KJListenEvent { s, sc in finish(s, sc, []) }
+            KJListenEvent(answers: KJLearned.answerWords(for: stage, need: 6)) { s, sc in finish(s, sc, []) }
         case .lesson:
             // 基本マス: the standard study round
             KJLessonView(stage: stage) { s, sc, w in finish(s, sc, w) }
@@ -749,6 +749,8 @@ struct KJTalkEvent: View {
 // MARK: - event: Nikko's three monkeys — ears only (no letters on the screen until you answer)
 
 struct KJListenEvent: View {
+    /// what is asked: words already taught (the choices may include others)
+    var answers: [String] = []
     var finished: (_ stars: Int, _ score: Int) -> Void
     private static let pool: [String] = KJData.words.map(\.ja) + ["こんにちは", "ありがとう", "すみません", "おはよう", "こんばんは", "さようなら"]
     @State private var qs: [String] = []
@@ -786,7 +788,7 @@ struct KJListenEvent: View {
             Spacer()
         }
         .onAppear {
-            qs = Array(Self.pool.shuffled().prefix(10))
+            qs = Array((answers.count >= 4 ? answers : Self.pool).shuffled().prefix(10))
             makeChoices()
         }
     }

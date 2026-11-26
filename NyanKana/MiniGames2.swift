@@ -6,6 +6,18 @@ import Combine
 // どれも MiniGameView（MiniGames.swift）の共通の枠の中で動く。
 
 /// what to look for: a sound, a romaji spelling, or a word (picture + meaning)
+/// words already taught at the stage being played (set by MiniGameView) — the only words a mini-game asks
+@MainActor enum MGWords {
+    static var taught: [String] = []
+    /// taught words the player can read with these letters; if none yet, any readable word (it comes with its picture)
+    static func pick(readable letters: [String], minLength: Int = 1) -> [String] {
+        let ls = Set(letters)
+        let ok: (String) -> Bool = { w in w.count >= minLength && w.allSatisfy { ls.contains(String($0)) } }
+        let t = taught.filter(ok)
+        return t.count >= 3 ? t : (t + KJData.words.map(\.ja).filter(ok)).uniqued()
+    }
+}
+
 enum MGAsk: Equatable {
     case sound(String)
     case romaji(String)
@@ -324,9 +336,7 @@ struct MGSushi: View {
     private let tags: [Color] = [.pop, .sky, .mint, .sun, .grape]
     static let netas = ["mg_sushi"] + (1...8).map { "mg_sushi_\($0)" }
     private let laneY: [CGFloat] = [0.5, 0.7]
-    private var words: [String] {
-        KJData.words.map(\.ja).filter { w in w.allSatisfy { letters.contains(String($0)) } }
-    }
+    private var words: [String] { MGWords.pick(readable: letters) }
 
     var body: some View {
         GeometryReader { g in
