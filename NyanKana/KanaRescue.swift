@@ -61,7 +61,7 @@ enum KanaRescue {
     static func pools(_ stage: KJC1.Stage) -> QuestionBank.Pools {
         let letters = stage.known.isEmpty ? KJC1.all : stage.known
         let single = letters.map { letterQ($0, among: letters) }
-        let words = KJLearned.answerWords(for: stage).compactMap { KJData.word($0) }
+        let words = KJLearned.answerWords(for: stage, readable: true).compactMap { KJData.word($0) }
         let phrase = words.map { wordQ($0, among: letters) }
         let order = words.filter { $0.ja.count >= 2 }.map { orderQ($0) }
         return QuestionBank.Pools(single: single, phrase: phrase, order: order,

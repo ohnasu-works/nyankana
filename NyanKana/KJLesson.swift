@@ -197,18 +197,15 @@ struct KJLessonView: View {
         }
     }
 
-    /// three other words for the choices: ones of the same length that the player can read first
+    /// three other words for the choices: the ones that look / sound most alike (one letter swapped first)
     private func wordDecoys(_ w: String) -> [String] {
-        let have = Set(pool)
-        let readable = KJData.words.map(\.ja).filter { $0 != w && $0.allSatisfy { have.contains(String($0)) || "ゃゅょっー".contains($0) } }
-        var out = (stage.words.filter { $0 != w && KJData.word($0) != nil } + readable.filter { $0.count == w.count } + readable).uniqued()
-        // the same word with one letter swapped looks the most alike
+        var out: [String] = []
         let chars = w.map(String.init)
         if let i = chars.indices.randomElement(), let swap = mgDecoys(chars[i], pool).first(where: { $0 != chars[i] }) {
-            var c = chars; c[i] = swap; out.insert(c.joined(), at: 0)
+            var c = chars; c[i] = swap; out.append(c.joined())
         }
-        for x in KJData.words.map(\.ja).shuffled() where out.count < 3 && x != w && !out.contains(x) { out.append(x) }
-        return Array(out.filter { $0 != w }.prefix(3))
+        out += KJSimilar.words(w, from: stage.words + KJData.words.map(\.ja), count: 4)
+        return Array(out.filter { $0 != w }.uniqued().prefix(3))
     }
 
     private func speakerButton(_ k: String, big: Bool) -> some View {

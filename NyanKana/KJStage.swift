@@ -46,7 +46,7 @@ enum KJC1 {
         Stage(id: 101, ja: "あさくさ・あそび", en: "Asakusa · Game", zh: "淺草・遊戲", ko: "아사쿠사・게임",
               bg: "旅01_浅草_雷門", kind: .mini, known: A, words: ["あお", "いえ", "うえ"], mini: .karuta, focus: A),
         Stage(id: 201, ja: "あさくさ・ことば", en: "Asakusa · Words", zh: "淺草・詞語", ko: "아사쿠사・단어",
-              bg: "旅01_浅草_雷門", kind: .lesson, known: A, words: ["あお", "いえ", "うえ", "あい"]),
+              bg: "旅01_浅草_雷門", kind: .lesson, known: A, words: ["こんにちは", "ありがとう", "いい", "いえ", "うえ", "あお"]),
         Stage(id: 301, ja: "あさくさ・あそび2", en: "Asakusa · Game 2", zh: "淺草・遊戲2", ko: "아사쿠사・게임2",
               bg: "旅01_浅草_雷門", kind: .mini, known: A, words: ["あお", "いえ", "うえ"], mini: .nazori, focus: A),
         Stage(id: 401, ja: "あさくさ・しゅぎょう", en: "Asakusa · Training", zh: "淺草・修行", ko: "아사쿠사・수행",
@@ -56,7 +56,7 @@ enum KJC1 {
         Stage(id: 102, ja: "なかみせ・あそび", en: "Nakamise · Game", zh: "仲見世・遊戲", ko: "나카미세・게임",
               bg: "旅01_浅草_仲見世通り", kind: .mini, known: A + K, words: ["かお", "あかい", "こえ"], mini: .tsuri, focus: K),
         Stage(id: 202, ja: "なかみせ・ことば", en: "Nakamise · Words", zh: "仲見世・詞語", ko: "나카미세・단어",
-              bg: "旅01_浅草_仲見世通り", kind: .lesson, known: A + K, words: ["かお", "あかい", "こえ", "いけ", "おか", "かき"]),
+              bg: "旅01_浅草_仲見世通り", kind: .lesson, known: A + K, words: ["すみません", "はい", "ここ", "いく", "かお", "あかい", "きく", "こえ"]),
         Stage(id: 302, ja: "なかみせ・あそび2", en: "Nakamise · Game 2", zh: "仲見世・遊戲2", ko: "나카미세・게임2",
               bg: "旅01_浅草_仲見世通り", kind: .mini, known: A + K, words: ["かお", "あかい", "こえ"], mini: .taiko, focus: K),
         Stage(id: 402, ja: "なかみせ・しゅぎょう", en: "Nakamise · Training", zh: "仲見世・修行", ko: "나카미세・수행",
@@ -68,7 +68,7 @@ enum KJC1 {
         Stage(id: 104, ja: "タワー・あそび", en: "Tower · Game", zh: "鐵塔・遊戲", ko: "타워・게임",
               bg: "旅01_東京タワー_夜", kind: .mini, known: A + K + S, words: ["すし", "かさ", "あし"], mini: .chochin, focus: S),
         Stage(id: 203, ja: "とうきょうタワー・ことば", en: "Tokyo Tower · Words", zh: "東京鐵塔・詞語", ko: "도쿄 타워・단어",
-              bg: "旅01_東京タワー_夜", kind: .lesson, known: A + K + S, words: ["すし", "かさ", "あし", "いす", "うし", "しお"]),
+              bg: "旅01_東京タワー_夜", kind: .lesson, known: A + K + S, words: ["いいえ", "おはよう", "あさ", "おいしい", "すし", "あし", "かさ", "しお"]),
         Stage(id: 303, ja: "とうきょうタワー・あそび2", en: "Tokyo Tower · Game 2", zh: "東京鐵塔・遊戲2", ko: "도쿄 타워・게임2",
               bg: "旅01_東京タワー_夜", kind: .mini, known: A + K + S, words: ["すし", "かさ", "あし"], mini: .daruma, focus: S),
         Stage(id: 403, ja: "とうきょうタワー・しゅぎょう", en: "Tokyo Tower · Training", zh: "東京鐵塔・修行", ko: "도쿄 타워・수행",
@@ -78,7 +78,7 @@ enum KJC1 {
         Stage(id: 105, ja: "あきはばら・あそび", en: "Akihabara · Game", zh: "秋葉原・遊戲", ko: "아키하바라・게임",
               bg: "bg_c1_akiba", kind: .mini, known: A + K + S + T, words: ["たこ", "て", "つくえ"], mini: .sushi, focus: T),
         Stage(id: 204, ja: "あきはばら・ことば", en: "Akihabara · Words", zh: "秋葉原・詞語", ko: "아키하바라・단어",
-              bg: "bg_c1_akiba", kind: .lesson, known: A + K + S + T, words: ["たこ", "つくえ", "くつ", "うた", "とけい", "そと"]),
+              bg: "bg_c1_akiba", kind: .lesson, known: A + K + S + T, words: ["こんばんは", "さようなら", "たかい", "ちいさい", "おおきい", "いつ", "くつ", "とけい"]),
         Stage(id: 304, ja: "あきはばら・あそび2", en: "Akihabara · Game 2", zh: "秋葉原・遊戲2", ko: "아키하바라・게임2",
               bg: "bg_c1_akiba", kind: .mini, known: A + K + S + T, words: ["たこ", "つくえ", "くつ"], mini: .yuki, focus: T),
         Stage(id: 404, ja: "あきはばら・しゅぎょう", en: "Akihabara · Training", zh: "秋葉原・修行", ko: "아키하바라・수행",
@@ -92,7 +92,7 @@ enum KJC1 {
         Stage(id: 108, ja: "かまくら・あそび", en: "Kamakura · Game", zh: "鎌倉・遊戲", ko: "가마쿠라・게임",
               bg: "bg_c1_daibutsu", kind: .mini, known: all, words: ["ねこ", "いぬ", "さかな"], mini: .kingyo, focus: N),
         Stage(id: 205, ja: "かまくら・ことば", en: "Kamakura · Words", zh: "鎌倉・詞語", ko: "가마쿠라・단어",
-              bg: "bg_c1_daibutsu", kind: .lesson, known: all, words: ["ねこ", "いぬ", "さかな", "かに", "なつ", "にく"]),
+              bg: "bg_c1_daibutsu", kind: .lesson, known: all, words: ["ください", "おねがいします", "なに", "あなた", "ねこ", "いぬ", "さかな", "にく"]),
         Stage(id: 305, ja: "かまくら・あそび2", en: "Kamakura · Game 2", zh: "鎌倉・遊戲2", ko: "가마쿠라・게임2",
               bg: "bg_c1_daibutsu", kind: .mini, known: all, words: ["ねこ", "いぬ", "さかな"], mini: .dash, focus: N),
         Stage(id: 405, ja: "かまくら・しゅぎょう", en: "Kamakura · Training", zh: "鎌倉・修行", ko: "가마쿠라・수행",
@@ -797,7 +797,7 @@ struct KJListenEvent: View {
     private func makeChoices() {
         guard let cur = qs[safe: q] else { return }
         // similar-looking or similar-sounding choices make it a real listening test
-        let others = Self.pool.filter { $0 != cur && ($0.count == cur.count || $0.first == cur.first) }.shuffled().prefix(3)
+        let others = KJSimilar.words(cur, from: Self.pool + answers, count: 3)
         var c = [cur] + others
         for x in Self.pool.shuffled() where c.count < 4 && !c.contains(x) { c.append(x) }
         choices = c.shuffled()

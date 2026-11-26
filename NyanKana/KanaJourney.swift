@@ -111,6 +111,29 @@ enum KJData {
         Word(ja: "ねこ", emoji: "🐱", en: "cat", zh: "貓", ko: "고양이"),
         Word(ja: "いぬ", emoji: "🐶", en: "dog", zh: "狗", ko: "개"),
         Word(ja: "さかな", emoji: "🐟", en: "fish", zh: "魚", ko: "물고기"),
+        // あいさつ・すぐ使える ひとこと（文字を ぜんぶ ならう前でも、音と絵で 先に おぼえる）
+        Word(ja: "こんにちは", emoji: "🙋", en: "hello", zh: "你好", ko: "안녕하세요"),
+        Word(ja: "ありがとう", emoji: "🙇", en: "thank you", zh: "謝謝", ko: "고마워요"),
+        Word(ja: "すみません", emoji: "🫲", en: "excuse me / sorry", zh: "不好意思", ko: "실례합니다"),
+        Word(ja: "はい", emoji: "✅", en: "yes", zh: "是", ko: "네"),
+        Word(ja: "いいえ", emoji: "🙅", en: "no", zh: "不是", ko: "아니요"),
+        Word(ja: "おはよう", emoji: "☀️", en: "good morning", zh: "早安", ko: "좋은 아침"),
+        Word(ja: "こんばんは", emoji: "🌙", en: "good evening", zh: "晚上好", ko: "안녕하세요 (저녁)"),
+        Word(ja: "さようなら", emoji: "✋", en: "goodbye", zh: "再見", ko: "안녕히 가세요"),
+        Word(ja: "ください", emoji: "🫱", en: "please give me", zh: "請給我", ko: "주세요"),
+        Word(ja: "おねがいします", emoji: "🤝", en: "please", zh: "拜託了", ko: "부탁합니다"),
+        Word(ja: "いただきます", emoji: "🥢", en: "(before eating) let's eat", zh: "我開動了", ko: "잘 먹겠습니다"),
+        Word(ja: "ごちそうさま", emoji: "🍽️", en: "(after eating) thanks for the meal", zh: "我吃飽了", ko: "잘 먹었습니다"),
+        Word(ja: "だいじょうぶ", emoji: "👍", en: "it's OK", zh: "沒問題", ko: "괜찮아요"),
+        Word(ja: "わかりました", emoji: "💡", en: "I understand", zh: "我知道了", ko: "알겠습니다"),
+        Word(ja: "わかりません", emoji: "❔", en: "I don't understand", zh: "我不懂", ko: "모르겠어요"),
+        Word(ja: "ごめんなさい", emoji: "😢", en: "I'm sorry", zh: "對不起", ko: "미안해요"),
+        // すぐ使える みじかい ことば
+        Word(ja: "いい", emoji: "✨", en: "good", zh: "好", ko: "좋아요"),
+        Word(ja: "ここ", emoji: "📍", en: "here", zh: "這裡", ko: "여기"),
+        Word(ja: "いつ", emoji: "⏰", en: "when", zh: "什麼時候", ko: "언제"),
+        Word(ja: "あなた", emoji: "🧑", en: "you", zh: "你", ko: "당신"),
+        Word(ja: "これ", emoji: "☝️", en: "this", zh: "這個", ko: "이것"),
     ]
     static func word(_ w: String) -> Word? { words.first { $0.ja == w } }
 

@@ -96,8 +96,8 @@ final class KJBattle: ObservableObject {
         st = stage
         goal = stage.goal
         switch stage.kind {
-        case .boss: bossWords = Array(KJLearned.answerWords(for: stage).shuffled().prefix(9))
-        case .mid: bossWords = Array(KJLearned.answerWords(for: stage).shuffled().prefix(4))
+        case .boss: bossWords = Array(KJLearned.answerWords(for: stage, readable: true).shuffled().prefix(9))
+        case .mid: bossWords = Array(KJLearned.answerWords(for: stage, readable: true).shuffled().prefix(4))
         default: bossWords = []
         }
     }
@@ -354,7 +354,7 @@ final class KJBattle: ObservableObject {
     }
 
     private func startWordRound() {
-        if wordsLeft.isEmpty { wordsLeft = KJLearned.answerWords(for: st).shuffled() }
+        if wordsLeft.isEmpty { wordsLeft = KJLearned.answerWords(for: st, readable: true).shuffled() }
         word = wordsLeft.removeFirst()
         typed = ""; wordTime = 1
         pad = makePad(for: word)
