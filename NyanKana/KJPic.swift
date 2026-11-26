@@ -59,7 +59,7 @@ enum KJPic {
     }
 
     /// the first pictograph in a string, if any
-    static func first(_ s: String) -> String? { s.first(where: isPic).map(String.init) }
+    static func first(_ s: String) -> String? { s.first { isPic($0) }.map(String.init) }
 }
 
 /// one drawing, square

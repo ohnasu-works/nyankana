@@ -72,9 +72,7 @@ final class KJBattle: ObservableObject {
     /// (letter spirits — もじだま — carry a letter on their body; in battle that letter would be confused
     /// with the one in the bubble, so the battle uses the picture yokai only)
     private var minionImages: [String] {
-        let all = KJZukan.minions(st.chapter)
-        let plain = all.filter { !(EnemyTable.info[$0]?.name.contains("もじだま") ?? false) }
-        return plain.isEmpty ? all : plain
+        KJZukan.battleMinions(st.chapter)
     }
     private var time: Double = 0
     private var spawnClock: Double = 0
@@ -236,20 +234,20 @@ final class KJBattle: ObservableObject {
         guard phase == .waves, !locked, let foe = foes.first(where: { $0.id == seen.id }), !foe.dying, let t = target else { return }
         if ask == .read {
             // in "read" mode the answer is a sound button, not a minion
-            if foe.id != t.id { wrong(foe) } else {
+            if foe.id != t.id && !AppState.shared.dev.anyRight { wrong(foe) } else {
                 AudioManager.shared.se(.tap)
                 readHint = true
                 later(1.4) { self.readHint = false }
             }
             return
         }
-        if foe.kana == t.kana { defeat(foe) } else { wrong(foe) }
+        if foe.kana == t.kana || AppState.shared.dev.anyRight { defeat(foe.kana == t.kana ? foe : t) } else { wrong(foe) }
     }
 
     func read(_ romaji: String) {
         guard phase == .waves, ask == .read, !locked, let t = target else { return }
         if readTutorial { readTutorial = false; Self.readTutorialSeen += 1 }
-        if romaji == KJData.romaji(t.kana) {
+        if romaji == KJData.romaji(t.kana) || AppState.shared.dev.anyRight {
             Speaker.shared.say(t.kana)
             defeat(t)
         } else {
@@ -312,6 +310,7 @@ final class KJBattle: ObservableObject {
     }
 
     private func hurt() {
+        if AppState.shared.dev.enabled && AppState.shared.dev.noDamage { AudioManager.shared.se(.damage); return }
         hearts -= 1
         AudioManager.shared.se(.damage)
         flash = true

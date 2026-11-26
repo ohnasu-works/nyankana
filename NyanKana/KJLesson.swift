@@ -430,7 +430,7 @@ struct KJLessonView: View {
     private func choose(_ c: String, answer: String) {
         guard picked == nil, let q else { return }
         picked = c
-        if c == answer {
+        if c == answer || AppState.shared.dev.anyRight {
             right(q.key)
         } else {
             AudioManager.shared.se(.studyNG)

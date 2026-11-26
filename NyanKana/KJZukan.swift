@@ -5,6 +5,17 @@ import SwiftUI
 enum KJZukan {
     /// all minion pictures (nk_001 …), split into the seven regions
     static let allMinions: [String] = (1...437).map { String(format: "nk_%03d", $0) }.filter { UIImage(named: $0) != nil }
+    /// battle minions: only the picture yokai (letter spirits carry a letter on the body, which would be
+    /// mistaken for the answer in the bubble), split by chapter the same way
+    static func battleMinions(_ chapter: Int) -> [String] {
+        let all = allMinions.filter { !(EnemyTable.info[$0]?.name.contains("もじだま") ?? false) }
+        guard !all.isEmpty else { return minions(chapter) }
+        let per = max(1, all.count / 7)
+        let c = max(1, min(7, chapter)) - 1
+        let end = c == 6 ? all.count : min(all.count, (c + 1) * per)
+        return Array(all[min(c * per, all.count - 1)..<end])
+    }
+
     static func minions(_ chapter: Int) -> [String] {
         let all = allMinions
         guard !all.isEmpty else { return ["nk_342"] }

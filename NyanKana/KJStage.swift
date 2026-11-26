@@ -131,6 +131,7 @@ enum KJC1 {
     /// open when the stage before it (in map order) has a star
     static func unlocked(_ id: Int) -> Bool {
         guard let i = stages.firstIndex(where: { $0.id == id }) else { return false }
+        if AppState.shared.dev.unlocks { return true }
         // (a stage already cleared — or one further along — stays open, so saves from before new stages were added keep working)
         return i == 0 || stars(stages[i - 1].id) > 0 || stages[i...].contains { stars($0.id) > 0 }
     }
@@ -456,7 +457,7 @@ struct KJStageView: View {
                     BackChip { map() }
                     Spacer()
                     // skip the story / explanation; skipping the game itself (= a free clear) only in developer mode
-                    if step != .result && (step != .game || AppState.shared.dev.unlocks) {
+                    if step != .result && (step != .game || AppState.shared.dev.canSkip) {
                         Button { Speaker.shared.stop(); skip() } label: {
                             Image(systemName: "forward.end.fill").font(.system(size: 15.s, weight: .bold)).foregroundStyle(Color.ink)
                                 .padding(.horizontal, 12.s).padding(.vertical, 9.s)

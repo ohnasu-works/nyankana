@@ -257,6 +257,7 @@ enum MGKind: String, CaseIterable {
 
     /// a wrong answer: combo gone, the screen shakes
     func bad(at p: CGPoint, shakeIt: Bool = true) {
+        if AppState.shared.dev.anyRight { good(at: p); return }
         misses += 1; combo = 0; fever = false
         if shakeIt { withAnimation(.linear(duration: 0.35)) { shake += 1 } }
         flash = true
@@ -823,7 +824,7 @@ struct MGKaruta: View {
         }
         var chosen: [String] = []
         for k in pick where !chosen.contains(k) && chosen.count < 9 { chosen.append(k) }
-        while chosen.count < 9 { chosen.append(KJC1.all.filter { !chosen.contains($0) }.randomElement() ?? "あ") }
+        // (never pad with letters not learned yet: early on there are simply fewer cards)
         withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) { cards = chosen.shuffled().map { Card(kana: $0) } }
         AudioManager.shared.se(.mgWhoosh, volume: 0.6)
     }
