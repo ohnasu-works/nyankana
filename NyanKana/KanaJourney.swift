@@ -224,7 +224,7 @@ struct KJSlowButton: View {
     @EnvironmentObject var settings: SettingsStore
     var body: some View {
         Button { AudioManager.shared.se(.tap); settings.slowVoice.toggle() } label: {
-            Text(settings.slowVoice ? "🐢 ON" : "🐢 OFF")
+            KJPic.text(settings.slowVoice ? "🐢 ON" : "🐢 OFF", size: 14.s)
                 .font(.ui(14.s)).foregroundStyle(Color.ink)
                 .padding(.horizontal, 12.s).padding(.vertical, 8.s)
                 .background(Capsule().fill(settings.slowVoice ? Color.mint : Color.white).overlay(Capsule().stroke(Color.ink, lineWidth: 3)))

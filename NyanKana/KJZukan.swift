@@ -221,7 +221,7 @@ struct KJZukanView: View {
                         Speaker.shared.say(w.ja)
                     } label: {
                         VStack(spacing: 2.s) {
-                            Text(open ? w.emoji : "❔").font(.system(size: 28.s))
+                            KJPicView(open ? w.emoji : "❔", size: 32.2.s)
                             Text(open ? w.ja : "？？？").font(.custom(Fonts.rounded, size: 15.s)).foregroundStyle(Color.ink)
                                 .lineLimit(1).minimumScaleFactor(0.5)
                             Text(open ? w.meaning : "").font(.ui(10.s, bold: false)).foregroundStyle(Color.ink.opacity(0.65)).lineLimit(1).minimumScaleFactor(0.6)

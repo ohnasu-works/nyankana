@@ -1,5 +1,6 @@
 import SwiftUI
 import UserNotifications
+import UIKit
 
 // MARK: - きょうの ミッション：毎日もどってくる理由（3つのミッション・連続日数・自動ふくしゅう・おしらせ）
 
@@ -187,11 +188,18 @@ enum KJReminder {
             cats.insert(UNNotificationCategory(identifier: "kj.q.\(i)", actions: actions, intentIdentifiers: []))
             let content = UNMutableNotificationContent()
             content.title = "きょうの 1もん"
-            content.body = q.head + "\n" + q.choices.enumerated().map { "\(marks[$0.offset]). \($0.element)" }.joined(separator: "   ")
+            content.body = KJPic.strip(q.head) + "\n" + q.choices.enumerated().map { "\(marks[$0.offset]). \($0.element)" }.joined(separator: "   ")
             content.subtitle = q.prompt
             content.sound = .default
             content.categoryIdentifier = "kj.q.\(i)"
             content.userInfo = ["answer": q.answer, "key": q.key, "reveal": q.reveal]
+            // the word's drawing as the notification picture (no emoji)
+            if let e = KJPic.first(q.head), let img = UIImage(named: KJPic.name(e)), let png = img.pngData() {
+                let url = FileManager.default.temporaryDirectory.appendingPathComponent("kjq\(i)-\(UUID().uuidString).png")
+                if (try? png.write(to: url)) != nil, let a = try? UNNotificationAttachment(identifier: "pic", url: url) {
+                    content.attachments = [a]
+                }
+            }
             let comps = cal.dateComponents([.year, .month, .day, .hour, .minute], from: at)
             c.add(UNNotificationRequest(identifier: ids[i], content: content, trigger: UNCalendarNotificationTrigger(dateMatching: comps, repeats: false)))
         }
@@ -203,7 +211,7 @@ enum KJReminder {
         let ok = choice == answer
         if ok { KJWeak.hit(key) } else { KJWeak.miss(key) }
         let content = UNMutableNotificationContent()
-        content.title = ok ? "⭕ せいかい！" : "❌ ざんねん…"
+        content.title = ok ? "せいかい！" : "ざんねん…"
         content.body = reveal + (ok ? "" : KJ.t("  (it will come back in review)", "（會在複習時再出現）", " (복습에 다시 나와요)"))
         UNUserNotificationCenter.current().add(UNNotificationRequest(identifier: "kj.result", content: content, trigger: nil))
     }

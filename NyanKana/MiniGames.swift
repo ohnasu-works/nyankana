@@ -483,7 +483,7 @@ struct MiniGameView: View {
     /// after the goal: BONUS TIME, and a button to stop whenever you like
     private var bonusBar: some View {
         HStack(spacing: 10.s) {
-            Text("⭐ BONUS TIME").font(.display(16.s)).foregroundStyle(Color.sunDeep)
+            KJPic.text("⭐ BONUS TIME", size: 16.s).font(.display(16.s)).foregroundStyle(Color.sunDeep)
                 .padding(.horizontal, 12.s).padding(.vertical, 5.s)
                 .background(Capsule().fill(Color.white).overlay(Capsule().stroke(Color.sunDeep, lineWidth: 3)))
                 .modifier(Bob())
@@ -965,7 +965,7 @@ struct MGTsuri: View {
 
                 // the catch so far
                 HStack(spacing: 2.s) {
-                    Text("🪣").font(.system(size: 26.s))
+                    KJPicView("🪣", size: 29.9.s)
                     Text("× \(catchCount)").font(.display(20.s)).foregroundStyle(Color.ink)
                 }
                 .padding(.horizontal, 10.s).padding(.vertical, 4.s)

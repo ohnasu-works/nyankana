@@ -204,7 +204,7 @@ struct KJStudyView: View {
             withAnimation { playing = (k, ls) }
         } label: {
             VStack(spacing: 4.s) {
-                Text(k.icon).font(.system(size: 34.s))
+                KJPicView(k.icon, size: 39.1.s)
                 Text(label).font(.custom(Fonts.rounded, size: 14.s)).foregroundStyle(Color.ink)
                     .lineLimit(1).minimumScaleFactor(0.6)
             }
@@ -222,7 +222,7 @@ struct KJStudyView: View {
                 ForEach(KJData.words, id: \.ja) { w in
                     Button { Speaker.shared.say(w.ja) } label: {
                         HStack(spacing: 8.s) {
-                            Text(w.emoji).font(.system(size: 28.s))
+                            KJPicView(w.emoji, size: 32.2.s)
                             VStack(alignment: .leading, spacing: 0) {
                                 Text(w.ja).font(.custom(Fonts.rounded, size: 17.s)).foregroundStyle(Color.ink)
                                     .lineLimit(1).minimumScaleFactor(0.6)

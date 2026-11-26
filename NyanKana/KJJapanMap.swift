@@ -55,7 +55,7 @@ struct KJJapanMap: View {
                     playground()
                 } label: {
                     HStack(spacing: 4.s) {
-                        Text("🎮").font(.system(size: 16.s))
+                        KJPicView("🎮", size: 18.4.s)
                         Text("あそびば").font(.custom(Fonts.rounded, size: 14.s)).foregroundStyle(Color.ink)
                     }
                     .padding(.horizontal, 12.s).padding(.vertical, 6.s)
@@ -207,7 +207,7 @@ struct KJJapanMap: View {
     }
 
     private func playTitle(ok: Bool, done: Int) -> String {
-        guard ok else { return "🔒 " + KJ.t("Clear the region before", "通關前一個地區後開放", "앞 지역을 클리어하면 열려요") }
+        guard ok else { return KJ.t("Clear the region before", "通關前一個地區後開放", "앞 지역을 클리어하면 열려요") }
         let st = nextStage.map { "  " + KJC1.label($0.id) } ?? ""
         return "▶ " + (done == 0 ? KJ.t("Start", "開始", "시작") : KJ.t("Continue", "繼續", "이어서")) + st
     }

@@ -197,7 +197,7 @@ struct MGTakoyaki: View {
                     .opacity(b.served || b.burnt ? 0 : 1)
                     .animation(.easeIn(duration: 0.3), value: b.served)
                     .animation(.easeIn(duration: 0.4), value: b.burnt)
-                if b.cook > 0.95 && !b.burnt { Text("💨").font(.system(size: 22.s)).offset(x: cell * 0.3, y: -cell * 0.35) }
+                if b.cook > 0.95 && !b.burnt { KJPicView("💨", size: 25.3.s).offset(x: cell * 0.3, y: -cell * 0.35) }
                 // the little flag with the letter
                 Text(b.kana).font(.custom(Fonts.rounded, size: cell * 0.26)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.35)
                     .padding(.horizontal, 5.s)
@@ -461,7 +461,7 @@ struct MGMeiro: View {
                 // the word to follow, by sound
                 VStack(spacing: 4.s) {
                     if let word = KJData.word(seq.joined()) {
-                        Text("\(word.emoji) \(word.meaning)").font(.ui(15.s)).foregroundStyle(Color.ink)
+                        KJPic.text("\(word.emoji) \(word.meaning)", size: 15.s).font(.ui(15.s)).foregroundStyle(Color.ink)
                     }
                     HStack(spacing: 6.s) {
                         ForEach(Array(seq.enumerated()), id: \.offset) { i, k in

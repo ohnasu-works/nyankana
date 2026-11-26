@@ -307,7 +307,7 @@ struct NovelView: View {
 
     private func pill(_ s: String, _ action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Text(s).font(.ui(13)).foregroundStyle(.white)
+            KJPic.text(s, size: 13).font(.ui(13)).foregroundStyle(.white)
                 .padding(.horizontal, 13).padding(.vertical, 7)
                 .background(Capsule().fill(.black.opacity(0.5)))
         }

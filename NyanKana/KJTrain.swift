@@ -149,14 +149,14 @@ struct KJTrainView: View {
             .padding(.horizontal, 18.s)
             PaperCard {
                 VStack(spacing: 10.s) {
-                    Text(q.head).font(.ui(13.s)).foregroundStyle(Color.ink.opacity(0.7)).multilineTextAlignment(.center)
+                    KJPic.text(q.head, size: 13.s).font(.ui(13.s)).foregroundStyle(Color.ink.opacity(0.7)).multilineTextAlignment(.center)
                     if !q.prompt.isEmpty {
-                        Text(q.prompt).font(.custom(Fonts.rounded, size: q.prompt.count > 14 ? 20.s : 28.s)).foregroundStyle(Color.ink)
+                        KJPic.text(q.prompt, size: q.prompt.count > 14 ? 20.s : 28.s).font(.custom(Fonts.rounded, size: q.prompt.count > 14 ? 20.s : 28.s)).foregroundStyle(Color.ink)
                             .multilineTextAlignment(.center).minimumScaleFactor(0.5)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     if !q.note.isEmpty {
-                        Text(q.note).font(.ui(14.s, bold: false)).foregroundStyle(Color.ink.opacity(0.75)).multilineTextAlignment(.center)
+                        KJPic.text(q.note, size: 14.s).font(.ui(14.s, bold: false)).foregroundStyle(Color.ink.opacity(0.75)).multilineTextAlignment(.center)
                     }
                     if !q.audio.isEmpty {
                         Button { Speaker.shared.say(q.audio) } label: {
@@ -167,7 +167,7 @@ struct KJTrainView: View {
                         .buttonStyle(PressStyle(radius: 30.s, depth: 4))
                     }
                     if picked != nil && !q.explain.isEmpty {
-                        Text(q.explain).font(.ui(13.s, bold: false)).foregroundStyle(Color.popDeep).multilineTextAlignment(.center)
+                        KJPic.text(q.explain, size: 13.s).font(.ui(13.s, bold: false)).foregroundStyle(Color.popDeep).multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                 }

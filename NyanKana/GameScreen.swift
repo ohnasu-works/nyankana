@@ -435,7 +435,7 @@ struct AnswerPanel: View {
         let n = m.answerMode == .choice ? max(2, min(5, q.a.count)) : max(1, min(10, (q.kana ?? q.a).count))
         let blank = String(repeating: "＿", count: n)
         let len = q.pre.count + q.post.count
-        return (Text(q.pre) + Text(blank).foregroundColor(.popDeep) + Text(q.post))
+        return (KJPic.text(q.pre, size: 22.s) + Text(blank).foregroundColor(.popDeep) + Text(q.post))
             .font(.en((len > 22 ? 19 : len > 14 ? 21 : 25).s * (m.answerMode == .keyboard && !UIScale.isPad ? 0.84 : 1))).foregroundStyle(Color.ink)
             .lineLimit(4).minimumScaleFactor(0.85)
             .fixedSize(horizontal: false, vertical: true)

@@ -27,7 +27,7 @@ struct KJRecordView: View {
 
     private func stat(_ icon: String, _ value: String, _ label: String) -> some View {
         VStack(spacing: 2.s) {
-            Text(icon).font(.system(size: 24.s))
+            KJPicView(icon, size: 30.s)
             Text(value).font(.display(22.s)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.5)
             Text(label).font(.ui(11.s)).foregroundStyle(Color.ink.opacity(0.7)).lineLimit(1).minimumScaleFactor(0.6)
         }

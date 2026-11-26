@@ -379,7 +379,7 @@ struct MGTrain: View {
                     .offset(x: CGFloat(p) * (len - 80.s))
             }
             .frame(width: len)
-            Text("🏯").font(.system(size: 20.s))
+            KJPicView("🏯", size: 23.s)
         }
     }
 
@@ -621,7 +621,7 @@ struct MGDaruma: View {
                 RoundedRectangle(cornerRadius: 4.s).fill(Color(hex: 0x7A4A21)).frame(width: pw + 60.s, height: 14.s)
                     .position(x: w / 2, y: h * 0.94 + 8.s)
                 if let p = hammerAt {
-                    Text("🔨").font(.system(size: 60.s)).position(p).transition(.scale.combined(with: .opacity)).allowsHitTesting(false)
+                    KJPicView("🔨", size: 69.s).position(p).transition(.scale.combined(with: .opacity)).allowsHitTesting(false)
                 }
                 // strikes left before the daruma falls
                 HStack(spacing: 4.s) {
@@ -759,7 +759,7 @@ struct MGKingyo: View {
                 .padding(6.s).background(Capsule().fill(Color.black.opacity(0.35)))
                 .position(x: w * 0.2, y: h * 0.93)
                 HStack(spacing: 4.s) {
-                    Text("🥣").font(.system(size: 28.s))
+                    KJPicView("🥣", size: 32.2.s)
                     Text("× \(bowl)").font(.display(20.s)).foregroundStyle(Color.ink)
                 }
                 .padding(.horizontal, 8.s).background(Capsule().fill(Color.white.opacity(0.9)))

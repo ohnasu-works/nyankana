@@ -76,7 +76,7 @@ struct MGPrompt: View {
                 let word = KJData.word(w)
                 Button { Speaker.shared.say(w) } label: {
                     bubble(HStack(spacing: 8.s) {
-                        Text(word?.emoji ?? "❓").font(.system(size: 40.s))
+                        KJPicView(word?.emoji ?? "❓", size: 46.s)
                         Text(word?.meaning ?? "").font(.ui(18.s))
                     })
                 }
@@ -86,7 +86,7 @@ struct MGPrompt: View {
                 Button { Speaker.shared.say(w) } label: {
                     VStack(spacing: 4.s) {
                         HStack(spacing: 6.s) {
-                            Text(word?.emoji ?? "🔤").font(.system(size: 28.s))
+                            KJPicView(word?.emoji ?? "🔤", size: 32.2.s)
                             Text(word?.meaning ?? "").font(.ui(14.s)).foregroundStyle(Color.ink)
                         }
                         HStack(spacing: 4.s) {
@@ -184,7 +184,7 @@ struct MGChochin: View {
                 }
                 .position(x: w * 0.5, y: h * 0.66)
                 if let m = mallet {
-                    Text("🔨").font(.system(size: 64.s))
+                    KJPicView("🔨", size: 73.6.s)
                         .rotationEffect(.degrees(-35))
                         .position(m.pos)
                         .id(m.id)
@@ -770,7 +770,7 @@ struct KJPlayground: View {
             withAnimation { playing = k }
         } label: {
             VStack(spacing: 4.s) {
-                Text(k.icon).font(.system(size: 40.s))
+                KJPicView(k.icon, size: 46.s)
                 Text(k.title).font(.custom(Fonts.rounded, size: 15.s)).foregroundStyle(Color.ink)
                     .lineLimit(1).minimumScaleFactor(0.6)
                 Text(k.sub).font(.ui(11.s, bold: false)).foregroundStyle(Color.ink.opacity(0.7)).lineLimit(1).minimumScaleFactor(0.6)

@@ -608,7 +608,7 @@ struct KJBattleView: View {
         VStack(spacing: 10.s) {
             PaperCard {
                 VStack(spacing: 4.s) {
-                    Text(KJData.word(b.word)?.emoji ?? "❓").font(.system(size: 78.s))
+                    KJPicView(KJData.word(b.word)?.emoji ?? "❓", size: 90.s)
                     Text(KJData.word(b.word)?.meaning ?? "").font(.ui(18.s)).foregroundStyle(Color.ink)
                 }
                 .frame(width: 180.s)
@@ -635,7 +635,7 @@ struct KJBattleView: View {
                 HStack(spacing: 4.s) {
                     ForEach(0..<b.bossWords.count, id: \.self) { i in
                         // the boss's remaining power: tails for the fox, drops for the umbrella
-                        Text(stage.kind == .boss ? "🦊" : "💧").font(.system(size: 14.s))
+                        KJPicView(stage.kind == .boss ? "🦊" : "💧", size: 16.1.s)
                             .opacity(i < b.bossWord ? 0.2 : 1)
                     }
                 }

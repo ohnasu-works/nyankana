@@ -195,7 +195,7 @@ struct KJMapView: View {
                         playground()
                     } label: {
                         HStack(spacing: 4.s) {
-                            Text("🎮").font(.system(size: 16.s))
+                            KJPicView("🎮", size: 18.4.s)
                             Text("あそびば").font(.custom(Fonts.rounded, size: 14.s)).foregroundStyle(Color.ink)
                         }
                         .padding(.horizontal, 12.s).padding(.vertical, 6.s)
@@ -311,11 +311,11 @@ struct KJMapView: View {
                 } else if !open {
                     Image(systemName: "lock.fill").font(.system(size: 20.s, weight: .bold)).foregroundStyle(Color.ink.opacity(0.45))
                 } else if let m = s.mini {
-                    Text(m.icon).font(.system(size: 28.s))
+                    KJPicView(m.icon, size: 32.2.s)
                 } else if s.kind == .talk || s.kind == .listen {
-                    Text(s.kind == .talk ? "💬" : "👂").font(.system(size: 26.s))
+                    KJPicView(s.kind == .talk ? "💬" : "👂", size: 29.9.s)
                 } else if s.kind == .battle {
-                    Text("⚔️").font(.system(size: 26.s))
+                    KJPicView("⚔️", size: 29.9.s)
                 } else {
                     Text("\(KJC1.number(s.id))").font(.display(24.s)).foregroundStyle(Color.ink)
                 }

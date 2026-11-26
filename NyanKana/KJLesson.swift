@@ -182,7 +182,7 @@ struct KJLessonView: View {
                 let isWrong = picked == c && c != answer
                 Button { choose(c, answer: answer) } label: {
                     VStack(spacing: 2.s) {
-                        Text(info?.emoji ?? "❓").font(.system(size: 34.s))
+                        KJPicView(info?.emoji ?? "❓", size: 39.1.s)
                         Text(info?.meaning ?? "").font(.ui(14.s)).foregroundStyle(Color.ink)
                             .lineLimit(2).minimumScaleFactor(0.6).multilineTextAlignment(.center)
                     }
@@ -308,7 +308,7 @@ struct KJLessonView: View {
         let info = KJData.word(w)
         return VStack(spacing: 14.s) {
             HStack(spacing: 12.s) {
-                Text(info?.emoji ?? "❓").font(.system(size: 64.s))
+                KJPicView(info?.emoji ?? "❓", size: 73.6.s)
                 VStack(alignment: .leading) {
                     Text(info?.meaning ?? "").font(.ui(18.s)).foregroundStyle(Color.ink)
                     speakerButton(w, big: false)

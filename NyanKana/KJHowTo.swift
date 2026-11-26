@@ -30,7 +30,7 @@ struct KJHowToSheet: View {
                 VStack(alignment: .leading, spacing: 12) {
                     ForEach(items, id: \.1) { i in
                         HStack(alignment: .top, spacing: 12) {
-                            Text(i.0).font(.system(size: 30))
+                            KJPicView(i.0, size: 36)
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(i.1).font(.custom(Fonts.rounded, size: 18)).foregroundStyle(Color.ink)
                                 Text(KJ.t(i.2, i.3, i.4)).font(.ui(14, bold: false)).foregroundStyle(Color.ink.opacity(0.8))
