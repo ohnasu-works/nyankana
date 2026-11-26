@@ -824,7 +824,8 @@ struct MGKaruta: View {
         }
         var chosen: [String] = []
         for k in pick where !chosen.contains(k) && chosen.count < 9 { chosen.append(k) }
-        // (never pad with letters not learned yet: early on there are simply fewer cards)
+        // not-yet-learned letters may sit on the table as extra cards, but are never the answer (see next())
+        while chosen.count < 9 { chosen.append(KJC1.all.filter { !chosen.contains($0) }.randomElement() ?? "あ") }
         withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) { cards = chosen.shuffled().map { Card(kana: $0) } }
         AudioManager.shared.se(.mgWhoosh, volume: 0.6)
     }
@@ -833,12 +834,15 @@ struct MGKaruta: View {
         token += 1
         let my = token
         let left = cards.filter { $0.gone == 0 }
-        if left.count < 3 {
+        let known = Set(letters)
+        let askable = left.filter { known.contains($0.kana) }
+        if left.count < 3 || askable.isEmpty {
             deal()
             later(0.5) { if my == token { next() } }
             return
         }
-        answer = left.randomElement()?.kana
+        // only letters already learned are read out
+        answer = askable.randomElement()?.kana
         charge = 0; armed = false; lock = false; reveal = nil
         later(0.35) {
             guard my == token, ctx.running, let a = answer else { return }
