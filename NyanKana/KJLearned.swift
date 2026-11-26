@@ -50,6 +50,25 @@ enum KJSimilar {
         return base(sa) == base(sb) || h(sa) == h(sb)
     }
 
+    static func hasKanji(_ s: String) -> Bool { s.unicodeScalars.contains { (0x4E00...0x9FFF).contains($0.value) || $0.value == 0x3005 } }
+
+    private static var readCache: [String: String] = [:]
+    /// how a word is pronounced, as romaji (kanji included: 手 → te)
+    static func reading(_ s: String) -> String {
+        if let r = readCache[s] { return r }
+        let src = KJData.readings[s] ?? s
+        var out = ""
+        let cf = src as CFString
+        let tok = CFStringTokenizerCreate(nil, cf, CFRangeMake(0, CFStringGetLength(cf)), kCFStringTokenizerUnitWord, Locale(identifier: "ja") as CFLocale)
+        while CFStringTokenizerAdvanceToNextToken(tok) != [] {
+            if let l = CFStringTokenizerCopyCurrentTokenAttribute(tok, kCFStringTokenizerAttributeLatinTranscription) as? String { out += l }
+        }
+        if out.isEmpty { out = src.applyingTransform(.toLatin, reverse: false) ?? src }
+        let r = out.lowercased().filter { $0.isLetter }
+        readCache[s] = r
+        return r
+    }
+
     /// how alike two words are (bigger = more confusing)
     static func score(_ w: String, _ x: String) -> Int {
         let a = Array(w), b = Array(x)
@@ -68,7 +87,10 @@ enum KJSimilar {
 
     /// `count` words from the pool that look / sound most like `w` (a little shuffled so it does not repeat)
     static func words(_ w: String, from pool: [String], count: Int = 3) -> [String] {
-        let cands = pool.filter { $0 != w }.uniqued()
+        // never a word that SOUNDS the same (て / 手) — in a listening question both would be right;
+        // and no kanji next to an answer written in kana
+        let sound = reading(w), kanaOnly = !hasKanji(w)
+        let cands = pool.filter { $0 != w && reading($0) != sound && (!kanaOnly || !hasKanji($0)) }.uniqued()
         let ranked = cands.map { ($0, score(w, $0) * 10 + Int.random(in: 0..<8)) }.sorted { $0.1 > $1.1 }.map(\.0)
         return Array(ranked.prefix(count))
     }

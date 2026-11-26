@@ -122,7 +122,8 @@ struct MGDash: View {
         .onAppear { reset() }
     }
 
-    private var speed: CGFloat { min(0.5, 0.24 + 0.012 * CGFloat(ctx.hits)) * (dash > 0 ? 1.9 : 1) }
+    // speeds up with every hit, but gently (it was harder than the boss)
+    private var speed: CGFloat { min(0.42, 0.24 + 0.007 * CGFloat(ctx.hits)) * (dash > 0 ? 1.9 : 1) }
 
     private func move(_ l: Int) {
         let n = max(0, min(2, l))

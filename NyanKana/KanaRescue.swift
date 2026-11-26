@@ -27,10 +27,20 @@ enum KanaRescue {
 
     static var active: Bool { session != nil }
 
+    /// each chapter boss has its own recorded voice (Google Chirp3-HD)
+    static let bossRole: [String: String] = ["bee": "kyubi", "will": "kappa", "have": "yukionna", "seven": "tengu",
+                                             "if": "oni", "logic": "tanuki", "silence": "kijimuna"]
+    /// true when the line was spoken with the boss's own voice
+    @MainActor static func sayBoss(_ text: String, key: String) -> Bool {
+        guard active, let r = bossRole[key], RecordedVoice.has(text, role: r) else { return false }
+        Speaker.shared.sayRole(text, role: r)
+        return true
+    }
+
     /// the battle: the area-1 boss stage on NORMAL (zako, packs, the mid boss again, the boss's entrance, the boss)
     static func ref(_ chapter: Int = 1) -> StageRef {
         let a = KJC1.bossArea[chapter] ?? .lv1
-        return StageRef(area: a, index: a.stageCount, difficulty: .normal)
+        return StageRef(area: a, index: a.stageCount, difficulty: .hard)
     }
 
     @MainActor static func start(_ stage: KJC1.Stage) {
@@ -59,7 +69,9 @@ enum KanaRescue {
     // MARK: questions
 
     static func pools(_ stage: KJC1.Stage) -> QuestionBank.Pools {
-        let letters = stage.known.isEmpty ? KJC1.all : stage.known
+        // the boss reviews EVERYTHING learned so far (all chapters), not only this chapter
+        let learned = (KJLearned.learnedLetters(upTo: stage.id) + stage.known).uniqued()
+        let letters = learned.isEmpty ? KJC1.all : learned
         let single = letters.map { letterQ($0, among: letters) }
         let readable = KJLearned.answerWords(for: stage, readable: true).compactMap { KJData.word($0) }
         // (never empty: a boss with no question would stop the game)
@@ -113,7 +125,8 @@ enum KanaRescue {
 
     static func wordDistractors(_ word: String, among letters: [String]) -> [String] {
         let chars = word.map(String.init)
-        var out: [String] = []
+        // one real word that looks alike + look-alike-letter swaps
+        var out: [String] = Array(KJSimilar.words(word, from: KJData.words.map(\.ja).filter { $0.count == word.count }, count: 1))
         var tries = 0
         while out.count < 3 && tries < 40 {
             tries += 1

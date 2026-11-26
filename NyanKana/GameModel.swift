@@ -1165,7 +1165,9 @@ final class GameModel: ObservableObject {
     private func bossSays(_ f: Foe, _ v: BossVoice) {
         let l = BossVoice.line(f.kind, ref: ref, v, profile: f.profile, shadow: f.shadow)
         bossLine = l
-        Speaker.shared.say(l.en, voice: l.who.voice)
+        if !(f.kind == .boss && KanaRescue.sayBoss(l.en, key: ref.area.boss.key)) {
+            Speaker.shared.say(l.en, voice: l.who.voice)
+        }
         let shown = l
         Task { @MainActor in
             try? await Task.sleep(nanoseconds: 3_000_000_000)
@@ -1205,7 +1207,9 @@ final class GameModel: ObservableObject {
             : .init(en: "ほう…　ここまで きたか。", ja: "ほう…|ここまで|来たか。", ko: "호오… 여기까지 왔나.", zh: "哦……你們竟然走到這裡了。")
         after(grad ? 1.6 : 1.0, scaled: false) {
             self.showEvent(.init(image: self.ref.area.boss.image, line: line, tone: .evil), for: grad ? 3.4 : 2.6)
-            Speaker.shared.say(line.en, voice: self.ref.area.boss.voice)
+            if !KanaRescue.sayBoss(line.en, key: self.ref.area.boss.key) {
+                Speaker.shared.say(line.en, voice: self.ref.area.boss.voice)
+            }
         }
         after(grad ? 5.2 : 3.8, scaled: false) {
             AudioManager.shared.playBGM(grad ? .final : .boss)
