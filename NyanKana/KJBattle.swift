@@ -93,12 +93,20 @@ final class KJBattle: ObservableObject {
     }
     var fogAlpha: Double { st.fog ? 0.15 + 0.85 * max(0, sin(time * 1.6)) : 1 }
 
+    /// the boss words (never empty: readable taught words → any taught words → the stage's words → a letter)
+    private static func bossList(_ stage: KJC1.Stage, _ n: Int) -> [String] {
+        for pool in [KJLearned.answerWords(for: stage, readable: true), KJLearned.answerWords(for: stage), stage.words, stage.known] where !pool.isEmpty {
+            return Array(pool.shuffled().prefix(n))
+        }
+        return ["あ"]
+    }
+
     init(stage: KJC1.Stage) {
         st = stage
         goal = stage.goal
         switch stage.kind {
-        case .boss: bossWords = Array(KJLearned.answerWords(for: stage, readable: true).shuffled().prefix(9))
-        case .mid: bossWords = Array(KJLearned.answerWords(for: stage, readable: true).shuffled().prefix(4))
+        case .boss: bossWords = Self.bossList(stage, 9)
+        case .mid: bossWords = Self.bossList(stage, 4)
         default: bossWords = []
         }
     }
@@ -199,10 +207,11 @@ final class KJBattle: ObservableObject {
         let alive = foes.filter { !$0.dying }
         guard !alive.isEmpty else { targetID = nil; return }
         // never the same letter twice in a row (when there is a choice); new letters first
-        var choices = alive.count > 1 ? alive.filter { $0.kana != lastKana } : alive
+        var choices = alive.filter { $0.kana != lastKana }
+        if choices.isEmpty { choices = alive }          // (all on screen are the last letter: allow it)
         let fresh = choices.filter { st.newKana.contains($0.kana) }
         if !fresh.isEmpty, Bool.random() { choices = fresh }
-        let t = choices.randomElement()!
+        guard let t = choices.randomElement() else { targetID = nil; return }
         targetID = t.id
         lastKana = t.kana
         wrongOnTarget = 0
@@ -359,6 +368,7 @@ final class KJBattle: ObservableObject {
 
     private func startWordRound() {
         if wordsLeft.isEmpty { wordsLeft = KJLearned.answerWords(for: st, readable: true).shuffled() }
+        guard !wordsLeft.isEmpty else { pickTarget(); return }    // no readable word yet: keep to letters
         word = wordsLeft.removeFirst()
         typed = ""; wordTime = 1
         pad = makePad(for: word)
