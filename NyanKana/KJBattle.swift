@@ -38,6 +38,7 @@ final class KJBattle: ObservableObject {
     /// after a wrong answer nothing can be tapped for a moment (no guessing by tapping everything fast)
     @Published var locked = false
     private var wrongOnTarget = 0
+    private var readsRight = 0
     static var readTutorialSeen: Int {
         get { UserDefaults.standard.integer(forKey: "kj.readTut") }
         set { UserDefaults.standard.set(newValue, forKey: "kj.readTut") }
@@ -121,9 +122,11 @@ final class KJBattle: ObservableObject {
     }
 
     private var diveSpeed: CGFloat {
-        // seconds to fall from the top to the town: 7.5 s at first, 4.5 s at the end; half speed in fever
-        let secs = 7.5 - 3.0 * Double(min(hits, goal)) / Double(max(goal, 1))
-        return CGFloat(1 / secs) * (fever > 0 ? 0.5 : 1) * (ask == .read ? 0.5 : 1)
+        // seconds to fall from the top to the town: 7.5 s at first, 3.8 s at the end (faster and faster);
+        // "read" questions start a little slower and catch up with each right answer; fever slows things a bit
+        let secs = 7.5 - 3.7 * Double(min(hits, goal)) / Double(max(goal, 1))
+        let readFactor = ask == .read ? min(1.0, 0.6 + 0.08 * Double(readsRight)) : 1.0
+        return CGFloat(1 / secs) * (fever > 0 ? 0.75 : 1) * CGFloat(readFactor)
     }
 
     private func tickWaves(_ dt: Double) {
@@ -248,6 +251,7 @@ final class KJBattle: ObservableObject {
         guard phase == .waves, ask == .read, !locked, let t = target else { return }
         if readTutorial { readTutorial = false; Self.readTutorialSeen += 1 }
         if romaji == KJData.romaji(t.kana) || AppState.shared.dev.anyRight {
+            readsRight += 1
             Speaker.shared.say(t.kana)
             defeat(t)
         } else {
@@ -433,7 +437,7 @@ final class KJBattle: ObservableObject {
     }
 
     func retry() {
-        hearts = 3; combo = 0; foes.removeAll(); targetID = nil; locked = false; readTutorial = false
+        hearts = 3; combo = 0; foes.removeAll(); targetID = nil; locked = false; readTutorial = false; readsRight = 0
         if phase == .lost && hits >= goal && hasBoss { startBoss() } else { start() }
     }
 

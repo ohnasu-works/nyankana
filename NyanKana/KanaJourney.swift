@@ -346,29 +346,6 @@ struct KJStoryView: View {
         let other = lines[0...min(i, lines.count - 1)].last(where: { $0.isOther })
         GeometryReader { g in
             ZStack(alignment: .bottom) {
-                // the two always on stage; the one talking steps forward
-                HStack(alignment: .bottom, spacing: 0) {
-                    Image(soraFace(line)).resizable().scaledToFit()
-                        .frame(width: g.size.width * 0.5, height: g.size.height * 0.46, alignment: .bottom)
-                        .scaleEffect(line.isSora ? 1.04 : 0.94, anchor: .bottom)
-                        .brightness(line.isSora || line.isNarr ? 0 : -0.12)
-                    ZStack(alignment: .bottom) {
-                        if line.pose && line.isNyan {
-                            StarBurst().fill(Color.sun.opacity(0.85))
-                                .frame(width: g.size.width * 0.5, height: g.size.width * 0.5)
-                                .rotationEffect(.degrees(bump ? 20 : -20))
-                                .offset(y: -g.size.height * 0.06)
-                        }
-                        Image(nyanFace(line)).resizable().scaledToFit()
-                            .frame(width: g.size.width * 0.46, height: g.size.height * 0.36, alignment: .bottom)
-                            .rotationEffect(.degrees(line.pose && line.isNyan ? (bump ? -6 : 6) : 0), anchor: .bottom)
-                            .scaleEffect(line.isNyan ? (line.pose && bump ? 1.12 : 1.04) : 0.94, anchor: .bottom)
-                            .brightness(line.isNyan || line.isNarr ? 0 : -0.12)
-                    }
-                }
-                .frame(width: g.size.width)
-                .padding(.bottom, 190.s)
-
                 // a side character (shop keeper, yokai…) stands in the middle, a little behind
                 if let o = other, !o.face.isEmpty {
                     Image(o.face).resizable().scaledToFit()
@@ -380,34 +357,59 @@ struct KJStoryView: View {
                         .transition(.scale.combined(with: .opacity))
                 }
 
-                // text box
-                VStack(alignment: .leading, spacing: 6.s) {
-                    if !line.isNarr {
-                        Text(line.name)
-                            .font(.ui(15.s)).foregroundStyle(.white)
-                            .padding(.horizontal, 12.s).padding(.vertical, 3.s)
-                            .background(Capsule().fill(line.isSora ? Color.sky : line.isNyan ? Color.orange : Color.grape))
-                    }
-                    Text(line.ja).font(.ui(23.s)).foregroundStyle(Color.ink)
-                        .fixedSize(horizontal: false, vertical: true)
-                    Text(line.sub).font(.ui(15.s, bold: false)).foregroundStyle(Color.ink.opacity(0.65))
-                        .fixedSize(horizontal: false, vertical: true)
-                    HStack {
-                        if !line.silent {
-                            Button { say(line) } label: {
-                                Image(systemName: "speaker.wave.2.fill").font(.system(size: 18.s, weight: .bold)).foregroundStyle(Color.ink)
+                // the two always on stage, standing right above the text box (the box never hides their faces)
+                VStack(spacing: -22.s) {
+                    HStack(alignment: .bottom, spacing: 0) {
+                        Image(soraFace(line)).resizable().scaledToFit()
+                            .frame(maxWidth: g.size.width * 0.5, maxHeight: g.size.height * 0.46, alignment: .bottom)
+                            .scaleEffect(line.isSora ? 1.04 : 0.94, anchor: .bottom)
+                            .brightness(line.isSora || line.isNarr ? 0 : -0.12)
+                        ZStack(alignment: .bottom) {
+                            if line.pose && line.isNyan {
+                                StarBurst().fill(Color.sun.opacity(0.85))
+                                    .frame(width: g.size.width * 0.5, height: g.size.width * 0.5)
+                                    .rotationEffect(.degrees(bump ? 20 : -20))
+                                    .offset(y: -g.size.height * 0.06)
                             }
+                            Image(nyanFace(line)).resizable().scaledToFit()
+                                .frame(maxWidth: g.size.width * 0.46, maxHeight: g.size.height * 0.36, alignment: .bottom)
+                                .rotationEffect(.degrees(line.pose && line.isNyan ? (bump ? -6 : 6) : 0), anchor: .bottom)
+                                .scaleEffect(line.isNyan ? (line.pose && bump ? 1.12 : 1.04) : 0.94, anchor: .bottom)
+                                .brightness(line.isNyan || line.isNarr ? 0 : -0.12)
                         }
-                        Spacer()
-                        Image(systemName: "chevron.down.circle.fill").font(.system(size: 22.s)).foregroundStyle(Color.pop)
-                            .modifier(Bob())
                     }
+                    .frame(width: g.size.width)
+                    .zIndex(0)
+                    VStack(alignment: .leading, spacing: 6.s) {
+                        if !line.isNarr {
+                            Text(line.name)
+                                .font(.ui(15.s)).foregroundStyle(.white)
+                                .padding(.horizontal, 12.s).padding(.vertical, 3.s)
+                                .background(Capsule().fill(line.isSora ? Color.sky : line.isNyan ? Color.orange : Color.grape))
+                        }
+                        Text(line.ja).font(.ui(23.s)).foregroundStyle(Color.ink)
+                            .fixedSize(horizontal: false, vertical: true)
+                        Text(line.sub).font(.ui(15.s, bold: false)).foregroundStyle(Color.ink.opacity(0.65))
+                            .fixedSize(horizontal: false, vertical: true)
+                        HStack {
+                            if !line.silent {
+                                Button { say(line) } label: {
+                                    Image(systemName: "speaker.wave.2.fill").font(.system(size: 18.s, weight: .bold)).foregroundStyle(Color.ink)
+                                }
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.down.circle.fill").font(.system(size: 22.s)).foregroundStyle(Color.pop)
+                                .modifier(Bob())
+                        }
+                    }
+                    .padding(16.s)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(minHeight: 170.s, alignment: .top)
+                    .background(RoundedRectangle(cornerRadius: 22.s).fill(Color.paper).overlay(RoundedRectangle(cornerRadius: 22.s).stroke(Color.ink, lineWidth: 4)))
+                    .padding(.horizontal, 14.s).padding(.bottom, 16.s)
+                    .zIndex(1)
                 }
-                .padding(16.s)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .frame(minHeight: 170.s, alignment: .top)
-                .background(RoundedRectangle(cornerRadius: 22.s).fill(Color.paper).overlay(RoundedRectangle(cornerRadius: 22.s).stroke(Color.ink, lineWidth: 4)))
-                .padding(.horizontal, 14.s).padding(.bottom, 16.s)
+                .frame(maxHeight: .infinity, alignment: .bottom)
             }
             .frame(width: g.size.width, height: g.size.height)
             .contentShape(Rectangle())

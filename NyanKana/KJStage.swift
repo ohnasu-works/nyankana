@@ -210,12 +210,17 @@ struct KJMapView: View {
                 HStack(spacing: 10.s) {
                     chapterArrow(-1)
                     VStack(spacing: 2.s) {
-                        RibbonTitle(text: "だい\(chapter)しょう  \(KJC1.chapterNames[chapter]?.ja ?? "")", size: 20)
+                        // (short enough to fit an iPhone: the chapter number above, the region in the ribbon)
+                        let region = KJC1.chapterNames[chapter]?.ja ?? ""
+                        Text("だい\(chapter)しょう").font(.ui(13.s)).foregroundStyle(.white).shadow(color: .black.opacity(0.6), radius: 2)
+                        RibbonTitle(text: region, size: region.count > 7 ? (UIScale.isPad ? 20 : 15) : 20)
                         Text(KJ.t("Chapter \(chapter) · \(KJC1.chapterName(chapter))", "第\(chapter)章・\(KJC1.chapterName(chapter))", "제\(chapter)장・\(KJC1.chapterName(chapter))"))
                             .font(.ui(13.s)).foregroundStyle(.white).shadow(color: .black.opacity(0.6), radius: 2)
                     }
                     chapterArrow(1)
                 }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 8.s)
                 // ⑥ the course, like にゃんグリッシュ: a winding road of stepping stones, scrolled to the next stage
                 GeometryReader { g in
                     ScrollViewReader { proxy in

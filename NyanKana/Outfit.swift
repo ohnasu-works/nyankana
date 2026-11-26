@@ -237,6 +237,10 @@ enum KidLook {
         let e = images.map { eyes[$0] ?? normalEyes }
         let eyePx = height * e[0]
         var hs = e.map { eyePx / $0 }
+        // Yui is a little shorter than Sora (same face size would make her taller in some costumes)
+        for i in hs.indices where i > 0 && images[i].hasPrefix("yui") && images[0].hasPrefix("sora") {
+            hs[i] = min(hs[i], hs[0] * 0.92)
+        }
         if let m = maxHeight, let top = hs.max(), top > m { hs = hs.map { $0 * m / top } }
         return hs
     }
