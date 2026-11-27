@@ -1,3 +1,4 @@
+// 絵カード：ひとつの言葉に ひとつの絵（2026-11-27）
 import SwiftUI
 import UIKit
 
