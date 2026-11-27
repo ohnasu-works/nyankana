@@ -569,6 +569,7 @@ struct KJClearFx: View {
     let won: [String]
     var done: () -> Void
     @State private var shown = 0
+    @State private var gone = false
 
     private var items: [String] { won.isEmpty ? (stage.newKana.isEmpty ? ["★"] : stage.newKana) : Array(won.prefix(10)) }
 
@@ -576,37 +577,53 @@ struct KJClearFx: View {
         VStack(spacing: 16.s) {
             Spacer()
             RibbonTitle(text: "CLEAR!")
-            // the sign: blank boards fill one by one
-            let cols = min(5, max(1, items.count))
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8.s), count: cols), spacing: 8.s) {
-                ForEach(Array(items.enumerated()), id: \.offset) { i, k in
-                    Text(i < shown ? k : "？")
-                        .font(.custom(Fonts.rounded, size: k.count > 2 ? 22.s : 30.s))
-                        .foregroundStyle(i < shown ? Color.white : Color.white.opacity(0.35))
-                        .lineLimit(1).minimumScaleFactor(0.5)
-                        .frame(maxWidth: .infinity, minHeight: 54.s)
-                        .background(RoundedRectangle(cornerRadius: 10.s).fill(Color(hex: 0x8A5A3B)).overlay(RoundedRectangle(cornerRadius: 10.s).stroke(Color.ink, lineWidth: 3)))
-                        .scaleEffect(i == shown - 1 ? 1.15 : 1)
-                        .animation(.spring(response: 0.3, dampingFraction: 0.5), value: shown)
+            if items == ["★"] {
+                // nothing to put back on the sign (a mini game): just Nyan cheering
+                Image("nk_nyan_joy").resizable().scaledToFit().frame(height: 150.s).modifier(Bob())
+            } else {
+                // the sign: blank boards fill one by one
+                let cols = min(5, max(1, items.count))
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8.s), count: cols), spacing: 8.s) {
+                    ForEach(Array(items.enumerated()), id: \.offset) { i, k in
+                        Text(i < shown ? k : "？")
+                            .font(.custom(Fonts.rounded, size: k.count > 2 ? 22.s : 30.s))
+                            .foregroundStyle(i < shown ? Color.white : Color.white.opacity(0.35))
+                            .lineLimit(1).minimumScaleFactor(0.5)
+                            .frame(maxWidth: .infinity, minHeight: 54.s)
+                            .background(RoundedRectangle(cornerRadius: 10.s).fill(Color(hex: 0x8A5A3B)).overlay(RoundedRectangle(cornerRadius: 10.s).stroke(Color.ink, lineWidth: 3)))
+                            .scaleEffect(i == shown - 1 ? 1.15 : 1)
+                            .animation(.spring(response: 0.3, dampingFraction: 0.5), value: shown)
+                    }
                 }
+                .padding(.horizontal, 24.s)
             }
-            .padding(.horizontal, 24.s)
             Spacer()
         }
         .contentShape(Rectangle())
-        .onTapGesture { done() }
+        .onTapGesture { leave() }
         .onAppear {
-            AudioManager.shared.se(.clear)
-            let step = min(0.45, 3.0 / Double(max(items.count, 1)))
-            for i in 0..<items.count {
-                later(0.4 + step * Double(i)) {
-                    shown = i + 1
-                    AudioManager.shared.se(.kira, volume: 0.6)
-                    if items[i] != "★" { Speaker.shared.say(items[i]) }
-                }
-            }
-            later(0.4 + step * Double(items.count) + 1.2) { done() }
+            AudioManager.shared.se(.clear, volume: 0.55)
+            if items == ["★"] { later(2.2) { leave() }; return }
+            later(0.5) { reveal(0) }
         }
+        .onDisappear { gone = true }
+    }
+
+    /// one board at a time: each word is read to the end before the next one starts
+    private func reveal(_ i: Int) {
+        guard !gone else { return }
+        guard i < items.count else { later(1.0) { leave() }; return }
+        shown = i + 1
+        AudioManager.shared.se(.kira, volume: 0.5)
+        Speaker.shared.say(items[i])
+        later(Speaker.shared.length(items[i]) + 0.3) { reveal(i + 1) }
+    }
+
+    private func leave() {
+        guard !gone else { return }
+        gone = true
+        Speaker.shared.stop()
+        done()
     }
 }
 

@@ -22,6 +22,8 @@ final class KJBattle: ObservableObject {
         var shake = false
     }
     struct Pop: Identifiable { let id = UUID(); var x: CGFloat; var y: CGFloat; var text: String }
+    /// a damage number that jumps off the boss
+    struct Dmg: Identifiable { let id = UUID(); let text: String; let dx: CGFloat; let born = Date() }
 
     enum Phase: Equatable { case intro, waves, word, bossIntro, boss, won, lost }
     enum Ask: Equatable { case listen, read }
@@ -60,6 +62,12 @@ final class KJBattle: ObservableObject {
     @Published var bossWord = 0
     @Published var bossHit = false
     @Published var bossShake = false
+    @Published var dmgs: [Dmg] = []
+    /// +1 = the whole screen shakes once
+    @Published var quake: CGFloat = 0
+    /// the last hit: the boss spins away, a big "とどめ！" and a white flash, then the win
+    @Published var finishing = false
+    @Published var whiteOut = false
     // stage 9: the kite that flies over and steals snacks
     @Published var tonbiX: CGFloat = -0.3
     @Published var tonbiOn = false
@@ -123,6 +131,7 @@ final class KJBattle: ObservableObject {
     func tick(_ dt: Double) {
         time += dt
         if fever > 0 { fever = max(0, fever - dt) }
+        if finishing { return }
         switch phase {
         case .waves: if !readTutorial { tickWaves(dt); tickTonbi(dt) }
         case .word, .boss: tickWord(dt)
@@ -345,6 +354,7 @@ final class KJBattle: ObservableObject {
 
     private func finishWaves() {
         foes.removeAll(); targetID = nil
+        if !hasBoss { finishBlow(); return }
         if hasBoss {
             phase = .bossIntro
             AudioManager.shared.se(.bossAppear)
@@ -355,9 +365,35 @@ final class KJBattle: ObservableObject {
     }
 
     private func win() {
+        finishing = false
         phase = .won
-        AudioManager.shared.se(hasBoss ? .bossDefeat : .clearShort)
-        if hasBoss { later(0.6) { AudioManager.shared.se(.victory) } }
+        AudioManager.shared.se(hasBoss ? .winBoss : .win)
+    }
+
+    /// a normal hit on the boss / the word card: flash, knock-back, shake and a damage number
+    private func damageFx(_ gain: Int) {
+        bossHit = true
+        withAnimation(.linear(duration: 0.35)) { quake += 1 }
+        dmgs.append(Dmg(text: "\(gain)", dx: .random(in: -50...50)))
+        let id = dmgs.last!.id
+        AudioManager.shared.se(.superHit)
+        later(0.1) { AudioManager.shared.se(.kira, volume: 0.6) }
+        later(0.35) { self.bossHit = false }
+        later(1.0) { self.dmgs.removeAll { $0.id == id } }
+    }
+
+    /// the finishing blow: slow, big and loud, then the win
+    private func finishBlow() {
+        guard !finishing else { return }
+        finishing = true
+        bossHit = true
+        AudioManager.shared.stopBGM()
+        AudioManager.shared.se(.finish)
+        whiteOut = true
+        later(0.12) { self.whiteOut = false }
+        withAnimation(.linear(duration: 0.6)) { quake += 2 }
+        later(0.3) { self.bossHit = false }
+        later(1.7) { self.win() }
     }
 
     // MARK: word rounds (picture → word) and the boss (it holds whole words)
@@ -409,7 +445,7 @@ final class KJBattle: ObservableObject {
     }
 
     func padTap(_ k: String) {
-        guard phase == .word || phase == .boss else { return }
+        guard (phase == .word || phase == .boss), !finishing else { return }
         let want = Array(word)
         guard typed.count < want.count else { return }
         let next = String(want[typed.count])
@@ -431,9 +467,12 @@ final class KJBattle: ObservableObject {
         score += 500 * (fever > 0 ? 2 : 1)
         if !won.contains(word) { won.append(word) }
         Speaker.shared.say(word)
-        bossHit = true
-        AudioManager.shared.se(.superHit)
-        later(0.35) { self.bossHit = false }
+        let last = phase == .boss && bossWord + 1 >= bossWords.count
+        if last {
+            finishBlow()
+        } else {
+            damageFx(500 * (fever > 0 ? 2 : 1))
+        }
         if phase == .word {
             later(0.9) {
                 self.phase = .waves
@@ -443,7 +482,7 @@ final class KJBattle: ObservableObject {
         } else {
             bossWord += 1
             if bossWord >= bossWords.count {
-                later(0.6) { self.win() }
+                // finishBlow() leads to the win
             } else {
                 later(0.8) { self.nextBossWord() }
             }
@@ -452,6 +491,7 @@ final class KJBattle: ObservableObject {
 
     func retry() {
         hearts = KJLap.hearts; combo = 0; foes.removeAll(); targetID = nil; locked = false; readTutorial = false; readsRight = 0
+        finishing = false; whiteOut = false; dmgs = []
         if phase == .lost && hits >= goal && hasBoss { startBoss() } else { start() }
     }
 
@@ -495,6 +535,7 @@ struct KJBattleView: View {
                 .padding(.top, 54.s)
 
                 field(g.size)
+                    .modifier(MGShake(amount: b.quake))
 
                 VStack {
                     Spacer()
@@ -506,6 +547,9 @@ struct KJBattleView: View {
                 .padding(.bottom, 18.s)
 
                 if b.flash { Color.red.opacity(0.25).ignoresSafeArea().allowsHitTesting(false) }
+                if b.finishing { finishTitle(g.size) }
+                Color.white.opacity(b.whiteOut ? 0.9 : 0).ignoresSafeArea().allowsHitTesting(false)
+                    .animation(.easeOut(duration: b.whiteOut ? 0.05 : 0.5), value: b.whiteOut)
                 if b.fever > 0 {
                     Text("FEVER!").font(.display(30.s)).foregroundStyle(Color.sun)
                         .shadow(color: .black.opacity(0.4), radius: 0, x: 2, y: 2)
@@ -538,9 +582,11 @@ struct KJBattleView: View {
             Spacer()
             if b.combo >= 2 {
                 Text("\(b.combo) COMBO").font(.display(18.s)).foregroundStyle(Color.popDeep)
+                    .lineLimit(1).fixedSize()
             }
             Spacer()
             Text("\(b.score)").font(.display(22.s)).foregroundStyle(Color.ink).monospacedDigit()
+                .lineLimit(1).minimumScaleFactor(0.6)
         }
         .padding(.horizontal, 18.s).padding(.vertical, 6.s)
         .background(Capsule().fill(Color.white.opacity(0.85)).overlay(Capsule().stroke(Color.ink, lineWidth: 3)))
@@ -632,6 +678,16 @@ struct KJBattleView: View {
             }
             .scaleEffect(b.bossHit ? 1.15 : 1)
             .animation(.spring(response: 0.25, dampingFraction: 0.4), value: b.bossHit)
+            .overlay {
+                ForEach(b.dmgs) { d in
+                    let age = max(0, Date().timeIntervalSince(d.born))
+                    Text(d.text).font(.display(36.s)).foregroundStyle(Color.white)
+                        .shadow(color: Color.popDeep, radius: 0, x: 3, y: 3)
+                        .offset(x: d.dx.s, y: -60.s - CGFloat(age) * 100.s)
+                        .opacity(age > 0.7 ? max(0, 1 - (age - 0.7) / 0.3) : 1)
+                        .allowsHitTesting(false)
+                }
+            }
             blanks
             timer
         }
@@ -641,7 +697,29 @@ struct KJBattleView: View {
     private func boss(_ size: CGSize) -> some View {
         VStack(spacing: 8.s) {
             if b.phase == .boss { blanks }
-            Image(b.bossImage).resizable().scaledToFit().frame(width: 220.s, height: 220.s)
+            ZStack {
+                if b.bossHit || b.finishing {
+                    StarBurst().fill(Color.sun.opacity(0.9)).frame(width: b.finishing ? 320.s : 230.s, height: b.finishing ? 320.s : 230.s)
+                        .rotationEffect(.degrees(t * 90))
+                }
+                Image(b.bossImage).resizable().scaledToFit().frame(width: 220.s, height: 220.s)
+                    .brightness(b.bossHit ? 0.55 : 0)
+                    .colorMultiply(b.bossHit ? Color(red: 1, green: 0.75, blue: 0.75) : .white)
+                    .scaleEffect(b.finishing ? 0.05 : 1)
+                    .rotationEffect(.degrees(b.finishing ? 900 : 0))
+                    .opacity(b.finishing ? 0 : 1)
+                    .animation(b.finishing ? .easeIn(duration: 1.0).delay(0.35) : .default, value: b.finishing)
+                ForEach(b.dmgs) { d in
+                    let age = max(0, Date().timeIntervalSince(d.born))
+                    Text(d.text).font(.display(40.s)).foregroundStyle(Color.white)
+                        .shadow(color: Color.popDeep, radius: 0, x: 3, y: 3)
+                        .shadow(color: Color.ink, radius: 0, x: -2, y: -2)
+                        .scaleEffect(age < 0.12 ? 1.6 - age * 5 : 1)
+                        .offset(x: d.dx.s, y: -40.s - CGFloat(age) * 110.s)
+                        .opacity(age > 0.7 ? max(0, 1 - (age - 0.7) / 0.3) : 1)
+                        .allowsHitTesting(false)
+                }
+            }
                 .scaleEffect(b.bossHit ? 0.85 : 1)
                 .rotationEffect(.degrees(b.bossShake ? -8 : 0))
                 .offset(x: stage.kind == .mid ? CGFloat(sin(t * 1.7)) * size.width * 0.22 : 0,
@@ -753,6 +831,21 @@ struct KJBattleView: View {
             Text(KJ.both("Spell the word you hear!", "拼出聽到的單字！", "들리는 단어를 만들어요!"))
                 .font(.ui(12.s, bold: false)).foregroundStyle(Color.ink)
         }
+    }
+
+    /// the big "とどめ！" over the last hit
+    private func finishTitle(_ size: CGSize) -> some View {
+        VStack(spacing: 0) {
+            Text("とどめ！").font(.custom(Fonts.rounded, size: 64.s)).foregroundStyle(Color.white)
+                .shadow(color: Color.popDeep, radius: 0, x: 4, y: 4)
+                .shadow(color: Color.ink, radius: 0, x: -2, y: -2)
+            Text("FINISH!").font(.display(26.s)).foregroundStyle(Color.sun)
+                .shadow(color: Color.ink, radius: 0, x: 2, y: 2)
+        }
+        .rotationEffect(.degrees(-6))
+        .transition(.scale(scale: 3).combined(with: .opacity))
+        .position(x: size.width / 2, y: size.height * 0.3)
+        .allowsHitTesting(false)
     }
 
     @ViewBuilder private var overlay: some View {

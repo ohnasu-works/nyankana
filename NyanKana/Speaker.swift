@@ -217,6 +217,18 @@ final class Speaker: NSObject {
         }
     }
 
+    /// how long say(raw) plays (seconds), so words read in a row never cut each other off
+    func length(_ raw: String) -> Double {
+        let text = (KJSimilar.hasKanji(raw) && raw.count > 1 && RecordedVoice.has(raw, role: "f")) ? raw : (KJData.yomi(raw) ?? raw)
+        for r in ["f", "m", "n"] {
+            if let b = RecordedVoice.buffer(text, role: r) {
+                let sec = Double(b.frameLength) / b.format.sampleRate
+                return sec / (AppState.shared.settings.slowVoice ? 0.75 : 1)
+            }
+        }
+        return 0.8
+    }
+
     func stop() {
         token += 1
         synth.stopSpeaking(at: .immediate)

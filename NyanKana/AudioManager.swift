@@ -23,7 +23,7 @@ final class AudioManager {
         case papa = "se_papa1", boyon = "se_boyon1", sparkle = "se_kira1x"
         // study mode: calm classroom-style sounds
         // big boss finish: thunder + fanfare (synthesized)
-        case thunder = "se_thunder", victory = "se_victory", boom = "se_boom", fanfareBoss = "se_fanfare_boss", fever = "se_fever"
+        case thunder = "se_thunder", victory = "se_victory", win = "se_win", winBoss = "se_win_boss", finish = "se_finish", boom = "se_boom", fanfareBoss = "se_fanfare_boss", fever = "se_fever"
         case studyOK = "se_st_ok", studyNG = "se_st_ng", studyClear = "se_st_clear", studyCombo = "se_st_combo"
         // items (new set)
         case itemGet = "item_get", timeStop = "time_stop", heal = "heal", bomb = "bomb"
