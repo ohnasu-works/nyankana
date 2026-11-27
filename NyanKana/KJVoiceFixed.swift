@@ -1,6 +1,8 @@
 // generated: voices re-recorded on 2026-11-27 (shown as なおした in the voice check list)
 enum KJVoiceFixed {
     static let texts: Set<String> = [
+        "男",
+        "おとこ",
         "……もう さむくない。",
         "…じつは ね。おばあちゃんに てがみを かきたいの。かんじで。",
         "…てがみ、もうすこしで かけそう。",
