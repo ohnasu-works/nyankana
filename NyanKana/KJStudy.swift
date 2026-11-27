@@ -241,8 +241,16 @@ struct KJStudyView: View {
 
     /// the dictionary in あいうえお order, with the first letter's row as a heading
     private static let dict: [KJData.Word] = {
-        var seen = Set<String>()
-        return KJData.words.filter { seen.insert($0.ja).inserted }.sorted { KJZukan.sortKey($0.ja) < KJZukan.sortKey($1.ja) }
+        // one entry per word: かりる (round 1) and 借りる (round 2) are the same word → show the kanji one, with its reading over it
+        var best: [String: KJData.Word] = [:]
+        var order: [String] = []
+        for w in KJData.words {
+            let k = KJDict.same(w)
+            if let old = best[k] {
+                if !KJSimilar.hasKanji(old.ja) && KJSimilar.hasKanji(w.ja) { best[k] = w }
+            } else { best[k] = w; order.append(k) }
+        }
+        return order.compactMap { best[$0] }.sorted { KJZukan.sortKey($0.ja) < KJZukan.sortKey($1.ja) }
     }()
     private static func row(_ w: String) -> String {
         let first = String(KJZukan.sortKey(w).prefix(1))

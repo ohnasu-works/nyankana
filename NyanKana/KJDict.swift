@@ -9,6 +9,21 @@ struct KJDictEx: Hashable {
 }
 
 enum KJDict {
+    /// the same word written in kana or kanji: same reading and same meaning
+    static func same(_ w: KJData.Word) -> String { (KJData.yomi(w.ja) ?? w.ja) + "|" + w.en.lowercased() }
+    /// the kana spelling of the same word (かりる for 借りる), if the journey teaches it too
+    static func kanaTwin(_ w: KJData.Word) -> String? {
+        guard KJSimilar.hasKanji(w.ja) else { return nil }
+        let k = same(w)
+        return KJData.words.first { !KJSimilar.hasKanji($0.ja) && same($0) == k }?.ja
+    }
+    /// the example for a word, or for its other spelling
+    static func example(_ w: KJData.Word) -> KJDictEx? {
+        if let e = ex[w.ja] { return e }
+        let k = same(w)
+        return KJData.words.first { same($0) == k && ex[$0.ja] != nil }.flatMap { ex[$0.ja] }
+    }
+
     /// words that are easy to mix up with `w`: one letter swapped for a look-alike, or the same sound
     static func similar(_ w: String) -> [KJData.Word] {
         let read = KJData.yomi(w) ?? w
@@ -44,7 +59,7 @@ struct KJWordSheet: View {
 
     var body: some View {
         let read = KJData.yomi(w.ja) ?? w.ja
-        let ex = KJDict.ex[w.ja]
+        let ex = KJDict.example(w)
         ScrollView {
             VStack(alignment: .leading, spacing: 14.s) {
                 HStack {
@@ -62,6 +77,9 @@ struct KJWordSheet: View {
                         KJFuri(w.ja, size: 34.s, force: true)
                         Text(read.applyingTransform(.toLatin, reverse: false) ?? "").font(.ui(13.s, bold: false)).foregroundStyle(Color.ink.opacity(0.55))
                         Text(w.meaning).font(.ui(17.s)).foregroundStyle(Color.popDeep).fixedSize(horizontal: false, vertical: true)
+                        if let twin = KJDict.kanaTwin(w) {
+                            Text(KJ.jt("かなで かくと：", "In kana: ", "用假名寫：", "가나로 쓰면: ") + twin).font(.ui(12.s, bold: false)).foregroundStyle(Color.ink.opacity(0.6))
+                        }
                     }
                     Spacer(minLength: 0)
                 }
