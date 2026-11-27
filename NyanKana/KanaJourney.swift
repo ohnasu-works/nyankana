@@ -33,6 +33,11 @@ enum KJ {
         return lang == "ja" ? j : j + "  " + t(en, zh, ko)
     }
     static let ja: [String: String] = [
+        "Round 2 with Yui: JLPT N5 words & kanji": "2しゅうめ（ユイ）：N5の ことばと かんじ",
+        "Round 3 with Sora & Yui: JLPT N4, no furigana": "3しゅうめ（ふたり）：N4・ふりがな なし",
+        "Conversations for real scenes": "ばめんの かいわ",
+        "No ads": "こうこく なし",
+        "Pay once (not a subscription)": "かいきり（まいつき では ない）",
         "Search: kana, romaji or meaning": "さがす：かな・ローマじ・いみ",
         "words": "ことば",
         "Tap a letter to hear it. Meet the letter spirits in battles!": "もじを タップすると きけるよ。たたかいで もじだまに あおう！",

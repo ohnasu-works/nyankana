@@ -137,6 +137,7 @@ enum KJC1 {
     static func unlocked(_ id: Int) -> Bool {
         guard let i = stages.firstIndex(where: { $0.id == id }) else { return false }
         if AppState.shared.dev.unlocks { return true }
+        if stages[i].lap > 1 && !KJLap.bought { return false }   // rounds 2-3 are paid
         // (a stage already cleared — or one further along — stays open, so saves from before new stages were added keep working)
         return i == 0 || stars(stages[i - 1].id) > 0 || stages[i...].contains { stars($0.id) > 0 }
     }

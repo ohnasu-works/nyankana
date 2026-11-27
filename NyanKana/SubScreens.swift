@@ -769,11 +769,11 @@ struct ShopView: View {
 
     private var content: some View {
         VStack(spacing: 14.s) {
-            // Ken and Rin in the premium-only yukata, with Nyan in front
+            // Sora and Yui (Yui travels in round 2, both in round 3), with Nyan in front
             ZStack(alignment: .bottom) {
                 HStack(alignment: .bottom, spacing: -30.s) {
-                    Image("ken_full").resizable().scaledToFit().frame(height: 200.s)
-                    Image("rin_full").resizable().scaledToFit().frame(height: 180.s)
+                    Image("sora_full").resizable().scaledToFit().frame(height: 200.s)
+                    Image("yui_full").resizable().scaledToFit().frame(height: 184.s)
                 }
                 Image("nyan").resizable().scaledToFit().frame(height: 86.s).offset(x: 6.s, y: 8.s).bob()
             }
@@ -793,10 +793,11 @@ struct ShopView: View {
             }
             PaperCard {
                 VStack(alignment: .leading, spacing: 8.s) {
-                    perk("nosign", T("広告なし", "광고 없음", "無廣告"))
-                    perk("briefcase.fill", T("TOEICモードを|すぐ開放", "TOEIC 모드 즉시 해금", "立即解鎖TOEIC模式"))
-                    perk("tshirt.fill", T("限定衣装|「ゆかた」", "한정 의상 「유카타」", "限定服裝「浴衣」"))
-                    perk("cart.fill", T("買い切り|（月額では|ありません）", "한 번만 결제 (월정액 아님)", "一次買斷（非月費）"))
+                    perk("2.circle.fill", KJ.both("Round 2 with Yui: JLPT N5 words & kanji", "第2輪（結衣）：JLPT N5 的詞語與漢字", "2회차 유이: JLPT N5 단어・한자"))
+                    perk("3.circle.fill", KJ.both("Round 3 with Sora & Yui: JLPT N4, no furigana", "第3輪（兩人）：JLPT N4，無注音", "3회차 둘이서: JLPT N4, 후리가나 없음"))
+                    perk("bubble.left.and.bubble.right.fill", KJ.both("Conversations for real scenes", "實際場景的會話", "실제 장면의 회화"))
+                    perk("nosign", KJ.both("No ads", "無廣告", "광고 없음"))
+                    perk("cart.fill", KJ.both("Pay once (not a subscription)", "一次買斷（非月費）", "한 번만 결제 (구독 아님)"))
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -826,7 +827,7 @@ struct ShopView: View {
     private func perk(_ icon: String, _ text: String) -> some View {
         HStack(spacing: 10.s) {
             Image(systemName: icon).font(.system(size: 16.s, weight: .bold)).foregroundStyle(Color.popDeep).frame(width: 24.s)
-            Text(jp(text)).font(.ui(15.s)).foregroundStyle(Color.ink)
+            Text(jp(text)).font(.ui(15.s)).foregroundStyle(Color.ink).fixedSize(horizontal: false, vertical: true)
         }
     }
 }

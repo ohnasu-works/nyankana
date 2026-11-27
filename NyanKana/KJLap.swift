@@ -17,9 +17,13 @@ enum KJLap {
     /// a round opens when its first stage is open (= the last boss of the round before is beaten)
     static func open(_ lap: Int) -> Bool {
         guard lap > 1 else { return true }
+        guard bought else { return false }
         guard let first = KJC1.stages.first(where: { $0.lap == lap }) else { return false }
         return KJC1.unlocked(first.id)
     }
+
+    /// rounds 2 and 3 come with the purchase (round 1 — all the kana — is free)
+    static var bought: Bool { AppState.shared.isPremium || AppState.shared.dev.unlocks }
 
     static func name(_ lap: Int) -> String { "\(lap)しゅうめ" }
     /// who travels with Nyan
@@ -98,7 +102,12 @@ struct KJLapSwitch: View {
             ForEach(1...KJLap.count, id: \.self) { n in
                 let ok = KJLap.open(n)
                 Button {
-                    guard ok else { AudioManager.shared.se(.wrong, volume: 0.5); return }
+                    guard ok else {
+                        // a paid round: show the shop; otherwise it opens after the last boss of the round before
+                        if n > 1 && !KJLap.bought { AudioManager.shared.se(.decide); AppState.shared.sheet = .shop }
+                        else { AudioManager.shared.se(.wrong, volume: 0.5) }
+                        return
+                    }
                     AudioManager.shared.se(.decide)
                     withAnimation(.easeInOut(duration: 0.2)) { lap = n }
                     KJLap.selected = n
@@ -111,7 +120,7 @@ struct KJLapSwitch: View {
                                 }
                             }
                         } else {
-                            Image(systemName: "lock.fill").font(.system(size: 12.s, weight: .bold))
+                            Image(systemName: n > 1 && !KJLap.bought ? "crown.fill" : "lock.fill").font(.system(size: 12.s, weight: .bold))
                         }
                         Text(KJLap.name(n)).font(.custom(Fonts.rounded, size: 12.s)).lineLimit(1).minimumScaleFactor(0.7)
                     }
