@@ -197,7 +197,7 @@ enum KJData {
         Word(ja: "いいえ", emoji: "🙅", en: "no", zh: "不是", ko: "아니요"),
         Word(ja: "おはよう", emoji: "☀️", en: "good morning", zh: "早安", ko: "좋은 아침"),
         Word(ja: "こんばんは", emoji: "🌙", en: "good evening", zh: "晚上好", ko: "안녕하세요 (저녁)"),
-        Word(ja: "さようなら", emoji: "✋", en: "goodbye", zh: "再見", ko: "안녕히 가세요"),
+        Word(ja: "さようなら", emoji: "\u{F0108}", en: "goodbye", zh: "再見", ko: "안녕히 가세요"),
         Word(ja: "ください", emoji: "🫱", en: "please give me", zh: "請給我", ko: "주세요"),
         Word(ja: "おねがいします", emoji: "🤝", en: "please", zh: "拜託了", ko: "부탁합니다"),
         Word(ja: "いただきます", emoji: "🥢", en: "(before eating) let's eat", zh: "我開動了", ko: "잘 먹겠습니다"),
