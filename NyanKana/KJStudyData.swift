@@ -243,7 +243,7 @@ enum KJStudyData {
         KJExamQ(kind: "goi", q: "たべた あとで「（　）」と いいます。", choices: ["ごちそうさまでした", "いただきます", "おはよう", "おやすみ"], answer: 0, en: "After eating: ごちそうさまでした.", zh: "吃完後說。", ko: "먹은 후에.", audio: ""),
         KJExamQ(kind: "goi", q: "あさ ひとに あったら「（　）」と いいます。", choices: ["おはようございます", "こんばんは", "おやすみなさい", "さようなら"], answer: 0, en: "In the morning: おはようございます.", zh: "早上見面說。", ko: "아침 인사.", audio: ""),
         KJExamQ(kind: "goi", q: "ねる まえに「（　）」と いいます。", choices: ["おやすみなさい", "おはよう", "いってきます", "こんにちは"], answer: 0, en: "Before sleeping: おやすみなさい.", zh: "睡前說。", ko: "자기 전에.", audio: ""),
-        KJExamQ(kind: "goi", q: "「ありがとう」「（　）」", choices: ["どういたしまして", "すみません", "こちらこそ", "いただきます"], answer: 0, en: "Reply to thanks: どういたしまして.", zh: "回應「謝謝」。", ko: "'고마워'에 대한 대답.", audio: ""),
+        KJExamQ(kind: "goi", q: "「ありがとう」「（　）」", choices: ["どういたしまして", "おめでとう", "ただいま", "いただきます"], answer: 0, en: "Reply to thanks: どういたしまして.", zh: "回應「謝謝」。", ko: "'고마워'에 대한 대답.", audio: ""),
         KJExamQ(kind: "goi", q: "わたしの ははの ははは わたしの（　）です。", choices: ["そぼ", "そふ", "あね", "おじ"], answer: 0, en: "Mother's mother = grandmother (そぼ).", zh: "媽媽的媽媽＝祖母。", ko: "엄마의 엄마 = 할머니.", audio: ""),
         KJExamQ(kind: "moji", q: "「一」の よみかたは？", choices: ["はる", "くち", "ちから", "いち"], answer: 3, en: "一 is read 「いち」.", zh: "「一」讀作「いち」。", ko: "「一」는「いち」라고 읽어요.", audio: ""),
         KJExamQ(kind: "moji", q: "「二」の よみかたは？", choices: ["きゅう", "まち", "に", "あたま"], answer: 2, en: "二 is read 「に」.", zh: "「二」讀作「に」。", ko: "「二」는「に」라고 읽어요.", audio: ""),

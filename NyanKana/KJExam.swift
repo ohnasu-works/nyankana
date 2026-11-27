@@ -334,9 +334,43 @@ struct KJMockView: View {
     @State private var picked: Int?
     @State private var reviewSec = 0
     @State private var quitAsk = false
+    @State private var saved: Saved?
+    @Environment(\.scenePhase) private var scenePhase
     @ObservedObject private var audio = KJExamAudio.shared
     private let clock = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     enum Phase { case intro, test, between, result, review }
+
+    /// a test stopped half way: where it was, the answers so far and the time left
+    struct Saved: Codable {
+        var sec: Int
+        var i: Int
+        var answers: [[Int?]]
+        var timeLeft: Double
+        var between: Bool
+        var date = Date()
+    }
+    private var saveKey: String { "kj.mock.save." + mock.id }
+    private func loadSaved() -> Saved? {
+        guard let d = UserDefaults.standard.data(forKey: saveKey), let v = try? JSONDecoder().decode(Saved.self, from: d),
+              v.answers.count == mock.sections.count, v.sec < mock.sections.count,
+              zip(v.answers, mock.sections).allSatisfy({ $0.0.count == $0.1.count }) else { return nil }
+        return v
+    }
+    private func save() {
+        guard phase == .test || phase == .between else { return }
+        let v = Saved(sec: sec, i: i, answers: answers, timeLeft: timeLeft, between: phase == .between)
+        if let d = try? JSONEncoder().encode(v) { UserDefaults.standard.set(d, forKey: saveKey) }
+    }
+    private func clearSave() { UserDefaults.standard.removeObject(forKey: saveKey); saved = nil }
+    private func resume(_ v: Saved) {
+        answers = v.answers; sec = v.sec; i = v.i; timeLeft = v.timeLeft
+        clearSave()
+        if v.between { phase = .between } else {
+            // a listening question starts again from its beginning
+            phase = .test
+            present()
+        }
+    }
 
     var body: some View {
         ZStack {
@@ -360,16 +394,25 @@ struct KJMockView: View {
                 }
             }
         }
-        .onAppear { answers = mock.sections.map { Array(repeating: nil, count: $0.count) }; AudioManager.shared.playBGM(.track("study_jlpt")) }
+        .onAppear {
+            answers = mock.sections.map { Array(repeating: nil, count: $0.count) }
+            saved = loadSaved()
+            AudioManager.shared.playBGM(.track("study_jlpt"))
+        }
         .onDisappear { audio.stop() }
+        // the app goes to the background or is closed: keep the place
+        .onChange(of: scenePhase) { _, p in if p != .active { save() } }
         .onReceive(clock) { _ in
             guard phase == .test, !(mock.sections[sec].first?.listening ?? false) else { return }
             timeLeft -= 1
             if timeLeft <= 0 { endSection() }
         }
         .alert(KJ.t("Stop the test?", "要停止測驗嗎？", "시험을 그만둘까요?"), isPresented: $quitAsk) {
-            Button(KJ.t("Stop", "停止", "그만두기"), role: .destructive) { audio.stop(); close() }
+            Button(KJ.jt("ほぞんして やめる", "Save and stop", "儲存後停止", "저장하고 그만두기")) { save(); audio.stop(); close() }
+            Button(KJ.jt("ほぞんしないで やめる", "Stop without saving", "不儲存直接停止", "저장하지 않고 그만두기"), role: .destructive) { clearSave(); audio.stop(); close() }
             Button(KJ.t("Continue", "繼續", "계속"), role: .cancel) {}
+        } message: {
+            Text(KJ.t("If you save, you can continue from this question next time.", "儲存的話，下次可以從這一題繼續。", "저장하면 다음에 이 문제부터 이어서 할 수 있어요."))
         }
     }
 
@@ -400,8 +443,17 @@ struct KJMockView: View {
             .padding(16.s)
             .background(RoundedRectangle(cornerRadius: 18.s).fill(Color(hex: 0xFFFBF2)).overlay(RoundedRectangle(cornerRadius: 18.s).stroke(Color.ink, lineWidth: 3)))
             .padding(.horizontal, 20.s)
-            KJButton(title: KJ.jt2("はじめる", "Start", "開始", "시작"), color: .pop, textColor: .white) { startSection(0) }
-                .padding(.horizontal, 40.s)
+            if let v = saved {
+                KJButton(title: KJ.jt2("つづきから", "Continue", "從中斷處繼續", "이어서 하기"), color: .pop, textColor: .white) { resume(v) }
+                    .padding(.horizontal, 40.s)
+                Text(KJ.jt("ほぞん：", "Saved: ", "已儲存：", "저장됨: ") + KJMock.secNames[v.sec].ja + "  \(v.i + 1) / \(mock.sections[v.sec].count)")
+                    .font(.ui(12.s, bold: false)).foregroundStyle(.white)
+                KJButton(title: KJ.jt2("はじめから", "Start over", "從頭開始", "처음부터"), color: .white) { clearSave(); startSection(0) }
+                    .padding(.horizontal, 40.s)
+            } else {
+                KJButton(title: KJ.jt2("はじめる", "Start", "開始", "시작"), color: .pop, textColor: .white) { startSection(0) }
+                    .padding(.horizontal, 40.s)
+            }
             Spacer()
         }
     }
@@ -588,6 +640,7 @@ struct KJMockView: View {
     }
     private func finish() {
         guard phase == .test || phase == .between else { return }
+        clearSave()
         var b = KJMock.best
         if total > (b[mock.id] ?? -1) { b[mock.id] = total; KJMock.best = b }
     }
