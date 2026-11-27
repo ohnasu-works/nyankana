@@ -107,7 +107,7 @@ struct KJStudyView: View {
                 case .grammar: KJGrammarList()
                 case .talk: KJSceneList()
                 case .train: KJTrainMenu(modes: KJTrainMode.training, header: AnyView(practice)) { m in withAnimation { train = m } }
-                case .exam: KJTrainMenu(modes: KJTrainMode.exams) { m in withAnimation { train = m } }
+                case .exam: KJExamMenu()
                 }
             }
         }

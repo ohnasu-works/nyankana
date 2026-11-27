@@ -105,7 +105,7 @@ struct KJFlow: Layout {
 
 /// a sentence with furigana over the kanji; the line only breaks between word groups
 struct KJRubyText: View {
-    enum Blank { case plain, mark, hide }
+    enum Blank { case plain, mark, hide, underline }
     let markup: String
     var size: CGFloat = 20
     var ruby = true
@@ -114,6 +114,23 @@ struct KJRubyText: View {
     var center = false
 
     var body: some View {
+        if markup.contains("\n") {
+            // paragraphs (reading passages)
+            VStack(alignment: center ? .center : .leading, spacing: size * 0.35) {
+                ForEach(Array(markup.components(separatedBy: "\n").enumerated()), id: \.offset) { _, line in
+                    if line.replacingOccurrences(of: "~", with: "").trimmingCharacters(in: .whitespaces).isEmpty {
+                        Color.clear.frame(height: size * 0.2)
+                    } else {
+                        KJRubyText(markup: line, size: size, ruby: ruby, blank: blank, color: color, center: center)
+                    }
+                }
+            }
+        } else {
+            flow
+        }
+    }
+
+    private var flow: some View {
         KJFlow(spacing: 0, line: size * 0.25, center: center) {
             ForEach(Array(KJRuby.chunks(markup).enumerated()), id: \.offset) { _, c in
                 HStack(alignment: .bottom, spacing: 0) {
@@ -145,6 +162,7 @@ struct KJRubyText: View {
             }
             Text(s.base).font(.custom(Fonts.rounded, size: size))
                 .foregroundStyle(hl ? Color.popDeep : s.blank && blank == .hide ? Color.grape : color)
+                .underline(s.blank && blank == .underline, color: color)
                 .lineLimit(1).fixedSize()
                 .background(hl ? RoundedRectangle(cornerRadius: 4).fill(Color.sun.opacity(0.5)) : nil)
         }
