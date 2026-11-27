@@ -88,7 +88,11 @@ struct KJLessonView: View {
                     .allowsHitTesting(false)
             }
         }
-        .onAppear(perform: build)
+        .onAppear {
+            build()
+            // nothing to ask (should not happen): never leave an empty screen
+            if queue.isEmpty, !done { done = true; finished(3, 0, stage.newKana.isEmpty ? stage.words : stage.newKana) }
+        }
     }
 
     // MARK: parts

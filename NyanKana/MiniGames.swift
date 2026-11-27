@@ -400,6 +400,7 @@ struct MiniGameView: View {
             let chainable: Set<MGKind> = [.chochin, .yuki, .ninja, .yabusame, .taiko, .dash]
             MGWords.taught = KJLearned.answerWords(for: stage)
             MGAsk.chainWords = chainable.contains(kind) ? MGWords.pick(readable: letters, minLength: 2) : []
+            MGPrompt.lastKind = nil; MGPrompt.seenKinds = []
             AudioManager.shared.playBGM(.track(kind.bgm))
             ctx.endRequested = { endGame() }
             ctx.reset(total: kind.duration, target: lapTarget)

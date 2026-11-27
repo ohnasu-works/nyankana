@@ -124,7 +124,10 @@ struct KJTrainView: View {
                     // on the map the stage screen has its own back button
                     Color.clear.frame(height: 50.s)
                 }
-                if done { result } else if let q { board(q) }
+                if done { result } else if let q { board(q) } else if !qs.isEmpty || stageDone != nil {
+                    // no question could be made: never leave an empty screen
+                    Color.clear.onAppear { if qs.isEmpty, let d = stageDone { d(3, 0) } }
+                }
             }
             if let m = mark {
                 Image(systemName: m ? "circle" : "xmark")

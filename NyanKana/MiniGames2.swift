@@ -71,7 +71,68 @@ enum MGChainStep { case next, done, none }
 /// the question bubble shared by the games
 struct MGPrompt: View {
     let ask: MGAsk?
+    /// the kind of the last question shown (to announce a change of mode); reset when a game starts
+    static var lastKind: Int?
+    static var seenKinds: Set<Int> = []
+    @State private var banner = false
+    private var kind: Int? {
+        switch ask {
+        case .sound?: 0
+        case .romaji?: 1
+        case .word?: 2
+        case .chain?: 3
+        case nil: nil
+        }
+    }
+    private var bannerText: String {
+        switch ask {
+        case .sound?: KJ.duo("Listen and find it!", "聽聲音找！", "듣고 찾아요!")
+        case .romaji?: KJ.duo("Find this sound!", "找這個音！", "이 소리를 찾아요!")
+        case .word?: KJ.duo("Find this word!", "找這個詞！", "이 단어를 찾아요!")
+        case .chain?: KJ.duo("Chain the word, letter by letter!", "照順序連成詞語！", "순서대로 단어를 이어요!")
+        case nil: ""
+        }
+    }
     var body: some View {
+        prompt
+            .overlay(alignment: .top) {
+                if banner {
+                    // the mode changed: a big headline so nobody misses it
+                    VStack(spacing: 2.s) {
+                        Text(KJ.jt("モード チェンジ！", "Mode change!", "模式切換！", "모드 체인지!"))
+                            .font(.display(15.s)).foregroundStyle(Color.sun)
+                        Text(bannerText).font(.custom(Fonts.rounded, size: 22.s)).foregroundStyle(.white)
+                            .multilineTextAlignment(.center).lineLimit(2).minimumScaleFactor(0.6)
+                    }
+                    .padding(.horizontal, 18.s).padding(.vertical, 10.s)
+                    .background(RoundedRectangle(cornerRadius: 18.s).fill(Color.popDeep).overlay(RoundedRectangle(cornerRadius: 18.s).stroke(Color.ink, lineWidth: 3)))
+                    .shadow(color: .black.opacity(0.35), radius: 6, y: 3)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(width: 300.s)
+                    .offset(y: 70.s)
+                    .transition(.scale(scale: 0.4).combined(with: .opacity))
+                    .allowsHitTesting(false)
+                    .zIndex(10)
+                }
+            }
+            .onAppear { check() }
+            .onChange(of: kind) { _, _ in check() }
+    }
+
+    private func check() {
+        guard let k = kind else { return }
+        // announce a new kind of question the first time it comes in a game, and every time a word chain starts
+        if let last = Self.lastKind, last != k, !Self.seenKinds.contains(k) || k == 3 {
+            AudioManager.shared.se(.mgHorn, volume: 0.8)
+            AudioManager.shared.se(.sparkle, volume: 0.6)
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.55)) { banner = true }
+            later(1.6) { withAnimation(.easeIn(duration: 0.25)) { banner = false } }
+        }
+        Self.lastKind = k
+        Self.seenKinds.insert(k)
+    }
+
+    private var prompt: some View {
         VStack(spacing: 6.s) {
             switch ask {
             case .sound(let k)?:

@@ -356,7 +356,7 @@ final class KJBattle: ObservableObject {
 
     private func win() {
         phase = .won
-        AudioManager.shared.se(hasBoss ? .bossDefeat : .clear)
+        AudioManager.shared.se(hasBoss ? .bossDefeat : .clearShort)
         if hasBoss { later(0.6) { AudioManager.shared.se(.victory) } }
     }
 
@@ -688,8 +688,10 @@ struct KJBattleView: View {
                         HStack(spacing: 8.s) {
                             ForEach(b.readChoices, id: \.self) { r in
                                 Button { b.read(r) } label: {
-                                    Text(r).font(.display(24.s)).foregroundStyle(Color.ink)
-                                        .frame(width: 62.s, height: 52.s)
+                                    Text(r).font(.display(r.count > 4 ? 19.s : 24.s)).foregroundStyle(Color.ink)
+                                        .lineLimit(1).fixedSize()
+                                        .padding(.horizontal, 10.s)
+                                        .frame(minWidth: 62.s, minHeight: 52.s)
                                         .background(RoundedRectangle(cornerRadius: 14.s).fill(b.readTutorial ? Color.sun : Color.white)
                                             .overlay(RoundedRectangle(cornerRadius: 14.s).stroke(b.readTutorial ? Color.popDeep : Color.ink, lineWidth: 3)))
                                 }

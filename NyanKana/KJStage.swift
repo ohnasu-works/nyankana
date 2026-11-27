@@ -454,11 +454,14 @@ struct KJStageView: View {
                         KJStoryView(lines: stage.pre) { afterPre() }
                     }
                 case .learn(let i):
-                    if let l = KJData.letter(stage.newKana[i]) {
+                    if let k = stage.newKana[safe: i], let l = KJData.letter(k) {
                         KJLearnCard(letter: l, index: i, count: stage.newKana.count) {
                             go(i + 1 < stage.newKana.count ? .learn(i + 1) : .game)
                         }
                         .id(i)
+                    } else {
+                        // a letter with no card: never stop on an empty screen
+                        Color.clear.onAppear { go(i + 1 < stage.newKana.count ? .learn(i + 1) : .game) }
                     }
                 case .game:
                     game

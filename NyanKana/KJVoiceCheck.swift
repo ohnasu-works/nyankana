@@ -17,6 +17,7 @@ struct KJVoiceCheckView: View {
     @State private var part = 0
     @State private var marks: [String: Mark] = Self.load()
     @State private var onlyLeft = false
+    @State private var onlyFixed = false
     @State private var copied = false
 
     private static let key = "kj.voicecheck"
@@ -24,10 +25,10 @@ struct KJVoiceCheckView: View {
         var d = UserDefaults.standard.dictionary(forKey: key) as? [String: String] ?? [:]
         // 録り直した 声は「おかしい」の しるしを はずして、もう一度 きけるように
         let rev = UserDefaults.standard.integer(forKey: key + ".rev")
-        if rev < 2 {
-            d = d.filter { !($0.key.hasPrefix("ことば|") && $0.value == Mark.bad.rawValue) }
+        if rev < 3 {
+            d = d.filter { e in !(e.value == Mark.bad.rawValue && KJVoiceFixed.texts.contains(String(e.key.split(separator: "|", maxSplits: 2).last ?? ""))) }
             UserDefaults.standard.set(d, forKey: key)
-            UserDefaults.standard.set(2, forKey: key + ".rev")
+            UserDefaults.standard.set(3, forKey: key + ".rev")
         }
         return d.compactMapValues(Mark.init(rawValue:))
     }
@@ -55,7 +56,8 @@ struct KJVoiceCheckView: View {
 
     private var items: [Item] {
         let l = Self.all[part]
-        return onlyLeft ? l.filter { marks[$0.id] == nil } : l
+        let a = onlyFixed ? l.filter { KJVoiceFixed.texts.contains($0.text) } : l
+        return onlyLeft ? a.filter { marks[$0.id] == nil } : a
     }
 
     var body: some View {
@@ -73,6 +75,12 @@ struct KJVoiceCheckView: View {
                 Toggle("まだの物だけ", isOn: $onlyLeft).font(.footnote).fixedSize()
             }
             .padding(.horizontal)
+            HStack {
+                Text("なおした声：\(Self.all[part].filter { KJVoiceFixed.texts.contains($0.text) }.count)").font(.footnote).foregroundStyle(.orange)
+                Spacer()
+                Toggle("なおした物だけ", isOn: $onlyFixed).font(.footnote).fixedSize()
+            }
+            .padding(.horizontal)
             List(items) { it in
                 HStack(spacing: 10) {
                     Button { play(it) } label: {
@@ -80,7 +88,14 @@ struct KJVoiceCheckView: View {
                     }
                     .buttonStyle(.borderless)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(it.text).font(.body)
+                        HStack(spacing: 6) {
+                            Text(it.text).font(.body)
+                            if KJVoiceFixed.texts.contains(it.text) {
+                                Text("なおした").font(.caption2.bold()).foregroundStyle(.white)
+                                    .padding(.horizontal, 6).padding(.vertical, 2)
+                                    .background(Capsule().fill(Color.orange))
+                            }
+                        }
                         if !it.reading.isEmpty && it.reading != it.text { Text(it.reading).font(.caption).foregroundStyle(.secondary) }
                         Text(it.kind).font(.caption2).foregroundStyle(.secondary)
                     }
