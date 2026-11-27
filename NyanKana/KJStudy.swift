@@ -16,6 +16,7 @@ struct KJStudyView: View {
     @State private var genre: Int?
     /// もじ: かな or かんじ
     @State private var kanjiChart = false
+    @State private var wordOpen: KJWordBox?
 
     /// the letter groups in the order the journey teaches them
     static let groups: [(title: String, letters: [String])] = {
@@ -53,6 +54,7 @@ struct KJStudyView: View {
             }
         }
         .onAppear { AudioManager.shared.playBGM(.study) }
+        .sheet(item: $wordOpen) { b in KJWordSheet(w: b.w) }
         // the letter card: always the same size, closes with ✕ or a tap outside
         .overlay {
             if let l = detail {
@@ -318,7 +320,7 @@ struct KJStudyView: View {
     /// one entry: picture · the word (with its reading over kanji) · romaji · meaning — tap to hear it
     private func dictRow(_ w: KJData.Word) -> some View {
         let read = KJData.yomi(w.ja) ?? w.ja
-        return Button { Speaker.shared.say(w.ja) } label: {
+        return Button { AudioManager.shared.se(.tap); wordOpen = KJWordBox(w: w) } label: {
             HStack(spacing: 10.s) {
                 KJPicView(w.emoji, size: 34.s)
                 VStack(alignment: .leading, spacing: 0) {
@@ -329,7 +331,7 @@ struct KJStudyView: View {
                     Text(w.meaning).font(.ui(12.s, bold: false)).foregroundStyle(Color.ink.opacity(0.75)).lineLimit(2)
                 }
                 Spacer(minLength: 0)
-                Image(systemName: "speaker.wave.2.fill").font(.system(size: 14.s, weight: .bold)).foregroundStyle(Color.grape)
+                Image(systemName: "chevron.right").font(.system(size: 13.s, weight: .bold)).foregroundStyle(Color.ink.opacity(0.4))
             }
             .padding(.horizontal, 10.s).padding(.vertical, 7.s)
             .background(RoundedRectangle(cornerRadius: 12.s).fill(Color.white.opacity(0.95)).overlay(RoundedRectangle(cornerRadius: 12.s).stroke(Color.ink, lineWidth: 2)))

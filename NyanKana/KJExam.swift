@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 import AVFoundation
 
 // MARK: - しけん：JLPT の 本番と おなじ 形の もし（N5・N4）と、毎日の ミニテスト
@@ -150,7 +151,7 @@ struct KJExamMenu: View {
                      locked: !miniLeft) {
                     if miniLeft {
                         if !bought { UserDefaults.standard.set(Self.today, forKey: Self.dayKey) }
-                        mini = KJMiniBox(qs: KJMiniTest.build(lv: lv))
+                        mini = KJMiniBox(qs: KJMiniPool.build(lv: lv))
                     } else { lockedNote = true }
                 }
                 Text(KJ.jt("ほんばんと おなじ 形の もし", "Full mock tests (same format as the real JLPT)", "和正式考試相同形式的模擬考", "실제 시험과 같은 형식의 모의고사"))
@@ -507,18 +508,32 @@ struct KJMockView: View {
         .foregroundStyle(Color.ink)
     }
 
-    /// the question types with the most mistakes
+    /// the question types with the most mistakes: (title, right, total)
+    private func weakList() -> [(String, Int, Int)] {
+        var byKind: [String: (head: String, right: Int, n: Int)] = [:]
+        for s in 0..<mock.sections.count {
+            for (k, q) in mock.sections[s].enumerated() {
+                let mine: Int? = answers[safe: s]?[safe: k] ?? nil
+                var e = byKind[q.kind] ?? (head: q.head.components(separatedBy: "  ").first ?? q.kind, right: 0, n: 0)
+                e.n += 1
+                if mine == q.ans { e.right += 1 }
+                byKind[q.kind] = e
+            }
+        }
+        let list: [(String, Int, Int)] = byKind.values.filter { $0.right < $0.n }.map { ($0.head, $0.right, $0.n) }
+        let sorted = list.sorted { (a: (String, Int, Int), b: (String, Int, Int)) -> Bool in
+            Double(a.1) / Double(a.2) < Double(b.1) / Double(b.2)
+        }
+        return Array(sorted.prefix(3))
+    }
+
     @ViewBuilder private var weakKinds: some View {
-        let all = (0..<3).flatMap { s in mock.sections[s].enumerated().map { (q: $0.element, a: answers[safe: s]?[safe: $0.offset] ?? nil) } }
-        let byKind = Dictionary(grouping: all, by: { $0.q.kind })
-        let weak = byKind.map { (k: $0.key, miss: $0.value.filter { $0.q.ans != $0.a }.count, n: $0.value.count) }
-            .filter { $0.miss > 0 }.sorted { Double($0.miss) / Double($0.n) > Double($1.miss) / Double($1.n) }.prefix(3)
+        let weak = weakList()
         if !weak.isEmpty {
             VStack(alignment: .leading, spacing: 3.s) {
                 Text(KJ.jt("にがてな もんだい", "Your weak spots", "較弱的題型", "약한 문제 유형")).font(.ui(12.s)).foregroundStyle(Color.ink.opacity(0.7))
-                ForEach(Array(weak.enumerated()), id: \.offset) { _, w in
-                    let sample = all.first { $0.q.kind == w.k }!.q
-                    Text("・" + sample.head.components(separatedBy: "  ").first! + "　\(w.n - w.miss)/\(w.n)")
+                ForEach(0..<weak.count, id: \.self) { i in
+                    Text("・" + weak[i].0 + "　\(weak[i].1)/\(weak[i].2)")
                         .font(.ui(12.s, bold: false)).foregroundStyle(Color.ink).lineLimit(1).minimumScaleFactor(0.6)
                 }
             }
@@ -580,7 +595,7 @@ struct KJMockView: View {
 
 // MARK: the mini test (10 questions, answers right away)
 
-enum KJMiniTest {
+enum KJMiniPool {
     static func build(lv: Int) -> [(KJXQ, KJMock)] {
         let ms = KJMock.all.filter { $0.lv == lv }
         var pool: [String: [(KJXQ, KJMock)]] = [:]
