@@ -218,7 +218,7 @@ struct KJTrainView: View {
             // what you built so far
             FlowRow(spacing: 6.s) {
                 ForEach(Array(built.enumerated()), id: \.offset) { pos, t in
-                    Button { if picked == nil { built.remove(at: pos) } } label: { tile(q.tiles[t], on: true) }.buttonStyle(.plain)
+                    Button { if picked == nil, built.indices.contains(pos) { built.remove(at: pos) } } label: { tile(q.tiles[safe: t] ?? "", on: true) }.buttonStyle(.plain)
                 }
                 if built.count < q.want.count { tile("…", on: false) }
             }
@@ -377,7 +377,7 @@ struct KJTrainView: View {
 
     private func judgeTiles(_ q: KJTQ) {
         picked = 0
-        judge(built.map { q.tiles[$0] } == q.want, q)
+        judge(built.compactMap { q.tiles[safe: $0] } == q.want, q)
     }
 
     private func judge(_ ok: Bool, _ q: KJTQ) {
@@ -406,6 +406,9 @@ struct KJTrainView: View {
             if i + 1 >= qs.count { qs += Self.build(.flash, level: level) }
         }
         if i + 1 >= qs.count { finish(); return }
+        // clear the tiles of the last question before the next one is drawn
+        // (old tile numbers on a shorter question crashed: Index out of range)
+        picked = nil; built = []
         withAnimation(.easeInOut(duration: 0.2)) { i += 1 }
         present()
     }
