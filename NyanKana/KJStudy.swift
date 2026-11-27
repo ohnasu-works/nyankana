@@ -5,7 +5,7 @@ import SwiftUI
 
 struct KJStudyView: View {
     var back: () -> Void
-    enum Tab: String, CaseIterable { case chart, words, talk, train, exam }
+    enum Tab: String, CaseIterable { case chart, words, grammar, talk, train, exam }
     @State private var tab: Tab = .chart
     @State private var detail: KJLetter?
     @State private var playing: (kind: MGKind, letters: [String])?
@@ -14,6 +14,8 @@ struct KJStudyView: View {
     /// じしょ: search text and genre (nil = all)
     @State private var query = ""
     @State private var genre: Int?
+    /// もじ: かな or かんじ
+    @State private var kanjiChart = false
 
     /// the letter groups in the order the journey teaches them
     static let groups: [(title: String, letters: [String])] = {
@@ -76,8 +78,8 @@ struct KJStudyView: View {
                 }
                 .padding(.horizontal, 14.s).padding(.top, 6.s)
                 RibbonTitle(text: "まなぶ", color: .grape, size: 24)
-                // five tabs in one row
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 4.s), count: 5), spacing: 4.s) {
+                // six tabs in two rows
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6.s), count: 3), spacing: 6.s) {
                     ForEach(Tab.allCases, id: \.self) { t in
                         Button {
                             AudioManager.shared.se(.tap)
@@ -102,6 +104,7 @@ struct KJStudyView: View {
                 switch tab {
                 case .chart: chart
                 case .words: wordList
+                case .grammar: KJGrammarList()
                 case .talk: KJSceneList()
                 case .train: KJTrainMenu(modes: KJTrainMode.training, header: AnyView(practice)) { m in withAnimation { train = m } }
                 case .exam: KJTrainMenu(modes: KJTrainMode.exams) { m in withAnimation { train = m } }
@@ -112,8 +115,9 @@ struct KJStudyView: View {
 
     private func title(_ t: Tab) -> String {
         switch t {
-        case .chart: "もじひょう"
+        case .chart: "もじ"
         case .words: "じしょ"
+        case .grammar: "ぶんぽう"
         case .talk: "かいわ"
         case .train: "れんしゅう"
         case .exam: "しけん"
@@ -124,6 +128,7 @@ struct KJStudyView: View {
         switch t {
         case .chart: KJ.t("Letters", "文字表", "글자표")
         case .words: KJ.t("Dictionary", "辭典", "사전")
+        case .grammar: KJ.t("Grammar", "文法", "문법")
         case .talk: KJ.t("Talk", "會話", "회화")
         case .train: KJ.t("Practice", "練習", "연습")
         case .exam: KJ.t("Test", "考試", "시험")
@@ -134,6 +139,18 @@ struct KJStudyView: View {
 
     private var chart: some View {
         ScrollView {
+            VStack(alignment: .leading, spacing: 14.s) {
+                HStack(spacing: 8.s) {
+                    chip(KJ.jt("かな", "Kana", "假名", "가나"), !kanjiChart) { kanjiChart = false }
+                    chip(KJ.jt("かんじ", "Kanji", "漢字", "한자"), kanjiChart) { kanjiChart = true }
+                }
+                if kanjiChart { KJKanjiList() } else { kanaChart }
+            }
+            .padding(.horizontal, 16.s).padding(.bottom, 24.s)
+        }
+    }
+
+    private var kanaChart: some View {
             VStack(alignment: .leading, spacing: 14.s) {
                 ForEach(Array(Self.groups.enumerated()), id: \.offset) { _, g in
                     VStack(alignment: .leading, spacing: 6.s) {
@@ -160,8 +177,6 @@ struct KJStudyView: View {
                     }
                 }
             }
-            .padding(.horizontal, 16.s).padding(.bottom, 24.s)
-        }
     }
 
     // MARK: practice with the letters you choose
