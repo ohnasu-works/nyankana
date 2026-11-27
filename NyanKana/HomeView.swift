@@ -44,10 +44,10 @@ struct HomeView: View {
             }
             .frame(width: geo.size.width, height: geo.size.height)
         }
-        // にゃんカナ: the title art (Sora and Nyan on their journey) behind everything
+        // にゃんカナ: Japanese scenery (Fuji, sakura, torii) behind everything — no characters
         .background(
             ZStack {
-                KJBackdrop(bg: "title_keyart", dim: 0)
+                KJBackdrop(bg: "home_scenery", dim: 0)
                 LinearGradient(colors: [.clear, Color.white.opacity(0.25), Color.white.opacity(0.55)], startPoint: .top, endPoint: .bottom)
             }
             .ignoresSafeArea()
