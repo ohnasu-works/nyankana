@@ -35,7 +35,7 @@ enum KJZukan {
         if s.insert(img).inserted { seen = s }
     }
 
-    struct Boss { var chapter: Int; var image: String; var ja, en, zh, ko: String; var mid: Bool }
+    struct Boss { var chapter: Int; var image: String; var ja, en, zh, ko: String; var mid: Bool; var lap = 1 }
     static let bosses: [Boss] = [
         Boss(chapter: 1, image: "boss_kyubi", ja: "きゅうびの きつね", en: "Nine-tailed Fox", zh: "九尾狐", ko: "구미호", mid: false),
         Boss(chapter: 2, image: "boss_will", ja: "かっぱ", en: "Kappa", zh: "河童", ko: "갓파", mid: false),
@@ -47,9 +47,13 @@ enum KJZukan {
         Boss(chapter: 1, image: "mid_karakasa", ja: "からかさおばけ", en: "Umbrella Ghost", zh: "傘妖", ko: "우산 요괴", mid: true),
     ] + (2...7).map { c in Boss(chapter: c, image: "zk_\(c)_3", ja: "\(KJC1.chapterNames[c]?.ja ?? "")の ちゅうボス", en: "Mid-boss of \(KJC1.chapterNames[c]?.en ?? "")", zh: "\(KJC1.chapterNames[c]?.zh ?? "")的中頭目", ko: "\(KJC1.chapterNames[c]?.ko ?? "")의 중간 보스", mid: true) }
 
+    /// rounds 2-3 bosses (they open when their boss stage is won)
+    static let lapBosses: [Boss] = [2, 3].flatMap { lap in (1...7).compactMap { c in
+        KJLap.boss(lap: lap, chapter: c).map { Boss(chapter: c, image: $0.image, ja: $0.ja, en: $0.en, zh: $0.zh, ko: $0.ko, mid: false, lap: lap) } } }
+
     /// beaten: its stage has a star
     static func beaten(_ b: Boss) -> Bool {
-        KJC1.stages(in: b.chapter).contains { s in (b.mid ? s.kind == .mid : s.kind == .boss) && KJC1.stars(s.id) > 0 }
+        KJC1.stages(in: b.chapter, lap: b.lap).contains { s in (b.mid ? s.kind == .mid : s.kind == .boss) && KJC1.stars(s.id) > 0 }
     }
 
     /// もじだま carry one letter, つくもがみ carry one word: the zukan shows (and reads) what each one holds
@@ -187,11 +191,12 @@ struct KJZukanView: View {
     }
 
     private var bossGrid: some View {
-        let got = KJZukan.bosses.filter(KJZukan.beaten).count
+        let all = KJZukan.bosses + KJZukan.lapBosses
+        let got = all.filter(KJZukan.beaten).count
         return VStack(spacing: 10.s) {
-            Text("\(got) / \(KJZukan.bosses.count)").font(.display(18.s)).foregroundStyle(Color.ink)
+            Text("\(got) / \(all.count)").font(.display(18.s)).foregroundStyle(Color.ink)
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10.s), count: 2), spacing: 10.s) {
-                ForEach(KJZukan.bosses, id: \.image) { b in
+                ForEach(all, id: \.image) { b in
                     let open = KJZukan.beaten(b)
                     Button {
                         guard open else { AudioManager.shared.se(.wrong, volume: 0.4); return }

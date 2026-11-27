@@ -190,6 +190,11 @@ enum BossVoice {
             case .out: return .init(p.cast, .init(en: "This shadow... fades away...", ja: "この影も…|消えていく…", ko: "이 그림자도… 사라져 간다…", zh: "這道影子……也要消失了……"))
             }
         }
+        // rounds 2-3: the new boss speaks its own lines (in Japanese, its own voice)
+        if kind == .boss, let b = KanaRescue.session?.boss {
+            let t = v == .intro ? b.intro : v == .half ? b.half : b.out
+            return .init(p.cast, t, t)
+        }
         switch v {
         case .intro: return .init(p.cast, p.intro)
         case .half: return .init(p.cast, p.half)

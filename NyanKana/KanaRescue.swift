@@ -11,6 +11,8 @@ enum KanaRescue {
     struct Session {
         var stageID: Int
         var pools: QuestionBank.Pools
+        /// rounds 2-3: a new boss (picture, voice, lines)
+        var boss: KJLapBoss? = nil
     }
     struct Outcome {
         var stageID: Int
@@ -32,7 +34,7 @@ enum KanaRescue {
                                              "if": "oni", "logic": "tanuki", "silence": "kijimuna"]
     /// true when the line was spoken with the boss's own voice
     @MainActor static func sayBoss(_ text: String, key: String) -> Bool {
-        guard active, let r = bossRole[key], RecordedVoice.has(text, role: r) else { return false }
+        guard active, let r = session?.boss?.role ?? bossRole[key], RecordedVoice.has(text, role: r) else { return false }
         Speaker.shared.sayRole(text, role: r)
         return true
     }
@@ -44,7 +46,7 @@ enum KanaRescue {
     }
 
     @MainActor static func start(_ stage: KJC1.Stage) {
-        session = Session(stageID: stage.id, pools: pools(stage))
+        session = Session(stageID: stage.id, pools: pools(stage), boss: KJLap.boss(lap: stage.lap, chapter: stage.chapter))
         outcome = nil
         AppState.shared.go(.game(ref(stage.chapter)))
     }

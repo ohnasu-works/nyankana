@@ -56,6 +56,52 @@ enum KJLap {
     static var furigana: Bool { playing == 2 }
 }
 
+/// the bosses of rounds 2 and 3 (new yokai; round 1 keeps the first seven)
+struct KJLapBoss {
+    var role: String        // its recorded voice
+    var image: String
+    var ja: String, en: String, zh: String, ko: String   // its name
+    var intro: String, half: String, out: String         // what it says in the battle
+}
+
+extension KJLap {
+    static let bosses: [Int: [Int: KJLapBoss]] = [
+        2: [
+            1: .init(role: "rokuro", image: "boss2_rokuro", ja: "ろくろくび", en: "Rokurokubi", zh: "轆轤首", ko: "로쿠로쿠비",
+                     intro: "くびを のばして、かんじを ぜんぶ たべちゃうわよ。", half: "まだまだ くびは のびるわよ！", out: "くびが こんがらがった……まいったわ。"),
+            2: .init(role: "zashiki", image: "boss2_zashiki", ja: "ざしきわらし", en: "Zashiki-warashi", zh: "座敷童子", ko: "자시키와라시",
+                     intro: "あそぼ！ かんじを まちがえたら、ずっと ここに いてね。", half: "えへへ、まだ まけないよ！", out: "まけた〜。また あそんでね！"),
+            3: .init(role: "koro", image: "boss2_koro", ja: "コロポックル", en: "Korpokkur", zh: "克魯波克魯", ko: "코로폿쿠루",
+                     intro: "ふきの はの したに、かんじを かくしたよ。", half: "ちいさくても つよいんだぞ！", out: "みつかっちゃった。ふきの はを どうぞ。"),
+            4: .init(role: "yamanba", image: "boss2_yamanba", ja: "やまんば", en: "Yamanba", zh: "山姥", ko: "야만바",
+                     intro: "ふりがなに たよって いるね？ ためして あげよう！", half: "ほう、なかなか やるね。", out: "見事だね。その かんじ、もう あんたの ものだよ。"),
+            5: .init(role: "nurari", image: "boss2_nurari", ja: "ぬらりひょん", en: "Nurarihyon", zh: "滑瓢", ko: "누라리횬",
+                     intro: "わしは ようかいの おやぶん。この かんじが よめるかな？", half: "ふぉっふぉっ、おもしろい。", out: "まいった……。ユイ、つよいのう。"),
+            6: .init(role: "inugami", image: "boss2_inugami", ja: "いぬがみ", en: "Inugami", zh: "犬神", ko: "이누가미",
+                     intro: "ワン！ この かんじ、においで わかるか？", half: "グルル……まだだ！", out: "ワン……。おまえたちの かちだ。"),
+            7: .init(role: "ittan", image: "boss2_ittan", ja: "いったんもめん", en: "Ittan-momen", zh: "一反木綿", ko: "잇탄모멘",
+                     intro: "ひらひら〜。かんじを ぜんぶ つつんで とんで いくよ！", half: "かぜに のって、まだまだ とぶよ！", out: "ほどけちゃった……。かんじは かえすよ。"),
+        ],
+        3: [
+            1: .init(role: "gasha", image: "boss3_gasha", ja: "がしゃどくろ", en: "Gashadokuro", zh: "餓者髑髏", ko: "가샤도쿠로",
+                     intro: "ふりがなの ない せかいへ ようこそ。", half: "ガシャガシャ……まだ たおれんぞ。", out: "二人の ちから……みごとだ。"),
+            2: .init(role: "namahage", image: "boss3_namahage", ja: "なまはげ", en: "Namahage", zh: "生剝鬼", ko: "나마하게",
+                     intro: "わるい 子は いねが〜！ ふりがな なしで よめるか！", half: "うおお、なかなか いい 子だ！", out: "いい 子たちだ。もう 来ないぞ。"),
+            3: .init(role: "tsurara", image: "boss3_tsurara", ja: "つららおんな", en: "Tsurara-onna", zh: "冰柱女", ko: "쓰라라온나",
+                     intro: "あなたたちの ことば、とかして みせて……。", half: "つめたい かぜを ふかせて あげる……。", out: "……もう さむくない。"),
+            4: .init(role: "satori", image: "boss3_satori", ja: "さとり", en: "Satori", zh: "覺", ko: "사토리",
+                     intro: "おまえの かんがえ、ぜんぶ よめるぞ。かんじは よめるかな？", half: "むむ、かんがえが よめない……！", out: "もう 何も おしえる ことは ない。"),
+            5: .init(role: "tsuchigumo", image: "boss3_tsuchigumo", ja: "つちぐも", en: "Tsuchigumo", zh: "土蜘蛛", ko: "쓰치구모",
+                     intro: "三人 そろったか！ この あみから にげられるか！", half: "あみが きれた！？", out: "いっしょに たこやき、食べに いこう。"),
+            6: .init(role: "umibozu", image: "boss3_umibozu", ja: "うみぼうず", en: "Umibozu", zh: "海坊主", ko: "우미보즈",
+                     intro: "なみの ように、かんじが おしよせるぞ！", half: "ざぶーん！ まだまだ！", out: "まいった。もう うみは しずかだ。"),
+            7: .init(role: "shisa", image: "boss3_shisa", ja: "シーサー", en: "Shisa", zh: "風獅爺", ko: "시사",
+                     intro: "さいごの しれん！ ぜんぶ おぼえてるか、ためして みよう！", half: "ガオー！ まだ おわらないぞ！", out: "すごい！ もう 日本語の たびびとだね。"),
+        ],
+    ]
+    static func boss(lap: Int, chapter: Int) -> KJLapBoss? { bosses[lap]?[chapter] }
+}
+
 extension KJData {
     /// how a word is read: one kanji (日 → にち) or a kanji word of round 2 / 3 (食べる → たべる)
     static func yomi(_ s: String) -> String? { readings[s] ?? readingsLap[s] }

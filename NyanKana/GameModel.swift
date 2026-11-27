@@ -288,7 +288,7 @@ final class GameModel: ObservableObject {
             spawn([Foe(kind: .mid, image: ref.area.mid(ref.index).image, question: qs[0], queue: Array(qs.dropFirst()), hpMax: qs.count)])
         case let .boss(qs):
             guard !qs.isEmpty else { break }
-            spawn([Foe(kind: .boss, image: ref.area.boss.image, question: qs[0], queue: Array(qs.dropFirst()), hpMax: qs.count)])
+            spawn([Foe(kind: .boss, image: KanaRescue.session?.boss?.image ?? ref.area.boss.image, question: qs[0], queue: Array(qs.dropFirst()), hpMax: qs.count)])
         case let .guest(p, qs, shadow):
             guard !qs.isEmpty else { break }
             var f = Foe(kind: .mid, image: p.image, question: qs[0], queue: Array(qs.dropFirst()), hpMax: qs.count)
@@ -749,7 +749,7 @@ final class GameModel: ObservableObject {
                 after(0.4) {
                     if f.kind == .boss { self.thunderStrike() } else { AudioManager.shared.se(.bossDefeat) }
                     // the boss turns into its true form inside the smoke of the explosion (2 s later)
-                    self.world.rescue(id, big: true, freed: f.kind == .boss ? self.ref.area.boss.freeImage : nil, reveal: f.kind == .boss ? 2.0 : 0)
+                    self.world.rescue(id, big: true, freed: f.kind == .boss ? (KanaRescue.session?.boss?.image ?? self.ref.area.boss.freeImage) : nil, reveal: f.kind == .boss ? 2.0 : 0)
                     self.world.restore(8)
                 }
                 let wait: Double = f.kind == .boss ? 4.4 : 0
@@ -1209,7 +1209,7 @@ final class GameModel: ObservableObject {
             ? .init(en: "しずかに…　もじの ない せかいこそ、やすらぎの せかいだ。", ja: "しずかに…|言葉のない|世界こそ、|やすらぎの|世界だ。", ko: "조용히… 말이 없는 세상이야말로 평온한 세상이다.", zh: "安靜……沒有語言的世界，才是平靜的世界。")
             : .init(en: "ほう…　ここまで きたか。", ja: "ほう…|ここまで|来たか。", ko: "호오… 여기까지 왔나.", zh: "哦……你們竟然走到這裡了。")
         after(grad ? 1.6 : 1.0, scaled: false) {
-            self.showEvent(.init(image: self.ref.area.boss.image, line: line, tone: .evil), for: grad ? 3.4 : 2.6)
+            self.showEvent(.init(image: KanaRescue.session?.boss?.image ?? self.ref.area.boss.image, line: line, tone: .evil), for: grad ? 3.4 : 2.6)
             if !KanaRescue.sayBoss(line.en, key: self.ref.area.boss.key) {
                 Speaker.shared.say(line.en, voice: self.ref.area.boss.voice)
             }

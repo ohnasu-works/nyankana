@@ -54,6 +54,7 @@ struct DevPanel: View {
     @EnvironmentObject var app: AppState
     @State private var confirmReset = false
     @State private var showSounds = false
+    @State private var showVoices = false
     @State private var note = ""
 
     var body: some View {
@@ -90,6 +91,8 @@ struct DevPanel: View {
             }
             Button("効果音の聞き比べ") { showSounds = true }
                 .sheet(isPresented: $showSounds) { NavigationStack { SoundTestView() } }
+            Button("音声チェック（一覧）") { showVoices = true }
+                .sheet(isPresented: $showVoices) { NavigationStack { KJVoiceCheckView() } }
             if !note.isEmpty { Text(note).font(.ui(13, bold: false)).foregroundStyle(.secondary) }
             Button(L("dev.reset"), role: .destructive) { confirmReset = true }
                 .confirmationDialog(L("dev.reset"), isPresented: $confirmReset) {
