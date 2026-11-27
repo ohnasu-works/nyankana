@@ -263,7 +263,7 @@ struct StagePlanner {
     private func buildRaw(_ pools: QuestionBank.Pools) -> [Encounter] {
         var rng = SystemRandomNumberGenerator()
         var queue = questionQueue(pools).shuffled(using: &rng)
-        func next() -> Question { if queue.isEmpty { queue = questionQueue(pools).shuffled() }; return queue.removeFirst() }
+        func next() -> Question { if queue.isEmpty { queue = questionQueue(pools).shuffled() }; return queue.isEmpty ? QuestionBank.lv1.single[0] : queue.removeFirst() }
         func item() -> ItemKind? {
             let rate: Double = ref.difficulty == .easy ? 0.2 : ref.difficulty == .normal ? 0.14 : 0.11   // halved (items came too often)
             return Double.random(in: 0...1) < rate ? ItemKind.allCases.randomElement() : nil
@@ -280,7 +280,7 @@ struct StagePlanner {
             let n = ref.difficulty == .easy ? 3 : ref.difficulty == .normal ? 5 : 7
             var qs = Array(pools.boss.shuffled().prefix(n))
             // normal / hard bosses always include one word-order question (easy skips it)
-            if ref.difficulty != .easy, !qs.contains(where: { $0.kind == .order }), let o = pools.boss.first(where: { $0.kind == .order }) { qs[0] = o }
+            if ref.difficulty != .easy, !qs.contains(where: { $0.kind == .order }), let o = pools.boss.first(where: { $0.kind == .order }) { if qs.isEmpty { qs = [o] } else { qs[0] = o } }
             // the final boss (King Silence) takes ten questions on every difficulty
             if ref.area == .graduation {
                 let extra = (pools.mid + pools.boss).shuffled().filter { e in !qs.contains { $0.dedupeKey == e.dedupeKey } }

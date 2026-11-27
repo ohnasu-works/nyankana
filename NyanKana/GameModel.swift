@@ -284,10 +284,13 @@ final class GameModel: ObservableObject {
             spawn([Foe(kind: .bonus, image: gob(Int.random(in: 0..<16)), path: .sky, item: Bool.random() ? ItemKind.allCases.randomElement() : nil, question: q)])
             say(L("game.bonus"))
         case let .mid(qs):
+            guard !qs.isEmpty else { break }
             spawn([Foe(kind: .mid, image: ref.area.mid(ref.index).image, question: qs[0], queue: Array(qs.dropFirst()), hpMax: qs.count)])
         case let .boss(qs):
+            guard !qs.isEmpty else { break }
             spawn([Foe(kind: .boss, image: ref.area.boss.image, question: qs[0], queue: Array(qs.dropFirst()), hpMax: qs.count)])
         case let .guest(p, qs, shadow):
+            guard !qs.isEmpty else { break }
             var f = Foe(kind: .mid, image: p.image, question: qs[0], queue: Array(qs.dropFirst()), hpMax: qs.count)
             f.profile = p; f.shadow = shadow
             if shadow { say(T("ボス|ラッシュ！", "보스 러시!", "首領連戰！"), long: true) }

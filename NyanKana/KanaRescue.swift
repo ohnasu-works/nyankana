@@ -54,16 +54,22 @@ enum KanaRescue {
         let words = KJC1.stage(s.stageID).words
         outcome = Outcome(stageID: s.stageID, stars: cleared ? max(1, stars) : 0, score: score,
                           won: cleared ? words : [], cleared: cleared)
-        session = nil
-        KJMusic.play()
-        AppState.shared.go(.kana)
+        leave()
     }
 
     @MainActor static func quit() {
-        session = nil
         outcome = nil
+        leave()
+    }
+
+    /// stop the battle first, then leave; the questions stay until the screen is gone
+    /// (clearing them while the battle still runs for a frame made it fall back to empty data and crash)
+    @MainActor private static func leave() {
+        GameModel.onScreen?.disappear()
         KJMusic.play()
         AppState.shared.go(.kana)
+        let id = KanaRescue.session?.stageID
+        later(1.0) { if KanaRescue.session?.stageID == id { KanaRescue.session = nil } }
     }
 
     // MARK: questions
