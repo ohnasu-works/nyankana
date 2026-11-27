@@ -800,6 +800,7 @@ struct ShopView: View {
                     perk("2.circle.fill", KJ.both("Round 2 with Yui: JLPT N5 words & kanji", "第2輪（結衣）：JLPT N5 的詞語與漢字", "2회차 유이: JLPT N5 단어・한자"))
                     perk("3.circle.fill", KJ.both("Round 3 with Sora & Yui: JLPT N4, no furigana", "第3輪（兩人）：JLPT N4，無注音", "3회차 둘이서: JLPT N4, 후리가나 없음"))
                     perk("bubble.left.and.bubble.right.fill", KJ.both("Conversations for real scenes", "實際場景的會話", "실제 장면의 회화"))
+                    perk("doc.text.fill", KJ.both("Full JLPT-style mock tests (N5・N4)", "完整的JLPT形式模擬考（N5・N4）", "JLPT 형식 모의고사 (N5・N4)"))
                     perk("nosign", KJ.both("No ads", "無廣告", "광고 없음"))
                     perk("cart.fill", KJ.both("Pay once (not a subscription)", "一次買斷（非月費）", "한 번만 결제 (구독 아님)"))
                 }

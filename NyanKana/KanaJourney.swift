@@ -40,6 +40,7 @@ enum KJ {
         "Round 3 with Sora & Yui: JLPT N4, no furigana": "3しゅうめ（ふたり）：N4・ふりがな なし",
         "Conversations for real scenes": "ばめんの かいわ",
         "No ads": "こうこく なし",
+        "Full JLPT-style mock tests (N5・N4)": "ほんばんと おなじ 形の もし（N5・N4）",
         "Pay once (not a subscription)": "かいきり（まいつき では ない）",
         "Search: kana, romaji or meaning": "さがす：かな・ローマじ・いみ",
         "words": "ことば",
