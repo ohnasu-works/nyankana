@@ -218,11 +218,13 @@ final class KJBattle: ObservableObject {
         lastKana = t.kana
         wrongOnTarget = 0
         // mix the kinds of question (the very first ones are always "listen")
-        ask = (hits >= 4 && Double.random(in: 0...1) < 0.4) ? .read : .listen
+        // (rounds 2-3 ask "how is it read?" more often — reading is the real test)
+        ask = (hits >= 4 && Double.random(in: 0...1) < KJLap.readChance) ? .read : .listen
         if ask == .read {
             var opts = Set([KJData.romaji(t.kana)])
-            let others = st.known.filter { $0 != t.kana }.shuffled()
-            for o in others where opts.count < 3 { opts.insert(KJData.romaji(o)) }
+            // wrong choices: the sounds of letters that LOOK like it first (き → さ・ち, 木 → 本・休), then the rest
+            let others = mgDecoys(t.kana, st.known)
+            for o in others where opts.count < 3 && !KJData.romaji(o).isEmpty { opts.insert(KJData.romaji(o)) }
             readChoices = Array(opts).shuffled()
             AudioManager.shared.se(.eyeShine, volume: 0.5)
             // the first two times ever: stop and show where to answer

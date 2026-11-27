@@ -36,11 +36,14 @@ enum KJLap {
     // MARK: difficulty of the round being played
 
     /// how fast the minions dive in a battle
-    static var speed: Double { [1.0, 1.2, 1.4][max(0, min(2, playing - 1))] }
+    /// (only a little: the questions themselves get harder — look-alike letters, kanji, more reading)
+    static var speed: Double { [1.0, 1.08, 1.15][max(0, min(2, playing - 1))] }
+    /// battles: how often a question is "how is this read?" instead of "find the sound"
+    static var readChance: Double { [0.4, 0.55, 0.65][max(0, min(2, playing - 1))] }
     /// hearts in a battle
     static var hearts: Int { playing >= 3 ? 2 : 3 }
     /// mini-games: the goal goes up a little each round
-    static var miniTarget: Double { [1.0, 1.15, 1.3][max(0, min(2, playing - 1))] }
+    static var miniTarget: Double { [1.0, 1.0, 1.1][max(0, min(2, playing - 1))] }
     /// kanji words count as readable (from round 2 every taught word may be asked)
     static var kanji: Bool { playing >= 2 }
     /// round 2: the reading is shown over kanji
