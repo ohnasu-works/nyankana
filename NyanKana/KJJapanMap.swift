@@ -224,6 +224,11 @@ enum KJMusic {
     static var chapter = 1
     static func play(_ ch: Int? = nil) {
         if let ch { chapter = max(1, min(7, ch)) }
+        // rounds 2 and 3 have their own map music (if it is in the app)
+        let lapTrack = "kjl\(KJLap.look)"
+        if KJLap.look > 1, Bundle.main.url(forResource: "bgm_" + lapTrack, withExtension: "m4a") != nil {
+            AudioManager.shared.playBGM(.track(lapTrack)); return
+        }
         AudioManager.shared.playBGM(.track("kj\(chapter)"))
     }
 }

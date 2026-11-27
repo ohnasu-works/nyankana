@@ -13,6 +13,8 @@ enum KJLap {
     }
     /// the round of the stage being played now (set when a stage opens)
     static var playing = 1
+    /// the round whose look (colors, map music) is on screen: the map's round, or the stage's
+    static var look = 1
 
     /// a round opens when its first stage is open (= the last boss of the round before is beaten)
     static func open(_ lap: Int) -> Bool {

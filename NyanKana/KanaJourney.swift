@@ -322,6 +322,9 @@ struct KJBackdrop: View {
         GeometryReader { g in
             Image(bg).resizable().scaledToFill()
                 .frame(width: g.size.width, height: g.size.height).clipped()
+                // each round has its own light: round 2 = a warm autumn evening, round 3 = a cold winter night
+                .colorMultiply(KJLap.look == 2 ? Color(hex: 0xFFD2A6) : KJLap.look >= 3 ? Color(hex: 0x9FB0E6) : .white)
+                .saturation(KJLap.look == 2 ? 1.15 : KJLap.look >= 3 ? 0.85 : 1)
                 .overlay(Color.white.opacity(dim))
         }
         .ignoresSafeArea()

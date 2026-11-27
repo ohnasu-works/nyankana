@@ -184,9 +184,11 @@ struct KJMapView: View {
         ZStack {
             KJJapanMap(chapter: $chapter, lap: $lap, play: play, home: home, playground: playground,
                        openCourse: { withAnimation(.easeInOut(duration: 0.25)) { showCourse = true } })
-                .onAppear { KJMusic.play(chapter) }
+                .onAppear { KJLap.look = lap; KJMusic.play(chapter) }
                 .onChange(of: chapter) { _, c in KJMusic.play(c) }
                 .onChange(of: lap) { _, l in
+                    KJLap.look = l
+                    KJMusic.play()
                     // a round picked: go to its furthest open region
                     chapter = KJC1.stages.last { $0.lap == l && KJC1.unlocked($0.id) }?.chapter ?? 1
                 }
@@ -423,6 +425,7 @@ struct KJStageView: View {
         self.map = map
         KJMusic.chapter = stage.chapter   // the region's own music
         KJLap.playing = stage.lap         // the round's difficulty (speed, hearts, furigana)
+        KJLap.look = stage.lap
         replayGame = stage.kind == .mini && KJC1.stars(stage.id) > 0 ? KJC1.gamesMet(upTo: stage.id).randomElement() : nil
         if let r = resume, r.stageID == stage.id, r.cleared {
             KJC1.setStars(stage.id, r.stars)
