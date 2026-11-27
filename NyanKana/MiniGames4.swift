@@ -90,7 +90,7 @@ struct MGMekuri: View {
             if cards.allSatisfy(\.matched) {
                 ctx.score += 300
                 ctx.pop("ぜんぶ そろった！", at: CGPoint(x: 0.5, y: 0.3), color: .sunDeep)
-                AudioManager.shared.se(.clear)
+                AudioManager.shared.se(.clearShort)
                 let my = token
                 later(1.2) { if my == token { deal() } }
             }
@@ -574,6 +574,7 @@ struct MGMeiro: View {
             return
         }
         AudioManager.shared.se(.mgPokon, volume: 0.6)
+        AudioManager.shared.se(.mgWhoosh, volume: 0.35)
         pos = i
         visited.insert(i)
         progress += 1
@@ -582,7 +583,7 @@ struct MGMeiro: View {
             let w = seq.joined()
             ctx.won.append(w)
             ctx.score += 200
-            AudioManager.shared.se(.clear)
+            AudioManager.shared.se(.clearShort)
             Speaker.shared.say(w)
             ctx.pop("ゴール！", at: CGPoint(x: 0.5, y: 0.38), color: .sunDeep)
             let my = token
@@ -715,6 +716,7 @@ struct MGYabusame: View {
         let at = CGPoint(x: tg.x, y: ty - 0.1)
         if tg.kana == a {
             targets[i].hit = true
+            AudioManager.shared.se(.mgDon, volume: 0.8)
             ctx.good(100 + Int(max(0, tg.x - riderX) * 100), at: at, word: a)
             switch mgChain(&ask, ctx: ctx) {
             case .next: break

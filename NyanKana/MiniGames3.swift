@@ -741,6 +741,7 @@ struct MGDaruma: View {
         if p.kana == a {
             pieces[i].fromLeft = Bool.random()
             pieces[i].out = true
+            AudioManager.shared.se(.mgSlap, volume: 0.8)
             AudioManager.shared.se(.mgPokon)
             ctx.good(i == pieces.count - 1 ? 150 : 100, at: CGPoint(x: 0.5, y: 0.6), word: a)
             strikes = 0

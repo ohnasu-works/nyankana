@@ -18,7 +18,7 @@ final class AudioManager {
         case shoot = "se_shot1", hitSmall = "se_punch_high1", hitBig = "se_punch_high2", superHit = "se_super_arts_hit1"
         case kira = "se_kira1", eyeShine = "se_eye_shine1", blast = "se_bomb1"
         case rescue = "se_cute_pose1", damage = "se_bite1", wrong = "se_incorrect1"
-        case bossAppear = "se_emergency_alert1_short", bossDefeat = "se_ko1", clear = "se_clear_golden"
+        case bossAppear = "se_emergency_alert1_short", bossDefeat = "se_ko1", clear = "se_clear_wa", clearShort = "se_clear_wa_short"
         case spawn = "se_jump_anime1", gameOver = "se_doon1", bossLand = "se_boss_land", sad = "se_cute_sad1", levelUp = "se_levelup1"
         case papa = "se_papa1", boyon = "se_boyon1", sparkle = "se_kira1x"
         // study mode: calm classroom-style sounds

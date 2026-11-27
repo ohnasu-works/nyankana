@@ -242,7 +242,7 @@ enum MGKind: String, CaseIterable {
         pop("+\(gain)", at: p, color: fever ? .sunDeep : .popDeep)
         if hits == target && !bonus && running && total > 0 {
             bonus = true
-            AudioManager.shared.se(.clear)
+            AudioManager.shared.se(.clearShort)
             pop("クリア！ ボーナスタイム！", at: CGPoint(x: 0.5, y: 0.42), color: .sunDeep)
         }
         if combo == 8 && !fever {

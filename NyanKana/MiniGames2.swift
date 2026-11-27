@@ -39,8 +39,13 @@ enum MGAsk: Equatable {
 
     /// sound first while the player is new, then a mix — and now and then a whole word to chain
     static func pick(_ k: String, hits: Int) -> MGAsk {
-        if hits >= 3, let w = chainWords.randomElement(), Double.random(in: 0...1) < 0.3 { return .chain(w, 0) }
-        return hits < 3 || Bool.random() ? .sound(k) : .romaji(k)
+        // 2周目・3周目: もっと 早くから ことばの れんさ、ローマ字の ヒントは へらす（問題の 質で むずかしく）
+        let lap = KJLap.playing
+        let chainFrom = lap > 1 ? 1 : 3
+        let chainRate = [0.3, 0.45, 0.55][max(0, min(2, lap - 1))]
+        if hits >= chainFrom, let w = chainWords.randomElement(), Double.random(in: 0...1) < chainRate { return .chain(w, 0) }
+        let romajiRate = lap > 1 ? 0.2 : 0.5
+        return hits < 3 || Double.random(in: 0...1) >= romajiRate ? .sound(k) : .romaji(k)
     }
 }
 
@@ -58,7 +63,7 @@ enum MGChainStep { case next, done, none }
     ctx.score += 300
     if !ctx.won.contains(w) { ctx.won.append(w) }
     ctx.pop("ことば！ +300", at: CGPoint(x: 0.5, y: 0.36), color: .sunDeep)
-    AudioManager.shared.se(.clear, volume: 0.7)
+    AudioManager.shared.se(.clearShort, volume: 0.8)
     Speaker.shared.say(w)
     return .done
 }
@@ -493,6 +498,7 @@ struct MGSushi: View {
         let from = CGPoint(x: w * CGFloat(p.x), y: h * laneY[p.lane])
         if p.text == a {
             AudioManager.shared.se(.mgClink)
+            AudioManager.shared.se(.kira, volume: 0.45)
             plates[i].taken = true
             flying = (p.text, from, 0, p.tag)
             ctx.good(p.text.count > 1 ? 150 : 100, at: CGPoint(x: p.x, y: laneY[p.lane] - 0.06), word: p.text)
