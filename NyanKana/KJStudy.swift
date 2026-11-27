@@ -5,7 +5,7 @@ import SwiftUI
 
 struct KJStudyView: View {
     var back: () -> Void
-    enum Tab: String, CaseIterable { case chart, words, train, exam }
+    enum Tab: String, CaseIterable { case chart, words, talk, train, exam }
     @State private var tab: Tab = .chart
     @State private var detail: KJLetter?
     @State private var playing: (kind: MGKind, letters: [String])?
@@ -76,23 +76,23 @@ struct KJStudyView: View {
                 }
                 .padding(.horizontal, 14.s).padding(.top, 6.s)
                 RibbonTitle(text: "まなぶ", color: .grape, size: 24)
-                // four tabs in one row
-                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 6.s), count: 4), spacing: 6.s) {
+                // five tabs in one row
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 4.s), count: 5), spacing: 4.s) {
                     ForEach(Tab.allCases, id: \.self) { t in
                         Button {
                             AudioManager.shared.se(.tap)
                             tab = t
                         } label: {
                             VStack(spacing: 0) {
-                                Text(title(t)).font(.custom(Fonts.rounded, size: 14.s))
-                                    .lineLimit(1).minimumScaleFactor(0.7)
+                                Text(title(t)).font(.custom(Fonts.rounded, size: 13.s))
+                                    .lineLimit(1).minimumScaleFactor(0.6)
                                 // the meaning in the player's language, so the tabs are never confused
                                 Text(sub(t)).font(.ui(10.s, bold: false)).opacity(0.75)
                                     .lineLimit(1).minimumScaleFactor(0.6)
                             }
                                 .foregroundStyle(tab == t ? Color.white : Color.ink)
                                 .frame(maxWidth: .infinity)
-                                .padding(.horizontal, 6.s).padding(.vertical, 5.s)
+                                .padding(.horizontal, 3.s).padding(.vertical, 5.s)
                                 .background(Capsule().fill(tab == t ? Color.grape : Color.white).overlay(Capsule().stroke(Color.ink, lineWidth: 2.5)))
                         }
                         .buttonStyle(.plain)
@@ -102,6 +102,7 @@ struct KJStudyView: View {
                 switch tab {
                 case .chart: chart
                 case .words: wordList
+                case .talk: KJSceneList()
                 case .train: KJTrainMenu(modes: KJTrainMode.training, header: AnyView(practice)) { m in withAnimation { train = m } }
                 case .exam: KJTrainMenu(modes: KJTrainMode.exams) { m in withAnimation { train = m } }
                 }
@@ -113,6 +114,7 @@ struct KJStudyView: View {
         switch t {
         case .chart: "もじひょう"
         case .words: "じしょ"
+        case .talk: "かいわ"
         case .train: "れんしゅう"
         case .exam: "しけん"
         }
@@ -122,6 +124,7 @@ struct KJStudyView: View {
         switch t {
         case .chart: KJ.t("Letters", "文字表", "글자표")
         case .words: KJ.t("Dictionary", "辭典", "사전")
+        case .talk: KJ.t("Talk", "會話", "회화")
         case .train: KJ.t("Practice", "練習", "연습")
         case .exam: KJ.t("Test", "考試", "시험")
         }

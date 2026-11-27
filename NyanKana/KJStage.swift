@@ -26,6 +26,7 @@ enum KJC1 {
         var focus: [String] = []      // a game square right after a lesson: these letters come up more often
         var lap = 1                   // 1しゅうめ ソラ / 2しゅうめ ユイ / 3しゅうめ ふたり (rounds 2-3: KJLaps.swift)
         var train: KJTrainMode? = nil // a sentence stage: which training round (order / listening)
+        var scene: String? = nil      // a talk stage of rounds 2-3: the scene to play (KJScenes.swift)
         var place: String { KJ.t(en, zh, ko) }
         var pre: [KJLine] { (KJC1.lines[id] ?? KJC1.lines2[id] ?? KJC1.linesLap[id])?.pre ?? [] }
         var post: [KJLine] { (KJC1.lines[id] ?? KJC1.lines2[id] ?? KJC1.linesLap[id])?.post ?? [] }
@@ -504,6 +505,9 @@ struct KJStageView: View {
 
     @ViewBuilder private var game: some View {
         switch stage.kind {
+        case .talk where stage.scene.flatMap(KJScene.find) != nil:
+            // rounds 2-3: a real conversation in a scene (shop, station, doctor…)
+            KJSceneTalk(scene: KJScene.find(stage.scene ?? "")!, lap: stage.lap) { s, sc in finish(s, sc, []) }
         case .talk:
             KJTalkEvent(chapter: stage.chapter) { s, sc in finish(s, sc, stage.chapter <= 1 ? ["こんにちは", "わたしは〇〇です"] : (KJTalkSets.sets[stage.chapter] ?? []).map(\.answer).uniqued()) }
         case .listen:
