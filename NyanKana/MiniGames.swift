@@ -325,6 +325,8 @@ struct MiniGameView: View {
     let kind: MGKind
     let stage: KJC1.Stage
     var finished: (_ stars: Int, _ score: Int, _ won: [String]) -> Void
+    /// the goal: a little higher each round (2しゅうめ ×1.15, 3しゅうめ ×1.3)
+    private var lapTarget: Int { Int((Double(kind.target) * (stage.lap > 1 ? KJLap.miniTarget : 1)).rounded()) }
 
     @StateObject private var ctx = MGCtx()
     enum Phase: Equatable { case title, count(Int), play, finish, result }
@@ -400,7 +402,7 @@ struct MiniGameView: View {
             MGAsk.chainWords = chainable.contains(kind) ? MGWords.pick(readable: letters, minLength: 2) : []
             AudioManager.shared.playBGM(.track(kind.bgm))
             ctx.endRequested = { endGame() }
-            ctx.reset(total: kind.duration, target: kind.target)
+            ctx.reset(total: kind.duration, target: lapTarget)
             showTitle()
         }
         .onReceive(clock) { _ in tick() }
@@ -474,7 +476,7 @@ struct MiniGameView: View {
 
     private func retry() {
         AudioManager.shared.se(.decide)
-        ctx.reset(total: kind.duration, target: kind.target)
+        ctx.reset(total: kind.duration, target: lapTarget)
         showTitle()
     }
 
@@ -522,7 +524,7 @@ struct MiniGameView: View {
                     .foregroundStyle(ctx.timeLeft <= 5 ? Color.danger : Color.ink)
                     .scaleEffect(ctx.timeLeft <= 5 ? 1.15 : 1)
                 } else {
-                    Text("\(ctx.hits) / \(kind.target)").font(.display(20.s)).foregroundStyle(Color.ink).monospacedDigit()
+                    Text("\(ctx.hits) / \(ctx.target)").font(.display(20.s)).foregroundStyle(Color.ink).monospacedDigit()
                 }
             }
             if kind.duration != nil {
@@ -669,7 +671,7 @@ struct MiniGameView: View {
                         KJButton(title: KJ.both("Play again", "再玩一次", "다시 하기"), color: .sun) { retry() }
                     } else {
                         // 11. not enough right answers: no moving on
-                        Text(KJ.both("Almost! Get \(max(2, kind.target / 3)) right to clear.", "差一點！答對 \(max(2, kind.target / 3)) 題就過關。", "아깝다! \(max(2, kind.target / 3))개 맞히면 클리어."))
+                        Text(KJ.both("Almost! Get \(max(2, ctx.target / 3)) right to clear.", "差一點！答對 \(max(2, ctx.target / 3)) 題就過關。", "아깝다! \(max(2, ctx.target / 3))개 맞히면 클리어."))
                             .font(.ui(14.s)).foregroundStyle(Color.danger).multilineTextAlignment(.center)
                         KJButton(title: KJ.both("Try again", "再挑戰", "다시 도전"), color: .pop, textColor: .white) { retry() }
                         KJButton(title: KJ.both("Quit", "離開", "그만두기"), color: .white) {

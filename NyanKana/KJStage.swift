@@ -4,7 +4,7 @@ import SwiftUI
 // 設計：00_企画/にゃんカナ_ゲーム設計書_v1.md の 21-5。セリフは KJC1Lines.swift（自動生成）。
 
 enum KJC1 {
-    enum Kind { case battle, mid, talk, listen, boss, mini, lesson }
+    enum Kind { case battle, mid, talk, listen, boss, mini, lesson, sentence }
 
     struct Stage: Identifiable {
         var id: Int
@@ -24,9 +24,13 @@ enum KJC1 {
         var chapter = 1               // 1 関東 … 7 九州・沖縄 (chapters 2-7: KJChapters.swift)
         var foe: String? = nil        // the mid-boss / boss picture
         var focus: [String] = []      // a game square right after a lesson: these letters come up more often
+        var lap = 1                   // 1しゅうめ ソラ / 2しゅうめ ユイ / 3しゅうめ ふたり (rounds 2-3: KJLaps.swift)
+        var train: KJTrainMode? = nil // a sentence stage: which training round (order / listening)
         var place: String { KJ.t(en, zh, ko) }
-        var pre: [KJLine] { (KJC1.lines[id] ?? KJC1.lines2[id])?.pre ?? [] }
-        var post: [KJLine] { (KJC1.lines[id] ?? KJC1.lines2[id])?.post ?? [] }
+        var pre: [KJLine] { (KJC1.lines[id] ?? KJC1.lines2[id] ?? KJC1.linesLap[id])?.pre ?? [] }
+        var post: [KJLine] { (KJC1.lines[id] ?? KJC1.lines2[id] ?? KJC1.linesLap[id])?.post ?? [] }
+        /// sentence stages: round 2 uses everyday sentences (level 2), round 3 the longer ones (level 3)
+        var sentenceLevel: Int { lap >= 3 ? 3 : 2 }
         var bossImage: String { foe ?? (kind == .boss ? "boss_kyubi" : "mid_karakasa") }
     }
 
@@ -37,8 +41,9 @@ enum KJC1 {
     static let N = ["な", "に", "ぬ", "ね", "の"]
     static let all = A + K + S + T + N
 
-    static let stages: [Stage] = stages1 + stages2
-    static func stages(in chapter: Int) -> [Stage] { stages.filter { $0.chapter == chapter } }
+    static let stages: [Stage] = stages1 + stages2 + stagesLap
+    /// one region's course in one round (round 1 unless asked)
+    static func stages(in chapter: Int, lap: Int = 1) -> [Stage] { stages.filter { $0.chapter == chapter && $0.lap == lap } }
     static let stages1: [Stage] = [
         // 基本マス（lesson）で新しい文字を習い、すぐ次のゲームマスで その文字を中心に遊ぶ
         Stage(id: 1, ja: "あさくさ・かみなりもん", en: "Asakusa · Kaminarimon", zh: "淺草・雷門", ko: "아사쿠사・가미나리몬",
@@ -142,8 +147,8 @@ enum KJC1 {
     }
     /// 1, 2, 3… in map order (shown as "1-n")
     static func number(_ id: Int) -> Int {
-        let ch = stage(id).chapter
-        return (stages(in: ch).firstIndex { $0.id == id } ?? 0) + 1
+        let s = stage(id)
+        return (stages(in: s.chapter, lap: s.lap).firstIndex { $0.id == id } ?? 0) + 1
     }
     /// "2-5" style label
     static func label(_ id: Int) -> String { "\(stage(id).chapter)-\(number(id))" }
@@ -161,9 +166,11 @@ struct KJMapView: View {
     var redoSetup: () -> Void
     var playground: () -> Void = {}
     /// which chapter's course is shown (starts on the furthest one that is open)
-    @State private var chapter: Int = KJC1.stages.last { KJC1.unlocked($0.id) }?.chapter ?? 1
+    @State private var chapter: Int = KJC1.stages.last { $0.lap == KJLap.selected && KJC1.unlocked($0.id) }?.chapter ?? 1
+    /// the round shown (1しゅうめ ソラ / 2しゅうめ ユイ / 3しゅうめ ふたり)
+    @State private var lap: Int = KJLap.open(KJLap.selected) ? KJLap.selected : 1
 
-    private var course: [KJC1.Stage] { KJC1.stages(in: chapter) }
+    private var course: [KJC1.Stage] { KJC1.stages(in: chapter, lap: lap) }
     private var chapterBG: String {
         ["旅01_隅田川の桜並木_夕方", "bg_c2_sendai", "bg_c3_otaru", "bg_c4_shirakawa", "bg_c5_inari", "bg_c6_miyajima", "bg_c7_okinawa"][max(0, min(6, chapter - 1))]
     }
@@ -173,10 +180,14 @@ struct KJMapView: View {
 
     var body: some View {
         ZStack {
-            KJJapanMap(chapter: $chapter, play: play, home: home, playground: playground,
+            KJJapanMap(chapter: $chapter, lap: $lap, play: play, home: home, playground: playground,
                        openCourse: { withAnimation(.easeInOut(duration: 0.25)) { showCourse = true } })
                 .onAppear { KJMusic.play(chapter) }
                 .onChange(of: chapter) { _, c in KJMusic.play(c) }
+                .onChange(of: lap) { _, l in
+                    // a round picked: go to its furthest open region
+                    chapter = KJC1.stages.last { $0.lap == l && KJC1.unlocked($0.id) }?.chapter ?? 1
+                }
             if showCourse {
                 courseScreen.transition(.move(edge: .trailing))
             }
@@ -212,7 +223,7 @@ struct KJMapView: View {
                     VStack(spacing: 2.s) {
                         // (short enough to fit an iPhone: the chapter number above, the region in the ribbon)
                         let region = KJC1.chapterNames[chapter]?.ja ?? ""
-                        Text("だい\(chapter)しょう").font(.ui(13.s)).foregroundStyle(.white).shadow(color: .black.opacity(0.6), radius: 2)
+                        Text((lap > 1 ? KJLap.name(lap) + "・" : "") + "だい\(chapter)しょう").font(.ui(13.s)).foregroundStyle(.white).shadow(color: .black.opacity(0.6), radius: 2)
                         RibbonTitle(text: region, size: region.count > 7 ? (UIScale.isPad ? 20 : 15) : 20)
                         Text(KJ.t("Chapter \(chapter) · \(KJC1.chapterName(chapter))", "第\(chapter)章・\(KJC1.chapterName(chapter))", "제\(chapter)장・\(KJC1.chapterName(chapter))"))
                             .font(.ui(13.s)).foregroundStyle(.white).shadow(color: .black.opacity(0.6), radius: 2)
@@ -301,7 +312,7 @@ struct KJMapView: View {
         let size: CGFloat = (isBoss ? 84 : isMid ? 72 : 58).s
         let fill: Color = !open ? Color(hex: 0xD9D4EA)
             : isBoss ? Color(hex: 0xFF8FC0) : isMid ? Color(hex: 0xC3A6FF)
-            : s.kind == .mini ? Color(hex: 0xA8EBD3) : (s.kind == .talk || s.kind == .listen) ? Color(hex: 0xBFD9FF)
+            : s.kind == .mini ? Color(hex: 0xA8EBD3) : (s.kind == .talk || s.kind == .listen || s.kind == .sentence) ? Color(hex: 0xBFD9FF)
             : stars > 0 ? Color.sun : Color.white
         Button {
             guard open else { AudioManager.shared.se(.wrong, volume: 0.5); return }
@@ -322,6 +333,8 @@ struct KJMapView: View {
                     KJPicView(s.kind == .talk ? "💬" : "👂", size: 29.9.s)
                 } else if s.kind == .battle {
                     KJPicView("⚔️", size: 29.9.s)
+                } else if s.kind == .sentence {
+                    KJPicView("📝", size: 29.9.s)
                 } else {
                     Text("\(KJC1.number(s.id))").font(.display(24.s)).foregroundStyle(Color.ink)
                 }
@@ -407,6 +420,7 @@ struct KJStageView: View {
         self.next = next
         self.map = map
         KJMusic.chapter = stage.chapter   // the region's own music
+        KJLap.playing = stage.lap         // the round's difficulty (speed, hearts, furigana)
         replayGame = stage.kind == .mini && KJC1.stars(stage.id) > 0 ? KJC1.gamesMet(upTo: stage.id).randomElement() : nil
         if let r = resume, r.stageID == stage.id, r.cleared {
             KJC1.setStars(stage.id, r.stars)
@@ -493,6 +507,9 @@ struct KJStageView: View {
             KJTalkEvent(chapter: stage.chapter) { s, sc in finish(s, sc, stage.chapter <= 1 ? ["こんにちは", "わたしは〇〇です"] : (KJTalkSets.sets[stage.chapter] ?? []).map(\.answer).uniqued()) }
         case .listen:
             KJListenEvent(answers: KJLearned.answerWords(for: stage, need: 6)) { s, sc in finish(s, sc, []) }
+        case .sentence:
+            // ぶんマス (rounds 2-3): put a sentence in order / hear a sentence and pick its meaning
+            KJTrainView(mode: stage.train ?? .order, back: map, level: stage.sentenceLevel) { s, sc in finish(s, sc, []) }
         case .lesson:
             // 基本マス: the standard study round
             KJLessonView(stage: stage) { s, sc, w in finish(s, sc, w) }
@@ -779,8 +796,7 @@ struct KJListenEvent: View {
             LazyVGrid(columns: [GridItem(.flexible(), spacing: 12.s), GridItem(.flexible(), spacing: 12.s)], spacing: 12.s) {
                 ForEach(choices, id: \.self) { c in
                     Button { answer(c) } label: {
-                        Text(c).font(.ui(c.count > 4 ? 20.s : 26.s)).foregroundStyle(Color.ink)
-                            .lineLimit(1).minimumScaleFactor(0.5)
+                        KJFuri(c, size: c.count > 4 ? 20.s : 26.s, font: .ui(c.count > 4 ? 20.s : 26.s))
                             .frame(maxWidth: .infinity, minHeight: 70.s)
                             .background(RoundedRectangle(cornerRadius: 16.s).fill(color(c)).overlay(RoundedRectangle(cornerRadius: 16.s).stroke(Color.ink, lineWidth: 3)))
                     }

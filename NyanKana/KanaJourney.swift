@@ -94,7 +94,7 @@ enum KJData {
         var ja: String; var emoji: String; var en: String; var zh: String; var ko: String
         var meaning: String { KJ.t(en, zh, ko) }
     }
-    static let words: [Word] = words1 + words2
+    static let words: [Word] = words1 + words2 + wordsLap
     static let words1: [Word] = [
         Word(ja: "あお", emoji: "🔵", en: "blue", zh: "藍色", ko: "파랑"),
         Word(ja: "いえ", emoji: "🏠", en: "house", zh: "家", ko: "집"),
@@ -156,7 +156,8 @@ struct KJLine {
     var isNarr: Bool { role == "n" }
     var isSora: Bool { role == "s" }
     var isNyan: Bool { role == "y" }
-    var isOther: Bool { !isNarr && !isSora && !isNyan }
+    var isYui: Bool { role == "yui" }
+    var isOther: Bool { !isNarr && !isSora && !isNyan && !isYui }
     /// Nyan's big dramatic pose (the joke is in the action, the words stay plain)
     var pose: Bool { face == "nk_nyan_hero" || face == "boss_kyubi" }
     var silent: Bool { ja.allSatisfy { $0 == "…" } }
@@ -164,6 +165,13 @@ struct KJLine {
         switch role {
         case "s": return "ソラ"
         case "y": return "ニャン"
+        case "yui": return "ユイ"
+        case "kappa": return "かっぱ"
+        case "yukionna": return "ゆきおんな"
+        case "tengu": return "てんぐ"
+        case "oni": return "おに"
+        case "tanuki": return "たぬき"
+        case "kijimuna": return "キジムナー"
         case "kara": return "からかさおばけ"
         case "kyubi": return "きゅうびの きつね"
         case "fans": return "まちの ひと"
@@ -360,10 +368,20 @@ struct KJStoryView: View {
                 // the two always on stage, standing right above the text box (the box never hides their faces)
                 VStack(spacing: -22.s) {
                     HStack(alignment: .bottom, spacing: 0) {
-                        Image(soraFace(line)).resizable().scaledToFit()
-                            .frame(maxWidth: g.size.width * 0.5, maxHeight: g.size.height * 0.46, alignment: .bottom)
-                            .scaleEffect(line.isSora ? 1.04 : 0.94, anchor: .bottom)
-                            .brightness(line.isSora || line.isNarr ? 0 : -0.12)
+                        // round 1: Sora · round 2: Yui · round 3: Sora and Yui (three on stage, each a little smaller)
+                        if hasSora {
+                            Image(soraFace(line)).resizable().scaledToFit()
+                                .frame(maxWidth: g.size.width * (trio ? 0.34 : 0.5), maxHeight: g.size.height * (trio ? 0.4 : 0.46), alignment: .bottom)
+                                .scaleEffect(line.isSora ? 1.04 : 0.94, anchor: .bottom)
+                                .brightness(line.isSora || line.isNarr ? 0 : -0.12)
+                        }
+                        if hasYui {
+                            // (Yui is a little shorter than Sora)
+                            Image(yuiFace(line)).resizable().scaledToFit()
+                                .frame(maxWidth: g.size.width * (trio ? 0.32 : 0.47), maxHeight: g.size.height * (trio ? 0.37 : 0.42), alignment: .bottom)
+                                .scaleEffect(line.isYui ? 1.04 : 0.94, anchor: .bottom)
+                                .brightness(line.isYui || line.isNarr ? 0 : -0.12)
+                        }
                         ZStack(alignment: .bottom) {
                             if line.pose && line.isNyan {
                                 StarBurst().fill(Color.sun.opacity(0.85))
@@ -372,7 +390,7 @@ struct KJStoryView: View {
                                     .offset(y: -g.size.height * 0.06)
                             }
                             Image(nyanFace(line)).resizable().scaledToFit()
-                                .frame(maxWidth: g.size.width * 0.46, maxHeight: g.size.height * 0.36, alignment: .bottom)
+                                .frame(maxWidth: g.size.width * (trio ? 0.32 : 0.46), maxHeight: g.size.height * (trio ? 0.3 : 0.36), alignment: .bottom)
                                 .rotationEffect(.degrees(line.pose && line.isNyan ? (bump ? -6 : 6) : 0), anchor: .bottom)
                                 .scaleEffect(line.isNyan ? (line.pose && bump ? 1.12 : 1.04) : 0.94, anchor: .bottom)
                                 .brightness(line.isNyan || line.isNarr ? 0 : -0.12)
@@ -385,7 +403,7 @@ struct KJStoryView: View {
                             Text(line.name)
                                 .font(.ui(15.s)).foregroundStyle(.white)
                                 .padding(.horizontal, 12.s).padding(.vertical, 3.s)
-                                .background(Capsule().fill(line.isSora ? Color.sky : line.isNyan ? Color.orange : Color.grape))
+                                .background(Capsule().fill(line.isSora ? Color.sky : line.isNyan ? Color.orange : line.isYui ? Color.pop : Color.grape))
                         }
                         Text(line.ja).font(.ui(23.s)).foregroundStyle(Color.ink)
                             .fixedSize(horizontal: false, vertical: true)
@@ -418,6 +436,15 @@ struct KJStoryView: View {
         .onAppear { if !lines.isEmpty { start(lines[0]) } else { done() } }
     }
 
+    /// who is on stage: Sora unless only Yui travels (round 2); both in round 3
+    private var hasYui: Bool { KJLap.playing >= 3 || lines.contains { $0.isYui } }
+    private var hasSora: Bool { KJLap.playing >= 3 || !hasYui || lines.contains { $0.isSora } }
+    private var trio: Bool { hasYui && hasSora }
+    private func yuiFace(_ l: KJLine) -> String {
+        if l.isYui { return l.face }
+        if let last = lines[0...min(i, lines.count - 1)].last(where: { $0.isYui }) { return last.face }
+        return "yui_smile"
+    }
     private func soraFace(_ l: KJLine) -> String {
         if l.isSora { return l.face }
         if let last = lines[0...min(i, lines.count - 1)].last(where: { $0.isSora }) { return last.face }

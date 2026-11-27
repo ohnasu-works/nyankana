@@ -92,6 +92,9 @@ struct KJTQ: Identifiable {
 struct KJTrainView: View {
     let mode: KJTrainMode
     var back: () -> Void
+    /// a sentence stage on the map: only sentences of this level, and the stars go back to the stage
+    var level: Int? = nil
+    var stageDone: ((_ stars: Int, _ score: Int) -> Void)? = nil
 
     @State private var qs: [KJTQ] = []
     @State private var i = 0
@@ -110,12 +113,17 @@ struct KJTrainView: View {
         ZStack {
             KJBackdrop(bg: "bg_mg_dojo", dim: 0.55)
             VStack(spacing: 10.s) {
-                HStack {
-                    BackChip { back() }
-                    Spacer()
-                    KJSlowButton()
+                if stageDone == nil {
+                    HStack {
+                        BackChip { back() }
+                        Spacer()
+                        KJSlowButton()
+                    }
+                    .padding(.horizontal, 14.s).padding(.top, 6.s)
+                } else {
+                    // on the map the stage screen has its own back button
+                    Color.clear.frame(height: 50.s)
                 }
-                .padding(.horizontal, 14.s).padding(.top, 6.s)
                 if done { result } else if let q { board(q) }
             }
             if let m = mark {
@@ -341,7 +349,7 @@ struct KJTrainView: View {
 
     private func start() {
         AudioManager.shared.playBGM(.track(mode.bgm))
-        qs = Self.build(mode)
+        qs = Self.build(mode, level: level)
         i = 0; right = 0; done = false; picked = nil; built = []
         timeLeft = mode == .flash ? 60 : mode == .mock ? 600 : 0
         present()
@@ -392,7 +400,7 @@ struct KJTrainView: View {
     private func next() {
         if mode == .flash {
             // endless: more questions while time is left
-            if i + 1 >= qs.count { qs += Self.build(.flash) }
+            if i + 1 >= qs.count { qs += Self.build(.flash, level: level) }
         }
         if i + 1 >= qs.count { finish(); return }
         withAnimation(.easeInOut(duration: 0.2)) { i += 1 }
@@ -402,6 +410,12 @@ struct KJTrainView: View {
     private func finish() {
         guard !done else { return }
         done = true
+        if let stageDone {
+            // ★3 = 80% right, ★2 = 60%, ★1 = 40%
+            let r = Double(right) / Double(max(qs.count, 1))
+            stageDone(r >= 0.8 ? 3 : r >= 0.6 ? 2 : r >= 0.4 ? 1 : 0, right * 100)
+            return
+        }
         mode.record(score)
         if mode == .review { KJDaily.mark(.review) }
         if mode == .speak { KJDaily.mark(.speak) }
@@ -410,9 +424,11 @@ struct KJTrainView: View {
 
     // MARK: questions
 
-    static func build(_ mode: KJTrainMode) -> [KJTQ] {
-        let words = KJData.words
-        let sentences = KJStudyData.sentences
+    static func build(_ mode: KJTrainMode, level: Int? = nil) -> [KJTQ] {
+        // (the kanji words of rounds 2-3 are not spelled letter by letter here)
+        let words = KJData.words.filter { !KJSimilar.hasKanji($0.ja) }
+        let all = KJStudyData.sentences
+        let sentences = level.map { lv in all.filter { $0.level == lv } } ?? all
         switch mode {
         case .dictation:
             return words.filter { $0.ja.count >= 2 && $0.ja.count <= 5 }.shuffled().prefix(10).map { w in

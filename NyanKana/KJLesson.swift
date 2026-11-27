@@ -34,9 +34,11 @@ struct KJLessonView: View {
         case listen(String), read(String), trace(String), word(String), review(String)
         /// ことばマス: hear a word → pick how it is written / see a word → pick what it means
         case hearWord(String), meaning(String)
+        /// rounds 2-3: see a kanji word → pick how it is read (no furigana on this one)
+        case yomi(String)
         var key: String {
             switch self {
-            case .listen(let k), .read(let k), .trace(let k), .word(let k), .review(let k), .hearWord(let k), .meaning(let k): k
+            case .listen(let k), .read(let k), .trace(let k), .word(let k), .review(let k), .hearWord(let k), .meaning(let k), .yomi(let k): k
             }
         }
     }
@@ -131,6 +133,7 @@ struct KJLessonView: View {
         case .word: return ("ことばを つくろう", KJ.t("Make the word", "拼出這個詞", "단어 만들기"))
         case .hearWord: return ("ことばを きこう", KJ.t("Listen: which word is it?", "聽聽看，是哪個詞？", "듣고 어떤 단어인지 골라요"))
         case .meaning: return ("いみは どれ？", KJ.t("What does it mean?", "是什麼意思？", "무슨 뜻이에요?"))
+        case .yomi: return ("なんと よむ？", KJ.t("How do you read this kanji word?", "這個漢字詞怎麼唸？", "이 한자 단어는 어떻게 읽어요?"))
         }
     }
 
@@ -161,14 +164,28 @@ struct KJLessonView: View {
         case .meaning(let w):
             VStack(spacing: 18.s) {
                 Button { Speaker.shared.say(w) } label: {
-                    Text(w).font(.custom(Fonts.rounded, size: 64.s)).foregroundStyle(Color.ink)
-                        .lineLimit(1).minimumScaleFactor(0.4)
+                    KJFuri(w, size: 64.s)
                         .padding(.horizontal, 20.s)
                         .frame(minWidth: 190.s, minHeight: 130.s)
                         .background(RoundedRectangle(cornerRadius: 24.s).fill(Color(hex: 0xFFF6E0)).overlay(RoundedRectangle(cornerRadius: 24.s).stroke(Color.ink, lineWidth: 3)))
                 }
                 .buttonStyle(.plain)
                 meaningGrid(answer: w)
+            }
+        case .yomi(let w):
+            VStack(spacing: 18.s) {
+                Text(w).font(.custom(Fonts.rounded, size: 64.s)).foregroundStyle(Color.ink)
+                    .lineLimit(1).minimumScaleFactor(0.4)
+                    .padding(.horizontal, 20.s)
+                    .frame(minWidth: 190.s, minHeight: 130.s)
+                    .background(RoundedRectangle(cornerRadius: 24.s).fill(Color(hex: 0xFFF6E0)).overlay(RoundedRectangle(cornerRadius: 24.s).stroke(Color.ink, lineWidth: 3)))
+                if let info = KJData.word(w) {
+                    HStack(spacing: 6.s) {
+                        KJPicView(info.emoji, size: 30.s)
+                        Text(info.meaning).font(.ui(15.s)).foregroundStyle(.white).shadow(color: .black.opacity(0.5), radius: 2)
+                    }
+                }
+                choiceGrid(answer: KJData.yomi(w) ?? w, labels: choices, plain: true)
             }
         }
     }
@@ -217,16 +234,15 @@ struct KJLessonView: View {
         .buttonStyle(PressStyle(radius: big ? 48.s : 28.s, depth: 4))
     }
 
-    private func choiceGrid(answer: String, labels: [String], display: Bool = false) -> some View {
+    private func choiceGrid(answer: String, labels: [String], display: Bool = false, plain: Bool = false) -> some View {
         LazyVGrid(columns: [GridItem(.flexible(), spacing: 12.s), GridItem(.flexible(), spacing: 12.s)], spacing: 12.s) {
             ForEach(labels, id: \.self) { c in
                 let isRight = showRight && c == answer
                 let isWrong = picked == c && c != answer
                 Button { choose(c, answer: answer) } label: {
-                    Text(c)
-                        .font(display ? Font.display(30.s) : Font.custom(Fonts.rounded, size: c.count > 1 ? 34.s : 44.s))
-                        .foregroundStyle(Color.ink)
-                        .lineLimit(1).minimumScaleFactor(0.5)
+                    KJFuri(c, size: c.count > 3 ? 28.s : c.count > 1 ? 34.s : 44.s,
+                           font: display ? Font.display(30.s) : nil, force: plain ? false : nil)
+                        .padding(.horizontal, 4.s)
                         .frame(maxWidth: .infinity).frame(height: 84.s)
                         .background(RoundedRectangle(cornerRadius: 18.s)
                             .fill(isRight ? Color(hex: 0xD9F7E3) : isWrong ? Color(hex: 0xFFD6D6) : Color.white)
@@ -376,7 +392,14 @@ struct KJLessonView: View {
         var qs: [Q] = []
         qs += ws.shuffled().map { .hearWord($0) }
         qs += ws.shuffled().map { .meaning($0) }
-        qs += ws.filter { $0.count <= 6 }.shuffled().prefix(3).map { .word($0) }
+        let kanji = ws.filter { KJSimilar.hasKanji($0) && KJData.yomi($0) != nil }
+        if stage.lap >= 2 && !kanji.isEmpty {
+            // rounds 2-3: every kanji word once more — how is it read? (+ a kana word to spell, if any)
+            qs += kanji.shuffled().map { .yomi($0) }
+            qs += ws.filter { !KJSimilar.hasKanji($0) && $0.count <= 6 }.shuffled().prefix(1).map { .word($0) }
+        } else {
+            qs += ws.filter { $0.count <= 6 }.shuffled().prefix(3).map { .word($0) }
+        }
         var rev = KJWeak.top(3, in: pool)
         rev += pool.shuffled().filter { !rev.contains($0) }
         qs += rev.prefix(3).map { .review($0) }
@@ -406,15 +429,35 @@ struct KJLessonView: View {
             later(0.35) { Speaker.shared.say(w) }
         case .meaning(let w):
             var d = wordDecoys(w).filter { KJData.word($0) != nil }
-            for x in KJData.words.map(\.ja).shuffled() where d.count < 3 && x != w && !d.contains(x) { d.append(x) }
+            for x in KJData.words.map(\.ja).filter({ KJSimilar.hasKanji($0) == KJSimilar.hasKanji(w) }).shuffled() where d.count < 3 && x != w && !d.contains(x) { d.append(x) }
             choices = ([w] + d.prefix(3)).shuffled()
             later(0.35) { Speaker.shared.say(w) }
+        case .yomi(let w):
+            let r = KJData.yomi(w) ?? w
+            choices = ([r] + yomiDecoys(r)).shuffled()
         case .word(let w):
             var keys = w.map(String.init)
             for k in pool.shuffled() where keys.count < 8 && k.count == 1 && !keys.contains(k) { keys.append(k) }
             pad = keys.uniqued().shuffled()
             later(0.35) { Speaker.shared.say(w) }
         }
+    }
+
+    /// readings that are easy to mix up with `r`: one letter changed (゛゜, small っ, long vowels), then other readings of the same length
+    private func yomiDecoys(_ r: String) -> [String] {
+        var out: [String] = []
+        let chars = r.map(String.init)
+        let kana = KJData.letters.map(\.kana).filter { $0.count == 1 }
+        for i in chars.indices.shuffled() where out.count < 2 {
+            if let swap = mgDecoys(chars[i], kana).first(where: { $0 != chars[i] }) {
+                var c = chars; c[i] = swap
+                let x = c.joined()
+                if x != r && !out.contains(x) { out.append(x) }
+            }
+        }
+        let others = KJData.readingsLap.values.filter { $0 != r && abs($0.count - r.count) <= 1 }
+        for x in others.shuffled().sorted(by: { KJSimilar.score(r, $0) > KJSimilar.score(r, $1) }) where out.count < 3 && !out.contains(x) { out.append(x) }
+        return Array(out.prefix(3))
     }
 
     /// always three wrong choices (look-alikes first, then anything else the player has met)

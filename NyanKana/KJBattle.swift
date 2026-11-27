@@ -104,6 +104,7 @@ final class KJBattle: ObservableObject {
     init(stage: KJC1.Stage) {
         st = stage
         goal = stage.goal
+        hearts = KJLap.hearts
         switch stage.kind {
         case .boss: bossWords = Self.bossList(stage, 9)
         case .mid: bossWords = Self.bossList(stage, 4)
@@ -134,7 +135,8 @@ final class KJBattle: ObservableObject {
         // "read" questions start a little slower and catch up with each right answer; fever slows things a bit
         let secs = 7.5 - 3.7 * Double(min(hits, goal)) / Double(max(goal, 1))
         let readFactor = ask == .read ? min(1.0, 0.6 + 0.08 * Double(readsRight)) : 1.0
-        return CGFloat(1 / secs) * (fever > 0 ? 0.75 : 1) * CGFloat(readFactor)
+        // later rounds dive faster (2しゅうめ ×1.2, 3しゅうめ ×1.4)
+        return CGFloat(1 / secs) * (fever > 0 ? 0.75 : 1) * CGFloat(readFactor) * CGFloat(KJLap.speed)
     }
 
     private func tickWaves(_ dt: Double) {
@@ -447,14 +449,14 @@ final class KJBattle: ObservableObject {
     }
 
     func retry() {
-        hearts = 3; combo = 0; foes.removeAll(); targetID = nil; locked = false; readTutorial = false; readsRight = 0
+        hearts = KJLap.hearts; combo = 0; foes.removeAll(); targetID = nil; locked = false; readTutorial = false; readsRight = 0
         if phase == .lost && hits >= goal && hasBoss { startBoss() } else { start() }
     }
 
     var stars: Int {
         if phase != .won { return 0 }
-        if hearts == 3 && misses <= 2 { return 3 }
-        return hearts >= 2 ? 2 : 1
+        if hearts == KJLap.hearts && misses <= 2 { return 3 }
+        return hearts >= KJLap.hearts - 1 && hearts >= 2 ? 2 : 1
     }
 }
 
@@ -525,7 +527,7 @@ struct KJBattleView: View {
     private var hud: some View {
         HStack {
             HStack(spacing: 3.s) {
-                ForEach(0..<3, id: \.self) { i in
+                ForEach(0..<KJLap.hearts, id: \.self) { i in
                     Image(systemName: i < b.hearts ? "heart.fill" : "heart")
                         .font(.system(size: 20.s, weight: .bold))
                         .foregroundStyle(i < b.hearts ? Color.pop : Color.ink.opacity(0.3))

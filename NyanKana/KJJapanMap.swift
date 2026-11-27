@@ -4,6 +4,8 @@ import SwiftUI
 /// pick a region on the map, then play on from the card below or open its stage list.
 struct KJJapanMap: View {
     @Binding var chapter: Int
+    /// the round (1しゅうめ ソラ / 2しゅうめ ユイ / 3しゅうめ ふたり)
+    @Binding var lap: Int
     var play: (Int) -> Void
     var home: () -> Void
     var playground: () -> Void
@@ -29,6 +31,9 @@ struct KJJapanMap: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .clipped()
                 .layoutPriority(-1)      // the map shrinks; the card below always fits
+            KJLapSwitch(lap: $lap)
+                .padding(.bottom, 6.s)
+                .frame(maxWidth: UIScale.isPad ? 640 : .infinity)
             card
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, 12.s)
@@ -71,10 +76,10 @@ struct KJJapanMap: View {
     // MARK: map
 
     private func open(_ ch: Int) -> Bool {
-        guard let first = KJC1.stages(in: ch).first else { return false }
+        guard let first = KJC1.stages(in: ch, lap: lap).first else { return false }
         return KJC1.unlocked(first.id)
     }
-    private func cleared(_ ch: Int) -> Int { KJC1.stages(in: ch).filter { KJC1.stars($0.id) > 0 }.count }
+    private func cleared(_ ch: Int) -> Int { KJC1.stages(in: ch, lap: lap).filter { KJC1.stars($0.id) > 0 }.count }
 
     private var mapPicture: some View {
         GeometryReader { g in
@@ -114,7 +119,7 @@ struct KJJapanMap: View {
 
     private func pin(_ ch: Int) -> some View {
         let ok = open(ch)
-        let done = KJC1.stages(in: ch).last.map { KJC1.stars($0.id) > 0 } ?? false
+        let done = KJC1.stages(in: ch, lap: lap).last.map { KJC1.stars($0.id) > 0 } ?? false
         return Button { select(ch) } label: {
             Group {
                 if ok { Text("\(ch)").font(.display(18.s)) }
@@ -159,13 +164,14 @@ struct KJJapanMap: View {
 
     // MARK: the card under the map
 
-    private var course: [KJC1.Stage] { KJC1.stages(in: chapter) }
+    private var course: [KJC1.Stage] { KJC1.stages(in: chapter, lap: lap) }
     private var nextStage: KJC1.Stage? {
         course.first { KJC1.unlocked($0.id) && KJC1.stars($0.id) == 0 } ?? (open(chapter) ? course.first : nil)
     }
     private var bossImage: String { course.last { $0.kind == .boss }?.bossImage ?? "boss_kyubi" }
     /// the letters this region teaches: "は〜ろ"
     private var lettersNote: String {
+        if lap > 1 { return KJLap.level(lap) }
         let ls = course.filter { $0.kind == .lesson }.flatMap(\.newKana)
         guard let a = ls.first, let b = ls.last else { return "" }
         return a == b ? a : "\(a)〜\(b)"

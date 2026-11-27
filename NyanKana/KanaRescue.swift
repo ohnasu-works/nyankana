@@ -125,6 +125,11 @@ enum KanaRescue {
 
     static func wordDistractors(_ word: String, among letters: [String]) -> [String] {
         let chars = word.map(String.init)
+        // rounds 2-3: a kanji word → other kanji words that look / sound alike (今日・明日・昨日…)
+        if KJSimilar.hasKanji(word) {
+            let ks = KJSimilar.words(word, from: KJData.words.map(\.ja).filter { KJSimilar.hasKanji($0) }, count: 3)
+            if ks.count == 3 { return ks }
+        }
         // one real word that looks alike + look-alike-letter swaps
         var out: [String] = Array(KJSimilar.words(word, from: KJData.words.map(\.ja).filter { $0.count == word.count }, count: 1))
         var tries = 0
