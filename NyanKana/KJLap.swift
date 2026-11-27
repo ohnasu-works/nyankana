@@ -50,6 +50,11 @@ enum KJLap {
 extension KJData {
     /// how a word is read: one kanji (日 → にち) or a kanji word of round 2 / 3 (食べる → たべる)
     static func yomi(_ s: String) -> String? { readings[s] ?? readingsLap[s] }
+    /// kanji that look alike (rounds 2-3 games and battles use them as traps)
+    static let lookAlike3: [[String]] = [["木", "本", "休", "体"], ["土", "上", "下"], ["天", "大", "太", "犬"], ["雨", "雪", "電"], ["右", "石", "左"],
+        ["東", "車", "西"], ["町", "田", "男"], ["月", "目", "日"], ["口", "日", "田"], ["百", "白"], ["四", "西"], ["人", "入", "八"], ["力", "九"],
+        ["千", "十"], ["円", "内"], ["手", "千"], ["子", "字"], ["火", "水"], ["前", "後"], ["春", "夏"], ["花", "化"], ["空", "雪"], ["門", "間"],
+        ["北", "南"], ["気", "元"], ["海", "母"]]
 }
 
 /// a word with its reading over it in round 2 (ふりがな); plain in rounds 1 and 3

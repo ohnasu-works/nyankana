@@ -138,7 +138,7 @@ enum KJData {
     static func word(_ w: String) -> Word? { words.first { $0.ja == w } }
 
     /// letters that look alike: when both are known, they are mixed in on purpose
-    static let lookAlike: [[String]] = lookAlike1 + lookAlike2
+    static let lookAlike: [[String]] = lookAlike1 + lookAlike2 + lookAlike3
     static let lookAlike1: [[String]] = [["あ", "お"], ["き", "さ", "ち"], ["ぬ", "め"], ["ね", "れ", "わ"], ["い", "こ"], ["し", "つ"], ["た", "な"], ["て", "と"]]
 }
 
