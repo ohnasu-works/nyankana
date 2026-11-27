@@ -115,7 +115,7 @@ struct KJLessonView: View {
                 Text(ja).font(.custom(Fonts.rounded, size: 20.s)).foregroundStyle(Color.ink)
                 Text(help).font(.ui(12.s, bold: false)).foregroundStyle(Color.ink.opacity(0.7))
                 if case .review = q {
-                    Text(KJ.t("Review", "複習", "복습")).font(.display(11.s)).foregroundStyle(.white)
+                    Text(KJ.duo("Review", "複習", "복습")).font(.display(11.s)).foregroundStyle(.white)
                         .padding(.horizontal, 6.s).background(Capsule().fill(Color.grape))
                 }
             }

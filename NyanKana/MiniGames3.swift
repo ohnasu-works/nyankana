@@ -339,8 +339,8 @@ struct MGTrain: View {
                 MGScroller(image: "bg_mg_shinkansen", offset: scroll)
                 // the race: Tokyo → Osaka
                 VStack(spacing: 6.s) {
-                    track(KJ.t("You", "你", "나"), me, tint: 0, w: w)
-                    track(KJ.t("Rival", "對手", "라이벌"), rival, tint: 150, w: w)
+                    track("じぶん", me, tint: 0, w: w)
+                    track("ライバル", rival, tint: 150, w: w)
                 }
                 .position(x: w / 2, y: h * 0.27)
                 .offset(x: shakeMe ? 6 : 0)
@@ -413,12 +413,12 @@ struct MGTrain: View {
             ended = true
             AudioManager.shared.se(.mgHorn)
             ctx.score += 500 + Int(ctx.timeLeft) * 20
-            ctx.pop(KJ.t("YOU WIN!", "你贏了！", "승리!"), at: CGPoint(x: 0.5, y: 0.4), color: .sunDeep)
+            ctx.pop("かち！", at: CGPoint(x: 0.5, y: 0.4), color: .sunDeep)
             later(1.0) { ctx.finish() }
         } else if rival >= 1 {
             ended = true
             AudioManager.shared.se(.mgHorn, volume: 0.6)
-            ctx.pop(KJ.t("Rival wins…", "對手贏了…", "라이벌 승리…"), at: CGPoint(x: 0.5, y: 0.4), color: .sky)
+            ctx.pop("まけ…", at: CGPoint(x: 0.5, y: 0.4), color: .sky)
             later(1.0) { ctx.finish() }
         }
     }
@@ -534,7 +534,7 @@ struct MGTsumiki: View {
 
     private func gameOver() {
         guard ctx.running else { return }
-        ctx.pop(KJ.t("Full!", "滿了！", "꽉 찼다!"), at: CGPoint(x: 0.5, y: 0.5), color: .danger)
+        ctx.pop("いっぱい！", at: CGPoint(x: 0.5, y: 0.5), color: .danger)
         ctx.finish()
     }
 
@@ -558,7 +558,7 @@ struct MGTsumiki: View {
             // all of them gone: a bonus and a new letter
             if !cols.flatMap({ $0 }).contains(where: { $0.kana == a }) {
                 ctx.score += 150
-                ctx.pop(KJ.t("All clear!", "全清！", "올 클리어!"), at: CGPoint(x: 0.5, y: 0.42), color: .sunDeep)
+                ctx.pop("ぜんぶ クリア！", at: CGPoint(x: 0.5, y: 0.42), color: .sunDeep)
                 newAsk()
             }
         } else {
@@ -688,7 +688,7 @@ struct MGDaruma: View {
                 // the daruma topples over: start a new one
                 fall = true
                 AudioManager.shared.se(.boyon)
-                ctx.pop(KJ.t("It fell!", "倒了！", "쓰러졌다!"), at: CGPoint(x: 0.5, y: 0.45), color: .danger)
+                ctx.pop("たおれた！", at: CGPoint(x: 0.5, y: 0.45), color: .danger)
                 let my = token
                 later(1.1) {
                     guard my == token else { return }
@@ -847,7 +847,7 @@ struct MGKingyo: View {
             if poi <= 0 {
                 // the paper tore: a new scoop
                 AudioManager.shared.se(.sad, volume: 0.6)
-                ctx.pop(KJ.t("Torn!", "破了！", "찢어졌다!"), at: CGPoint(x: 0.2, y: 0.85), color: .danger)
+                ctx.pop("やぶれた！", at: CGPoint(x: 0.2, y: 0.85), color: .danger)
                 ctx.score = max(0, ctx.score - 100)
                 later(0.6) { poi = 3 }
             }

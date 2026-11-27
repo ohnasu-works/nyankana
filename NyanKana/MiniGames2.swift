@@ -51,13 +51,13 @@ enum MGChainStep { case next, done, none }
     guard case .chain(let w, let i)? = ask else { return .none }
     if i + 1 < MGAsk.units(w).count {
         withAnimation(.spring(response: 0.25, dampingFraction: 0.6)) { ask = .chain(w, i + 1) }
-        ctx.pop(KJ.t("Chain \(i + 1)!", "連鎖 \(i + 1)！", "연쇄 \(i + 1)!"), at: CGPoint(x: 0.5, y: 0.36), color: .grape)
+        ctx.pop("れんさ \(i + 1)！", at: CGPoint(x: 0.5, y: 0.36), color: .grape)
         AudioManager.shared.se(.studyCombo, volume: 0.8)
         return .next
     }
     ctx.score += 300
     if !ctx.won.contains(w) { ctx.won.append(w) }
-    ctx.pop(KJ.t("Word! +300", "完成詞語！+300", "단어 완성! +300"), at: CGPoint(x: 0.5, y: 0.36), color: .sunDeep)
+    ctx.pop("ことば！ +300", at: CGPoint(x: 0.5, y: 0.36), color: .sunDeep)
     AudioManager.shared.se(.clear, volume: 0.7)
     Speaker.shared.say(w)
     return .done
@@ -135,10 +135,10 @@ struct MGPrompt: View {
 
     private var caption: String {
         switch ask {
-        case .sound?: KJ.t("Which one?", "哪一個？", "어느 것?")
-        case .romaji?: KJ.t("Find this sound!", "找這個音！", "이 소리를 찾아요!")
-        case .word?: KJ.t("Find this word!", "找這個詞！", "이 단어를 찾아요!")
-        case .chain?: KJ.t("Chain the word, letter by letter!", "照順序連成詞語！", "순서대로 단어를 이어요!")
+        case .sound?: KJ.duo("Which one?", "哪一個？", "어느 것?")
+        case .romaji?: KJ.duo("Find this sound!", "找這個音！", "이 소리를 찾아요!")
+        case .word?: KJ.duo("Find this word!", "找這個詞！", "이 단어를 찾아요!")
+        case .chain?: KJ.duo("Chain the word, letter by letter!", "照順序連成詞語！", "순서대로 단어를 이어요!")
         case nil: ""
         }
     }
@@ -349,7 +349,7 @@ struct MGSushi: View {
                 HStack(spacing: 10.s) {
                     Image("nk_nyan_joy").resizable().scaledToFit().frame(height: 96.s)
                     VStack(spacing: 2.s) {
-                        Text(KJ.t("Order!", "點餐！", "주문!")).font(.display(14.s)).foregroundStyle(Color.danger)
+                        Text("ちゅうもん！").font(.display(14.s)).foregroundStyle(Color.danger)
                         MGPrompt(ask: ask)
                     }
                 }
@@ -475,7 +475,7 @@ struct MGSushi: View {
                 flying = nil
                 stack += 1
                 AudioManager.shared.se(.mgClink, volume: 0.6)
-                if stack % 5 == 0 { ctx.pop(KJ.t("Seconds!", "再來一盤！", "한 접시 더!"), at: CGPoint(x: 0.8, y: 0.75), color: .sunDeep) }
+                if stack % 5 == 0 { ctx.pop("おかわり！", at: CGPoint(x: 0.8, y: 0.75), color: .sunDeep) }
             }
         }
         // make sure the order is still on the belt
@@ -762,7 +762,7 @@ struct KJPlayground: View {
                 }
                 .padding(.horizontal, 14.s).padding(.top, 6.s)
                 RibbonTitle(text: "あそびば", color: .mint, size: 24)
-                Text(KJ.t("Play the mini-games again!", "再玩一次小遊戲！", "미니게임을 다시 해요!")).font(.ui(14.s)).foregroundStyle(.white)
+                Text(KJ.both("Play the mini-games again!", "再玩一次小遊戲！", "미니게임을 다시 해요!")).font(.ui(14.s)).foregroundStyle(.white)
                     .shadow(color: .black.opacity(0.6), radius: 2)
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 12.s), GridItem(.flexible(), spacing: 12.s)], spacing: 12.s) {

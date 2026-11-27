@@ -89,7 +89,7 @@ struct MGMekuri: View {
             ctx.good(100, at: CGPoint(x: 0.5, y: 0.35), word: c.key)
             if cards.allSatisfy(\.matched) {
                 ctx.score += 300
-                ctx.pop(KJ.t("All matched!", "全部配對！", "전부 맞췄다!"), at: CGPoint(x: 0.5, y: 0.3), color: .sunDeep)
+                ctx.pop("ぜんぶ そろった！", at: CGPoint(x: 0.5, y: 0.3), color: .sunDeep)
                 AudioManager.shared.se(.clear)
                 let my = token
                 later(1.2) { if my == token { deal() } }
@@ -136,7 +136,7 @@ struct MGTakoyaki: View {
                 HStack(spacing: 10.s) {
                     Image("nk_nyan_joy").resizable().scaledToFit().frame(height: 90.s)
                     VStack(spacing: 2.s) {
-                        Text(KJ.t("Order!", "點餐！", "주문!")).font(.display(14.s)).foregroundStyle(Color.danger)
+                        Text("ちゅうもん！").font(.display(14.s)).foregroundStyle(Color.danger)
                         MGPrompt(ask: ask)
                     }
                 }
@@ -156,9 +156,9 @@ struct MGTakoyaki: View {
                 .position(x: w / 2, y: h * 0.66)
                 // golden guide
                 HStack(spacing: 6.s) {
-                    swatch(0.3, KJ.t("raw", "生", "덜 익음"))
-                    swatch(0.75, KJ.t("golden!", "金黃！", "노릇!"))
-                    swatch(1.0, KJ.t("burnt", "焦", "탐"))
+                    swatch(0.3, "なま")
+                    swatch(0.75, "きつねいろ！")
+                    swatch(1.0, "こげ")
                 }
                 .position(x: w / 2, y: h * 0.95)
             }
@@ -253,7 +253,7 @@ struct MGTakoyaki: View {
                 if b.kana == ask?.answer {
                     ctx.lose()
                     ctx.misses += 1
-                    ctx.pop(KJ.t("Burnt!", "焦了！", "탔다!"), at: CGPoint(x: 0.5, y: 0.5), color: .ink)
+                    ctx.pop("こげた！", at: CGPoint(x: 0.5, y: 0.5), color: .ink)
                     later(0.4) { newAsk() }
                 }
                 refill(i, after: 0.8)
@@ -270,14 +270,14 @@ struct MGTakoyaki: View {
         }
         if b.cook < golden.lowerBound {
             ctx.bad(at: CGPoint(x: 0.5, y: 0.55), shakeIt: false)
-            ctx.pop(KJ.t("Not yet!", "還沒熟！", "아직이야!"), at: CGPoint(x: 0.5, y: 0.48), color: .sky)
+            ctx.pop("まだ！", at: CGPoint(x: 0.5, y: 0.48), color: .sky)
             return
         }
         balls[i]?.served = true
         AudioManager.shared.se(.mgClink)
         let perfect = abs(b.cook - 0.75) < 0.12
         ctx.good(perfect ? 160 : 100, at: CGPoint(x: 0.5, y: 0.5), word: a)
-        if perfect { ctx.pop(KJ.t("Perfect!", "完美！", "완벽!"), at: CGPoint(x: 0.5, y: 0.43), color: .sunDeep) }
+        if perfect { ctx.pop("かんぺき！", at: CGPoint(x: 0.5, y: 0.43), color: .sunDeep) }
         refill(i, after: 0.6)
         later(0.35) { newAsk() }
     }
@@ -584,7 +584,7 @@ struct MGMeiro: View {
             ctx.score += 200
             AudioManager.shared.se(.clear)
             Speaker.shared.say(w)
-            ctx.pop(KJ.t("Goal!", "到達！", "골인!"), at: CGPoint(x: 0.5, y: 0.38), color: .sunDeep)
+            ctx.pop("ゴール！", at: CGPoint(x: 0.5, y: 0.38), color: .sunDeep)
             let my = token
             later(1.0) { if my == token { build(); sayNext() } }
         } else {
@@ -789,7 +789,7 @@ struct MGKawara: View {
                     .frame(width: 22.s, height: 22.s)
                     .position(x: w * ball.x, y: h * ball.y)
                 if resting && ctx.running {
-                    Text(KJ.t("Tap to launch!", "點一下發射！", "눌러서 발사!")).font(.ui(13.s)).foregroundStyle(.white)
+                    Text(KJ.both("Tap to launch!", "點一下發射！", "눌러서 발사!")).font(.ui(13.s)).foregroundStyle(.white)
                         .position(x: w / 2, y: h * 0.8)
                 }
             }

@@ -731,7 +731,7 @@ struct KJBattleView: View {
             Button { b.callOut() } label: {
                 HStack(spacing: 8.s) {
                     Image(systemName: "speaker.wave.3.fill").font(.system(size: 22.s, weight: .bold))
-                    Text(KJ.t("Listen", "聽", "듣기")).font(.ui(16.s))
+                    Text(KJ.duo("Listen", "聽", "듣기")).font(.ui(16.s))
                 }
                 .foregroundStyle(.white)
                 .padding(.horizontal, 20.s).padding(.vertical, 10.s)

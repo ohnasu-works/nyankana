@@ -243,7 +243,7 @@ enum MGKind: String, CaseIterable {
         if hits == target && !bonus && running && total > 0 {
             bonus = true
             AudioManager.shared.se(.clear)
-            pop(KJ.t("CLEAR! Bonus time!", "過關！獎勵時間！", "클리어! 보너스 타임!"), at: CGPoint(x: 0.5, y: 0.42), color: .sunDeep)
+            pop("クリア！ ボーナスタイム！", at: CGPoint(x: 0.5, y: 0.42), color: .sunDeep)
         }
         if combo == 8 && !fever {
             fever = true
@@ -671,7 +671,7 @@ struct MiniGameView: View {
                         KJButton(title: KJ.both("Play again", "再玩一次", "다시 하기"), color: .sun) { retry() }
                     } else {
                         // 11. not enough right answers: no moving on
-                        Text(KJ.both("Almost! Get \(max(2, ctx.target / 3)) right to clear.", "差一點！答對 \(max(2, ctx.target / 3)) 題就過關。", "아깝다! \(max(2, ctx.target / 3))개 맞히면 클리어."))
+                        Text(KJ.t("Almost! Get \(max(2, ctx.target / 3)) right to clear.", "差一點！答對 \(max(2, ctx.target / 3)) 題就過關。", "아깝다! \(max(2, ctx.target / 3))개 맞히면 클리어.") + "\n" + "おしい！ \(max(2, ctx.target / 3))もん せいかいで クリア")
                             .font(.ui(14.s)).foregroundStyle(Color.danger).multilineTextAlignment(.center)
                         KJButton(title: KJ.both("Try again", "再挑戰", "다시 도전"), color: .pop, textColor: .white) { retry() }
                         KJButton(title: KJ.both("Quit", "離開", "그만두기"), color: .white) {
@@ -733,9 +733,9 @@ struct MGKaruta: View {
                     .frame(width: 150.s, height: 10.s)
                     .overlay(Capsule().stroke(Color.ink, lineWidth: 2))
                     HStack(spacing: 14.s) {
-                        score(KJ.t("You", "你", "나"), mine, .pop)
+                        score("じぶん", mine, .pop)
                         Text("VS").font(.display(16.s)).foregroundStyle(.white).shadow(color: .black, radius: 0, x: 1, y: 1)
-                        score(KJ.t("Kappa", "河童", "갓파"), his, .mintDeep)
+                        score("かっぱ", his, .mintDeep)
                     }
                 }
                 .position(x: w * 0.5, y: h * 0.3)
@@ -861,7 +861,7 @@ struct MGKaruta: View {
             mine += 1
             let quick = Int((1 - min(charge, 1)) * 100)
             ctx.good(100 + quick, at: CGPoint(x: 0.5, y: 0.55), word: c.kana)
-            if quick > 70 { ctx.pop(KJ.t("FAST!", "好快！", "빠르다!"), at: CGPoint(x: 0.5, y: 0.47), color: .sky) }
+            if quick > 70 { ctx.pop("はやい！", at: CGPoint(x: 0.5, y: 0.47), color: .sky) }
             kappaSad = true
             later(0.5) { kappaSad = false }
             let my = token
@@ -882,7 +882,7 @@ struct MGKaruta: View {
         reveal = cards[i].id
         ctx.lose()
         his += 1
-        ctx.pop(KJ.t("Too slow!", "太慢了！", "늦었다!"), at: CGPoint(x: 0.5, y: 0.47), color: .mintDeep)
+        ctx.pop("おそい！", at: CGPoint(x: 0.5, y: 0.47), color: .mintDeep)
         let my = token
         later(0.55) {
             guard my == token else { return }
@@ -1019,7 +1019,7 @@ struct MGTsuri: View {
                 }
                 .buttonStyle(.plain)
             }
-            Text(listenMode ? KJ.t("Which fish?", "哪條魚？", "어느 물고기?") : KJ.t("Find this sound!", "找這個音！", "이 소리를 찾아요!"))
+            Text(listenMode ? KJ.duo("Which fish?", "哪條魚？", "어느 물고기?") : KJ.duo("Find this sound!", "找這個音！", "이 소리를 찾아요!"))
                 .font(.ui(12.s)).foregroundStyle(Color.ink)
                 .padding(.horizontal, 8.s).padding(.vertical, 2.s)
                 .background(Capsule().fill(Color.white.opacity(0.85)))
@@ -1404,7 +1404,7 @@ struct MGNazori: View {
         } else {
             tries += 1
             ctx.bad(at: CGPoint(x: 0.5, y: 0.5), shakeIt: false)
-            ctx.pop(KJ.t("Once more!", "再一次！", "한 번 더!"), at: CGPoint(x: 0.5, y: 0.42), color: .sky)
+            ctx.pop("もう いっかい！", at: CGPoint(x: 0.5, y: 0.42), color: .sky)
             if !guide {
                 // show the letter for a moment, then try again
                 reveal = true
