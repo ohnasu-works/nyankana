@@ -258,20 +258,32 @@ struct KJStudyView: View {
         for r in rows where r.contains(first) { return String(r.prefix(1)) }
         return "ー"
     }
+    /// everything a word can be searched by, worked out once (the romaji transform is slow)
+    private static let searchKey: [String: String] = {
+        var out: [String: String] = [:]
+        for w in dict {
+            let read = KJData.yomi(w.ja) ?? w.ja
+            let roma = (read.applyingTransform(.toLatin, reverse: false) ?? "").lowercased()
+            out[w.ja] = [w.ja, KJZukan.sortKey(w.ja), read, roma, w.en.lowercased(), w.zh, w.ko.lowercased()].joined(separator: "\u{1}")
+        }
+        return out
+    }()
+    private static let rowOf: [String: String] = Dictionary(dict.map { ($0.ja, row($0.ja)) }, uniquingKeysWith: { a, _ in a })
+    private static let romaOf: [String: String] = Dictionary(dict.map { w in (w.ja, (KJData.yomi(w.ja) ?? w.ja).applyingTransform(.toLatin, reverse: false) ?? "") }, uniquingKeysWith: { a, _ in a })
+
     private func matches(_ w: KJData.Word) -> Bool {
         if let g = genre, (KJGenre.of[w.ja] ?? KJGenre.names.count - 1) != g { return false }
         let q = query.trimmingCharacters(in: .whitespaces).lowercased()
         guard !q.isEmpty else { return true }
-        let read = KJData.yomi(w.ja) ?? w.ja
+        let key = Self.searchKey[w.ja] ?? w.ja
+        if key.contains(q) { return true }
         let qh = q.applyingTransform(.hiraganaToKatakana, reverse: true) ?? q
-        let roma = (read.applyingTransform(.toLatin, reverse: false) ?? "").lowercased()
-        return w.ja.contains(q) || KJZukan.sortKey(w.ja).contains(qh) || roma.contains(q)
-            || w.en.lowercased().contains(q) || w.zh.contains(q) || w.ko.contains(q)
+        return qh != q && key.contains(qh)
     }
 
     private var wordList: some View {
         let list = Self.dict.filter(matches)
-        let sections = Dictionary(grouping: list, by: { Self.row($0.ja) })
+        let sections = Dictionary(grouping: list, by: { Self.rowOf[$0.ja] ?? "ー" })
         let order = ["あ", "か", "さ", "た", "な", "は", "ま", "や", "ら", "わ", "ー"].filter { sections[$0] != nil }
         return VStack(spacing: 8.s) {
             // search
@@ -327,14 +339,13 @@ struct KJStudyView: View {
 
     /// one entry: picture · the word (with its reading over kanji) · romaji · meaning — tap to hear it
     private func dictRow(_ w: KJData.Word) -> some View {
-        let read = KJData.yomi(w.ja) ?? w.ja
         return Button { AudioManager.shared.se(.tap); wordOpen = KJWordBox(w: w) } label: {
             HStack(spacing: 10.s) {
                 KJPicView(w.emoji, size: 34.s)
                 VStack(alignment: .leading, spacing: 0) {
                     HStack(alignment: .lastTextBaseline, spacing: 6.s) {
                         KJFuri(w.ja, size: 19.s, force: true)
-                        Text(read.applyingTransform(.toLatin, reverse: false) ?? "").font(.ui(11.s, bold: false)).foregroundStyle(Color.ink.opacity(0.5)).lineLimit(1)
+                        Text(Self.romaOf[w.ja] ?? "").font(.ui(11.s, bold: false)).foregroundStyle(Color.ink.opacity(0.5)).lineLimit(1)
                     }
                     Text(w.meaning).font(.ui(12.s, bold: false)).foregroundStyle(Color.ink.opacity(0.75)).lineLimit(2)
                 }

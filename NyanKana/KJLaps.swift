@@ -600,7 +600,7 @@ extension KJData {
         Word(ja: "はち", emoji: "🌱", en: "pot (plant)", zh: "盆", ko: "화분"),
         Word(ja: "しょくぶつ", emoji: "🌱", en: "plant", zh: "植物", ko: "식물"),
         Word(ja: "くさ", emoji: "🌿", en: "grass", zh: "草", ko: "풀"),
-        Word(ja: "えだ", emoji: "🌿", en: "branch", zh: "樹枝", ko: "가지"),
+        Word(ja: "えだ", emoji: "🪾", en: "branch", zh: "樹枝", ko: "가지"),
         Word(ja: "ね", emoji: "🌱", en: "root", zh: "根", ko: "뿌리"),
         Word(ja: "み", emoji: "🍎", en: "fruit / nut", zh: "果實", ko: "열매"),
         Word(ja: "さくら", emoji: "🌸", en: "cherry blossom", zh: "櫻花", ko: "벚꽃"),
