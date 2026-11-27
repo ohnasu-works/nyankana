@@ -91,7 +91,9 @@ enum KJSimilar {
         // and no kanji next to an answer written in kana
         let sound = reading(w), kanaOnly = !hasKanji(w)
         let cands = pool.filter { $0 != w && reading($0) != sound && (!kanaOnly || !hasKanji($0)) }.uniqued()
-        let ranked = cands.map { ($0, score(w, $0) * 10 + (!kanaOnly && hasKanji($0) ? 60 : 0) + Int.random(in: 0..<8)) }   // kanji answer → kanji decoys first.sorted { $0.1 > $1.1 }.map(\.0)
+        let bonus: (String) -> Int = { x in (!kanaOnly && hasKanji(x)) ? 60 : 0 }   // kanji answer → kanji decoys first
+        let scored: [(String, Int)] = cands.map { x in (x, score(w, x) * 10 + bonus(x) + Int.random(in: 0..<8)) }
+        let ranked = scored.sorted { $0.1 > $1.1 }.map(\.0)
         return Array(ranked.prefix(count))
     }
 }
