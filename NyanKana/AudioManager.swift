@@ -270,6 +270,21 @@ final class AudioManager {
         p.scheduleBuffer(b, at: nil, options: free == nil ? [.interrupts] : [], completionHandler: nil)
     }
 
+    /// where the music is now (seconds into the track, wraps when it loops); nil while nothing plays.
+    /// The rhythm game lines its notes up with this.
+    var bgmTime: Double? {
+        guard bgmPlayer.isPlaying, let nt = bgmPlayer.lastRenderTime, let pt = bgmPlayer.playerTime(forNodeTime: nt), pt.sampleRate > 0 else { return nil }
+        let t = Double(pt.sampleTime) / pt.sampleRate - AVAudioSession.sharedInstance().outputLatency
+        guard let name = currentBGM, let b = buffers[name], b.format.sampleRate > 0 else { return t }
+        let len = Double(b.frameLength) / b.format.sampleRate
+        return len > 0 ? (t.truncatingRemainder(dividingBy: len) + len).truncatingRemainder(dividingBy: len) : t
+    }
+    /// the length of the track playing now (for the loop)
+    var bgmLength: Double? {
+        guard let name = currentBGM, let b = buffers[name], b.format.sampleRate > 0 else { return nil }
+        return Double(b.frameLength) / b.format.sampleRate
+    }
+
     func playBGM(_ bgm: BGM) {
         guard started else { pendingBGM = bgm; return }
         let name = bgm.file

@@ -187,47 +187,79 @@ struct MGTaiko: View {
     @ObservedObject var ctx: MGCtx
     let letters: [String]
 
+    // the song (bgm_mg_taiko): 143.5 BPM, the first beat at 0.09 s — every note lands ON a beat
+    private let period = 0.41822
+    private let firstBeat = 0.0899
+
     struct Note: Identifiable {
         let id = UUID()
         var kana: String
-        var x: CGFloat
+        var at: Double          // song clock time when it reaches the circle
         var hit = false
         var passed = false
     }
+    struct Burst: Identifiable { let id = UUID(); var text: String; var great: Bool }
     @State private var notes: [Note] = []
+    @State private var bursts: [Burst] = []
     @State private var ask: MGAsk?
-    @State private var beat: Double = 0
     @State private var drumHit = false
     @State private var flashOK = false
+    @State private var ring = false
+    @State private var pulse = false
     @State private var sinceAsk = 0
     @State private var token = 0
-    @State private var clock = Timer.publish(every: 1.0 / 30, on: .main, in: .common).autoconnect()
+    // the song clock: the music's own position, unwrapped across loops (falls back to frame time)
+    @State private var now: Double = 0
+    @State private var lastBgm: Double?
+    @State private var nextBeat = 0
+    @State private var lastPulse = -1
+    @State private var clock = Timer.publish(every: 1.0 / 60, on: .main, in: .common).autoconnect()
 
     private let zoneX: CGFloat = 0.22
     private let laneY: CGFloat = 0.5
-    private let tol: CGFloat = 0.075
+    /// timing windows (seconds): 良 = right on the beat, 可 = close
+    private let great = 0.075, ok = 0.15
 
     var body: some View {
         GeometryReader { g in
             let w = g.size.width, h = g.size.height
             ZStack {
                 MGPrompt(ask: ask).position(x: w * 0.5, y: h * 0.24)
-                // the lane
+                // the lane (it throbs on every beat of the music)
                 Capsule().fill(Color.black.opacity(0.55)).frame(width: w * 1.1, height: 84.s)
-                    .overlay(Capsule().stroke(Color.sun, lineWidth: 3))
+                    .overlay(Capsule().stroke(Color.sun, lineWidth: pulse ? 5 : 3))
                     .position(x: w / 2, y: h * laneY)
                 Circle().stroke(flashOK ? Color.sun : Color.white, lineWidth: 5)
                     .frame(width: 74.s, height: 74.s)
-                    .scaleEffect(flashOK ? 1.2 : 1)
+                    .scaleEffect(flashOK ? 1.3 : pulse ? 1.08 : 1)
+                    .shadow(color: flashOK ? Color.sun : .clear, radius: 14)
                     .position(x: w * zoneX, y: h * laneY)
+                // the shock ring of a good hit
+                Circle().stroke(Color.sun, lineWidth: ring ? 2 : 10)
+                    .frame(width: 74.s, height: 74.s)
+                    .scaleEffect(ring ? 2.6 : 0.8).opacity(ring ? 0 : 0.9)
+                    .position(x: w * zoneX, y: h * laneY)
+                    .allowsHitTesting(false)
                 ForEach(notes) { n in
                     Text(n.kana).font(.custom(Fonts.rounded, size: 30.s)).foregroundStyle(.white).lineLimit(1).minimumScaleFactor(0.35)
                         .frame(width: 62.s, height: 62.s)
                         .background(Circle().fill(Color.sky).overlay(Circle().stroke(Color.white, lineWidth: 4)))
-                        .scaleEffect(n.hit ? 1.6 : 1)
+                        .scaleEffect(n.hit ? 2.0 : 1)
                         .opacity(n.hit ? 0 : 1)
-                        .animation(.easeOut(duration: 0.2), value: n.hit)
-                        .position(x: w * n.x, y: h * laneY)
+                        .animation(.easeOut(duration: 0.22), value: n.hit)
+                        .position(x: w * x(of: n), y: h * laneY - (n.hit ? 40.s : 0))
+                }
+                // 良 / 可 and the combo, big, right over the circle
+                ForEach(bursts) { b in
+                    VStack(spacing: 0) {
+                        OutlinedText(b.text, font: .custom(Fonts.rounded, size: b.great ? 46.s : 34.s), fill: b.great ? .sun : .sky, width: 4, shadow: 0)
+                        if ctx.combo >= 2 {
+                            OutlinedText("\(ctx.combo) コンボ", font: .display(18.s), fill: .white, width: 3, shadow: 0)
+                        }
+                    }
+                    .position(x: w * zoneX + 60.s, y: h * laneY - 80.s)
+                    .transition(.scale(scale: 0.4).combined(with: .opacity))
+                    .allowsHitTesting(false)
                 }
                 // the drum: tap anywhere on it
                 ZStack {
@@ -236,7 +268,7 @@ struct MGTaiko: View {
                         .offset(x: 230.s * 0.685 * (0.30 - 0.5), y: 230.s * (0.35 - 0.5))
                         .opacity(drumHit ? 1 : 0.35)
                 }
-                .scaleEffect(drumHit ? 0.93 : 1)
+                .scaleEffect(drumHit ? 0.9 : pulse ? 1.02 : 1)
                 .animation(.spring(response: 0.12, dampingFraction: 0.4), value: drumHit)
                 .position(x: w * 0.5, y: h * 0.78)
                 .contentShape(Rectangle())
@@ -249,11 +281,13 @@ struct MGTaiko: View {
         .onAppear { reset() }
     }
 
-    private var speed: CGFloat { min(0.5, 0.3 + 0.01 * CGFloat(ctx.hits)) }
+    /// seconds a note takes from the right edge to the circle (a little shorter as you get better)
+    private var lead: Double { max(1.35, 2.0 - 0.025 * Double(ctx.hits)) }
+    private func x(of n: Note) -> CGFloat { zoneX + CGFloat((n.at - now) / lead) * (1.12 - zoneX) }
 
     private func reset() {
         token += 1
-        notes = []; ask = nil; beat = 0; sinceAsk = 0
+        notes = []; bursts = []; ask = nil; sinceAsk = 0; lastBgm = nil; nextBeat = 0; lastPulse = -1
     }
 
     private func newAsk() {
@@ -263,53 +297,93 @@ struct MGTaiko: View {
         mgSpeak(ask)
     }
 
-    private func step() {
-        guard ctx.running, let a = ask?.answer else { return }
-        beat += 1.0 / 30
-        if beat >= 0.6 {
-            beat = 0
-            let k = Double.random(in: 0...1) < 0.42 ? a : (mgDecoys(a, letters).prefix(4).randomElement() ?? a)
-            notes.append(Note(kana: k, x: 1.1))
+    /// advance the song clock from the music itself
+    private func tickClock() {
+        if let t = AudioManager.shared.bgmTime {
+            if let l = lastBgm {
+                var d = t - l
+                if d < -1, let len = AudioManager.shared.bgmLength { d += len }   // the track looped
+                now += max(0, min(d, 0.25))
+            } else {
+                now = t
+                nextBeat = Int(((t - firstBeat) / period).rounded(.up)) + 1
+            }
+            lastBgm = t
+        } else {
+            now += 1.0 / 60
         }
-        for i in notes.indices {
-            notes[i].x -= speed / 30
-            if !notes[i].hit && !notes[i].passed && notes[i].x < zoneX - tol {
-                notes[i].passed = true
-                if notes[i].kana == a {
-                    // a missed beat: the combo breaks (no shake)
-                    ctx.lose()
-                    ctx.misses += 1
-                    ctx.pop("MISS", at: CGPoint(x: zoneX, y: laneY - 0.08), color: .white)
-                }
+    }
+
+    private func step() {
+        tickClock()
+        // the beat: the lane and the drum throb with the music
+        let b = Int(((now - firstBeat) / period).rounded(.down))
+        if b != lastPulse {
+            lastPulse = b
+            pulse = true
+            later(0.09) { pulse = false }
+        }
+        guard ctx.running, let a = ask?.answer else { return }
+        // put notes on the beats ahead: every other beat, and on every beat once you are in the groove
+        let every = ctx.combo >= 10 ? 1 : 2
+        while firstBeat + Double(nextBeat) * period < now + lead {
+            if nextBeat % every == 0 {
+                let k = Double.random(in: 0...1) < 0.42 ? a : (mgDecoys(a, letters).prefix(4).randomElement() ?? a)
+                notes.append(Note(kana: k, at: firstBeat + Double(nextBeat) * period))
+            }
+            nextBeat += 1
+        }
+        for i in notes.indices where !notes[i].hit && !notes[i].passed && now - notes[i].at > ok {
+            notes[i].passed = true
+            if notes[i].kana == a {
+                // a missed beat: the combo breaks (no shake)
+                ctx.lose()
+                ctx.misses += 1
+                ctx.pop("MISS", at: CGPoint(x: zoneX, y: laneY - 0.08), color: .white)
             }
         }
-        notes.removeAll { $0.x < -0.15 }
+        notes.removeAll { now - $0.at > lead * 0.3 || ($0.hit && now - $0.at > 0.4) }
     }
 
     private func hitDrum() {
         drumHit = true
         guard ctx.running, let a = ask?.answer else { AudioManager.shared.se(.mgDon); return }
-        // the note closest to the circle
-        let near = notes.enumerated().filter { !$0.element.hit && abs($0.element.x - zoneX) < tol }
-            .min { abs($0.element.x - zoneX) < abs($1.element.x - zoneX) }
+        // the note closest to the circle in time
+        let near = notes.enumerated().filter { !$0.element.hit && abs($0.element.at - now) < ok }
+            .min { abs($0.element.at - now) < abs($1.element.at - now) }
         if let nr = near, nr.element.kana == a {
             let i = nr.offset, n = nr.element
+            let perfect = abs(n.at - now) < great
             AudioManager.shared.se(.mgDon)
+            if perfect { AudioManager.shared.se(.kira, volume: 0.5) }
+            UIImpactFeedbackGenerator(style: perfect ? .heavy : .medium).impactOccurred()
             notes[i].hit = true
-            let perfect = abs(n.x - zoneX) < tol * 0.4
             ctx.good(perfect ? 150 : 100, at: CGPoint(x: zoneX, y: laneY - 0.09), word: a)
-            ctx.pop(perfect ? "良" : "可", at: CGPoint(x: zoneX, y: laneY + 0.08), color: perfect ? .sunDeep : .sky)
+            // a big 良 / 可, a shock ring and a flash: hitting on the beat should feel great
+            let burst = Burst(text: perfect ? "良" : "可", great: perfect)
+            withAnimation(.spring(response: 0.18, dampingFraction: 0.45)) { bursts = [burst] }
+            later(0.45) { withAnimation(.easeOut(duration: 0.15)) { bursts.removeAll { $0.id == burst.id } } }
             flashOK = true
-            later(0.15) { flashOK = false }
+            later(0.12) { flashOK = false }
+            ring = false
+            withAnimation(.easeOut(duration: 0.35)) { ring = true }
+            later(0.36) { ring = false }
+            if ctx.combo > 0 && ctx.combo % 10 == 0 {
+                ctx.pop("\(ctx.combo) コンボ！", at: CGPoint(x: 0.5, y: 0.36), color: .sunDeep)
+            }
             sinceAsk += 1
             switch mgChain(&ask, ctx: ctx) {
             case .next: break
             case .done: newAsk()
             case .none: if sinceAsk >= 5 { newAsk() }
             }
-        } else {
+        } else if near != nil {
+            // a wrong letter on the beat
             AudioManager.shared.se(.mgKa)
-            ctx.bad(at: CGPoint(x: zoneX, y: laneY - 0.09), shakeIt: near != nil)
+            ctx.bad(at: CGPoint(x: zoneX, y: laneY - 0.09), shakeIt: true)
+        } else {
+            // nothing at the circle: just a drum sound (keeps the rhythm, no penalty)
+            AudioManager.shared.se(.mgKa, volume: 0.6)
         }
     }
 }

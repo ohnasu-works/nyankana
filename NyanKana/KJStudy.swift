@@ -11,6 +11,9 @@ struct KJStudyView: View {
     @State private var playing: (kind: MGKind, letters: [String])?
     @State private var group = 0
     @State private var train: KJTrainMode?
+    /// じしょ: search text and genre (nil = all)
+    @State private var query = ""
+    @State private var genre: Int?
 
     /// the letter groups in the order the journey teaches them
     static let groups: [(title: String, letters: [String])] = {
@@ -109,7 +112,7 @@ struct KJStudyView: View {
     private func title(_ t: Tab) -> String {
         switch t {
         case .chart: "もじひょう"
-        case .words: "ことば"
+        case .words: "じしょ"
         case .train: "れんしゅう"
         case .exam: "しけん"
         }
@@ -118,7 +121,7 @@ struct KJStudyView: View {
     private func sub(_ t: Tab) -> String {
         switch t {
         case .chart: KJ.t("Letters", "文字表", "글자표")
-        case .words: KJ.t("Words", "單字", "단어")
+        case .words: KJ.t("Dictionary", "辭典", "사전")
         case .train: KJ.t("Practice", "練習", "연습")
         case .exam: KJ.t("Test", "考試", "시험")
         }
@@ -214,30 +217,106 @@ struct KJStudyView: View {
         .buttonStyle(PressStyle(radius: 16.s, depth: 4))
     }
 
-    // MARK: words with pictures
+    // MARK: じしょ — every word, searchable (the ずかん shows only the words you have learned)
+
+    /// the dictionary in あいうえお order, with the first letter's row as a heading
+    private static let dict: [KJData.Word] = {
+        var seen = Set<String>()
+        return KJData.words.filter { seen.insert($0.ja).inserted }.sorted { KJZukan.sortKey($0.ja) < KJZukan.sortKey($1.ja) }
+    }()
+    private static func row(_ w: String) -> String {
+        let first = String(KJZukan.sortKey(w).prefix(1))
+        let rows = ["あいうえおぁぃぅぇぉゔ", "かきくけこがぎぐげご", "さしすせそざじずぜぞ", "たちつてとだぢづでどっ", "なにぬねの", "はひふへほばびぶべぼぱぴぷぺぽ", "まみむめも", "やゆよゃゅょ", "らりるれろ", "わをん"]
+        for r in rows where r.contains(first) { return String(r.prefix(1)) }
+        return "ー"
+    }
+    private func matches(_ w: KJData.Word) -> Bool {
+        if let g = genre, (KJGenre.of[w.ja] ?? KJGenre.names.count - 1) != g { return false }
+        let q = query.trimmingCharacters(in: .whitespaces).lowercased()
+        guard !q.isEmpty else { return true }
+        let read = KJData.yomi(w.ja) ?? w.ja
+        let qh = q.applyingTransform(.hiraganaToKatakana, reverse: true) ?? q
+        let roma = (read.applyingTransform(.toLatin, reverse: false) ?? "").lowercased()
+        return w.ja.contains(q) || KJZukan.sortKey(w.ja).contains(qh) || roma.contains(q)
+            || w.en.lowercased().contains(q) || w.zh.contains(q) || w.ko.contains(q)
+    }
 
     private var wordList: some View {
-        ScrollView {
-            LazyVGrid(columns: [GridItem(.flexible(), spacing: 8.s), GridItem(.flexible(), spacing: 8.s)], spacing: 8.s) {
-                ForEach(KJData.words, id: \.ja) { w in
-                    Button { Speaker.shared.say(w.ja) } label: {
-                        HStack(spacing: 8.s) {
-                            KJPicView(w.emoji, size: 32.2.s)
-                            VStack(alignment: .leading, spacing: 0) {
-                                Text(w.ja).font(.custom(Fonts.rounded, size: 17.s)).foregroundStyle(Color.ink)
-                                    .lineLimit(1).minimumScaleFactor(0.6)
-                                Text(w.meaning).font(.ui(11.s, bold: false)).foregroundStyle(Color.ink.opacity(0.65)).lineLimit(1)
-                            }
-                            Spacer(minLength: 0)
-                        }
-                        .padding(8.s)
-                        .background(RoundedRectangle(cornerRadius: 12.s).fill(Color.white.opacity(0.93)).overlay(RoundedRectangle(cornerRadius: 12.s).stroke(Color.ink, lineWidth: 2)))
-                    }
-                    .buttonStyle(.plain)
+        let list = Self.dict.filter(matches)
+        let sections = Dictionary(grouping: list, by: { Self.row($0.ja) })
+        let order = ["あ", "か", "さ", "た", "な", "は", "ま", "や", "ら", "わ", "ー"].filter { sections[$0] != nil }
+        return VStack(spacing: 8.s) {
+            // search
+            HStack(spacing: 6.s) {
+                Image(systemName: "magnifyingglass").font(.system(size: 15.s, weight: .bold)).foregroundStyle(Color.ink.opacity(0.6))
+                TextField(KJ.duo("Search: kana, romaji or meaning", "搜尋：假名、羅馬字或意思", "검색: 가나・로마자・뜻"), text: $query)
+                    .font(.ui(14.s, bold: false)).textInputAutocapitalization(.never).autocorrectionDisabled()
+                if !query.isEmpty {
+                    Button { query = "" } label: { Image(systemName: "xmark.circle.fill").foregroundStyle(Color.ink.opacity(0.5)) }
                 }
             }
-            .padding(.horizontal, 16.s).padding(.bottom, 24.s)
+            .padding(.horizontal, 12.s).padding(.vertical, 9.s)
+            .background(Capsule().fill(Color.white).overlay(Capsule().stroke(Color.ink, lineWidth: 2)))
+            .padding(.horizontal, 16.s)
+            // genre
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 6.s) {
+                    chip("ぜんぶ", genre == nil) { genre = nil }
+                    ForEach(Array(KJGenre.names.enumerated()), id: \.offset) { i, n in
+                        chip(n.ja, genre == i) { genre = i }
+                    }
+                }
+                .padding(.horizontal, 16.s)
+            }
+            Text("\(list.count) " + KJ.duo("words", "個詞", "단어")).font(.ui(11.s, bold: false)).foregroundStyle(.white).shadow(color: .black.opacity(0.5), radius: 2)
+            ScrollView {
+                LazyVStack(alignment: .leading, spacing: 6.s, pinnedViews: [.sectionHeaders]) {
+                    ForEach(order, id: \.self) { r in
+                        Section {
+                            ForEach(sections[r] ?? [], id: \.ja) { w in dictRow(w) }
+                        } header: {
+                            Text(r == "ー" ? "そのほか" : "\(r)ぎょう").font(.custom(Fonts.rounded, size: 15.s)).foregroundStyle(.white)
+                                .padding(.horizontal, 12.s).padding(.vertical, 3.s)
+                                .background(Capsule().fill(Color.grape).overlay(Capsule().stroke(Color.ink, lineWidth: 2)))
+                                .padding(.vertical, 2.s)
+                        }
+                    }
+                }
+                .padding(.horizontal, 16.s).padding(.bottom, 24.s)
+            }
+            .scrollDismissesKeyboard(.immediately)
         }
+    }
+
+    private func chip(_ t: String, _ on: Bool, _ act: @escaping () -> Void) -> some View {
+        Button { AudioManager.shared.se(.tap); act() } label: {
+            Text(t).font(.custom(Fonts.rounded, size: 12.s)).foregroundStyle(on ? .white : Color.ink)
+                .padding(.horizontal, 10.s).padding(.vertical, 5.s)
+                .background(Capsule().fill(on ? Color.grape : Color.white).overlay(Capsule().stroke(Color.ink, lineWidth: 2)))
+        }
+        .buttonStyle(.plain)
+    }
+
+    /// one entry: picture · the word (with its reading over kanji) · romaji · meaning — tap to hear it
+    private func dictRow(_ w: KJData.Word) -> some View {
+        let read = KJData.yomi(w.ja) ?? w.ja
+        return Button { Speaker.shared.say(w.ja) } label: {
+            HStack(spacing: 10.s) {
+                KJPicView(w.emoji, size: 34.s)
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack(alignment: .lastTextBaseline, spacing: 6.s) {
+                        KJFuri(w.ja, size: 19.s, force: true)
+                        Text(read.applyingTransform(.toLatin, reverse: false) ?? "").font(.ui(11.s, bold: false)).foregroundStyle(Color.ink.opacity(0.5)).lineLimit(1)
+                    }
+                    Text(w.meaning).font(.ui(12.s, bold: false)).foregroundStyle(Color.ink.opacity(0.75)).lineLimit(2)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "speaker.wave.2.fill").font(.system(size: 14.s, weight: .bold)).foregroundStyle(Color.grape)
+            }
+            .padding(.horizontal, 10.s).padding(.vertical, 7.s)
+            .background(RoundedRectangle(cornerRadius: 12.s).fill(Color.white.opacity(0.95)).overlay(RoundedRectangle(cornerRadius: 12.s).stroke(Color.ink, lineWidth: 2)))
+        }
+        .buttonStyle(.plain)
     }
 }
 

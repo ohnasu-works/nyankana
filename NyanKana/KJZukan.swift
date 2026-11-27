@@ -72,6 +72,43 @@ enum KJZukan {
                                 "「\(i.word)」라는 말을 갖고 있어요\(mean.isEmpty ? "" : " = \(mean)")."))
     }
 
+    /// letter → its letter spirit(s) (nk_001 …; a few letters have a second picture)
+    static let letterSpirits: [String: [String]] = {
+        var d: [String: [String]] = [:]
+        for m in allMinions {
+            if let i = EnemyTable.info[m], i.name.contains("もじだま") { d[i.word, default: []].append(m) }
+        }
+        return d
+    }()
+    /// the あいうえお chart, five across (nil = an empty square)
+    static let chartRows: [(title: String, rows: [[String?]])] = {
+        func rows(_ s: String) -> [[String?]] {
+            // "あいうえお|かきくけこ|や.ゆ.よ|…" ("." = gap)
+            s.split(separator: "|").map { r in r.map { $0 == "." ? nil : String($0) } }
+        }
+        return [
+            ("ひらがな", rows("あいうえお|かきくけこ|さしすせそ|たちつてと|なにぬねの|はひふへほ|まみむめも|や.ゆ.よ|らりるれろ|わ...を|ん....")),
+            ("カタカナ", rows("アイウエオ|カキクケコ|サシスセソ|タチツテト|ナニヌネノ|ハヒフヘホ|マミムメモ|ヤ.ユ.ヨ|ラリルレロ|ワ...ヲ|ン....")),
+            ("てんてん・まる", rows("がぎぐげご|ざじずぜぞ|だぢづでど|ばびぶべぼ|ぱぴぷぺぽ")),
+        ]
+    }()
+    /// あいうえお order: by the reading (kanji words by their kana), katakana with hiragana
+    static func sortKey(_ w: String) -> String {
+        let r = KJData.yomi(w) ?? w
+        return r.applyingTransform(.hiraganaToKatakana, reverse: true) ?? r
+    }
+    /// the words in the order the lessons teach them (then the rest)
+    static let learnOrder: [KJData.Word] = {
+        let byJa = Dictionary(KJData.words.map { ($0.ja, $0) }, uniquingKeysWith: { a, _ in a })
+        var seenW = Set<String>(), out: [KJData.Word] = []
+        for st in KJC1.stages where st.kind == .lesson {
+            for w in st.words where !seenW.contains(w) {
+                if let x = byJa[w] { out.append(x); seenW.insert(w) }
+            }
+        }
+        return out + KJData.words.filter { !seenW.contains($0.ja) }
+    }()
+
     /// words met in cleared stages
     static var learnedWords: Set<String> {
         Set(KJC1.stages.filter { KJC1.stars($0.id) > 0 }.flatMap(\.words))
@@ -82,6 +119,10 @@ struct KJZukanView: View {
     @EnvironmentObject var app: AppState
     @State private var tab = 0
     @State private var chapter = 1
+    /// ようかい tab: 0 = もじだま (the letter chart), 1 = picture yokai by region
+    @State private var minionKind = 0
+    /// ことば tab: 0 = by genre, 1 = あいうえお order, 2 = the order they were learned
+    @State private var wordSort = 0
     @State private var show: (image: String, name: String, sub: String)?
 
     var body: some View {
@@ -155,6 +196,7 @@ struct KJZukanView: View {
                     Button {
                         guard open else { AudioManager.shared.se(.wrong, volume: 0.4); return }
                         AudioManager.shared.se(.decide)
+                        Speaker.shared.say(b.ja)
                         show = (b.image, b.ja, KJ.t(b.en, b.zh, b.ko))
                     } label: { cell(b.image, open: open, label: b.ja, height: 120.s) }
                     .buttonStyle(.plain)
@@ -164,10 +206,80 @@ struct KJZukanView: View {
     }
 
     private var minionGrid: some View {
-        let list = KJZukan.minions(chapter)
+        VStack(spacing: 10.s) {
+            picker(["もじだま", "ようかい"], $minionKind)
+            if minionKind == 0 { letterChart } else { yokaiGrid }
+        }
+    }
+
+    /// a small two/three-way switch
+    private func picker(_ items: [String], _ sel: Binding<Int>) -> some View {
+        HStack(spacing: 6.s) {
+            ForEach(Array(items.enumerated()), id: \.offset) { i, t in
+                Button { AudioManager.shared.se(.tap); sel.wrappedValue = i } label: {
+                    Text(t).font(.custom(Fonts.rounded, size: 13.s)).foregroundStyle(sel.wrappedValue == i ? .white : Color.ink)
+                        .lineLimit(1).minimumScaleFactor(0.7)
+                        .frame(maxWidth: .infinity).padding(.vertical, 5.s)
+                        .background(Capsule().fill(sel.wrappedValue == i ? Color.pop : Color.white).overlay(Capsule().stroke(Color.ink, lineWidth: 2)))
+                }
+                .buttonStyle(.plain)
+            }
+        }
+    }
+
+    /// the letter spirits as a あいうえお chart: five across, so あ い う え お line up (gaps in や・わ rows)
+    private var letterChart: some View {
+        let seen = KJZukan.seen
+        let ids = KJZukan.letterSpirits
+        let open: (String) -> Bool = { k in (ids[k] ?? []).contains { seen.contains($0) } }
+        let all = KJZukan.chartRows.flatMap { $0.rows.flatMap { $0 } }.compactMap { $0 }
+        return VStack(spacing: 10.s) {
+            Text("\(all.filter(open).count) / \(all.count)").font(.display(16.s)).foregroundStyle(Color.ink)
+            ForEach(Array(KJZukan.chartRows.enumerated()), id: \.offset) { _, part in
+                VStack(spacing: 6.s) {
+                    Text(part.title).font(.custom(Fonts.rounded, size: 15.s)).foregroundStyle(Color.ink)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    ForEach(Array(part.rows.enumerated()), id: \.offset) { _, row in
+                        HStack(spacing: 6.s) {
+                            ForEach(0..<5, id: \.self) { i in
+                                if let k = row[i], let id = ids[k]?.first {
+                                    let o = open(k)
+                                    Button {
+                                        // every letter can be heard, even before its spirit is met
+                                        Speaker.shared.say(k)
+                                        guard o else { return }
+                                        AudioManager.shared.se(.decide)
+                                        show = KJZukan.detail(id)
+                                    } label: { chartCell(id, letter: k, open: o) }
+                                    .buttonStyle(.plain)
+                                } else {
+                                    Color.clear.frame(maxWidth: .infinity).frame(height: 1)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            Text(KJ.both("Tap a letter to hear it. Meet the letter spirits in battles!", "點一下可以聽讀音。在戰鬥中遇見文字精靈吧！", "글자를 누르면 소리가 나요. 배틀에서 글자 정령을 만나요!"))
+                .font(.ui(11.s, bold: false)).foregroundStyle(Color.ink.opacity(0.6)).multilineTextAlignment(.center)
+        }
+    }
+
+    private func chartCell(_ image: String, letter: String, open: Bool) -> some View {
+        VStack(spacing: 0) {
+            Image(image).resizable().scaledToFit().frame(height: 40.s)
+                .colorMultiply(open ? .white : .black).opacity(open ? 1 : 0.2)
+            Text(letter).font(.custom(Fonts.rounded, size: 17.s)).foregroundStyle(Color.ink.opacity(open ? 1 : 0.45))
+        }
+        .frame(maxWidth: .infinity).padding(.vertical, 4.s)
+        .background(RoundedRectangle(cornerRadius: 10.s).fill(Color.white.opacity(open ? 0.95 : 0.6)).overlay(RoundedRectangle(cornerRadius: 10.s).stroke(Color.ink, lineWidth: 1.5)))
+    }
+
+    /// picture yokai (each holds a word), by region
+    private var yokaiGrid: some View {
+        let list = KJZukan.battleMinions(chapter)
         let seen = KJZukan.seen
         return VStack(spacing: 10.s) {
-            // region picker
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6.s) {
                     ForEach(1...7, id: \.self) { c in
@@ -195,8 +307,8 @@ struct KJZukanView: View {
                     .buttonStyle(.plain)
                 }
             }
-            Text(KJ.t("Minions appear in battles. Meet them all!", "小嘍囉會在戰鬥中出現，全部見一次吧！", "졸개는 배틀에 나와요. 모두 만나 봐요!"))
-                .font(.ui(11.s, bold: false)).foregroundStyle(Color.ink.opacity(0.6))
+            Text(KJ.both("Minions appear in battles. Meet them all!", "小嘍囉會在戰鬥中出現，全部見一次吧！", "졸개는 배틀에 나와요. 모두 만나 봐요!"))
+                .font(.ui(11.s, bold: false)).foregroundStyle(Color.ink.opacity(0.6)).multilineTextAlignment(.center)
         }
     }
 
@@ -213,7 +325,7 @@ struct KJZukanView: View {
         ]
         return LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10.s), count: 2), spacing: 10.s) {
             ForEach(list, id: \.0) { f in
-                Button { AudioManager.shared.se(.decide); show = (f.0, f.1, f.2) } label: { cell(f.0, open: true, label: f.1, height: 110.s) }
+                Button { AudioManager.shared.se(.decide); Speaker.shared.say(f.1); show = (f.0, f.1, f.2) } label: { cell(f.0, open: true, label: f.1, height: 110.s) }
                     .buttonStyle(.plain)
             }
         }
@@ -224,24 +336,49 @@ struct KJZukanView: View {
         let all = KJData.words
         return VStack(spacing: 10.s) {
             Text("\(all.filter { learned.contains($0.ja) }.count) / \(all.count)").font(.display(18.s)).foregroundStyle(Color.ink)
-            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8.s), count: 3), spacing: 8.s) {
-                ForEach(all, id: \.ja) { w in
-                    let open = learned.contains(w.ja)
-                    Button {
-                        guard open else { return }
-                        Speaker.shared.say(w.ja)
-                    } label: {
-                        VStack(spacing: 2.s) {
-                            KJPicView(open ? w.emoji : "❔", size: 32.2.s)
-                            Text(open ? w.ja : "？？？").font(.custom(Fonts.rounded, size: 15.s)).foregroundStyle(Color.ink)
-                                .lineLimit(1).minimumScaleFactor(0.5)
-                            Text(open ? w.meaning : "").font(.ui(10.s, bold: false)).foregroundStyle(Color.ink.opacity(0.65)).lineLimit(1).minimumScaleFactor(0.6)
+            picker(["ジャンル", "あいうえお", "ならった じゅん"], $wordSort)
+            switch wordSort {
+            case 0:
+                // by genre: a heading, then its words
+                ForEach(Array(KJGenre.names.enumerated()), id: \.offset) { g, name in
+                    let ws = all.filter { (KJGenre.of[$0.ja] ?? KJGenre.names.count - 1) == g }
+                    if !ws.isEmpty {
+                        VStack(spacing: 6.s) {
+                            HStack(alignment: .firstTextBaseline, spacing: 6.s) {
+                                Text(name.ja).font(.custom(Fonts.rounded, size: 16.s)).foregroundStyle(Color.ink)
+                                Text(KJ.t(name.en, name.zh, name.ko)).font(.ui(11.s, bold: false)).foregroundStyle(Color.ink.opacity(0.6))
+                                Spacer()
+                                Text("\(ws.filter { learned.contains($0.ja) }.count) / \(ws.count)").font(.display(12.s)).foregroundStyle(Color.ink.opacity(0.7))
+                            }
+                            wordGrid(ws, learned)
                         }
-                        .frame(maxWidth: .infinity).frame(height: 84.s)
-                        .background(RoundedRectangle(cornerRadius: 12.s).fill(Color.white.opacity(open ? 0.95 : 0.6)).overlay(RoundedRectangle(cornerRadius: 12.s).stroke(Color.ink, lineWidth: 2)))
                     }
-                    .buttonStyle(.plain)
                 }
+            case 1:
+                wordGrid(all.sorted { KJZukan.sortKey($0.ja) < KJZukan.sortKey($1.ja) }, learned)
+            default:
+                wordGrid(KJZukan.learnOrder, learned)
+            }
+        }
+    }
+
+    private func wordGrid(_ ws: [KJData.Word], _ learned: Set<String>) -> some View {
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8.s), count: 3), spacing: 8.s) {
+            ForEach(ws, id: \.ja) { w in
+                let open = learned.contains(w.ja)
+                Button {
+                    // every word can be heard; the picture and meaning show once it is learned
+                    Speaker.shared.say(w.ja)
+                } label: {
+                    VStack(spacing: 2.s) {
+                        KJPicView(open ? w.emoji : "❔", size: 32.2.s)
+                        KJFuri(open ? w.ja : "？？？", size: 15.s, force: open)
+                        Text(open ? w.meaning : "").font(.ui(10.s, bold: false)).foregroundStyle(Color.ink.opacity(0.65)).lineLimit(1).minimumScaleFactor(0.6)
+                    }
+                    .frame(maxWidth: .infinity).frame(height: 92.s)
+                    .background(RoundedRectangle(cornerRadius: 12.s).fill(Color.white.opacity(open ? 0.95 : 0.6)).overlay(RoundedRectangle(cornerRadius: 12.s).stroke(Color.ink, lineWidth: 2)))
+                }
+                .buttonStyle(.plain)
             }
         }
     }
