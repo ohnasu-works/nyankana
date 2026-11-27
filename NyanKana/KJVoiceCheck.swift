@@ -21,7 +21,14 @@ struct KJVoiceCheckView: View {
 
     private static let key = "kj.voicecheck"
     private static func load() -> [String: Mark] {
-        let d = UserDefaults.standard.dictionary(forKey: key) as? [String: String] ?? [:]
+        var d = UserDefaults.standard.dictionary(forKey: key) as? [String: String] ?? [:]
+        // 録り直した 声は「おかしい」の しるしを はずして、もう一度 きけるように
+        let rev = UserDefaults.standard.integer(forKey: key + ".rev")
+        if rev < 2 {
+            d = d.filter { !($0.key.hasPrefix("ことば|") && $0.value == Mark.bad.rawValue) }
+            UserDefaults.standard.set(d, forKey: key)
+            UserDefaults.standard.set(2, forKey: key + ".rev")
+        }
         return d.compactMapValues(Mark.init(rawValue:))
     }
     private func save() { UserDefaults.standard.set(marks.mapValues(\.rawValue), forKey: Self.key) }
