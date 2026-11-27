@@ -303,7 +303,8 @@ final class KJBattle: ObservableObject {
             later(0.7) { self.finishWaves() }
         } else if !st.words.isEmpty, hits - hitsAtLastWord >= 6 {
             hitsAtLastWord = hits
-            later(0.6) { self.startWordRound() }
+            // switch right after the answer (no waiting beat)
+            later(0.15) { self.startWordRound() }
         } else {
             later(0.35) { if self.phase == .waves { self.pickTarget() } }
         }
@@ -415,7 +416,7 @@ final class KJBattle: ObservableObject {
         foes.removeAll(); targetID = nil
         phase = .word
         AudioManager.shared.se(.decide)
-        later(0.4) { self.callOut() }
+        later(0.25) { self.callOut() }
     }
 
     func startBoss() {
