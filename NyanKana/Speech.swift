@@ -59,7 +59,7 @@ final class SpeechCoach: ObservableObject {
             if keepRecordSession {
                 try? session.setCategory(.playAndRecord, mode: .default, options: [.defaultToSpeaker, .mixWithOthers, .allowBluetoothA2DP])
             } else {
-                try? session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+                try? session.setCategory(.ambient, mode: .default, options: [.mixWithOthers])
             }
             try? session.setActive(true)
         }
@@ -156,7 +156,7 @@ final class SpeechCoach: ObservableObject {
         // back to playback only (unless a voice stage keeps the mic session open); the sound engine restarts on the route change
         if !SpeechCoach.keepRecordSession {
             let session = AVAudioSession.sharedInstance()
-            try? session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+            try? session.setCategory(.ambient, mode: .default, options: [.mixWithOthers])
             try? session.setActive(true)
         }
         AudioManager.shared.duck(false)

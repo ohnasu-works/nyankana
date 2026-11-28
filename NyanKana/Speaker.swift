@@ -31,7 +31,7 @@ final class Speaker: NSObject {
     }
     /// speak through the system directly (fallback)
     private func speakLive(_ u: AVSpeechUtterance) {
-        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio, options: [.mixWithOthers, .duckOthers])
+        try? AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default, options: [.mixWithOthers])
         liveSynth.stopSpeaking(at: .immediate)
         liveSynth.speak(copy(u))
     }

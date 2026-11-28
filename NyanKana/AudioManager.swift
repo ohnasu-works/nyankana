@@ -107,7 +107,9 @@ final class AudioManager {
         Task {
             await Task.detached(priority: .userInitiated) {
                 let session = AVAudioSession.sharedInstance()
-                try? session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+                // silent mode (the ring/silent switch) mutes everything: music, sound effects and voices.
+                // .ambient all the time — never switched to .playback — and other apps' music keeps playing
+                try? session.setCategory(.ambient, mode: .default, options: [.mixWithOthers])
                 // a slightly larger I/O buffer: no crackle when the 3D stage is being built
                 try? session.setPreferredIOBufferDuration(0.023)
                 try? session.setActive(true)
@@ -190,7 +192,7 @@ final class AudioManager {
         if UIApplication.shared.applicationState == .background { return false }
         if !engine.isRunning {
             let session = AVAudioSession.sharedInstance()
-            try? session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+            try? session.setCategory(.ambient, mode: .default, options: [.mixWithOthers])
             try? session.setActive(true)
             try? engine.start()
             guard engine.isRunning else { return false }
