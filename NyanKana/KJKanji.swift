@@ -91,17 +91,21 @@ enum KJStroke {
 
 /// the strokes drawn one after another
 struct KJStrokeView: View {
-    let kanji: KJKanji
+    let strokes: [String]
     var size: CGFloat
+    var guides = true
     @State private var shown: Double = 0
     @State private var run = 0
 
+    init(kanji: KJKanji, size: CGFloat) { strokes = kanji.paths; self.size = size }
+    init(strokes: [String], size: CGFloat, guides: Bool = true) { self.strokes = strokes; self.size = size; self.guides = guides }
+
     var body: some View {
-        let paths = kanji.paths.map(KJStroke.path)
+        let paths = strokes.map(KJStroke.path)
         ZStack {
             // guide lines
-            Path { p in p.move(to: CGPoint(x: size / 2, y: 0)); p.addLine(to: CGPoint(x: size / 2, y: size)); p.move(to: CGPoint(x: 0, y: size / 2)); p.addLine(to: CGPoint(x: size, y: size / 2)) }
-                .stroke(Color.ink.opacity(0.12), style: StrokeStyle(lineWidth: 1, dash: [5, 4]))
+            if guides { Path { p in p.move(to: CGPoint(x: size / 2, y: 0)); p.addLine(to: CGPoint(x: size / 2, y: size)); p.move(to: CGPoint(x: 0, y: size / 2)); p.addLine(to: CGPoint(x: size, y: size / 2)) }
+                .stroke(Color.ink.opacity(0.12), style: StrokeStyle(lineWidth: 1, dash: [5, 4])) }
             ForEach(0..<paths.count, id: \.self) { i in
                 paths[i].stroke(Color.ink.opacity(0.1), style: StrokeStyle(lineWidth: 4, lineCap: .round, lineJoin: .round))
                 paths[i].trimmedPath(from: 0, to: max(0, min(1, shown - Double(i))))
@@ -111,7 +115,7 @@ struct KJStrokeView: View {
             .frame(width: size, height: size, alignment: .topLeading)
             // stroke numbers
             ForEach(0..<paths.count, id: \.self) { i in
-                if let s = startPoint(kanji.paths[i]), shown >= Double(i) {
+                if let s = startPoint(strokes[i]), shown >= Double(i) {
                     Text("\(i + 1)").font(.ui(10.s)).foregroundStyle(Color.grape)
                         .position(x: s.x * size / 109 - 6, y: s.y * size / 109 - 6)
                 }
@@ -135,7 +139,7 @@ struct KJStrokeView: View {
         run += 1
         let my = run
         shown = 0
-        let n = kanji.paths.count
+        let n = strokes.count
         for i in 0..<n {
             later(0.15 + Double(i) * 0.55) {
                 guard my == run else { return }

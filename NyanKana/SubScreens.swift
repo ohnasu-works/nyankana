@@ -691,7 +691,7 @@ struct SettingsView: View {
                     }
                 }
                 Section(T("クレジット", "크레딧", "版權資訊")) {
-                    Text("漢字の書き順：KanjiVG © Ulrich Apel（CC BY-SA 3.0）\n漢字の読み：KANJIDIC2 © EDRDG（CC BY-SA 4.0）")
+                    Text("かな・漢字の書き順：KanjiVG © Ulrich Apel（CC BY-SA 3.0）\n漢字の読み：KANJIDIC2 © EDRDG（CC BY-SA 4.0）")
                         .font(.ui(12.s, bold: false)).foregroundStyle(.secondary)
                 }
                 if dev.enabled && DevSettings.allowed { DevPanel() }

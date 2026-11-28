@@ -262,8 +262,26 @@ struct KJLessonView: View {
 
     private func trace(_ k: String) -> some View {
         GeometryReader { g in
-            let side = min(g.size.width, g.size.height - 80.s)
+            let order = KJKanaStroke.of(k)
+            let side = min(g.size.width, g.size.height - 80.s - (order == nil ? 0 : 96.s))
             VStack(spacing: 12.s) {
+                // first time: the stroke order, drawn one stroke after another (tap to see it again)
+                if let order {
+                    HStack(spacing: 12.s) {
+                        KJStrokeView(strokes: order, size: 84.s)
+                            .padding(4.s)
+                            .background(RoundedRectangle(cornerRadius: 12.s).fill(Color.white))
+                            .overlay(RoundedRectangle(cornerRadius: 12.s).stroke(Color.ink, lineWidth: 2.5))
+                            .id(k)
+                        VStack(alignment: .leading, spacing: 2.s) {
+                            Text("かきじゅん").font(.ui(16.s)).foregroundStyle(.white).shadow(color: .black.opacity(0.5), radius: 2)
+                            Text(KJ.t("Stroke order — tap to watch again", "筆順（點一下再看一次）", "획순 — 누르면 다시 보기"))
+                                .font(.ui(12.s, bold: false)).foregroundStyle(.white).shadow(color: .black.opacity(0.5), radius: 2)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                    }
+                    .frame(height: 92.s)
+                }
                 ZStack {
                     Rectangle().fill(Color(hex: 0xFFFDF5))
                     Path { p in
