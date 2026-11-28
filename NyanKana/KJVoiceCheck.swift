@@ -30,6 +30,11 @@ struct KJVoiceCheckView: View {
             UserDefaults.standard.set(d, forKey: key)
             UserDefaults.standard.set(3, forKey: key + ".rev")
         }
+        if rev < 4 {
+            d = d.filter { e in !(e.value == Mark.bad.rawValue && KJVoiceFixed.round2.contains(String(e.key.split(separator: "|", maxSplits: 2).last ?? ""))) }
+            UserDefaults.standard.set(d, forKey: key)
+            UserDefaults.standard.set(4, forKey: key + ".rev")
+        }
         return d.compactMapValues(Mark.init(rawValue:))
     }
     private func save() { UserDefaults.standard.set(marks.mapValues(\.rawValue), forKey: Self.key) }
